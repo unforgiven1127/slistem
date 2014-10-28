@@ -1,0 +1,26 @@
+<?php
+
+require_once('common/lib/model.class.php5');
+
+class CRightModel extends CModel
+{
+  public function __construct()
+  {
+    $this->oDB = CDependency::getComponentByName('database');
+    $this->_initMap();
+    return true;
+  }
+
+  protected function _initMap()
+  {
+    $this->_tableMap['right']['rightpk'] = array ('controls' => array('is_key(%)'));
+
+
+
+    $this->_tableMap['right_tree']['right_treepk'] = array ('controls' => array('is_key(%)'));
+
+
+    $this->_tableMap['right_user']['right_userpk'] = array ('controls' => array('is_key(%)'));
+
+  }
+}

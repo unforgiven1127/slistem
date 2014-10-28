@@ -1,0 +1,74 @@
+.percent1, .percent2 {
+  display: none !important;
+}
+
+.skillText { width: 65%; }
+
+#skillSetsHeader
+{
+  padding: 1% 0 1% 0;
+}
+
+#skillSetsHeader > div,
+#skillSetsFooter > div
+{
+  padding: 0 1% 0 1%;
+}
+
+#skillSetsHeader > div.skill,
+#skillSetsFooter > div.skill
+{ width: 66%; }
+
+div.scores { width: 33%; padding: 0 !important; }
+
+div.scores > div.header { display: none; }
+div.scores > div { width: 33% !important; }
+
+#skillSetsHeader > div.points
+{
+  width: 10%; padding: 0 !important; text-align: center;
+}
+
+#firstBloc > div { display: inline-block; vertical-align: top; }
+
+#skillSetsFooter > div
+{
+  height: auto !important; line-height:inherit !important;
+}
+#skillSetsFooter
+{
+  background: #555555;
+  color: #FFF;
+}
+
+#skillSetsFooter .skill {
+  width: 65% !important;
+}
+#skillSetsFooter .points {
+  padding: 1% 0 1% 0 !important; width: 11% !important; text-align: center;
+}
+.positive { color: #54b854 !important; font-weight: bold; }
+.negative { color: #c63636 !important; }
+
+#skillSetsFooter .positive
+{
+  background: #54b854; color: #FFF !important;
+}
+
+#esaContainer { width: 100%; max-width: 1000px; position: relative; }
+
+#global, #speed { width: 100%; position: relative; margin-bottom: 20px; }
+
+#global > div
+{
+  display: inline-block;
+  vertical-align: top;
+  height: 300px;
+}
+
+#esaChart { width: 365px; }
+#esaCols  { margin-left: 40px; width: 365px; }
+
+@media (min-width:1250px) {
+  #esaCols  { width: 580px !important; }
+}

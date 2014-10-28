@@ -1,0 +1,111 @@
+.ns_list_container
+{
+  position: relative;
+}
+
+#ns_list li
+{
+  float: left;
+  width: 20px;
+  padding: 2px;
+}
+#ns_list li.displayall
+{
+  margin-left: 10px;
+  width: 30px;
+}
+
+#ns_list > div.contents
+{
+  float: left;
+  width: 100%;
+}
+.ns_list_block
+{
+  vertical-align: top;
+  margin: 20px;
+  padding: 5px;
+  min-height: 75px;
+}
+
+.cp_ns_row
+{
+  border-bottom: 1px solid #e3e3e3;
+  height: 25px;
+  overflow: hidden;
+  width: 99%;
+  float: left;
+  background-color: #fff;
+}
+
+.cp_ns_row > div
+{
+  float: left;
+  line-height: 25px;
+  padding: 0 5px;
+  border-left: 1px solid #e3e3e3;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cp_ns_row.header
+{
+  background-color: #446184;
+}
+.cp_ns_row.header > div
+{
+  color: #fff;
+}
+
+
+.cp_quality
+{
+  width: 30px;
+  text-align: center;
+}
+.cp_ns_row > div.cp_id
+{
+  width: 60px;
+  padding-left: 15px;
+}
+.cp_name
+{
+  width: 380px;
+}
+.cp_consultant
+{
+  width: 150px;
+}
+.cp_consultant a
+{
+  font-style: italic;
+  font-size: 11px;
+  color: #666;
+}
+
+.cp_update,
+.cp_employee
+{
+  width: 90px;
+  font-style: italic;
+  font-size: 11px;
+  color: #666;
+}
+.cp_update
+{
+  text-align: center;
+}
+
+
+.qlt_A
+{
+  background-color: #FFFF66;
+}
+.qlt_B
+{
+  background-color: #9999CC;
+}
+.qlt_C
+{
+  background-color: #996633;
+}

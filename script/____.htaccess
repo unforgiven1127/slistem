@@ -1,0 +1,195 @@
+#php_flag error_reporting "E_ALL"
+#php_value include_path  ".:/usr/share/pear:/data/slystem/config:/data/slystem/library:/data/slystem/application/models"
+#php_flag display_errors  On
+#php_value session.auto_start On
+
+#************************************************
+# 						*
+# Stephane, please update this file from the	*
+# Slistem admin section OR remember to include	*
+# the date, the tag with a hash and the 	*
+# comment, otherwise it screws the admin	*
+# section part.					*
+#						*
+#************************************************
+
+AuthName "Protected Area"
+AuthType Basic
+AuthUserFile /data/.htpasswd
+Satisfy Any
+order deny,allow
+deny from all
+require valid-user
+
+## 2012-04-01 dt#td stef home
+allow from 125.198.95.101
+
+## 2010-09-30 dt#td  localhost
+allow from 127.0.0.1
+allow from 192.168.81.93
+allow from 192.168.81.84
+allow from 192.168.215
+
+
+## 2010-09-30 dt#td  Slate Akasaka Office
+allow from 118.243.81.245
+
+
+## 2010-09-30 dt#td  Slate Aoyaoa Office
+allow from 118.243.81.248
+
+
+
+## 2014-04-15 dt#td BC ip
+allow from 183.77.248.83
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 2010-09-30 dt#td for Ryan home
+allow from 218.103.34.37
+
+
+
+
+
+
+
+
+
+
+## 2011-03-18 dt#td Mitch Moir Home
+allow from 126.9.185.98
+
+
+## 2011-03-18 dt#td Ryoko Kamo Home
+allow from 114.164.203.104
+
+## 2011-03-01 dt#td aoyama 3rd floor
+allow from 183.77.226.168
+
+
+
+
+
+## 2012-06-15 dt#td david
+allow from 210.230.206.185
+
+
+
+
+
+## 2012-09-20 dt#td Talentatlas server
+allow from 203.167.38.11
+
+
+
+
+
+
+## 2012-12-19 dt#td Pam in Canada
+allow from 174.7.240.86
+
+## 2013-02-13 dt#td SRC
+allow from 122.53.89.160/255.255.255.248
+
+## 2013-03-01 dt#td Manila ADSL lines
+allow from 124.107.166.201/255.255.255.248
+
+
+## 2013-03-27 dt#td Globe Internet SRC
+allow from 203.177.171.150
+
+
+## 2013-06-17 dt#td SRC PLDT ADSL2
+allow from 124.107.167.229
+
+
+
+
+
+## 2013-07-05 dt#td SRC new
+allow from 124.107.166.235
+
+
+
+
+
+## 2013-08-13 dt#td Aoyama 3rd floor high speed line
+allow from 221.113.50.237
+
+
+
+
+
+
+
+
+
+## 2013-11-12 dt#td Alternate Entrance
+allow from 192.168.10.99
+
+
+
+
+
+
+
+
+## 2014-02-05 dt#td Ryan home
+allow from 118.21.0.196
+
+## 2014-02-12 dt#td Glen Mid Feb 2014
+allow from 126.70.45.172
+
+## 2014-02-17 dt#td Hong Kong Feb 2014
+allow from 58.152.223.104
+
+
+
+
+
+
+
+## 2014-04-03 dt#td Slate Canada
+allow from 209.145.127.108
+
+## 2014-04-07 dt#td Manila man3
+allow from 112.199.38.154
+
+
+## 2014-04-15 dt#td Ryan Static
+allow from 122.249.125.253
+
+## 2014-04-30 dt#td Hong Kong
+allow from 101.78.237.101
+
+## 2014-05-26 dt#td Ryoko 26th May 2014
+allow from 118.8.16.113
+
+
+## 2014-07-22 dt#td Ryan again
+allow from 70.72.234.11
+
+
+
+
+## 2014-08-01 dt#td Larry, temp 8th August
+allow from 122.132.111.106
+allow from 118.111.47.168
+allow from 119.240.82.159
+
+## 2014-08-04 dt#td Pam home
+allow from 69.176.172.6

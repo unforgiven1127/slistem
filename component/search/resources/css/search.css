@@ -1,0 +1,293 @@
+/*
+    Document   : search
+    Created on : Aug 13, 2013, 4:40:26 PM
+    Author     : root
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.divlist-item
+{
+  padding-bottom: 10px;
+  float: none !important;
+  display: list-item;
+}
+
+.divlist-item > div
+{
+  margin: 2px 0 2px 10px;
+}
+
+.result-row
+{
+  padding: 10px; margin-bottom: 10px;
+}
+
+.result-row > .link-results
+{
+ position: absolute;
+ right: 0; top: 0;
+ display: none;
+}
+
+.item-title > a > span.highlight
+{
+  font-size: inherit !important;
+}
+
+.show-results
+{
+  text-transform: uppercase;
+  font-size: 16px;
+  width: 100%;
+  display: block;
+  outline: none;
+}
+
+.show-more-results
+{
+  background: #2A6991;
+  color: #FFF;
+  text-align: center;
+  padding: 5px 0 5px 0;
+  width: 100%; display: block;
+}
+
+.componentMainContainer
+{
+  position: relative;
+}
+
+#search-form-container
+{
+  width: 30%;
+  float: left;
+  min-width: 250px;
+  position: relative;
+}
+#search-form-container.searchFormFullWidth
+{
+  width: 100%;
+}
+#search-form-container.searchFormComplex div.advancedSearchRow div.formFieldContainer
+{
+  width: 27%;
+}
+
+#search-form-container.searchFormFullWidth form
+{
+  max-width: 1050px;
+  margin-top: 25px;
+  border: none;
+  padding: 0;
+}
+
+input[type=radio]:checked + label
+{
+  font-weight: bold;
+}
+
+#search-results-container
+{
+  width: 65%;
+  float: left;
+  margin-left: 20px;
+}
+
+
+.searchActionBar
+{
+  line-height: 24px;
+  position: absolute;
+  top: 0;
+  right: 0px;
+}
+
+.formMenuItem,
+.searchFormSwitchMode
+{
+  line-height: 24px;
+  padding: 0 10px;
+  opacity: 0.2;
+  float: left;
+  cursor: pointer;
+}
+
+.searchActionBar:hover .formMenuItem,
+.searchActionBar:hover .searchFormSwitchMode
+{
+  opacity: 0.4;
+}
+
+.searchActionBar:hover .formMenuItem:hover,
+.searchActionBar:hover .searchFormSwitchMode:hover
+{
+  opacity: 1;
+}
+
+.searchFormSwitchMode.global
+{
+  background: transparent url('/component/search/resources/pictures/mode_switch_global.png') no-repeat top left;
+}
+
+.searchFormSwitchMode.advanced
+{
+  background: transparent url('/component/search/resources/pictures/mode_switch_advanced.png') no-repeat top left;
+}
+
+.searchFormSwitchMode.complex
+{
+  background: transparent url('/component/search/resources/pictures/mode_switch_complex.png') no-repeat top left;
+}
+
+.formMenuItem.savedSearch
+{
+  background: transparent url('/component/search/resources/pictures/stored_search.png') no-repeat top left;
+}
+
+
+/* CUSTOM SLISTEM, to remove later when interface added */
+.formMenuItem.candidate
+{
+  background: transparent url('/common/pictures/slistem/user_24.png') no-repeat top left;
+}
+.formMenuItem.company
+{
+  background: transparent url('/common/pictures/slistem/company_24.png') no-repeat top left;
+}
+
+
+
+
+
+
+/* *************************************************************** */
+/* *************************************************************** */
+/* advance search form */
+
+
+
+
+
+.advancedSearchForm
+{
+  width: 950px;
+  min-width: 950px;
+}
+
+.advancedSearchForm div.advancedSearchRow
+{
+  border-top: 1px dotted #bbb;
+  margin: 5px 0;
+  padding: 2px 0;
+}
+
+.advancedSearchForm div.advancedSearchRow div.formFieldContainer
+{
+  float: left;
+  width: 30%;
+  margin-right: 1%;
+}
+
+.advancedSearchForm div.advancedSearchRow div.formFieldContainer .formLabel
+{
+  display: none;
+}
+
+#search-form-container.searchFormComplex div.advancedSearchRow div.formFieldContainer.advfieldControl,
+.advancedSearchForm div.advancedSearchRow div.advfieldControl
+{
+  float: right;
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.advfieldButtonContainer
+{
+  margin: 15px auto;
+  width: 175px;
+}
+.advfieldButtonContainer.complex
+{
+  width: 375px;
+}
+
+.advfieldButton
+{
+  width: 115px;
+  border: 1px solid #999;
+  padding: 5px 10px 5px 35px;
+  background: transparent url('/component/search/resources/pictures/add_row_24.png') no-repeat 2px 2px;
+  float: left;
+  cursor: pointer;
+
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+.advfieldButtonContainer.complex .advfieldButton:last-child
+{
+  margin-left: 25px;
+}
+.advfieldButton:hover
+{
+  color: #C18243;
+  background: transparent url('/component/search/resources/pictures/add_row_hover_24.png') no-repeat 2px 2px;
+}
+
+div.searchFormNoGroup form .advancedSearchFieldGroup
+{
+  border: none;
+}
+.advancedSearchFieldGroup
+{
+  padding: 5px 0 5px 5px;
+  margin: 5px 0;
+  border-left: 4px solid #aaa;
+  float: left;
+  width: 100%;
+
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+}
+
+.advancedSearchFieldGroup:nth-child(even)
+{
+  background-color: #f0f0f0;
+}
+.advancedSearchFieldGroup.selected
+{
+  border-left: 4px solid #CC7161;
+}
+
+
+.advancedSearchForm span.TSelect_clear
+{
+  float: right;
+  line-height: 20px;
+  margin: 4px 5px 0 0;
+}
+
+#search-form-container.searchFormComplex div.advancedSearchRow div.formFieldContainer.searchForm_row_operator
+{
+  width: 70px;
+}
+
+.advancedSearchForm div.advancedSearchRow div.formFieldContainer.searchForm_row_operator select
+{
+  width: 65px;
+  min-width: 65px;
+}
+
+.advancedSearchForm .searchForm_row_operator.first select
+{
+  display: none;
+}
+
+
+.searchHistoryContainer
+{
+  margin-top: 20px;
+}

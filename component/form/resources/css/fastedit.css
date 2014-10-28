@@ -1,0 +1,77 @@
+/*
+    Document   : fastedit
+    Created on : Mar 28, 2013, 12:30:50 PM
+    Author     : root
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root {
+  display: none;
+}
+
+
+form {
+    background: none !important;
+    border: none !important;
+    border-radius: inherit !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+form div, .submitBtnClass {
+  margin:0 !important;
+  padding:0 !important;
+}
+
+
+.fasteEditContainer input[type="submit"],
+.fasteEditContainer input[type=submit]:hover
+{
+    background:  url('/common/pictures/save_16.png') no-repeat top center !important;
+    border: none !important;
+    border-radius: inherit !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width:25px !important;
+    height:20px !important;
+    display:block !important;
+
+    min-width:25px;
+}
+
+.innerForm {
+  position: relative !important;
+  padding: 0 !important;
+  margin:0 !important;
+}
+
+.submitBtnClass {
+    width:16px !important;
+    height:20px !important;
+    display:block !important;
+    position: absolute !important;
+    top: 0 !important;
+    right:20px !important;
+    z-index: 10 !important;
+}
+
+input[value="Cancel"], .formFieldLinebreaker, .innerForm .formLabel {
+  display: none !important;
+}
+
+.fasteEditContainer
+{
+  position: relative;
+}
+.fastEditFormCancel
+{
+  position: absolute;
+  top: 2px;
+  right: -25px;
+  background: url("/component/addressbook/resources/pictures/remove_form_field.png") no-repeat top left;
+  width: 18px;
+  height: 18px;
+}

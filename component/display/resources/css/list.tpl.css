@@ -1,0 +1,242 @@
+/*
+    Document   : list.tpl
+    Created on : May 2, 2013, 11:33:59 AM
+    Author     : root
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.tplListContainer
+{
+  margin: 5px 0 0 0;
+  background-color: #f4f4f4;
+
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+.tplListContainer ul
+{
+  float: left;
+  border: 1px solid #cfcfcf;
+}
+
+.tplListContainer ul li
+{
+  /*float: left;*/
+  display: block;
+  background-color: #f0f0f0;
+}
+.tplListContainer ul.tplListFullSize
+{
+  width: 100%;
+}
+
+.tplListContainer ul li:nth-child(even)
+{
+  background-color: #fff;
+}
+
+.tplListContainer ul li:hover
+{
+  background-color: #e6e6e6;
+}
+
+li.tplListHeaderContainer
+{
+  background-color: #e5e5e5;
+  height: 40px;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+ul li.tplListHeaderFullSize
+{
+  width: 100%;
+}
+ul li.tplListRowFloat
+{
+  float: left;
+}
+
+li.tplListHeaderContainer div.tplListRow div
+{
+  height: 20px;
+  padding: 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+
+.tplListRowContainer div.tplListRow > div
+{
+  height: 20px;
+  padding: 5px 0;
+  margin: 0 2px;
+  font-size: 12px;
+  float: left;
+  border-right: 1px solid #cfcfcf;
+  position: relative;
+}
+
+.tplCol { min-width: 30px; }
+
+.tplListRowContainer div.tplListRow > div > div span
+{
+  margin: 0 5px;
+  display:block;
+}
+
+.tplListRowContainer div.tplListRow div:last-child
+{
+  border-right: 0;
+}
+
+.tplListSortAsc
+{
+  opacity: 0.1;
+  position: absolute;
+  top: -1px;
+  right: 1px;
+}
+
+.tplListSortDesc
+{
+  opacity: 0.1;
+  position: absolute;
+  bottom: -4px;
+  right: 1px;
+}
+
+li.tplListHeaderContainer div.tplListRow div:hover .tplListSortAsc,
+li.tplListHeaderContainer div.tplListRow div:hover .tplListSortDesc
+{
+  opacity: 1;
+}
+
+
+
+/* ****************************************** */
+/* ****************************************** */
+/* ****************************************** */
+
+.tplListPagerTop,
+.tplListPagerBottom
+{
+  min-height: 20px;
+  padding: 5px;
+}
+
+
+div.tplListPagerBottom.alignCenter .pagerContainer
+{
+    margin: 15px auto;
+    width: 65%;
+}
+
+/* ****************************************** */
+/* ****************************************** */
+/* ****************************************** */
+.tplListMessageContainer
+{
+  padding: 10px 0;
+}
+
+.tplListMessage
+{
+  width: 90%;
+  padding: 5px;
+  border: 1px solid #cfcfcf;
+  background-color: #fff;
+  margin: 5px auto;
+
+  -moz-border-radius:  3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
+
+div.tplListMessage.tplListNotice
+{
+  border: 1px solid #EF9C2F;
+}
+
+div.tplListMessage.tplListTitle
+{
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+div.tplListMessage.tplListBigTitle
+{
+
+  background-color: #606060;
+  font-weight: bold;
+  font-size: 14px;
+}
+div.tplListMessage.tplListBigTitle *
+{
+    color: #fff;
+}
+
+
+
+/******************************** */
+.tplListBloc
+{
+  width: 300px;
+  height: 150px;
+  margin: 10px 25px 10px 5px;
+  float: left;
+  border: 2px solid #999;
+}
+
+
+.tplListRow
+{
+  float: left;
+  display: block;
+  width: 100%;
+}
+
+.tplListContainer ul li.listRowSelected
+{
+  /*border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;*/
+  background-color: #FFE7AD;
+}
+
+
+
+/* ***************************************** */
+/* Add filters in the header  */
+
+#listFilterContainer
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 8px;
+  background: transparent url('/component/display/resources/pictures/list_filter_bg.png') no-repeat top center;
+}
+.filter_bloc
+{
+  position: relative;
+  background-color: #ddd;
+  border-radius: 5px;
+  border: 1px solid #999;
+  display: none;
+  padding: 8px;
+}
+
+.filter_bloc .tplListSortAsc,
+.filter_bloc .tplListSortDesc
+{
+  opacity: 1;
+  position: relative;
+  margin-left: 10px;
+  right: 0;
+  top: 0;
+}
+.filter_bloc .tplListSortDesc
+{
+  top: 1px;
+}

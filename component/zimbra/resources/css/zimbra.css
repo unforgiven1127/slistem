@@ -1,0 +1,192 @@
+
+#calendarFormId .formLabel
+{
+  float:left;
+  text-align:right;
+  width:120px;
+  margin-right: 15px;
+}
+
+#calendarFormId .formField
+{
+  float:left;
+}
+
+#calendarFormDataId table.mceLayout
+{
+  /*margin-left: 135px;
+  margin-top: 15px;*/
+}
+
+.checkButton
+{
+ text-align: center;
+}
+
+/*ZImbra*/
+
+.status
+{
+ position:relative;
+ width:100%;
+}
+
+.left
+{
+  width:172px;
+  float:left;
+}
+.zTime, .organizer
+{
+  height:20px;
+  border-top:1px solid #999;
+  border-right:1px solid #999;
+  margin: 0;
+  padding-left: 5px;
+}
+.zTime
+{
+  background-color: #ddd;
+}
+
+.right
+{
+  width:468px;
+  float:right;
+  position:relative;
+}
+.right div.timedataStart
+{
+  border-left:0;
+}
+
+.timedata
+{
+  text-align:center;
+  width:35px;
+  height:20px;
+  border-top:1px solid #999;
+  border-left:1px solid transparent;
+  margin: 0;
+  float:left;
+}
+.timeheader
+{
+  border-left:1px solid #999;
+}
+
+#status
+{
+  border-left:1px solid #999;
+  border-right:1px solid #999;
+  border-bottom:1px solid #999;
+}
+
+#attendeeListContainerId,
+#calendarFormDataId .bsmList
+{
+  width: 640px;
+}
+#calendarFormDataId .bsmList li
+{
+  min-width: 180px;
+  float: left;
+  margin-right: 10px;
+}
+
+#calendarFormDataInnerId div.calendarFormTitle,
+#calendarFormDataInnerId div.calendarFormLocation,
+#calendarFormDataInnerId div.calendarFormDescription,
+#calendarFormDataInnerId div.freebusyBtnContainer
+{
+  width: 100%;
+}
+.calendarFormTitle div.formField input,
+.calendarFormLocation div.formField input
+{
+  width: 640px;
+}
+#calendarFormDataInnerId div.attendeeAvailability
+{
+  display: none;
+}
+
+.calendarFormDescription div.formField span table.mceLayout
+{
+  margin: 0;
+  width: 640px;
+}
+
+.leftContainer
+{
+  float:left;
+  width: 25%;
+}
+
+
+.busy
+{
+  background-color: #87518E;
+  height:20px;
+}
+
+
+#calendarViewFormId,
+#calendarViewFormId div.innerForm,
+#calendarViewFormId div.innerForm .formFieldContainer
+{
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: 0;
+  min-height: 0;
+  height: auto;
+}
+#calendarViewFormId div.innerForm .formFieldContainer
+{
+  width: 100%;
+}
+#calendarViewFormId div.innerForm .submitBtnClass
+{
+  display: none;
+}
+#calendarViewFormId div.innerForm .formFieldContainer .formLabel
+{
+  width: 150px;
+  float: left;
+}
+#calendarViewFormId div.innerForm .formFieldContainer .formField
+{
+  width: 900px;
+  float: left;
+}
+#calendarViewFormId div.innerForm .formFieldContainer .formField .bsmList li
+{
+  width: 200px;
+  float: left;
+  margin-right: 10px;
+}
+
+.fc-content .fc-agenda-slots td div { height: 20px; }
+
+.eventClickable
+{
+  cursor: pointer;
+}
+.fc-event
+{
+  min-height: 6px;
+  cursor: cell;
+}
+
+.eventTitle
+{
+  color: #135393;
+  font-style: italic;
+}
+.fc-event-vert .fc-event-time
+{
+  color: #000000;
+}

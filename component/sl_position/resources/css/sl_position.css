@@ -1,0 +1,327 @@
+#positionFormId div.formLabel
+{
+  width: 100px;
+}
+
+#positionFormId .formFieldContainer.position_inline
+{
+  width: 400px;
+  min-width: 400px;
+}
+#positionFormId .formFieldContainer.position_inline2 div.formLabel
+{
+  width: 70px;
+}
+#positionFormId .formFieldContainer.position_inline div.formField,
+#positionFormId .formFieldContainer.position_inline div.formField input
+{
+  width: 270px;
+  min-width: 270px;
+}
+
+#positionFormId .public_field input,
+#positionFormId .public_field select,
+#positionFormId .public_field textarea
+{
+  border-left: 3px solid orange;
+}
+#positionFormId #public_section
+{
+  display: none;
+}
+#positionFormId div#public_section.on
+{
+  display: block;
+}
+
+#positionFormId .public_important_field.on
+{
+  border-left: 3px solid orange;
+}
+#positionFormId #public_section
+{
+  margin: 25px 0;
+}
+
+
+.position_tip
+{
+  width: 70%;
+  margin: 0 auto;
+  color: #777;
+}
+
+.no_position
+{
+  /*text-decoration: line-through;*/
+  font-style: italic;
+  color: #999;
+}
+.search_warning
+{
+  color: #E2C12D;
+}
+
+body div.token-input-dropdown-mac,
+body div.token-input-dropdown-mac .cp_jd_key_item
+{
+  width: 550px;
+  max-width: 550px;
+}
+
+.readOnlyField
+{
+  background-color: #F0F0F0;
+  border: 1px solid #999999;
+  border-radius: 3px;
+  font-size: 12px;
+  font-style: italic;
+  padding: 1px 10px;
+}
+
+.position_step_list
+{
+  border-bottom: 1px solid #e6e6e6;
+  line-height: 20px;
+  margin: 0 30px;
+  position: relative;
+}
+
+.position_step_list b
+{
+  color: #E07341;
+}
+
+.position_delete
+{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: red;
+}
+
+
+
+/**********************************************************/
+/*  detail view of thge position  */
+
+.position_edit
+{
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  border: 1px solid #ddd;
+  padding: 3px 5px;
+  background-color: #f0f0f0;
+}
+
+.position_detail_row
+{
+  float: left;
+  border-bottom: 1px solid #ededed;
+  min-height: 20px;
+  max-height: 300px;
+}
+.position_detail_row > div.label
+{
+  float: left;
+  width: 105px;
+  text-align: right;
+  padding: 0 5px 0 0;
+  background-color: #f0f0f0;
+  height: 20px;
+  line-height: 20px;
+}
+.position_detail_row > div.value
+{
+  float: left;
+  width: 700px;
+  margin-left: 10px;
+  min-height: 25px;
+  max-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 20px;
+}
+
+
+.candidate_detail_row
+{
+  float: left;
+  border-bottom: 1px solid #dedede;
+  border-left: 1px solid #dedede;
+  height: 46px;
+}
+
+.position_candidates .candidate_detail_row:nth-child(2n+1)
+{
+  background-color: #f5f5f5;
+}
+
+.candidate_detail_row > div
+{
+  border-right: 1px solid #dedede;
+  height: 46px;
+  line-height: 22px;
+  padding-left: 5px;
+  float: left;
+  overflow: hidden;
+}
+
+.candidate_detail_row > div span.in_play,
+.candidate_detail_row > div span.in_play b
+{
+  color: #1C931C;
+}
+
+.candidate_detail_row.header
+{
+  border-top: 1px solid #dedede;
+  height: 20px;
+}
+.candidate_detail_row.header > div
+{
+  text-align: center;
+  font-weight: bold;
+  background-color: #f0f0f0;
+  height: 18px;
+  padding-top: 2px;
+}
+
+.candidate_detail_date
+{
+  width: 100px;
+  text-align: center;
+}
+.candidate_detail_name
+{
+  width: 370px;
+}
+.candidate_detail_status
+{
+  width: 130px;
+  text-align: center;
+}
+.candidate_detail_expire
+{
+  width: 190px;
+  text-align: center;
+}
+
+#position_tabs .tplListContainer .tplListRow > div
+{
+  font-size: 11px;
+}
+.position_playing
+{
+  color: green;
+  font-weight: bold;
+}
+
+.title_border_inplay
+{
+  border-left: 5px solid green;
+  padding-left: 10px;
+}
+.title_border_played
+{
+  border-left: 5px solid orange;
+  padding-left: 10px;
+}
+
+
+#positionFilterFormId ,
+#positionFilterFormId .innerForm
+{
+  margin: 0;
+  padding: 0;
+}
+
+#positionFilterFormId .formFieldContainer
+{
+  width: 300px;
+  margin: 0;
+}
+#positionFilterFormId .formFieldContainer .formLabel
+{
+  width: 60px;
+}
+#positionFilterFormId .formFieldContainer .formField
+{
+  width: 205px;
+}
+#positionFilterFormId .formFieldContainer .formField img
+{
+  float: right
+}
+#positionFilterFormId .formFieldContainer .formField input
+{
+  width: 185px;
+  min-width: 135px;
+  font-size: 10px;
+  height: 17px;
+  padding: 0;
+}
+.formFieldLinebreaker
+{
+  display: none;
+}
+
+#positionFilterFormId div.submitBtnClass
+{
+  width: 120px;
+  max-width: 120px;
+  float: right;
+  padding: 5px 0 0 0;
+}
+
+#positionFilterFormId .formFieldContainer.compact
+{
+  width: 145px;
+  /*opacity: 0.6;*/
+}
+#positionFilterFormId .formFieldContainer.compact .formLabel
+{
+  width: 60px;
+  min-width: 60px;
+}
+#positionFilterFormId .formFieldContainer.compact .formField
+{
+  width: 70px;
+  min-width: 70px;
+  overflow: hidden;
+}
+#positionFilterFormId .formFieldContainer.compact .formField input
+{
+  width: 50px;
+  min-width: 50px;
+}
+
+
+#linkPositionFormId em.imp_notice
+{
+  color: #D8823C;
+}
+.play_status
+{
+  display:inline-block;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #ddd;
+  width: 58px;
+  text-align: right;
+}
+
+.font-bigger
+{
+  font-size: 110%;
+  line-height: 110%;
+}
+
+.applicant_list
+{
+  display: inline-block;
+  padding-right: 24px;
+  background: transparent url('/component/sl_position/resources/pictures/view_list_24.png') no-repeat top right;
+  line-height: 20px;
+}

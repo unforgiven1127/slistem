@@ -1,0 +1,57 @@
+
+div.aTabContent div.entry > div.note_header
+{
+  padding: 3px 0 5px 0;
+}
+
+.note_type
+{
+  color: orange;
+}
+
+
+.note_content .note_innerTitle
+{
+  font-weight: bold;
+}
+.note_content .note_innerContent
+{
+  padding-left: 10px;
+  display: block;
+  margin: 5px 0 0 5px;
+  border-left: 1px solid #CCCCCC;
+}
+
+.note_chronology
+{
+  float: right;
+  font-style: italic;
+  color: #666;
+  font-size: 10px;
+}
+
+.note_tip_container
+{
+  position: relative;
+  width: 800px;
+  margin: 0 auto;
+  border-left: 1px solid #ddd;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 90px;
+  background-color: #f0f0f0;
+}
+.note_tip_container ul
+{
+  margin: 10px 5px;
+}
+.note_tip_container ul li
+{
+  border-bottom: 1px solid #dedede;
+  display: inline-block;
+  font-size: 14px;
+  height: 27px;
+  line-height: 27px;
+  padding: 0 25px;
+  width: 750px;
+}

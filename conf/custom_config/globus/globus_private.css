@@ -1,0 +1,18 @@
+.switch_profile
+{
+  position: absolute;
+  width: 230px;
+  left: 210px;
+  top: 2px;
+  height: 20px;
+  text-align: left;
+}
+
+.switch_profile a,
+.switch_profile img
+{
+  font-size: 11px;
+  font-style: italic;
+  line-height: 20px;
+  vertical-align: middle;
+}

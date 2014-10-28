@@ -1,0 +1,29 @@
+input.ui-spinner-input
+{
+  height: 10px !important;; width: 10px !important; font-size:10px !important;
+}
+
+#esaFormId .formFieldContainer:not(.formFieldHidden)
+{
+  width: 50%; display: inline-block; min-width: 300px;
+}
+
+#esaFormId .formFieldContainer > div
+{
+  display: inline-block;
+}
+
+#esaFormId .formFieldContainer > div.formLabel
+{
+  width: 240px; padding-right: 10px;
+  text-align: right; font-size:12px !important;
+}
+
+.skillBox { border-radius: 2px; background: #f3f7f8; padding: 1%; width: 98% !important; }
+#sendForm { display: block !important; }
+
+
+div.stud_answer_block div#studentBloc
+{
+  width: 100%;
+}

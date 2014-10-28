@@ -1,0 +1,20 @@
+
+/* ************************************************* */
+/* TogglingText classes    ************************* */
+.toggleTextContainer a div
+{
+  color:#2079A3;
+  height: 18px;
+}
+.togg_expand
+{
+   background: url('/component/display/resources/pictures/toggle_expand_16.png') no-repeat left 2px;
+   padding-left: 20px;
+}
+
+.togg_close
+{
+   background: url('/component/display/resources/pictures/toggle_reduce_16.png') no-repeat left 2px;
+   padding-left: 20px;
+   border-bottom: 1px solid #ddd;
+}

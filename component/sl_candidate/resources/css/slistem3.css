@@ -1,0 +1,425 @@
+
+.candiTopSection
+{
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #dedede;
+  border-right: 1px solid #dedede;
+
+  float: left;
+  padding-bottom: 6px;
+}
+.candiTopSection.last
+{
+  border-bottom: 1px solid #dedede;
+}
+
+.candiTopSection.view_admin
+{
+  border-top: 1px solid #FC5555;
+}
+
+.candi_detail_title
+{
+  color: #077AC1;
+  float: left;
+  line-height: 20px;
+  margin: 0 0 5px;
+  padding: 0;
+  padding-left: 15px;
+  width: 98%;
+
+   /*width: 235px;
+   font-style: italic;
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #efefef;
+  */
+
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #efefef;
+}
+
+.candiTopSection.view_admin .candi_detail_title
+{
+  background-color: #F7DEDE;
+}
+
+
+.candiTopSectLeft .candi_detail_row
+{
+  border-bottom: 1px solid #DEDEDE;
+  float: left;
+  margin: 0 0 0 15px;
+}
+.candiTopSectLeft .candi_detail_row.right
+{
+  margin: 0;
+}
+.candiTopSectLeft .candi_detail_row.last
+{
+  border-bottom: 0;
+}
+
+.candi_detail_row_status
+{
+  width: 485px;
+}
+
+.candi_detail_row_status .candi_detail_value
+{
+  width: 410px;
+}
+
+.candi_detail_row div.candi_detail_label,
+.candi_detail_row div.candi_detail_value
+{
+  float: left;
+  /*font-size: 11px;*/
+  font-size: 12px;
+  height: 16px;
+  line-height: 16px;
+  padding: 0 0 0 4px;
+  line-height: 20px;
+  height: 20px;
+}
+.candi_detail_row div.candi_detail_label
+{
+  color: #000;
+
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(244,244,244,1) 95%, rgba(230,230,230,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(95%,rgba(244,244,244,1)), color-stop(100%,rgba(230,230,230,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(244,244,244,1) 95%,rgba(230,230,230,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(244,244,244,1) 95%,rgba(230,230,230,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(244,244,244,1) 95%,rgba(230,230,230,1) 100%); /* IE10+ */
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(244,244,244,1) 95%,rgba(230,230,230,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6',GradientType=1 ); /* IE6-9 */
+}
+.candi_detail_row div.candi_detail_value
+{
+  white-space: nowrap;
+  color: #404040;
+}
+.candi_detail_row div.candi_detail_value.text_alert,
+span.text_alert, a.text_alert
+{
+  color: red;
+}
+.show_play
+{
+  background-color: #BFFFD9;
+}
+
+div.candi_detail_row .candi_detail_label
+{
+  /*background-color: #f2f2f2;*/
+  /*border-right: 1px solid #CFCFCF;*/
+  width: 65px;
+  /*color: #225577;*/
+  text-align: right;
+  padding: 0 5px 0 0;
+}
+
+.candi_detail_value
+{
+  width: 195px;
+  overflow: hidden;
+}
+
+.candi_detail_row.right div.candi_detail_value
+{
+  width: 140px;
+}
+
+
+.man
+{
+  color: #399CF8;
+}
+.woman
+{
+  color: #F55E5B;
+}
+
+div.candi_client div.candi_detail_label
+{
+  cursor: help;
+}
+div.candi_client div.candi_detail_value
+{
+  cursor: help;
+  background: #ededed;
+}
+
+/* ************************************************ */
+.candi_status_bar
+{
+  width: 100%;
+  padding: 0;
+  margin: 4px 0 0 0;
+  height: 20px;
+}
+
+span.candi_status_icon
+{
+  height:17px;
+  line-height:17px;
+  padding: 0 16px;
+  float: left;
+}
+
+div.candi_status_icon
+{
+  background-color: #86ADC9; /*#4F9AF7;*/ /*#6EC5E5;*/
+  border: 1px solid #86ADC9;
+  color: #FFFFFF;
+  float: left;
+  font-size: 10px;
+  font-weight: bold;
+  height: 14px;
+  line-height: 14px;
+  margin: 2px 7px 0 0;
+  padding: 0 4px;
+  cursor: cell;
+}
+
+.candi_status_bar > div.candi_status_icon.icon_quality
+{
+  float: right;
+  margin-right: 0;
+}
+
+div.candi_status_bar div.candi_status_icon span,
+div.candi_status_bar div.candi_status_icon a,
+div.candi_status_bar div.candi_status_icon a:hover
+{
+  color: #fff;
+  font-size: 10px;
+}
+div.candi_status_icon.inactive
+{
+  background-color: #e4e4e4;
+  border: 1px solid #c9c9c9;
+  opacity: 0.6;
+}
+div.candi_status_icon.low_priority
+{
+  background-color: #e4e4e4;
+  border: 1px solid #ccc;
+  color: #507D9C;
+}
+div.candi_status_icon.low_priority a,
+div.candi_status_icon.low_priority a:hover
+{
+  color: #507D9C;
+}
+
+div.candi_status_icon.featured
+{
+  background-color: #C8A0DD;
+  border: 1px solid #B374E8;
+}
+
+div.candi_status_icon.important
+{
+  background-color: #FFCD63;
+  border: 1px solid #FFB626;
+}
+div.candi_status_icon.top_priority
+{
+  background-color: #EA8167;
+  border: 1px solid #ED6540;
+}
+
+.meetingToday
+{
+  color: red;
+}
+
+.candi_status_bar > span
+{
+  padding: 0 0 0 6px;
+  margin: 0 6px 0 0;
+  height:22px;
+  line-height:22px;
+  text-align: center;
+  padding-left: 24px;
+  float: left;
+  border-left: 1px solid #dedede;
+}
+div.candi_status_bar > span:first-child
+{
+  border: 0;
+
+}
+.candi_status_bar > div.candi_status_icon
+{
+  height: 16px;
+  margin: 1px 9px 0 4px;
+  padding-top: 2px;
+  min-width: 18px;
+}
+
+.candi_status_bar > div.candi_status_icon.meeting_set
+{
+  background-image: url('/component/sl_candidate/resources/pictures/meeting_16.png');
+  background-repeat: no-repeat;
+  background-position: 5px 1px;
+  padding-left: 24px;
+}
+.candi_status_bar > div.candi_status_icon.no_meeting
+{
+  background-image: url('/component/sl_candidate/resources/pictures/meeting_inactive_16.png');
+  background-repeat: no-repeat;
+  background-position: 5px 1px;
+  opacity: 0.7;
+  padding-left: 4px;
+}
+.candi_status_bar > div.candi_status_icon.in_play
+{
+  background-image: url('/component/sl_candidate/resources/pictures/in_play_16.png');
+  background-repeat: no-repeat;
+  background-position: 5px 1px;
+  padding-left: 24px;
+}
+.candi_status_bar > div.candi_status_icon.was_in_play
+{
+  background-image: url('/component/sl_candidate/resources/pictures/in_play_inactive_16.png');
+  background-repeat: no-repeat;
+  background-position: 5px 1px;
+  padding-left: 24px;
+  opacity: 0.8;
+}
+.candi_status_bar > div.candi_status_icon.was_in_play a,
+.candi_status_bar > div.candi_status_icon.was_in_play a:hover
+{
+  color: #333;
+  font-weight: normal;
+}
+.candi_status_bar > div.candi_status_icon.not_in_play
+{
+  background-image: url('/component/sl_candidate/resources/pictures/in_play_inactive_16.png');
+  background-repeat: no-repeat;
+  background-position: 5px 1px;
+  padding-left: 4px;
+  opacity: 0.7;
+}
+
+
+div.high_quality
+{
+  padding-right: 20px;
+  background-image: url("/component/sl_candidate/resources/pictures/high_quality_16.png");
+  background-position: right 1px;
+  background-repeat: no-repeat;
+}
+div.meeting_history
+{
+  padding-right: 20px;
+  background-image: url("/component/sl_candidate/resources/pictures/calendar_16.png");
+  background-position: right 0;
+  background-repeat: no-repeat;
+  background-size: 14px 14px;
+  color: #555;
+  margin-right: 0;
+}
+div.meeting_history a
+{
+  color: #555;
+}
+
+
+/* ************************************************ */
+
+
+.candi_skill_bar
+{
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #aaa;
+  width: 100%;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  background-color: #f2f2f2;
+  margin: 12px auto 0 auto;
+  height: 22px;
+}
+div.candi_skill_bar_4
+{
+  background: -moz-linear-gradient(top,  rgba(237,221,135,0.65) 0%, rgba(254,252,234,0.65) 50%, rgba(237,221,135,0.65) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(237,221,135,0.65)), color-stop(50%,rgba(254,252,234,0.65)), color-stop(100%,rgba(237,221,135,0.65)));
+  background: -webkit-linear-gradient(top,  rgba(237,221,135,0.65) 0%,rgba(254,252,234,0.65) 50%,rgba(237,221,135,0.65) 100%);
+  background: linear-gradient(to bottom,  rgba(237,221,135,0.65) 0%,rgba(254,252,234,0.65) 50%,rgba(237,221,135,0.65) 100%);
+}
+div.candi_skill_bar_3,
+div.candi_skill_bar_2
+{
+  background: -moz-linear-gradient(top,  rgba(190,194,229,0.65) 0%, rgba(244,246,255,0.65) 50%, rgba(190,194,229,0.65) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(190,194,229,0.65)), color-stop(50%,rgba(244,246,255,0.65)), color-stop(100%,rgba(190,194,229,0.65)));
+  background: -webkit-linear-gradient(top,  rgba(190,194,229,0.65) 0%,rgba(244,246,255,0.65) 50%,rgba(190,194,229,0.65) 100%);
+  background: linear-gradient(to bottom,  rgba(190,194,229,0.65) 0%,rgba(244,246,255,0.65) 50%,rgba(190,194,229,0.65) 100%);
+}
+
+.candi_skill_bar span
+{
+  width: 8.9%;
+  float: left;
+  border-right: 1px solid #dedede;
+  text-align: center;
+  line-height: 22px;
+}
+
+div.candi_skill_bar_4 span
+{
+  border-color: #EFD975;
+}
+div.candi_skill_bar_3 span,
+div.candi_skill_bar_2 span
+{
+  border-color: #B1B7EF;
+}
+
+.candi_text_shorten
+{
+  font-size: 12px;
+  width: 20px;
+  height: 22px;
+  background: transparent url('/component/sl_candidate/resources/pictures/shorten_arrow.png') no-repeat top left;
+}
+
+
+
+.candi_detail_title span.action
+{
+  opacity: 0.4;
+  position: absolute;
+  top: 0;
+  right: 4px;
+}
+
+.candi_detail_title span.action img
+{
+  height: 18px;
+  width: 18px;
+  margin: 0 6px;
+}
+.candiTopSection:hover span.action
+{
+  opacity: 0.5;
+}
+.candiTopSection:hover span.action:hover
+{
+  opacity: 1;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.topCandidateSection .candiTopSectLeft .cp-row-desc
+{
+  border-bottom: 0;
+  height: 32px;
+  width: 90%;
+}
+.topCandidateSection .candiTopSectLeft .cp-row-desc > div
+{
+  height: 32px;
+}

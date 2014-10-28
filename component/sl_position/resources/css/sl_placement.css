@@ -1,0 +1,148 @@
+#placementFullContainer
+{
+  position: relative;
+  min-height: 500px;
+}
+
+#placementFullContainer .title .h3
+{
+  font-size: 14px;
+  margin: 5px 0;
+  padding: 8px;
+}
+
+
+.placement_add_button
+{
+  position:absolute;
+  top: 10px;
+  right: 35px;
+  padding: 5px;
+}
+.placement_add_button a
+{
+  border: 1px solid #4c7696;
+  padding: 2px 4px;
+}
+
+
+#placementFilterFormId
+{
+  min-width: 1050px;
+  padding: 5px 10px;
+  margin: 15px auto;
+  border: 1px solid #ddd;
+  background-color: #f0f0f0;
+}
+
+#placementFilterFormId .formFieldContainer
+{
+  width: 250px;
+  float: left;
+  margin: 0;
+}
+
+#placementFilterFormId .formFieldContainer .formLabel
+{
+  width: 62px;
+  float: left;
+  margin: 0 5px 0 0;
+  font-size: 11px;
+  padding-top: 5px;
+}
+
+#placementFilterFormId .formFieldContainer .formField
+{
+  width: 178px;
+  float: left;
+  margin: 0;
+}
+
+#placementFilterFormId .formFieldContainer .formField select,
+#placementFilterFormId .formFieldContainer .formField ul.token-input-list-mac
+{
+  width: 170px;
+  min-width: 170px;
+}
+
+#placementFilterFormId .formFieldContainer .formField input
+{
+  width: 155px;
+  min-width: 155px;
+  text-align: center;
+  background-color: #fff;
+  padding: 3px 0;
+}
+
+#placementFilterFormId .submitBtnClass
+{
+  padding: 10px 0 0 0;
+  text-align: right;
+}
+#placementFilterFormId .formFieldLinebreaker
+{
+  display: none;
+}
+
+
+.placement_share
+{
+  font-size: 9px;
+}
+.placement_share.placement
+{
+  color: #DD8C00;
+}
+.tplListRowContainer div.tplListRow div.placement_candidate
+{
+  width: 100%;
+  font-size: 11px;
+}
+
+
+
+
+
+
+#placementFormId .payment_section .formFieldContainer
+{
+  width: 160px;
+  /*float: left;*/
+  margin: 0;
+  display: block;
+  height: 40px;
+}
+#placementFormId .payment_section .formFieldContainer .formLabel
+{
+  width: 70px;
+  float: left;
+  font-size: 11px;
+  padding-top: 5px;
+  margin: 0;
+  text-align: center;
+}
+#placementFormId .payment_section .formFieldContainer .formField
+{
+  width: 80px;
+}
+#placementFormId .payment_section .formFieldContainer .formField input
+{
+  width: 75px;
+  min-width: 75px;
+  text-align: center;
+}
+
+
+#placementFormId .payment_section .formFieldContainer.widerField
+{
+  width: 330px;
+}
+#placementFormId .payment_section .formFieldContainer.widerField .formField,
+#placementFormId .payment_section .formFieldContainer.widerField .formField ul.token-input-list-mac
+{
+  width: 220px;
+}
+#placementFormId .payment_section .formFieldContainer.widerField .formField ul.token-input-list-mac input
+{
+   width: 210px;
+}

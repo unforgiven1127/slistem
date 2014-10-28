@@ -1,0 +1,25 @@
+
+/* ---------------*/
+/* Users listings */
+/* ---------------*/
+
+.listContainer { width: 100%; max-width: 1000px; position: relative; }
+.companyList div.status img { vertical-align: middle; }
+
+.listContainer .add-button { position: absolute; right:0; top: 8px; }
+
+.companyList .dlist-item > div
+.companyList .dlist-header > div { display: inline-block !important; }
+.companyList div.name { width: 35%; }
+.companyList div.groups { width: 20%; }
+.companyList div.actions { width: 40%; }
+
+.groupList div.name {  width: 29%; }
+.groupList div.created_on {  width: 15%; }
+.groupList div.nbstudents {  width: 10%; }
+.groupList div.actions {  width: 40%; }
+
+.memberList div.name {  width: 22%; }
+.memberList div.created_on {  width: 15%; }
+.memberList div.group {  width: 32%; }
+.memberList div.actions {  width: 25%; }

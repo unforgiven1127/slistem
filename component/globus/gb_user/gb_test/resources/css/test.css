@@ -1,0 +1,97 @@
+
+/* ---------------*/
+/* Student Search */
+/* ---------------*/
+
+#searchDiv
+{
+  position: absolute; top: -50px; right: 0; width: 260px;
+}
+
+/* ---------------*/
+/* Tests listings */
+/* ---------------*/
+
+.testsList { width: 100%; max-width: 1000px; }
+.testsList .dlist-item[onClick]:hover { cursor: pointer; }
+.testsList .dlist-item.active { font-weight: bold; background:#a6d7f6; }
+.testsList .dlist-item.locked {
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #E1EDF4;
+}
+.testsList .dlist-item.active > div { color: #000; }
+.testsList .dlist-item.returned { background:#c8deb2; }
+.testsList div.status img { vertical-align: middle; }
+
+#studentSchedule div.chapter { width: 14%; }
+#studentSchedule div.test { width: 44%; }
+#studentSchedule div.status { width: 12%; }
+#studentSchedule div.submitted { width: 12%; }
+
+#studentSchedule div.deadline { width: 12%; }
+#studentSchedule .deadline_past div.deadline { color: red; }
+
+
+#teacherTests div.name { width: 22%; }
+#teacherTests div.company { width: 22%; }
+#teacherTests div.group { width: 22%; }
+#teacherTests div.test { width: 8%; }
+#teacherTests div.received { width: 14%; }
+#teacherTests div.status { width: 2%; }
+
+.hrmanagerList { width: 100%; max-width: 1000px; }
+.hrmanagerList div.status img { vertical-align: middle; }
+
+#hrStudentsList { position: relative; }
+#hrStudentsList div.name { width: 20%; }
+#hrStudentsList div.group { width: 20%; }
+
+#hrStudentsList div.test { width: 570px; }
+#hrStudentsList div.test > div.tests div.mark { display: inline-block; width: 35px; text-align: center; height: 24px; }
+#hrStudentsList div.tests div.mark > img { vertical-align: middle; }
+
+#studentSheet div.chapter { width: 15%; }
+#studentSheet div.name { width: 50%; }
+#studentSheet div.submitted { width: 20%; }
+#studentSheet div.view { width: 10%; }
+
+/* TODO : mousehover spans
+.studentSchedule .dlist-item.active > span.info,
+.studentSchedule .dlist-item.returned > span.info
+{
+   display: none;
+}
+.studentSchedule .dlist-item.active:hover > span.info,
+.studentSchedule .dlist-item.returned:hover > span.info { display: block; }
+*/
+
+/* ----------*/
+/* Test form */
+/* ----------*/
+
+.test-description,
+.test-answer { display: list-item; margin-bottom: 10px; }
+.test-answer-form { position: relative; }
+
+.test-answer textarea { width: 740px; height: 250px; }
+div.test-answer form div.formField input[type=text] { width: 680px; }
+
+.test-answer .formFieldContainer > div { display: inline-block; }
+.test-answer .formLabel { width:50px; padding: 0 10px 0 0; vertical-align: middle; text-align: right; color: #2f3036; }
+.test-answer .fieldNamemail_content .formLabel { display: none; }
+.test-answer .formField { width:660px; }
+
+#sendForm { position: absolute; bottom: 10px; right: 10px; background: #8ebf5e; border-color: #466825; }
+#sendForm:hover { background: #8fc957; }
+
+#infotextId { font-size: 10px; line-height: 8px !important; font-style: italic; }
+
+@media (min-width:1300px) {
+  .test-answer { width:774px; position: absolute; top: 0; left: 0; }
+  .test-description { padding-left: 784px; }
+}
+
+.ui-dialog-titlebar { display: none !important; }
+#timer { position: absolute; top: 20px; right: 20px; }
+#timer span, #clickSend { color: red; }
+#clickSend { font-size: 12px; }
+

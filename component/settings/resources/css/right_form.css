@@ -1,0 +1,68 @@
+#usrRightFormId input[type=text]
+{
+  width: 850px;
+  float: left;
+  font-size: 11px;
+}
+
+#usrRightFormId select
+{
+  width: 150px;
+  float: left;
+}
+#usrRightFormId textarea
+{
+  width: 433px;
+  float: left;
+  height:40px;
+}
+
+#usrRightFormId input.medium
+{
+  max-width: 500px;
+}
+
+#usrRightFormId input.short,
+#usrRightFormId select.short
+{
+  width: 433px;
+  max-width: 433px;
+}
+
+#usrRightFormId input.shorter
+{
+  max-width: 150px;
+}
+#usrRightFormId input.shortest
+{
+  max-width: 50px;
+}
+
+#usrRightFormId span.inlineLegend
+{
+  float: left;
+  width: 45px;
+  font-size: 11px;
+  font-style: italic;
+  color: #999;
+  text-align: center;
+}
+#usrRightFormId span.legend
+{
+  display: block;
+  width: 150px;
+  float: left;
+  margin-right: 25px;
+  text-align: right;
+  line-height: 22px;
+}
+
+#usrRightFormId div select.join_type
+{
+  max-width: 80px;
+}
+
+br
+{
+  clear: both;
+}

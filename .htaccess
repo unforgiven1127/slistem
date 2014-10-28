@@ -1,0 +1,263 @@
+RewriteEngine on
+#RewriteCond %{HTTP_HOST} !^slistem\.slate\.co\.jp [NC]
+#RewriteCond %{HTTP_HOST} !^slystem\.devserv.com [NC]
+#RewriteCond %{HTTP_HOST} !^stephane\.slate\.co\.jp [NC]
+#RewriteCond %{HTTP_HOST} !^squirrel\.slate\.co\.jp [NC]
+#RewriteCond %{HTTP_HOST} !^altslistem\.slate\.co\.jp [NC]
+#RewriteRule (.*) https://slistem.slate.co.jp%{REQUEST_URI} [R=301,L]
+
+
+RewriteCond %{SERVER_PORT} !=443
+RewriteRule (.*) https://%{SERVER_NAME}%{REQUEST_URI}%{REMOTE_ADDR} [R,L]
+
+AuthName "Access restricted. --"
+AuthType Basic
+AuthUserFile /hdd/www/slistem/.htpasswd
+Satisfy Any
+order deny,allow
+deny from all
+require valid-user
+
+
+
+# -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+# -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
+# mod_rpaf and mod_extract_forwarded are not available yet on RHEL7.
+# we do it manually in the VHOST creating a REAL_ADDR variable and use it it tto restrict access
+# when mod_extract_forwarded will be back, set it up and return to standard allow from ip/mask
+
+#sample
+#SetEnvIf X-Forwarded-For "^111\.222\.33\.*" AllowAccess
+#SetEnvIf X-Forwarded-For "^11\.222\.3\.44$" AllowAccess
+
+SetEnvIf REAL_ADDR "^127\.0\.0\.1$" AllowAccess
+
+# aws public ip
+SetEnvIf REAL_ADDR "^54\.191\.43\.140$" AllowAccess
+SetEnvIf REAL_ADDR "^54\.187\.192\.219$" AllowAccess
+
+
+# aws private ip
+SetEnvIf REAL_ADDR "^172\.31\.29\.60$" AllowAccess
+SetEnvIf REAL_ADDR "^172\.31\.29\.61$" AllowAccess
+
+# KHVH servers
+SetEnvIf REAL_ADDR "^203\.167\.38\.11$" AllowAccess
+SetEnvIf REAL_ADDR "^203\.167\.38\.10$" AllowAccess
+SetEnvIf REAL_ADDR "^203\.167\.38\.1$" AllowAccess
+SetEnvIf REAL_ADDR "^203\.167\.38\.2$" AllowAccess
+SetEnvIf REAL_ADDR "^210\.167\.116\.219$" AllowAccess
+SetEnvIf REAL_ADDR "^210\.167\.116\.220$" AllowAccess
+
+# aws LB NOT ALLOWED
+#allow from 172.31.28.127
+
+#BC office
+SetEnvIf REAL_ADDR "^183\.77\.248\.83$" AllowAccess
+
+#Slate Akasaka Office
+SetEnvIf REAL_ADDR "^118\.243\.81\.245$" AllowAccess
+
+#Slate Akasaka Office
+SetEnvIf REAL_ADDR "^118\.243\.81\.246$" AllowAccess
+
+#Slate Aoyaoma Office
+SetEnvIf REAL_ADDR "^118\.243\.81\.248$" AllowAccess
+
+#aoyama 3rd floor
+SetEnvIf REAL_ADDR "^183\.77\.226\.168$" AllowAccess
+SetEnvIf REAL_ADDR "^221\.113\.50\.237$" AllowAccess
+
+#slate canada
+SetEnvIf REAL_ADDR "^209\.145\.127\.108$" AllowAccess
+SetEnvIf REAL_ADDR "^209\.145\.120\.7$" AllowAccess
+
+#John Canada
+SetEnvIf REAL_ADDR "^69\.176\.163\.134$" AllowAccess
+
+# stef
+SetEnvIf REAL_ADDR "^125\.198\.95\.101$" AllowAccess
+
+
+
+
+## 2010-09-30 dt#td  Slate SRC1
+SetEnvIf REAL_ADDR "^115\.146\.154\.242$" AllowAccess
+
+## 2010-09-30 dt#td  SRC ALT
+SetEnvIf REAL_ADDR "^115\.146\.155\.124$" AllowAccess
+
+## 2014-04-15 dt#td BC ip
+SetEnvIf REAL_ADDR "^183\.77\.248\.83$" AllowAccess
+
+## 2010-09-30 dt#td  Canada Bang
+SetEnvIf REAL_ADDR "^24\.84\.160\.239$" AllowAccess
+
+## 2010-09-30 dt#td  Ray and Pam home
+SetEnvIf REAL_ADDR "^222\.229\.22\.94$" AllowAccess
+
+## 2010-09-30 dt#td  Sawada Brazil
+SetEnvIf REAL_ADDR "^189\.111\.195\.152$" AllowAccess
+
+## 2009-12-21 dt#td  as per Murano Consulting ticket number 3973
+SetEnvIf REAL_ADDR "^24\.83\.72\.129$" AllowAccess
+
+## 2009-12-21 dt#td  as per Murano Consulting ticket number 3973
+SetEnvIf REAL_ADDR "^24\.83\.72\.242$" AllowAccess
+
+## 2009-12-21 dt#td  as per Murano Consulting ticket number 3973
+SetEnvIf REAL_ADDR "^24\.83\.72\.243$" AllowAccess
+
+## 2010-09-30 dt#td for SRC Manila
+SetEnvIf REAL_ADDR "^61\.9\.8\.142$" AllowAccess
+
+## 2010-09-30 dt#td for Bang Vancouver
+SetEnvIf REAL_ADDR "^174\.6\.67\.111$" AllowAccess
+
+## 2010-09-30 dt#td for Slate Global
+SetEnvIf REAL_ADDR "^202\.21\.227\.84$" AllowAccess
+
+## 2010-09-30 dt#td for Graham
+SetEnvIf REAL_ADDR "^219\.77\.84\.40$" AllowAccess
+
+## 2010-09-30 dt#td for Graham 2
+SetEnvIf REAL_ADDR "^218\.103\.112\.2$" AllowAccess
+
+## 2010-09-30 dt#td for Ray and Pam 2
+SetEnvIf REAL_ADDR "^222\.229\.220\.94$" AllowAccess
+
+## 2010-09-30 dt#td for Ryan home
+SetEnvIf REAL_ADDR "^218\.103\.34\.37$" AllowAccess
+
+##2010-11-15 dt#td for SRC_11_15
+SetEnvIf REAL_ADDR "^202\.138\.130\.186$" AllowAccess
+
+##2010-11-17 dt#td for SCR_11_17
+SetEnvIf REAL_ADDR "^202\.138\.130\.185$" AllowAccess
+
+##2010-11-17 dt#td for Ryan test IP
+SetEnvIf REAL_ADDR "^61\.10\.134\.92$" AllowAccess
+
+## 2011-03-18 dt#td Mitch Moir Home
+SetEnvIf REAL_ADDR "^126\.9\.185\.98$" AllowAccess
+
+## 2011-03-18 dt#td Harry Fujishiro Home
+SetEnvIf REAL_ADDR "^183\.181\.128\.245$" AllowAccess
+
+## 2011-03-18 dt#td Ryoko Kamo Home
+SetEnvIf REAL_ADDR "^114\.164\.203\.104$" AllowAccess
+
+## 2011-03-01 dt#td aoyama 3rd floor
+SetEnvIf REAL_ADDR "^183\.77\.226\.168$" AllowAccess
+
+## 2012-06-15 dt#td david
+SetEnvIf REAL_ADDR "^210\.230\.206\.185$" AllowAccess
+
+## 2012-09-20 dt#td Talentatlas server
+SetEnvIf REAL_ADDR "^203\.167\.38\.11$" AllowAccess
+
+## 2012-09-02 dt#td From Ray
+SetEnvIf REAL_ADDR "^124\.155\.40\.41$" AllowAccess
+
+## 2012-11-01 dt#td Frank New November
+SetEnvIf REAL_ADDR "^220\.215\.220\.13$" AllowAccess
+
+## 2012-11-05 dt#td Ryoko Kamo Home 5th November
+SetEnvIf REAL_ADDR "^118\.8\.23\.54$" AllowAccess
+
+## 2012-12-15 dt#td David Australia
+SetEnvIf REAL_ADDR "^220\.233\.66\.141$" AllowAccess
+
+## 2012-12-19 dt#td Pam in Canada
+SetEnvIf REAL_ADDR "^174\.7\.240\.86$" AllowAccess
+
+## 2013-02-13 dt#td SRC
+SetEnvIf REAL_ADDR "^124\.107\.166\.235$" AllowAccess
+
+## 2013-03-01 dt#td Manila ADSL lines
+SetEnvIf REAL_ADDR "^112\.199\.38\.154$" AllowAccess
+
+## 2013-03-01 dt#td Ryoko in Abu Dhabi
+SetEnvIf REAL_ADDR "^195\.229\.241\.172$" AllowAccess
+
+## 2013-03-27 dt#td Globe Internet SRC
+SetEnvIf REAL_ADDR "^203\.177\.171\.150$" AllowAccess
+
+## 2013-06-17 dt#td SRC PLDT ADSL2
+SetEnvIf REAL_ADDR "^124\.107\.167\.229$" AllowAccess
+
+## 2013-12-18 dt#td Glen changed again 
+#SetEnvIf REAL_ADDR "^118\.108\.141\.209$" AllowAccess
+SetEnvIf REAL_ADDR "^180\.12\.169\.105$" AllowAccess
+
+## 2013-07-05 dt#td SRC new
+SetEnvIf REAL_ADDR "^124\.107\.166\.235$" AllowAccess
+
+## 2013-07-12 dt#td Ray home new
+SetEnvIf REAL_ADDR "^124\.155\.54\.210$" AllowAccess
+
+
+## 2013-08-13 dt#td Aoyama 3rd floor high speed line
+SetEnvIf REAL_ADDR "^221\.113\.50\.237$" AllowAccess
+
+## 2013-10-09 dt#td Ira temporary dba
+SetEnvIf REAL_ADDR "^141\.170\.255\.12$" AllowAccess
+
+## 2013-10-10 dt#td Ryoko home (replacing old one)
+SetEnvIf REAL_ADDR "^118\.8\.23\.54$" AllowAccess
+
+## 2013-11-12 dt#td Alternate Entrance
+SetEnvIf REAL_ADDR "^192\.168\.10\.99$" AllowAccess
+
+## 2014-02-05 dt#td Ryan home
+SetEnvIf REAL_ADDR "^118\.21\.0\.196$" AllowAccess
+
+## 2014-02-12 dt#td Glen Mid Feb 2014
+SetEnvIf REAL_ADDR "^126\.70\.45\.172$" AllowAccess
+
+## 2014-02-17 dt#td Hong Kong Feb 2014
+SetEnvIf REAL_ADDR "^58\.152\.223\.104$" AllowAccess
+
+## 2014-04-03 dt#td Slate Canada
+SetEnvIf REAL_ADDR "^209\.145\.127\.108$" AllowAccess
+
+## 2014-04-07 dt#td Manila man3
+SetEnvIf REAL_ADDR "^112\.199\.38\.154$" AllowAccess
+
+## 2014-04-15 dt#td Ryan Static
+SetEnvIf REAL_ADDR "^122\.249\.125\.253$" AllowAccess
+
+## 2014-04-30 dt#td Hong Kong
+SetEnvIf REAL_ADDR "^101\.78\.237\.101$" AllowAccess
+
+## 2014-05-26 dt#td Ryoko 26th May 2014
+SetEnvIf REAL_ADDR "^118\.8\.16\.113$" AllowAccess
+
+## 2014-07-22 dt#td Ryan again
+SetEnvIf REAL_ADDR "^70\.72\.234\.11$" AllowAccess
+
+## 2014-07-24 dt#td Mithun in the UK temp access July 2014
+SetEnvIf REAL_ADDR "^86\.183\.116\.84$" AllowAccess
+
+## 2014-08-01 dt#td Larry, temp 1st August
+#SetEnvIf REAL_ADDR "^122\.132\.101\.200$" AllowAccess
+SetEnvIf REAL_ADDR "^219\.126\.24\.240$" AllowAccess
+
+## 2014-08-04 dt#td Pam home
+SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
+
+## 2014-09-03 dt#td Nic home
+SetEnvIf REAL_ADDR "^121\.117\.77\.97$" AllowAccess
+
+## 2014-09-25 dt#td asked by Dominykas
+SetEnvIf REAL_ADDR "^119\.240\.82\.159$" AllowAccess
+
+
+
+
+
+Allow from env=AllowAccess
+
+
+
+

@@ -1,0 +1,11 @@
+form#csFormId div.formLabel
+{
+  float: left;
+  width: 105px;
+}
+
+form#csFormId div.formField
+{
+  float: left;
+  width: 270px;
+}

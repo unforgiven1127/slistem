@@ -1,0 +1,460 @@
+
+.statChartContainer
+{
+  height: inherit;
+}
+.statPageSectionLeft
+{
+  float: left;
+  margin-right: 5px;
+  padding-right: 5px;
+  width: 21%;
+  min-height: 450px;
+  border: 1px solid #dedede;
+  background-color: #f2f2f2;
+}
+
+.statPageSectionRight
+{
+  float: right;
+  width: 76%;
+  max-width: 875px;
+  min-height: 610px;
+  height: 610px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  background-color: #F0F0F0;
+  border: 1px solid #CFCFCF;
+  border-radius: 0 2px 2px;
+  margin: 0;
+  padding: 0;
+}
+
+
+#statFormId
+{
+  padding: 10px 0 10px 3px;
+}
+#statFormId div.innerForm
+{
+  margin: 0;
+}
+.statPageSectionLeft #statFormId div.formLabel,
+.statPageSectionLeft #statFormId div.formField
+{
+  width: 220px;
+  margin: 0;
+}
+.statPageSectionLeft #statFormId div.formLabel
+{
+  text-align: left;
+  padding: 0 0 0 5px;
+}
+
+.statPageSectionLeft #statFormId div.formField input,
+.statPageSectionLeft #statFormId div.formField select
+{
+  width: 190px;
+  min-width: 190px;
+}
+
+.separator
+{
+  height: 15px;
+  border-top: 1px solid #dedede;
+  margin-top: 15px;
+}
+
+.disabled
+{
+  background-color: #ddd;
+  font-style: italic;
+  opacity: 0.35;
+}
+
+.group_stat
+{
+  margin: 10px 0 25px 0;
+  float: left;
+  border-left: 1px solid #bbb;
+}
+.group_stat div
+{
+  float: left;
+}
+.group_stat > div
+{
+  border-bottom: 1px solid #bbb;
+}
+.group_stat > div:nth-child(even)
+{
+  background-color: #fff;
+}
+
+div.group_stat .stat_row_header
+{
+  border-top: 1px solid #bbb;
+  border-bottom: 1px solid #bbb;
+  background-color: #efefef;
+  text-align: center;
+  font-weight: bold;
+}
+
+div.group_stat .stat_row_total
+{
+  border-top: 1px solid #bbb;
+}
+.stat_row_total > div:first-child
+{
+  font-weight: bold;
+}
+.stat_row > div
+{
+  width: 49px;
+  padding: 0 10px;
+  border-right: 1px solid #bbb;
+  line-height: 20px;
+  position: relative;
+}
+.stat_row > div:first-child
+{
+  min-width: 85px;
+}
+
+.above_avg,
+.above_avg label
+{
+  color: #238242;
+  font-weight: bold;
+}
+.below_avg
+{
+  color: #333;
+}
+.below_avg label
+{
+  font-weight: bold;
+  color: #DB441E;
+}
+.stat_row_objective div
+{
+  background-color: #FFF3E0;
+}
+.stat_row_average div
+{
+  background-color: #EEFFDB;
+}
+.stat_row div span label
+{
+  font-size: 7px;
+  position:absolute;
+  top: 0px;
+  right: 3px;
+}
+
+
+/* overwrite a bit the global stats styles for pipeline */
+.pipelineList div
+{
+  line-height: 40px;
+}
+.pipelineList.small_line div
+{
+  line-height: 20px;
+}
+
+.pipelineList div.stat_row > div:nth-child(3)
+{
+  width: 100px;
+}
+.pipelineList div.stat_row > div:nth-child(4),
+.pipelineList div.stat_row > div:nth-child(5)
+{
+  width: 80px;
+}
+.pipelineList div.stat_row > div
+{
+  width: 235px;
+  height: 40px;
+  white-space: nowrap;
+  padding: 0;
+  overflow: hidden;
+  padding-left: 5px;
+}
+
+.pipelineList div.stat_row > div.alignleft
+{
+  text-align: left;
+}
+
+.pipelineList div.stat_row > div.wide
+{
+  width: 305px;
+}
+.pipelineList div.stat_row > div.small
+{
+  width: 176px;
+}
+
+#statFormId ul.token-input-list-mac
+{
+  min-width: 220px;
+  width: 220px;
+}
+#statFormId ul.token-input-list-mac li
+{
+  min-width: 80px;
+  width: 80px;
+  margin-right: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+#statFormId ul.token-input-list-mac li p
+{
+  float: left;
+}
+#statFormId ul.token-input-list-mac li span
+{
+  position: absolute;
+  top: 2px;
+  right: 2px;
+}
+
+#statFormId ul.token-input-list-mac li:last-child
+{
+  min-width: 200px;
+  width: 200px;
+  margin: 3px 0 0 0;
+  clear: both;
+}
+
+.chartTooltip
+{
+  text-align: center;
+  font-weight: bold;
+  margin: 0 0 2px 0;
+  padding: 0 0 2px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+
+.pipe_detail_container
+{
+  width: 100%;
+}
+.pipe_detail_container .pipe_detail_row
+{
+  float: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.pipe_detail_row div.chart
+{
+  float: left;
+  width: 0;
+  height: 0;
+}
+.pipe_detail_row div.pipe_details
+{
+  float: left;
+  width: 800px;
+  padding: 0 0 0 5px;
+  margin-top: 10px;
+  border-top: 1px solid #ddd;
+}
+
+.pipe_detail_row div.pipe_details .pipe_position_row
+{
+  float: left;
+  border-bottom: 1px solid #ddd;
+  width: 100%;
+}
+
+.pipe_position_row > div.pipe_data
+{
+  background-color: #FFFFFF;
+  border-bottom: 1px dotted #DDDDDD;
+  float: left;
+  line-height: 24px;
+  min-height: 24px;
+  padding: 3px 5px;
+  width: 100%;
+}
+.pipe_position_row > div.pipe_data div
+{
+  float: left;
+  width: 31%;
+  border-left: 1px solid #ddd;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-left: 8px;
+  margin-top: 5px;
+}
+.pipe_position_row > div.pipe_data div:first-child
+{
+  border: 0;
+}
+
+.pipe_status_icon,
+pipe_date
+{
+  margin-top: 5px;
+}
+.pipe_position_row > div.pipe_date
+{
+  float: left;
+  width: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  height: 24px;
+
+  background: transparent url('/component/sl_stat/resources/pictures/timeline_bg.png') no-repeat center 8px;
+}
+
+.pipe_status_icon
+{
+  float: left;
+  height: 50px;
+  width: 52px;
+  margin-right: 5px;
+  font-size: 10px;
+
+  /* default all CCM 50/75 */
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_ccm.png') no-repeat top center;
+}
+.pipe_status_icon1
+{
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_start.png') no-repeat top center;
+}
+.pipe_status_icon2
+{
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_resume.png') no-repeat top center;
+}
+
+.pipe_status_icon100
+{
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_offer2.png') no-repeat top center;
+}
+.pipe_status_icon101
+{
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_placed.png') no-repeat top center;
+}
+.pipe_status_icon150,
+.pipe_status_icon151,
+.pipe_status_icon200
+{
+  background: #F0F0F0 url('/component/sl_stat/resources/pictures/timeline_failed.png') no-repeat top center;
+}
+
+
+
+.kpi_revenue div.tplListContainer
+{
+  margin: 0;
+}
+.kpi_revenue div.title
+{
+  line-height: 2em;
+  text-align:center;
+  padding: 5px 0;
+
+}
+
+.kpi_revenue div.title,
+.kpi_revenue ul li.tplListHeaderContainer div,
+.kpi_revenue ul li.tplListHeaderContainer div span
+{
+  background-color: #547791;
+  color: #fff;
+  font-size: 130%;
+}
+
+.kpi_revenue ul li:last-child div,
+.kpi_revenue ul li:last-child div span
+{
+  background-color: #547791;
+  color: #fff;
+  font-weight: bold;
+  font-size: 130%;
+}
+
+
+.kpi_container
+{
+  /*min-width: 1100px;*/
+  width: 100%;
+  font-size: 15px;
+  margin: 20px;
+}
+
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow
+{
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+}
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow div
+{
+  height: 30px;
+  padding: 10px 0;
+}
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow div,
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow div span,
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow div a
+{
+  font-size: 18px;
+  line-height: 22px;
+}
+.kpi_container .kpi_revenue ul li.tplListRowContainer div.tplListRow div .revenue_cons
+{
+  width: 100%;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.revenue_cons img
+{
+  position: absolute;
+  right: 10px;
+  top: -6px;
+}
+
+
+
+#statPageSectionRight > div.chart_legend
+{
+  border: 1px solid #dedede;
+  margin: 5px;
+  padding: 5px;
+  min-height: 25px;
+}
+.chart_legend span
+{
+  padding-left: 15px;
+  line-height: 18px;
+}
+.chart_legend span.title
+{
+  padding-left: 0px;
+}
+
+.summary_number_title
+{
+  line-height: 20px;
+  padding: 2px;
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #225577;
+  display: block
+}
+.summary_number
+{
+  line-height: 20px;
+  padding: 2px 10px;
+  border-right: 1px solid #ddd;
+  font-size: 14px;
+}

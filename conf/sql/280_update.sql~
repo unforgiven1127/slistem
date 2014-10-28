@@ -1,0 +1,23 @@
+
+-- Stef: 15-08-2013 => imporve system log accuracy
+ALTER TABLE `login_system_history` ADD `cp_uid` VARCHAR( 200 ) NULL AFTER `component` , ADD `cp_action` VARCHAR( 200 ) NULL AFTER `cp_uid` , ADD `cp_type` VARCHAR( 200 ) NULL AFTER `cp_action` , ADD `cp_pk` INT NULL AFTER `cp_type` ;
+ALTER TABLE `login_system_history` ADD INDEX ( `cp_uid` );
+ALTER TABLE `login_system_history` ADD INDEX ( `cp_action` );
+ALTER TABLE `login_system_history` ADD INDEX ( `cp_type` );
+ALTER TABLE `login_system_history` ADD INDEX ( `cp_pk` );
+ALTER TABLE `login_system_history` ADD INDEX ( `component` );
+
+-- change char set for country table
+ALTER TABLE `system_country` CHANGE `iso` `iso` CHAR( 2 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , CHANGE `country_name` `country_name` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , CHANGE `printable_name` `printable_name` VARCHAR( 80 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL , CHANGE `iso3` `iso3` CHAR( 3 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ;
+
+--stef 12-spetember
+
+ALTER TABLE `folder` ADD UNIQUE KEY `parentfolderfk` (`parentfolderfk`,`rank`);
+ALTER TABLE `folder` ADD `system_folder` INT NOT NULL;
+ALTER TABLE `folder` ADD INDEX ( `system_folder` );
+ALTER TABLE `folder` ADD INDEX ( `rank` );
+ALTER TABLE `folder` ADD INDEX ( `ownerloginfk` );
+ALTER TABLE `folder` ADD INDEX ( `private` );
+ALTER TABLE `folder` ADD INDEX ( `label` );
+
+INSERT INTO `version` (`version`, date_version) VALUES ('2.8.0u', NOW());

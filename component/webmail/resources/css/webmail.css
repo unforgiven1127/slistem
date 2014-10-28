@@ -1,0 +1,63 @@
+@CHARSET "UTF-8";
+
+.innerForm table
+{
+  width:100%;
+}
+
+#sendMailFormId
+{
+  background-color:#ededed;
+  border: 1px solid #cecece;
+}
+
+.popUpCpCard
+{
+  background-color: #FFFFFF;
+  margin-left: 460px;
+  position: absolute;
+}
+
+#sendMailFormId div.innerForm table tr td div.formLabel
+{
+  float:left;
+  width: 10%;
+  font-size: 1em;
+  font-weight: normal;
+}
+#sendMailFormId div.innerForm table tr td div.formField
+{
+  float:right;
+  width: 615px;
+  height: auto;
+}
+
+#sendMailFormId div.innerForm table tr td div.formField span table.mceLayout
+{
+  width: 615px;
+  min-height: 200px;
+}
+#sendMailFormId div.innerForm table tr td div.formField span table.mceLayout tr td.mceIframeContainer iframe
+{
+  max-width: 615px;
+}
+
+div.innerForm div.bcc
+{
+  margin-bottom: 20px;
+}
+.hiddenField div.formLabel
+{
+   font-weight: normal;
+}
+
+.formLink
+{
+  color: #2A6991;
+  font-style: italic;
+}
+
+div.formField
+{
+  width: 550px;
+}

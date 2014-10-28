@@ -1,0 +1,217 @@
+/*
+    Document   : widescreen
+    Created on : Apr 30, 2013, 6:12:22 PM
+    Author     : root
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+*
+{
+  font-size: 14px;
+}
+
+.candi_detail_row div.candi_detail_label,
+.candi_detail_row div.candi_detail_value
+{
+  font-size: 12.5px;
+}
+
+
+
+
+
+
+
+#menunavleft + #componentContainerId,
+#menuactleft + #componentContainerId,
+#menunavright + #componentContainerId,
+#menuactright + #componentContainerId
+{
+  width: 1310px; /* Slistem */
+  margin: 0 0 0 245px
+}
+
+
+div#componentContainerId,
+div#componentContainerId div.componentMainContainer
+{
+  width: 1300px;
+}
+
+
+
+
+/*******************************************************************************/
+/*******************************************************************************/
+/* slistem specific wide css */
+
+
+/* menu wider and higher sections */
+#menunavleft > ul, #menunavright > ul, #menuactleft > ul, #menuactright > ul,
+#menunavleft, #menunavright, #menuactleft, #menuactright,
+#menuactleft > ul > li.section_tab
+{
+  width:235px;
+}
+
+
+#menuactleft > ul > li > div.menuActionMenuContainer
+{
+    width: 230px;
+}
+.menu_workspace, .menu_folder, .menu_pipeline
+{
+    width: 230px;
+}
+
+li.section_tab div div
+{
+  width: 180px;
+}
+
+
+div.candiTopSectLeft
+{
+  width: 580px;
+}
+div.candiTopSectRight
+{
+  max-width: 700px;
+  min-width: 700px;
+  float: right;
+}
+
+
+div.candiHoriSizeTabs,
+div.candiHoriSizeTabs > .candiTabsContent,
+div.candiHoriSizeTabs > .candiTabsContent > div
+{
+  width: 685px;
+  min-width: 685px;
+  float: right;
+}
+
+
+div.candiTopSectRight .candiTabsSeparator
+{
+  display: none;
+}
+
+
+div.history_bloc,
+div.history_bloc a
+{
+  font-size: 13px;
+}
+
+
+
+div.candi_detail_row .candi_detail_value
+{
+  width: 225px;
+}
+div.candi_detail_row.right div.candi_detail_value
+{
+  width: 170px;
+}
+
+div.candi_detail_row_status
+{
+  width: 545px;
+}
+
+div.candi_detail_row_status .candi_detail_value
+{
+  width: 470px;
+}
+
+div.candi_detail_row div.candi_detail_label,
+div.candi_detail_row div.candi_detail_value
+{
+  font-size: 13px;
+}
+
+.candi_detail_row_status .candi_status_bar div.candi_status_icon span,
+.candi_detail_row_status .candi_status_bar div.candi_status_icon a,
+.candi_detail_row_status .candi_status_bar div.candi_status_icon a:hover
+{
+  font-size: 11px;
+}
+
+
+
+
+div.candiHoriHalfSizeTabs
+{
+  min-width: 700px;
+  width: 700px;
+}
+div.candiHoriHalfSizeTabs > .candiTabsContent,
+div.candiHoriHalfSizeTabs > .candiTabsContent > div
+{
+  width: 698px;
+  min-width: 695px;
+}
+
+
+div.candiHalfSizeTabs > .candiTabsContent,
+div.candiFullSizeTabs > .candiTabsContent
+{
+  min-width: 657px;
+  width: 657px;
+}
+
+div.candiHalfSizeTabs > .candiTabsContent > div,
+div.candiFullSizeTabs > .candiTabsContent > div
+{
+  width: 655px;
+}
+
+div.candi_skill_bar span
+{
+    width: 8.87%;
+}
+
+div#sharedFolderList ul li a,
+div#menuactleft > ul > li .userFolderRow a
+{
+  font-size: 13px;
+}
+ul#tab_list li > div
+{
+  font-size: 14px;
+}
+
+
+div.tabs,
+div.tabs div.contents
+{
+  max-width: 1250px;
+}
+
+body div#headerId
+{
+  margin: 0 0 12px 0;
+}
+
+.note_content
+{
+  line-height: 18px;
+}
+
+li .menuActionMenuContainer > a
+{
+  font-size: 15px;
+}
+
+
+form.quickSearchForm .label
+{
+  font-size: 12px;
+}
+form.quickSearchForm .label,
+form.quickSearchForm .option .label
+{
+  font-size: 12px;
+}

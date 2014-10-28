@@ -1,0 +1,62 @@
+
+.rm_container
+{
+  margin: 10px 0;
+}
+
+.rm_row
+{
+  border-top: 1px solid #ddd;
+  float: left;
+  min-width: 525px;
+}
+
+.rm_row div
+{
+  float: left;
+  border-right: 1px solid #ddd;
+  height: 22px;
+  line-height: 22px;
+  padding: 0 2px;
+  text-align: center;
+}
+
+.rm_header
+{
+  background-color: #EBEBEB;
+}
+.rm_header div
+{
+  font-weight: bold;
+}
+.rm_container .rm_header div.rm_user
+{
+  text-align: center;
+}
+
+.rm_status
+{
+  width: 80px;
+  border-left: 1px solid #ddd;
+}
+.rm_row div.rm_user
+{
+  width: 180px;
+  text-align: left;
+}
+
+.rm_start,
+.rm_end,
+.rm_action
+{
+  width: 80px;
+}
+
+
+
+
+
+
+
+
+

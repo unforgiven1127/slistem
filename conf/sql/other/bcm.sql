@@ -1,0 +1,2 @@
+INSERT INTO `settings` (`settingspk`, `fieldname`, `fieldtype`, `options`, `fieldoption`, `value`, `description`, `is_user_setting`)
+VALUES (NULL, 'ab_log_comments', 'text', NULL, NULL, '1', 'Create an event when the connection/copnay synopsis is changed', '0');

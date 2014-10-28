@@ -1,0 +1,1972 @@
+.topCandidateSection
+{
+  /*height: 350px;
+  overflow-y: hidden;*/
+  width: 100%;
+}
+.bottomCandidateSection
+{
+  position: relative;
+}
+
+.containerSplit .bottomCandidateSection
+{
+  margin-top: 15px;
+}
+.containerSplit .bottomCandidateSection .scrollingContainer
+{
+  overflow-y: auto;
+}
+
+.containerSplit .bottomCandidateSection .scrollingContainer .tplListContainer .tplListMessageContainer
+{
+  padding: 0 0 10px 0;
+}
+
+.candiTopSectLeft
+{
+  width: 520px;
+  height: 350px;
+  float: left;
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+.candiTopSectRight
+{
+  width: 545px;
+  height: 350px;
+  float: left;
+
+  background-color: #fff;
+  overflow-y: hidden;
+  position: relative;
+  /*border: 1px solid #dedede;*/
+  margin: 20px 0 0 0;
+}
+.componentMainContainer .candiTopSectRight
+{
+ margin: 0 0 0 10px;
+}
+
+.candiTopSectRow
+{
+  border-bottom: 1px solid #dedede;
+  height:26px;
+  width: 49.5%;
+  float: left;
+}
+
+.candiTopSectRow .candiTopSectLabel
+{
+  float: left;
+  border-right: 1px solid #ddd;
+  background-color: #f0f0f0;
+  height:23px;
+  padding-bottom: 2px;
+  width: 100px;
+  font-size: 10px;
+}
+
+.candiTopSectRow .candiTopSectValue
+{
+  float: left;
+  height:20px;
+  padding-bottom: 2px;
+  width: 150px;
+  font-size: 10px;
+}
+
+.candiTabsVertical
+{
+  width: 37px;
+  border-left: 2px solid #fff;
+  float: left;
+  text-align: center;
+}
+
+.candiTabsVertical li
+{
+  display: block;
+  width: 35px;
+  height: 34px;
+  border-bottom: 1px solid #fff;
+  position: relative;
+  background-position: center 5px;
+}
+
+.candiTabsVertical li:hover
+{
+  box-shadow: 0 0 3px 2px #F9D590;
+}
+.candiTabsVertical li img
+{
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+}
+
+.candiTabsVertical li span.tab_number
+{
+  position: absolute;
+  bottom: 0;
+  left: 0px;
+
+  color: #333;
+  font-size: 9px;
+  padding: 0;
+  width: 13px;
+  height: 13px;
+  line-height: 13px;
+  font-family: Arial, Verdana;
+  text-align: center;
+
+  border-top-right-radius: 6px;
+  background-color:#eaeaea;
+}
+
+.candiHoriSizeTabs .candiTabsVertical li span.tab_number
+{
+  left: auto;
+  right: 2px;
+  top: 2px;
+  border-radius: 8px;
+}
+.candiTabsVertical li span.tab_number.tab_level_1
+{
+  background-color: #F7D179;
+  color: #333;
+}
+.candiTabsVertical li span.tab_number.tab_level_2
+{
+  background-color: #E8895A;
+  color: #fff;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+/* Right tabs templates                             */
+/* ************************************************ */
+.candiTabsContent
+{
+  border: 1px solid #DEDEDE;
+}
+.candiHalfSizeTabs,
+.candiHalfSizeTabs > .candiTabsContent,
+.candiHalfSizeTabs > .candiTabsContent > div,
+.candiHalfSizeTabs > .candiTabsVertical
+{
+  float: left;
+  height: 161px;
+  min-height: 161px;
+}
+
+.candiHalfSizeTabs:first-child,
+.candiHalfSizeTabs:first-child > .candiTabsContent#ctc_1
+{
+  height: 172px;
+  min-height: 172px;
+}
+
+div.candiHalfSizeTabs > ul.candiTabsVertical
+{
+  width: 37px;
+}
+div.candiHalfSizeTabs#ctc_2 > ul
+{
+  margin-top: 10px;
+}
+
+.candiHalfSizeTabs > .candiTabsContent,
+.candiFullSizeTabs > .candiTabsContent
+{
+  width: 503px;
+  min-width: 503px;
+}
+
+.candiHalfSizeTabs > .candiTabsContent > div
+.candiFullSizeTabs > .candiTabsContent > div
+{
+  width: 500px;
+  min-width: 500px;
+}
+
+.candiFullSizeTabs,
+.candiFullSizeTabs > .candiTabsContent,
+.candiFullSizeTabs > .candiTabsContent > div,
+.candiFullSizeTabs > .candiTabsVertical
+{
+  float: left;
+  height: 345px;
+  min-height: 345px;
+}
+
+.candiHoriSizeTabs,
+.candiHoriSizeTabs > .candiTabsContent,
+.candiHoriSizeTabs > .candiTabsContent > div
+{
+  float: left;
+  min-height: 316px;
+  height: 316px;
+  width: 543px;
+  min-width: 543px;
+}
+
+
+.candiHoriHalfSizeTabs
+{
+  float: left;
+  height: 152px;
+  min-height: 152px;
+  width: 543px;
+  min-width: 543px;
+}
+div.candiHoriHalfSizeTabs:first-child
+{
+  height: 187px;
+  min-height: 187px;
+}
+
+/* separator
+.candiHalfSizeTabs:nth-child(n+2)
+{
+  padding-top: 10px;
+}*/
+
+.candiHoriHalfSizeTabs > .candiTabsContent,
+.candiHoriHalfSizeTabs > .candiTabsContent > div
+{
+  float: left;
+  height: 152px;
+  min-height: 152px;
+  width: 543px;
+  min-width: 543px;
+}
+
+.candiHoriSizeTabs > .candiTabsVertical
+{
+  height: 30px;
+  overflow: hidden;
+  width: 100%;
+  background-color: #fff;
+  border-left: 0;
+}
+.candiHoriHalfSizeTabs > .candiTabsVertical
+{
+  height: 30px;
+  width: 49.5%;
+  float: left;
+}
+
+.candiHoriHalfSizeTabs > .candiTabsVertical li,
+.candiHoriSizeTabs > .candiTabsVertical li
+{
+  float: left;
+  margin: 0 1px 0 0;
+  width: 10.8%;
+  height: 24px;
+  cursor: pointer;
+
+  border-radius: 3px 3px 0 0;
+  background-position: center top;
+}
+div.candiHoriHalfSizeTabs > .candiTabsVertical li
+{
+  margin: 0 1px 0 0;
+  width: 19%;
+}
+.candiHoriHalfSizeTabs > .candiTabsVertical li.selected,
+.candiHoriSizeTabs > .candiTabsVertical li.selected
+{
+  border-bottom: 2px solid #FFCD63;
+}
+div.candiHoriSizeTabs .aTabContent,
+div.candiHoriHalfSizeTabs .aTabContent
+{
+  padding: 0;
+}
+.aTabContent.selected
+{
+  display: block;
+}
+
+
+.tab_action
+{
+  background: #C8A0DD url("/component/sl_candidate/resources/pictures/tabs/action2_light_24.png") no-repeat center 5px;
+  border-color: #C8A0DD;
+}
+.tab_character
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/character_light_24.png") no-repeat center 5px;
+}
+.tab_note
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/note_light_24.png") no-repeat center 5px;
+}
+.tab_contact
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/contact_light_24.png") no-repeat center 5px;
+}
+.tab_document
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/document_light_24.png") no-repeat center 5px;
+}
+.tab_position
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/position_light_24.png") no-repeat center 5px;
+}
+.tab_company
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/company_light_24.png") no-repeat center 5px;
+}
+.tab_activity
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/activity_light_24.png") no-repeat center 5px;
+}
+.tab_history
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/cp_history_light_24.png") no-repeat center 5px;
+}
+.tab_industry
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/cp_industry_light_24.png") no-repeat center 5px;
+}
+.tab_department
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/cp_department_light_24.png") no-repeat center 5px;
+}
+.tab_job
+{
+  background: #86ADC9 url("/component/sl_candidate/resources/pictures/tabs/cp_job_light_24.png") no-repeat center 5px;
+}
+
+
+.tab_action.selected
+{
+  background: #B783D2 url("/component/sl_candidate/resources/pictures/tabs/action2_24.png") no-repeat center 5px;
+  border-color: #B783D2;
+}
+.tab_character.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/character_24.png") no-repeat center 5px;
+}
+.tab_note.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/note_24.png") no-repeat center 5px;
+}
+.tab_contact.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/contact_24.png") no-repeat center 5px;
+}
+.tab_document.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/document_24.png") no-repeat center 5px;
+}
+.tab_position.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/position_24.png") no-repeat center 5px;
+}
+.tab_company.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/company_24.png") no-repeat center 5px;
+}
+.tab_activity.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/activity_24.png") no-repeat center 5px;
+}
+.tab_history.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/cp_history_24.png") no-repeat center 5px;
+}
+.tab_industry.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/cp_industry_24.png") no-repeat center 5px;
+}
+.tab_department.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/cp_department_24.png") no-repeat center 5px;
+}
+.tab_job.selected
+{
+  background: #4C7696 url("/component/sl_candidate/resources/pictures/tabs/cp_job_24.png") no-repeat center 5px;
+}
+
+
+/* *********************************** */
+/* action tab for both rendering mode */
+.candi_action_tab ul
+{
+  float: left;
+  margin: 8px 0 0 0;
+  padding: 0 0 8px 0;
+}
+.candi_action_tab ul li
+{
+  float: left;
+  width: 40%;
+  /*border-bottom: 1px solid #dfdfdf;*/
+  margin: 5px 0 0 40px;
+  padding: 0 0 5px 5px;
+
+  float: left;
+}
+
+.candiHoriHalfSizeTabs .candi_action_tab ul li,
+.candiHoriSizeTabs .candi_action_tab ul li
+{
+  width: 90%;
+  margin: 7px 0 2px 0;
+  padding: 0 0 5px 25px;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.candi_action_tab ul li a
+{
+  line-height: 20px;
+  font-size: 12px;
+}
+.candi_action_tab ul li a img
+{
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+/* ************************************************ */
+
+/*.candiTabsSeparator
+{
+  clear: both;
+  height: 4px;
+  display: block;
+}*/
+.candiTabsSeparator
+{
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #d2d7db;
+  display: block;
+  float: left;
+  height: 5px;
+  margin: 6px 0 4px;
+  width: 100%;
+}
+.candiTabsSeparator.Htabs
+{
+  margin: 0 0 4px;
+}
+
+/* when tabs cut in half */
+.aTabContent
+{
+  height: 170px;
+  background-color: #fff;
+  min-width: 500px;
+  padding: 0 0 0 2px;
+  font-size: 11px;
+  overflow: hidden;
+}
+
+.aTabContent div.entry
+{
+  margin: 0 2px 0px 0;
+  border-bottom: 1px solid #d0d0d0;
+  padding: 2px 0 8px 0;
+  position: relative;
+}
+
+div.aTabContent div.entry:nth-child(odd)
+{
+  background-color: #f8f8f8;
+}
+
+.candiTabsContent em
+{
+  color: #888;
+}
+
+.tab_bottom_link
+{
+  border: 1px solid #DDDDDD;
+  margin: 20px 20% 10px;
+  padding: 4px;
+  text-align: center;
+  float: left;
+  width: 60%;
+  max-width: 400px;
+  border-radius: 3px;
+  background-color: #efefef;
+}
+.tab_bottom_link.top
+{
+  display: block;
+  float: none;
+  font-size: 10px;
+  margin: 5px 74% 0;
+  padding: 0 4px;
+  width: 22%;
+}
+.tab_bottom_link img
+{
+  width: 16px;
+  height: 16px;
+}
+
+.candi_action_tab img
+{
+  width: 20px;
+  height: 20px;
+}
+
+.candi_action_row,
+.candiTabsActionRow
+{
+  margin: 0;
+  opacity: 0.6;
+  padding:  0;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+.candi_action_mask
+{
+  display: none;
+  width: 100%;
+  height: 350px;
+  background: url("/common/style/jquery-ui/images/ui-bg_diagonals-medium_30_aaaaaa_40x40.png") repeat scroll 50% 50% #AAAAAA;
+  opacity: 0.3;
+  position: absolute;
+  z-index: 5000;
+}
+
+.candi_action_row_open
+{
+  width: 100%;
+  opacity: 1;
+  height: 350px;
+}
+.candi_action_row_open .candi_action_mask
+{
+  display: block;
+}
+.candi_action_row_open .candi_action_container
+{
+  width: 240px;
+  background-color: #EFEFEF;
+  border: 3px solid #333;
+  border-right: 1px solid #333;
+  height: 320px;
+  opacity: 1;
+  z-index: 5100;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.candi_action_row_open a
+{
+  width: 234px;
+  color: #333;
+  padding: 0 0 6px 6px;
+  margin: 0;
+  border-bottom: 1px solid #aaa;
+
+}
+
+.candi_action_row a,
+.candiTabsActionRow a
+{
+  display: none;
+  float: left;
+}
+
+.candi_action_row a.actionLink,
+.candiTabsActionRow a.actionLink
+{
+  display: block;
+  border: 0;
+  background-color: #547691;
+  padding: 2px;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+
+  height: 17px;
+  width: 18px;
+  overflow: hidden;
+}
+div.candi_action_row_open a.actionLink
+{
+  width: 232px;
+  padding: 2px 2px 10px 6px;
+  background-color: #d9d9d9;
+}
+
+.candi_action_row:hover,
+.candiTabsActionRow:hover
+{
+  opacity: 1;
+}
+
+
+.candi_action_row a,
+.candiTabsActionRow a
+{
+  margin: 0 0 4px 0;
+}
+
+.candi_action_row a img,
+.candiTabsActionRow a img
+{
+  width: 18px;
+  height: 18px;
+}
+
+.department_abc
+{
+  width: 100%;
+  text-align: center;
+  line-height: 22px;
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.cp_department_list
+{
+  margin: 5px 0 0 5px;
+  padding: 5px 10px 0 10px;
+  border-top: 1px solid #dedede;
+}
+.cp_department_list div
+{
+  border-bottom: 1px solid #efefef;
+  padding: 4px 10px;
+  margin-top: 2px;
+}
+
+.aTabContent div.entry.tab_cp_position
+{
+  margin-top: 1px;
+  border-left: 5px solid #555;
+}
+.aTabContent div.entry.tab_cp_position.active
+{
+  border-left: 5px solid #63A863;
+}
+.aTabContent div.entry.tab_cp_position.active.critical
+{
+  border-left-color: #FFC156;
+}
+
+.tab_cp_position > div
+{
+  margin-left: 5px;
+}
+
+
+div.bottomCandidateSection ul li.tplListHeaderFixed
+{
+  border: 1px solid red;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.scrollingContainer
+{
+  min-height: 300px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.fixedListheader ul {  margin: 0; padding: 0; overflow: hidden;}
+.fixedListheader ul li.tplListRowContainer{ width: auto; padding-right: 13px; border: 1px solid #CFCFCF; }
+
+#tab_content_container > li
+{
+  display: block;
+}
+
+
+/* ******************************************************* */
+/* ******************************************************* */
+
+ul.contactList{ width: 100%; padding: 0; margin: 0; float: left; }
+ul.contactList li
+{
+  width: 100%;
+  min-height: 32px;
+  border-bottom: 1px solid #d0d0d0;
+  margin: 0 2px 0 0;
+  padding: 2px 0 8px;
+  float: left;
+}
+ul.contactList li:nth-child(odd){ background-color: #f4f4f4; }
+ul.contactList li.floatHack{ height: 0px; border: 0; padding: 0; }
+
+
+ul.contactList li div.contactIcon{ width: 7%; float: right; height: 32px;}
+
+/* when tabs are on top, icon on the left, else on the right */
+.candiHoriSizeTabs ul.contactList li div.contactIcon,
+.candiHoriHalfSizeTabs ul.contactList li div.contactIcon{float: left; margin-left: 5px;}
+
+.contact_type1 {background: transparent url('/component/sl_candidate/resources/pictures/types/phone_home.png') no-repeat top left; }
+.contact_type2 {background: transparent url('/component/sl_candidate/resources/pictures/types/phone_work.png') no-repeat top left; }
+.contact_type3 {background: transparent url('/component/sl_candidate/resources/pictures/types/web.png') no-repeat top left; }
+.contact_type4 {background: transparent url('/component/sl_candidate/resources/pictures/types/fax.png') no-repeat top left; }
+.contact_type5 {background: transparent url('/component/sl_candidate/resources/pictures/types/email.png') no-repeat top left; }
+.contact_type6 {background: transparent url('/component/sl_candidate/resources/pictures/types/phone_mobile.png') no-repeat top left; }
+.contact_type7 {background: transparent url('/component/sl_candidate/resources/pictures/types/facebook.png') no-repeat top left; }
+.contact_type8 {background: transparent url('/component/sl_candidate/resources/pictures/types/linkedin.png') no-repeat top left; }
+.contact_type9 {background: transparent url('/component/sl_candidate/resources/pictures/types/info.png') no-repeat top left; }
+
+ul.contactList li div.contactData{ width: 63%; float: left; height: 16px; overflow: hidden;}
+ul.contactList li div.contactDescription{ width: 63%; float: left; min-height: 16px;}
+ul.contactList li div.contactDate{ width: 28%; float: right; height: 32px;}
+.contact_masked{ color: #2A6991; font-style: italic;}
+.contact_masked_symbol
+{
+  font-size: 9px;
+  color: #2A6991; font-style: italic;
+}
+
+
+
+
+.candi_grade_2
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_low_16.png') no-repeat top center;
+}
+.candi_grade_3
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_high_16.png') no-repeat top center;
+}
+.candi_grade_4
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_top_16.png') no-repeat top center;
+}
+
+.list_note_title
+{
+  color: #555;
+  padding-bottom: 3px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dedede;
+}
+.list_note_title > span
+{
+  color: #666;
+  font-weight: bold;
+}
+
+
+/******************************************************************/
+/* list css */
+/******************************************************************/
+
+.tplCandiRow:hover
+{
+  /*background-color: #FFF1C9;*/
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #fff1c9;
+}
+
+div.tplListContainer ul li.listRowSelected
+{
+    background-color: #F9E3B3;
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #F9E3B3;
+}
+
+li.tplListRowContainer div.tplListRow div.tplCandiRow_small,
+li.tplListRowContainer div.tplListRow div.tplCandiRow_small label
+{
+  font-size: 10px;
+  margin: 0;
+}
+
+li.tplListRowContainer div.tplListRow div.tplCandiRow_continuous
+{
+  border-right-color: transparent;
+}
+
+
+/* *************************** */
+ul li.tplListHeaderContainer
+{
+  min-height:40px;
+  max-height:65px;
+  height: auto;
+}
+.list_action_container
+{
+  background-color: #EFF3F7;
+  float: left;
+  height: 20px;
+  padding-top: 5px;
+  width: 100%;
+  border-bottom: 1px solid #666;
+}
+
+.list_action_container > div > div
+{
+  float: left;
+  width: 30%;
+  margin: 0 10px 0 0;
+  height: 25px;
+}
+div.list_action_container > div > div:first-child
+{
+  width: 6%;
+}
+/* **************************** */
+
+
+
+.tplCandi_client
+{
+  background: transparent url('/common/pictures/slistem/candi_client_16.png') no-repeat center 5px;
+}
+
+.tplCandi_status_play
+{
+  background: transparent url('/component/sl_candidate/resources/pictures/status/status_play.png') no-repeat center 0;
+  display: inline-block;
+  width: 16px;
+  height: 18px;
+  position: absolute;
+  right: 2px;
+  top: 5px;
+}
+
+.tplListRowContainer div.tplListRow > div.tplCandi_status
+{
+  background: transparent url('/component/sl_candidate/resources/pictures/status/status.jpg') no-repeat center 5px;
+  color: #fff;
+  text-align: center;
+  font-size: 10px;
+  line-height: 15px;
+}
+.tplListRowContainer div.tplListRow > div.tplCandi_status_50 { background: transparent url('/component/sl_candidate/resources/pictures/status/status_50.jpg') no-repeat center 5px; }
+.tplListRowContainer div.tplListRow > div.tplCandi_status_100{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_offer.jpg') no-repeat center 5px; }
+.tplListRowContainer div.tplListRow > div.tplCandi_status_151{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_expired.jpg') no-repeat center 5px;}
+.tplListRowContainer div.tplListRow > div.tplCandi_status_inactive{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_inactive.jpg') no-repeat center 5px; }
+
+.tplCandi_status_active  { background: transparent url('/component/sl_candidate/resources/pictures/status/list_active.png') no-repeat center 5px;}
+.tplCandi_status_placed  { background: transparent url('/component/sl_candidate/resources/pictures/status/list_placed.png') no-repeat center 5px;}
+.tplCandi_status_inactive{ background: transparent url('/component/sl_candidate/resources/pictures/status/list_inactive.png') no-repeat center 5px; }
+
+
+.tplCandi_status_101{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_placed.png') no-repeat center 5px; }
+.tplCandi_status_150{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_stalled.png') no-repeat center 5px; }
+.tplCandi_status_200{ background: transparent url('/component/sl_candidate/resources/pictures/status/status_failed.png') no-repeat center 5px; }
+
+.tplListRowContainer div.tplListRow > div.tplCandi_inplay
+{
+  background-position: 0 5px;
+  background-size: 20px 16px;
+  text-align: left;
+}
+
+
+.tplCandi_grade_low
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_low_16.png') no-repeat center 5px;
+  background: transparent url('/common/pictures/slistem/grade_low_16.png') no-repeat center 5px;
+}
+.tplCandi_grade_high
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_high_16.png') no-repeat center 5px;
+  background: transparent url('/common/pictures/slistem/grade_high_16.png') no-repeat center 5px;
+}
+.tplCandi_grade_top
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_top_16.png') no-repeat center 5px;
+  background: transparent url('/common/pictures/slistem/grade_top_16.png') no-repeat center 5px;
+}
+
+.tplCandi_resume
+{
+  cursor: pointer;
+  background: transparent url('/common/pictures/slistem/resume_16.png') no-repeat center 5px;
+}
+.tplCandi_note
+{
+  background: transparent url('/common/pictures/slistem/note_none_16.png') no-repeat center 5px;
+  cursor: pointer;
+}
+.tplCandi_man
+{
+  background: transparent url('/common/pictures/slistem/man_16.png') no-repeat left 5px;
+}
+.tplCandi_woman
+{
+  background: transparent url('/common/pictures/slistem/woman_16.png') no-repeat left 5px;
+}
+.tplCandi_man a,
+.tplCandi_woman a
+{
+  margin-left: 17px;
+}
+.tpl_link_cell
+{
+  cursor: pointer;
+}
+
+.tpl_link_cell.deleted a
+{
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #f7dede;
+  color: red;
+  display: inline-block;
+  line-height: 20px;
+  width: 100%;
+}
+
+li.tplListRowContainer
+{
+  position: relative;
+}
+
+li.tplListRowContainer div.tplListRow div
+{
+  white-space: nowrap;
+}
+
+li.tplListHeaderContainer div.tplListRow div
+{
+  position: relative;
+}
+
+li.tplListRowContainer div.tplListRow div.rowActionContainer
+{
+  display: none;
+  background-color: transparent;
+  border-radius: 5px;
+  padding: 2px 7px;
+  position: absolute;
+  top: 0;
+  right: 5px;
+  height: 24px;
+  border: 1px solid #666;
+  min-width: 54px;
+}
+
+li.tplListRowContainer:hover div.tplListRow div.rowActionContainer
+{
+  display: block;
+  opacity: 0.2;
+}
+li.tplListRowContainer:hover div.tplListRow div.rowActionContainer:hover
+{
+  opacity: 1;
+  background-color: #EFEFEF;
+  border-color: #0879DB;
+  box-shadow: 0 0 2px 1px #B5CBDD;
+}
+
+li.rowActive div
+{
+  font-style: italic;
+  opacity: 0.6;
+}
+li span.folderEdited
+{
+  font-weight: bold;
+  color: green;
+}
+
+.itemDroped
+{
+  opacity: 0.3;
+}
+
+
+/******************************************/
+.rss_news_container
+{
+  margin: 3px auto 15px auto;
+  width: 85%;
+  background-color: #f0f0f0;
+  border: 1px solid #DEDEDE;
+}
+.rss_news_title
+{
+  border-bottom: 1px solid #ddd;
+  color:#225577;
+  float: left;
+  min-width: 99%;
+}
+.rss_news_date
+{
+  color: #666666;
+  float: left;
+  width: 79%;
+}
+.rss_news_source
+{
+  color: #009933;
+
+  float: left;
+  width: 20%;
+}
+.rss_news_content
+{
+  padding: 0 0 0 8px;
+  background-color: #fff;
+  font-size: 11px;
+  text-align: justify;
+  float: left;
+}
+
+.rss_news_content .feed_image
+{
+  float: left;
+  width: 20%;
+  padding-top: 1.8em;
+}
+
+.rss_news_content .feed_content
+{
+  float: none;
+}
+.rss_news_content .feed_content.hasPicture
+{
+  float: right;
+  width: 75%;
+  margin-left: 5px;
+}
+.rss_news_content .feed_content b.rss
+{
+  color: #444;
+}
+
+
+
+
+
+
+
+/* ************************************************ */
+/* ************************************************ */
+/* ************************************************ */
+/* Forms */
+/* ************************************************ */
+/* ************************************************ */
+form.ContactForm
+{
+  width: 100%;
+  max-width: 900px;
+}
+form.ContactForm .formFieldWidth2
+{
+  width: 49.5%;
+}
+
+form.ContactForm .formField
+{
+  width: 275px;
+  max-width: 275px;
+}
+
+form.ContactForm .formField input,
+form.ContactForm .formField textarea
+{
+  width: 250px;
+  max-width: 250px;
+  min-width: 250px;
+}
+form.ContactForm .formField textarea
+{
+  height: 48px;
+  min-height: 48px;
+  max-height: 48px;
+}
+
+
+
+
+
+
+/* ********************************************* */
+/* Candidate form */
+
+#addcandidateId
+{
+  overflow: hidden;
+}
+#addcandidateId .innerForm
+{
+  min-height: 500px;
+}
+
+#addcandidateId .formSection
+{
+  width: auto;
+}
+#addcandidateId .innerForm > .formSection
+{
+  min-height: 350px;
+}
+.candidate_form_tabs
+{
+  width: 100%;
+  border-bottom: 2px solid #ddd;
+  height: 22px;
+  float: left;
+}
+.candidate_form_tabs li
+{
+  border: 1px solid #ddd;
+  float: left;
+  margin: 0 5px 0 0;
+  cursor: pointer;
+  background-color: #f4f4f4;
+}
+
+.candidate_form_tabs li.selected
+{
+  background-color: #DDEFFF;
+}
+.candidate_form_tabs li.tab_duplicate
+{
+  float: right;
+  border-color: orange;
+}
+.candidate_form_tabs li.tab_duplicate.selected
+{
+  border-color: red;
+}
+
+.candidate_form_tabs li div
+{
+  width: 130px;
+  text-align: center;
+  height: 22px;
+  font-style: italic;
+}
+.candidate_form_tabs li.selected div
+{
+  font-style: normal;
+  font-weight: bold;
+}
+
+.candidate_form_tabs li.tab_duplicate div
+{
+  color: orange;
+}
+.candidate_form_tabs li.tab_duplicate.selected div
+{
+  border-color: red;
+  color: red;
+}
+
+.candidate_inner_section
+{
+  background-color: #f2f2f2;
+  border: 1px solid #AAAAAA;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px;
+}
+
+/* fields */
+form.candiAddForm .formSection .formFieldContainer
+{
+  width: 328px;
+  min-width: 328px;
+  min-height: 22px;
+}
+
+form.candiAddForm .formSection .formFieldContainer .formLabel
+{
+  width: 90px;
+  min-width: 90px;
+
+  border: 1px dotted #CFCFCF;
+  border-radius: 3px 3px 3px 3px;
+  font-size: 11px;
+  padding: 2px 2px 2px 0;
+  text-align: right;
+
+  bbackground: rgb(255,246,229);
+  background: -moz-linear-gradient(left, rgba(255,246,229,1) 0%, rgba(255,239,211,1) 100%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,246,229,1)), color-stop(100%,rgba(255,239,211,1)));
+  background: -webkit-linear-gradient(left, rgba(255,246,229,1) 0%,rgba(255,239,211,1) 100%);
+  background: linear-gradient(to right, rgba(255,246,229,1) 0%,rgba(255,239,211,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff6e5', endColorstr='#ffefd3',GradientType=1 );
+}
+
+form.candiAddForm .formSection .formFieldContainer .formField
+{
+  width: 210px;
+  min-width: 210px;
+}
+
+form.candiAddForm .formSection .formFieldContainer input,
+form.candiAddForm .formSection .formFieldContainer textArea
+{
+  width: 180px;
+  min-width: 180px;
+}
+form.candiAddForm .formSection .formFieldContainer select
+{
+  width: 150px;
+  min-width: 150px;
+}
+
+form.candiAddForm .formSection .formFieldContainer .formField .currency_field
+{
+  width: 75px;
+  min-width: 75px;
+  font-size: 10px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+form.candiAddForm .formSection .formFieldContainer .formField .currency_unit
+{
+  width: 45px;
+  min-width: 45px;
+  text-align: center;
+  margin-right: 5px;
+}
+
+form.candiAddForm .formSection .formFieldContainer .formField .currency_money
+{
+  width: 50px;
+  min-width: 50px;
+  text-align: center;
+}
+
+form.candiAddForm .formSection li.token-input-token-mac
+{
+  height: 20px;
+  line-height: 20px;
+}
+form.candiAddForm .formSection li.token-input-token-mac p
+{
+  font-size: 11px;
+}
+
+form.candiAddForm .formSection .formFieldContainer.cpAutoComplete
+{
+  width: 468px;
+  min-width: 468px;
+}
+form.candiAddForm .formSection .formFieldContainer.cpAutoComplete .formField
+{
+  width: 358px;
+  min-width: 358px;
+}
+form.candiAddForm option.unavailable
+{
+  font-style: italic;
+  color: #888;
+}
+
+
+/* Specifc style for the 11 skill fields */
+form.candiAddForm .formSection .formFieldContainer.skill_field,
+form.candiAddForm .formSection .formFieldContainer.skill_field .formLabel,
+form.candiAddForm .formSection .formFieldContainer.skill_field .formField,
+form.candiAddForm .formSection .formFieldContainer.skill_field .formField select,
+form.candiAddForm .formSection .formFieldContainer.skill_field .formField input
+{
+  width: 70px;
+  min-width: 70px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+form.candiAddForm .formSection div.formFieldContainer.skill_field
+{
+  margin-right: 19px;
+}
+form.candiAddForm .formSection div.formFieldContainer.skill_field .formField
+{
+  border: 1px solid transparent;
+}
+
+form.candiAddForm li.token-input-input-token-mac input
+{
+  padding: 1px 0;
+}
+
+#addcandidateId .TSelect_mainContainer,
+#addcandidateId .TSelectLevel
+{
+  height: 280px;
+}
+
+form.candiAddForm .formFieldContainer.note_field .formField
+{
+  width: 680px;
+}
+
+
+/*********************************************************************************/
+/*********************************************************************************/
+
+
+.documentRow
+{
+  position: relative;
+}
+.documentRow .doc_detail
+{
+  border: 1px solid #ccc;
+  padding: 4px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  opacity: 0;
+}
+.documentRow .doc_detail a
+{
+  color: #777777;
+  font-style: italic;
+}
+.documentRow:hover .doc_detail
+{
+  opacity: 0.5;
+}
+.documentRow:hover .doc_detail:hover,
+.documentRow:hover .doc_detail:hover a
+{
+  opacity: 1;
+  border-color: #4C7696;
+  color: #4C7696;
+}
+
+.documentRow .doc_picture
+{
+  height: 40px;
+  width: 40px;
+  float: left;
+  border: 1px solid #CCCCCC;
+  background-color: #fff;
+}
+.documentRow .doc_name
+{
+  height: 40px;
+  float: left;
+  margin-left: 5px;
+  padding-left: 5px;
+  line-height: 20px;
+}
+
+.documentRow .doc_name a
+{
+  color: #333;
+}
+
+.documentRow .doc_picture img
+{
+  height: 24px;
+  width: 24px;
+  margin: 8px 0 0 8px;
+}
+
+.position_row
+{
+  position: relative;
+  margin-top: 5px;
+}
+.position_row > div
+{
+  width: 85px;
+  height: 65px;
+  padding: 0 0 0 5px;
+  float: left;
+  line-height: 20px;
+  position: relative;
+  border-right: 1px solid #ccc;
+}
+div.position_row > div:nth-child(2)
+{
+  border-right: 0;
+  min-width: 395px;
+}
+
+.position_row > div div
+{
+  float: left;
+}
+.position_row > div div.row div.title
+{
+  width: 62px;
+}
+.position_row > div div.row div.data
+{
+  min-width: 330px;
+}
+
+.position_row a.link_view
+{
+  color: #333;
+  line-height: 22px;
+  font-size: 13px;
+}
+
+.position_row > div.position_status
+{
+  text-align: center;
+  padding: 10px 0 0 0;
+  height: 55px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.position_status div
+{
+  padding: 32px 0 0;
+  text-align: center;
+  width: 100%;
+}
+.position_status.ontrack div
+{
+  color: #08844e;
+}
+
+.position_status.ontrack2,
+.position_status.ontrack2 div
+{
+  color: #E8895A;
+}
+.position_row.warning,
+.position_row.warning div
+{
+  color: #D31717;
+}
+.position_row.placed div
+{
+  color: goldenrod;
+}
+.position_status.warning div
+{
+  color: orange;
+}
+.position_status.critical div
+{
+  color: #B11212;
+}
+
+/*.position_status.ontrack{ background: transparent url('/component/sl_candidate/resources/pictures/status/green.png') no-repeat top left; }
+.position_status.ontrack2{ background: transparent url('/component/sl_candidate/resources/pictures/status/blue.png') no-repeat top left; }
+.position_status.warning{ background: transparent url('/component/sl_candidate/resources/pictures/status/yellow.png') no-repeat top left; }
+.position_status.critical{ background: transparent url('/component/sl_candidate/resources/pictures/status/red.png') no-repeat top left; }
+.position_status.stopped{ background: transparent url('/component/sl_candidate/resources/pictures/status/black.png') no-repeat top left; }
+.position_status.placed{ background: transparent url('/component/sl_candidate/resources/pictures/status/signed.png') no-repeat bottom left; }
+*/
+.position_status.ontrack{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_pitched_32.png') no-repeat center 10px; }
+.position_status.ontrack2{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_ccm_32.png') no-repeat center 10px; }
+.position_status.warning{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_offer_32.png') no-repeat center 10px; }
+.position_status.critical{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_stalled_32.png') no-repeat center 10px; }
+.position_status.stopped{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_fallen_32.png') no-repeat center 10px; }
+.position_status.placed{ background: transparent url('/component/sl_candidate/resources/pictures/status/candi_placed_32.png') no-repeat center 10px; }
+
+.position_row div.position_view
+{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: 0;
+  text-align: right;
+}
+
+.position_row .position_view span
+{
+  border: 1px solid #CCCCCC;
+  padding: 5px;
+  cursor: pointer;
+  opacity: 0;
+}
+#candiTab8 .entry:hover .position_view span
+{
+  opacity: 0.5;
+}
+#candiTab8 .entry:hover .position_view span:hover
+{
+  background-color: #f0f0f0;
+  border-color: #4C7696;
+  color: #4C7696;
+  opacity: 1;
+}
+
+.position_row a.position_next,
+#candiTab8 span.note_date,
+#candiTab9 span.note_date
+{
+  float: right;
+}
+.position_separator
+{
+  border: 1px solid #DDDDDD;
+  color: #077AC1;
+  margin: 15px auto;
+  padding: 4px 0 4px 8px;
+  text-align: center;
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 20px 20px #EBEBEB;
+  width: 320px;
+  font-weight: bold;
+}
+
+
+.meeting_row
+{
+  border-top: 1px solid #bbb;
+  border-left: 3px solid #99BE97;
+  border-right: 1px solid #bbb;
+  padding: 5px 5px 5px 55px;
+  position: relative;
+  background: transparent url('/component/sl_candidate/resources/pictures/meeting_bg.png') no-repeat 10px 33%;
+}
+div.meeting_row:nth-child(even)
+{
+  background-color: #f2f2f2;
+}
+.meeting_row:last-child
+{
+  border-bottom: 1px solid #bbb;
+  margin-bottom: 15px;
+}
+
+
+.meeting_row div
+{
+  margin: 2px 0;
+}
+
+.meeting_row .meeting_row_first,
+.meeting_row .meeting_row_forth,
+.meeting_row .meeting_row_sixth
+{
+  float: left;
+  width: 100px;
+}
+.meeting_row .meeting_row_creator,
+.meeting_row .meeting_row_attendee
+{
+  float: left;
+  width: 100px;
+  text-align: center;
+  background-color: #f4f4f4;
+}
+.meeting_row .meeting_row_date
+{
+  float: left;
+  min-width: 420px;
+  margin-left: 10px;
+}
+.meeting_row .meeting_row_date span
+{
+  font-style: italic;
+}
+
+.meeting_row .meeting_row_status
+{
+  background-color: #F4F4F4;
+  float: left;
+  text-align: center;
+  width: 100px;
+  color: #789975;
+}
+.meeting_row .meeting_row_action
+{
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 170px;
+}
+
+div.meeting_row .meeting_passed_late span,
+span.meeting_passed_late
+{
+  color: #BD4646;
+  font-weight: bold;
+}
+div.meeting_row .meeting_passed span,
+span.meeting_passed
+{
+  color: #BD4646;
+}
+div.meeting_row .meeting_close span,
+span.meeting_close
+{
+  color: orange;
+}
+.meeting_message
+{
+  float: left;
+  width: 50%;
+  border: 1px solid #BD4646;
+  padding: 5px;
+  margin: 5px auto;
+}
+
+
+.meeting_row.meeting_done
+{
+  border-left-color: #ddd;
+  background: transparent url('/component/sl_candidate/resources/pictures/meeting_done_bg.png') no-repeat 10px 33%;
+}
+.meeting_row.meeting_cancelled
+{
+  border-left-color: #ddd;
+  background: transparent url('/component/sl_candidate/resources/pictures/meeting_cancelled_bg.png') no-repeat 10px 33%;
+}
+
+.meeting_row.meeting_passed_late,
+.meeting_row.meeting_passed
+{
+  border-left-color: #E46856;
+  background: transparent url('/component/sl_candidate/resources/pictures/meeting_passed_bg.png') no-repeat 10px 33%;
+}
+.meeting_row.meeting_close
+{
+  border-left-color: orange;
+  background: transparent url('/component/sl_candidate/resources/pictures/meeting_close_bg.png') no-repeat 10px 33%;
+}
+
+
+.genderPic
+{
+  border: 1px solid #dedede;
+  padding: 4px 2px 0;
+}
+
+form.candiAddForm .formSection .formFieldContainer.genderField
+{
+  min-width: 265px;
+  width: 265px;
+}
+form.candiAddForm .formSection .formFieldContainer.genderField .formField
+{
+  min-width: 155px;
+  width: 155px;
+}
+
+form.candiAddForm .formSection .formFieldContainer.formSectionTitle
+{
+  margin: 8px 0 1px 5px;
+  min-height: 16px;
+}
+
+div.formFieldContainer.fullWidthMce
+{
+  width: 900px;
+}
+div.formFieldContainer.fullWidthMce div.formField,
+div.formFieldContainer.fullWidthMce div.formField textarea
+{
+  width: 730px;
+}
+
+form#addcontId .formFieldSeparator
+{
+  border-top: 1px solid #DEDEDE;
+  height: 10px;
+  width: 90%;
+  float: none;
+  margin: 10px auto 0 auto;
+}
+
+li.tplListRowContainer div.tplListRow div.list_salary_cell
+{
+  text-align: center;
+  font-size: 11px;
+}
+
+.note_edit_link
+{
+  opacity: 0.0;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+.entry:hover .note_edit_link
+{
+  opacity: 0.3;
+}
+
+.candiTabsContent .entry:hover .note_edit_link:hover
+{
+  opacity: 1;
+}
+
+.contact_warning
+{
+  text-align: center;
+  line-height: 18px;
+  font-size: 110%;
+  margin: 2px auto 10px auto;
+  padding: 5px 2px;
+
+  width: 75%;
+  background-color: #F4E3D4;
+  color: #822B20;
+}
+
+.search_result_title_nb
+{
+  color: #007A43;
+  font-style: italic;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 1px solid #ddd;
+  line-height: 16px;
+}
+
+.age_field_container .formField img
+{
+  display: none;
+}
+
+
+.meetingListRight
+{
+  float: right;
+  width: 20%;
+  margin-left:5px;
+  padding-left: 5px;
+  line-height: 20px;
+  border-left: 1px solid #dedede;
+}
+.meetingListLeft
+{
+  float: left;
+  max-height: 620px;
+  min-height: 450px;
+  overflow: hidden;
+  width: 78%;
+}
+.meetingListRight a.selected
+{
+  border-left: 15px solid #ebebeb;
+  padding-left: 10px;
+  font-weight: bold;
+}
+#meeting_tabs_contents div.tplListContainer
+{
+  max-height: 555px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.candi_row_edit
+{
+  background: transparent url('/component/sl_candidate/resources/pictures/edit_24.png') no-repeat top left;
+  height: 24px;
+  width: 24px;
+  display: block;
+  margin-right: 5px;
+  float: left;
+}
+
+.candi_row_note
+{
+  background: transparent url('/component/sl_candidate/resources/pictures/tabs/note_24.png') no-repeat top left;
+  height: 24px;
+  width: 24px;
+  display: block;
+  float: left;
+}
+.candi_row_folder
+{
+  background: transparent url('/component/sl_folder/resources/pictures/folder_remove_32.png') no-repeat top left;
+  height: 24px;
+  width: 24px;
+  display: block;
+  float: left;
+  margin-left: 5px;
+}
+
+.meeting_filter_btn
+{
+  font-size: 13px;
+  font-weight: bold;
+  width: 80px;
+  display: block;
+  background: transparent url('/component/sl_candidate/resources/pictures/go_right_arrow.png') no-repeat top left;
+  padding-left: 22px;
+}
+.meetingListRightHeader
+{
+  background-color: #f0f0f0;
+  font-weight: bold;
+  padding: 2px 0;
+  margin: 0 0 10px 0;
+  font-size: 11px;
+  color: #666;
+}
+.meetingListRightHeader span
+{
+  color: #777;
+  font-size: 10px;
+  font-style: italic;
+  float: right;
+}
+
+.meetingListRight form,
+.meetingListRight form .innerForm,
+.meetingListRight form .formFieldContainer
+{
+  margin: 0;
+  padding: 0;
+}
+
+.meeting_list_selector
+{
+   width: 210px;
+   overflow: hidden;
+   margin: 0 0 20px 0;
+}
+.meeting_list_selector ul.token-input-list-mac
+{
+  width: 210px;
+  min-width: 210px;
+  overflow: hidden;
+}
+.meeting_list_selector div.formField ul li
+{
+  width: 175px;
+  min-width: 175px;
+}
+.meeting_list_selector div.formField ul li input
+{
+  width: 170px;
+  min-width: 170px;
+}
+.meeting_list_done
+{
+  padding-right: 24px;
+  line-height: 20px;
+  background: transparent url("/component/sl_candidate/resources/pictures/meeting_done_bg.png") no-repeat top right;
+  background-size: 14px 18px;
+}
+.meeting_list_late
+{
+  padding-right: 24px;
+  line-height: 20px;
+  background: transparent url("/component/sl_candidate/resources/pictures/meeting_passed_bg.png") no-repeat top right;
+  background-size: 16px 16px;
+}
+
+.meeting_filter div
+{
+  float: left;
+}
+.meeting_filter div.meeting_picker
+{
+  width: 90px;
+}
+.meeting_filter div.meeting_total
+{
+  width: 35px;
+  font-weight: bold;
+}
+.meeting_filter div.meeting_split
+{
+  width: 70px;
+  font-style: italic;
+  float: right;
+  color: #777;
+  text-align: right;
+}
+
+form.candiAddForm .formSection .formFieldContainer.full_width_msg
+{
+  min-width: 97%;
+  width: 97%;
+}
+
+.candiTopSectionCover
+{
+  position: absolute;
+  width: 100%;
+  height: 350px;
+  background-color: #555;
+  opacity: 0.15;
+}
+.candiTopSectionCoverMsg
+{
+  position: absolute;
+  height: 50px;
+  background: #fff url('/component/search/resources/pictures/delete_row_16.png') no-repeat 350px 5px;
+  width: 370px;
+  left: 15%;
+  top: 40%;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 24px;
+  text-align: center;
+  cursor: pointer;
+}
+.close_preview
+{
+  text-align: center;
+  margin-bottom: 10px;
+
+}
+.close_preview img
+{
+  margin-left: 10px;
+}
+
+.log-title
+{
+  border-bottom: 1px dashed #aaa;
+  color: #666;
+  display: block;
+  font-weight: bold;
+  margin: 10px 0 5px;
+  width: 85%;
+}
+
+#candiTab6 .note_header,
+#candiTab6 .note_content
+{
+  line-height: 20px;
+  padding-left: 5px;
+}
+.note_content
+{
+    border-top: 1px dashed #e8e8e8;
+    line-height: 20px;
+    margin-left: 20px;
+    padding-top: 3px;
+}
+
+.no-candidate
+{
+  min-height: 300px;
+}
+
+.candi-picthed
+{
+  color:#63A863;
+}
+.candi-picthed-active
+{
+  color:#F48618;
+}
+.candi-pop-link
+{
+  background-color: #f0f0f0;
+  border: 1px solid #aaa;
+  display: inline-block;
+  height: 22px;
+  text-align: center;
+  width: 230px;
+}
+.candi-pop-link b { color: inherit; }
+
+#addcandidateId input.disabled
+{
+  background-color: #efefef;
+  font-style: italic;
+  border-color: #ddd;
+}

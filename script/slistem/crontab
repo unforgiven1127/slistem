@@ -1,0 +1,16 @@
+#Generic cron for all system coponents. Covers login, events, notification, charts...
+*/10 * * *  * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1" -O - >> /hdd/log/sli_cron_all.html
+
+#update rss feeds
+*/15 0-8,22-23 * *  * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-001&update_rss_feed=1" -O - >> /hdd/log/sli_cron_rss_night.html
+17,47 8-22 * *  * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-001&update_rss_feed=1" -O - >> /hdd/log/sli_cron_rss_day.html
+
+#update profile quality 36k a day
+*/10 0-7 * *  * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-001&update_profile_rating=1" -O - >> /hdd/log/sli_cron_profile.html
+
+#update currency ONCE in the morning
+25 5 * * * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem1.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-001&update_currency=1" -O - >> /hdd/log/sli_cron_currency.html
+#25 5 * * * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem2.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-001&update_currency=1&no-up" -O - >> /hdd/log/sli_cron_currency.html
+
+#jd expiration ONCE the morning
+55 5 * * * /usr/bin/wget -t 3 --no-dns-cache --no-cache --no-check-certificate --delete-after "https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-005&notify_expiration=1&do_jd_expiration=1" -O - >> /hdd/log/sli_cron_jd.html

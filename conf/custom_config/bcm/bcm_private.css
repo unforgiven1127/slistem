@@ -1,0 +1,140 @@
+body
+{
+  background: #F1F1F1;
+}
+
+div#footerId
+{
+  display: block;
+  height: 0px;
+  border: 0;
+}
+
+div.versionBloc
+{
+  color: #FFFFFF;
+  position: fixed;
+  right: 22px;
+  text-align: center;
+  top: 0;
+  width: 100px;
+  z-index: 9999999;
+  font-size: 10px;
+  font-style: italic;
+  display: block;
+}
+
+
+/* overload the nav menu styles to allow vertical menu */
+#menunavleft
+{
+  float: none;
+  position: fixed;
+  top: 40px;
+  left: 0;
+  width: 55px;
+  height: 2500px;
+  background-color: #3C4247;
+  z-index: 5000000;
+}
+#menunavright
+{
+  float: none;
+  position: fixed;
+  top: 40px;
+  right: 0;
+  width: 55px;
+  height: 2500px;
+  background-color: #59636a;
+  z-index: 5000000;
+}
+
+
+#menunavleft + #componentContainerId,
+#right #componentContainerId
+{
+  margin: 35px 0 0 0;
+  width: 94%;
+  min-width: 90%;
+  max-width: 1350px;
+}
+
+
+#menunavleft.menu > ul > li > div > ul.subMenu > li
+{
+  width: 210px;
+  min-width: 210px;
+  background-color: #3C4247;
+  float: left;
+  padding: 7px 10px;
+}
+#menunavleft.menu > ul > li > div > ul.subMenu > li a
+{
+  color: #fff;
+  font-size: 14px;
+}
+div #menunavleft.menu_open > ul > li > div > ul.subMenu > li
+{
+  padding: 4px 10px;
+}
+div #menunavleft.menu_open > ul > li > div > ul.subMenu > li a
+{
+  font-size: 12px;
+}
+
+
+#menunavleft > ul > li
+{
+  background-color: #59636a;
+  border-top: 2px solid #616B72;
+  margin: 1px 0 0;
+}
+#menunavleft > ul > li:hover
+{
+  background-color: #3C4247;
+}
+div#menunavleft.menu_open > ul > li:hover
+{
+  background-color: #59636A;
+}
+
+#menunavleft > ul > li .mainMenuPic img
+{
+  width: 32px;
+  height: 32px;
+}
+
+
+
+
+.menunav1pos_left #componentContainerId,
+.menunav2pos_left #componentContainerId
+{
+  padding-left: 60px;
+  width: 94%;
+  min-width: 94%;
+  margin: 35px 0 0 0;
+}
+.menunav1pos_right #componentContainerId,
+.menunav2pos_right #componentContainerId
+{
+  padding-right: 60px;
+  width: 94%;
+  min-width: 94%;
+  margin: 35px 0 0 0;
+}
+
+.menunav1pos_left.menunav2pos_right #componentContainerId,
+.menunav1pos_right.menunav2pos_left #componentContainerId
+{
+  padding-right: 60px;
+  width: 89%;
+  min-width: 89%;
+  margin: 35px 0 0 0;
+}
+
+.menunav1pos_left #headerId
+{
+  margin: 0;
+}
+

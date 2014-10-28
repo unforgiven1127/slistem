@@ -1,0 +1,208 @@
+/*
+    Document   : menu
+    Created on : May 7, 2013, 7:07:12 PM
+    Author     : root
+    Description:
+        Handles basic menu display
+*/
+
+.menu > ul > li
+{
+  display: inline-block;
+  position: relative;
+  padding: 0 5px 0 5px;
+}
+
+.menu > ul > li > div > ul.subMenu
+{
+  display: none;
+  position: absolute;
+  z-index: 2;
+}
+
+
+.menu > ul > li:hover .subMenu,
+.menu > ul > li > div:hover .subMenu,
+.menu > ul > li:hover > div > a
+{
+  display: block;
+}
+
+.menu > ul > li > div > ul.subMenu > li
+{
+  display: list-item;
+  padding: 5px 10px;
+}
+
+#menunavleft > ul > li,
+#menunavright > ul > li
+{
+  display: list-item;
+  padding: 0;
+}
+
+#menunavtop ul.subMenu
+{
+ top:100%;
+ left:-30px;
+}
+
+#menunavbottom > ul > li > div > ul.subMenu
+{
+ bottom:100%;
+}
+
+#menunavleft > ul > li > div > ul.subMenu
+{
+  left:100%;
+  width: 100%;
+  min-width: 230px;
+  background-color: #3C4247;
+}
+
+#menunavleft > ul > li > div > ul.subMenu img
+{
+  width: 16px;
+  height: 16px;
+}
+
+
+
+#menunavleft.menu_open > ul > li > div > ul.subMenu
+{
+  left: 0;
+  position: relative;
+  border: 0;
+  background-color: #3c4247;
+}
+#menunavleft > ul > li
+{
+  display: inline;
+  float: left;
+  width: 55px;
+}
+div#menunavleft.menu_open > ul > li
+{
+  width: 100%;
+}
+.menu.menu_open > ul > li:hover > div > ul.subMenu
+{
+  display: none;
+}
+.menu > ul > li > div.menu_open_label a
+{
+  display: block;
+  float: left;
+}
+.menu > ul > li > div.menu_open_label img
+{
+  margin-left: 10px;
+}
+
+.menu_open_label
+{
+  width: 100%;
+  height: 36px;
+  overflow: hidden;
+}
+.menu_open .menu_open_label
+{
+  height: auto;
+}
+.menu_open ul.subMenu
+{
+  padding: 10px 0;
+}
+.menu_open ul.subMenu li
+{
+  margin: 2px 0 2px 20px;
+}
+.menu .menu_item_label
+{
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  float: left;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-left: 5px;
+  width: 185px;
+  height: 32px;
+  line-height: 32px;
+}
+.menu .menu_item_label a
+{
+  color: #fff;
+}
+.menu .menu_item_label.expendable
+{
+  background: url('/component/menu/resources/pictures/menu_expendable.png') no-repeat right 5px;
+}
+.menu .menu_item_label.expended
+{
+  background: url('/component/menu/resources/pictures/menu_expended.png') no-repeat right 5px;
+}
+
+
+
+
+
+#menunavright > ul > li > div > ul.subMenu
+{
+ right:100%;
+ top:0;
+}
+
+#menunavleft ul
+{
+  float: left;
+  width: 100%;
+}
+
+ul.subMenu{
+  background: #FFF;
+  border: 1px solid #B2BBD0;
+}
+
+
+/* Folder submenu */
+#folderlist-menu
+{
+  display: none;
+  position: absolute;
+  top: 50px;
+  left: -20px;
+  background: #333333;
+  padding: 0 10px 10px 10px;
+  max-height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#folderlist-menu a { color: #fff; }
+
+#folderlist-menu ul
+{
+  margin-left: 10px;
+}
+#folderlist-menu li
+{ display: list-item; width: 400px; }
+
+#folderlist a { color: #fff; }
+
+#folderlist-menu > li > ul > li ul
+{
+  display: none;
+}
+
+.menu_action_separator
+{
+  max-height: 1px;
+}
+.menu_action_separator div
+{
+  height: 1px;
+  background-color: #777C7F;
+  width: 75%;
+  margin-left: 10px;
+}

@@ -1,0 +1,375 @@
+#documentFormId
+{
+  margin: 20px auto 0 auto;
+  overflow-x: hidden;
+}
+
+#documentFormId input[type=text],
+#documentFormId input[type=file],
+#documentFormId textarea
+{
+  width: 500px;
+  max-width: 500px;
+}
+#documentFormId .formFieldContainer
+{
+  width: 750px;
+  float: left;
+}
+#documentFormId .formFieldContainer .formLabel
+{
+  width: 130px;
+  text-align: right;
+  float: left;
+  margin-right: 5px;
+}
+#documentFormId .formFieldContainer .formField
+{
+  width: 500px;
+  float: left;
+}
+#documentFormId .formFieldContainer .formField input
+{
+  width: 500px;
+}
+
+#documentFormId textarea
+{
+  height: 75px;
+}
+
+#documentFormId .formFieldContainer
+{
+  margin-bottom: 10px;
+}
+
+div.custom_right_section
+{
+  display: none;
+  padding-bottom: 10px;
+}
+div.formSection.doc_right_section
+{
+  border-left: 2px solid #bbb;
+  border-bottom: 1px solid #eee;
+  padding: 2px 0 2px 10px;
+  margin-left: 120px;
+  width: 590px;
+}
+
+#doc-folders
+{
+  min-height: 400px;
+}
+#doc-folders > div:first-child
+{
+  display: block;
+}
+
+
+#shared-space ul li
+{
+  position: relative;
+}
+
+#shared-space a.subfolder,
+#shared-space a.folderitem,
+.foldername,
+.list-name
+{
+  width: 100%;
+  line-height: 30px;
+  height: 30px;
+  font-size: 14px;
+  display: block;
+  vertical-align: middle;
+  padding: 2px 0 2px 0;
+}
+
+div.list-name.with_description
+{
+  height: 40px;
+  line-height: 19px;
+}
+
+div.with_description .short_desc
+{
+  font-style: italic;
+  color: #777;
+  font-size: 11px;
+}
+
+.foldername > a
+{
+  font-size: 16px;
+}
+
+.list-name img,
+.subfolder img
+{
+  float: left;
+  margin-right: 5px;
+  margin-left: 4px;
+  width: 32px;
+}
+
+.foldercontent
+{
+  padding: 2px 5px 2px 5px;
+  background: #F0F0F0;
+}
+
+.document-list
+{
+  position: relative;
+}
+
+.document-list .folderitem .row-actions
+{
+  padding: 4px;
+  float: left;
+  margin-left: 25px;
+}
+
+#last_documents .tplListHeaderContainer
+{
+display: none;
+}
+
+.document-list .folderitem .row-actions > span
+{
+  height: auto !important;
+  padding: 0 !important;
+  width: 80px !important;
+}
+
+.document-list .folderitem .row-actions > div,
+.document-list .folderitem .row-actions > span,
+.document-list .folderitem > div
+{
+  float: left;
+}
+
+.document-list li div > div
+{
+  border-right: 1px solid transparent;
+  border-left: 1px solid transparent;
+}
+
+/* Fast upload */
+
+#fastUploadId
+{
+  background-color: #F0F0F0;
+}
+
+#fastUploadId input[type=submit],
+.fast-upload .formLabel,
+.foldercontent > ul > li > input,
+#fastUploadInnerId input[name=document]
+{
+  display: none;
+}
+
+#browse
+{
+  cursor: pointer;
+}
+
+#fastUploadInnerId
+{
+  padding: 0; margin: 0;
+  text-align: center;
+  background: #E0E0E0;
+  border: 2px dashed #9a9b9a;
+}
+
+.folderitem > div
+{
+  color: #333333 !important;
+}
+
+.folderitem:hover
+{
+  cursor: pointer;
+  color: #000;
+}
+
+.fast-upload
+{
+  position: relative;
+}
+
+.loading-files
+{
+  display: none;
+  background: #F0F0F0;
+  position: absolute; top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.loading-files ul
+{
+  margin: 5px;
+}
+
+.loading-files ul li
+{
+  display: list-item;
+}
+
+.loading-files ul{
+    list-style:none;
+}
+
+.loading-files ul li{
+    padding:5px;
+    height: 20px;
+    position: relative;
+}
+
+.loading-files ul li input{
+    display: none;
+}
+
+.loading-files ul li p
+{
+    overflow: hidden;
+    white-space: nowrap;
+    color: #333;
+    font-size: 12px;
+    position: absolute;
+    top: 5px;
+    left: 40px;
+}
+
+.loading-files ul li i{
+    font-weight: normal;
+    font-style:normal;
+    color:#7f7f7f;
+    display:block;
+}
+
+.loading-files ul li canvas{
+    top: 2px;
+    left: 5px;
+    position: absolute;
+}
+
+.loading-files ul li span{
+    width: 15px;
+    height: 12px;
+    background: url('../pictures/icons.png') no-repeat;
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    cursor:pointer;
+}
+
+.loading-files ul li.working span{
+    height: 16px;
+    background-position: 0 -12px;
+}
+
+.loading-files ul li.error p{
+    color:red;
+}
+
+.documentDetails
+{
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px;
+  position: relative;
+}
+
+.documentDetails .documentDetailRow
+{
+  float: left;
+  width: 675px;
+  line-height: 22px;
+  border-top: 1px solid #dfdfdf;
+}
+.documentDetails div.documentDetailRow:first-child
+{
+  border-color: transparent;
+}
+.documentDetails .documentDetailRow .label
+{
+  float: left;
+  width: 15%;
+  background-color: #f0f0f0;
+  line-height: 22px;
+  padding-right: 5px;
+  text-align: right;
+}
+.documentDetails .documentDetailRow .data
+{
+  float: left;
+  margin-left: 5px;
+  width: 82%;
+}
+
+.documentDetailRow .data.fileContent
+{
+  float: right;
+  border-left: 2px solid #ddd;
+  padding-left: 10px;
+}
+
+.folderitem div.file_size,
+.folderitem div.creator
+{
+  font-size: 11px;
+  color: #555 !important;
+  font-style: italic;
+}
+
+.documentDetailRow .data span.read_more
+{
+  color: orange;
+}
+
+.documentDetailRow .revision_date
+{
+  width: 100px;
+  font-style: italic;
+  float: left;
+  font-size: 10px;
+  color: #777;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.documentDetailRow .revision_file
+{
+  min-width: 400px;
+  float: left;
+}
+
+.list_title
+{
+  margin: 0 0 10px 0;
+  padding: 20px 10px 5px 10px;
+  text-transform: uppercase;
+  color: #2A6991;
+  border-bottom: 1px solid #aaa;
+  font-size: 15px;
+  background-color: #fff;
+}
+
+.add_document_block
+{
+  float: left; width: 36%; text-align: center; background: none repeat scroll 0 0 #F0F0F0; padding: 10px;
+}
+.add_document_block > div
+{
+  height: 125px; border: 2px solid transparent; background-color: #e0e0e0; position:relative;
+}
+.quickadd_document_block
+{
+  height: 150px; float: right; width: 55%; margin-left: 20px; min-width: 380px;
+}

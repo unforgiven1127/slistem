@@ -1,0 +1,329 @@
+
+
+/**********************************/
+/* left side category  selector  */
+
+#settingListId
+{
+  width:12%; min-height:80px; width: 125px; float:left;
+}
+#settingListId li
+{
+  padding:5px; margin:0 auto 5px auto; width: 90%; border:1px solid #CECECE;
+  height: 16px;
+  background-color: #fff;
+  float:left;
+
+  -webkit-border-radius: 5px ;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#settingListId li:hover,
+#settingListId li:nth-child(even):hover
+{
+  background-color: #85B2DD;
+  color: #fff;
+  font-weight: bold;
+
+   webkit-box-shadow: -1px 1px 1px orange;
+  -moz-box-shadow: -1px 1px 1px orange;
+  box-shadow: -1px 1px 1px orange;
+}
+
+#settingListId li:nth-child(even)
+{
+  background-color: #EDF2F7;
+}
+
+#settingListId li.stgcatSelected
+{
+  border-color: orange;
+}
+
+.settingContainer
+{
+  float: right;
+  width:86%;
+  border-left: 3px solid #dedede;
+  padding: 10px;
+  margin-right: 10px;
+  min-height: 250px;
+  border: 1px solid #CECECE;
+
+  -webkit-border-radius: 5px ;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+}
+
+div .formlabel
+{
+  float:left;
+  width:200px;
+}
+
+#siteConfigFormId .innerForm .formFieldContainer div.formField
+{
+  float:left;
+  width:670px;
+}
+
+#siteConfigFormId .innerForm .formFieldContainer div.formField input
+{
+  width:600px;
+}
+
+
+/* ************************* */
+/* Form to manage rights     */
+
+#usrRightFormId div.formField
+{
+  width: 100%;
+  border-bottom: 1px solid #DFDFDF;
+}
+
+#usrRightFormId div.formField input[type=checkbox]
+{
+  float: left;
+  margin-right: 10px;
+  width: 20px;
+}
+
+.rightListRow
+{
+  min-height: 20px;
+  margin: 3px 0 3px 10px;
+  float: left;
+  width: 95%;
+}
+
+div.dataAccessRow
+{
+  width: 48%;
+  max-width: 48%;
+  margin-right: 10px;
+}
+/*div.dataAccessRow .rightListRow
+{
+  width: 87%;
+}*/
+.dataAccessRow label
+{
+  float: left;
+  width: 75%;
+}
+
+
+.rightListLabel
+{
+  float: left;
+  width: 225px;
+  color: #000;
+}
+
+.rightListGroup
+{
+  float: left;
+  width: 75px;
+  color: #000;
+  text-align: center;
+}
+.rightListGroup a
+{
+  color: #135393;
+  cursor: help;
+}
+
+.rightListDescription
+{
+  float: left;
+  min-width: 550px;
+}
+
+.rightListLink
+{
+  float: right;
+  width: 45px;
+}
+
+.rightListComponentTitle
+{
+  float: left;
+  padding: 5px 0 5px 10px;
+  margin: 5px 0;
+  width: 100%;
+  background-color: #ececec;
+  font-weight: bold;
+}
+
+.childRightDiv
+{
+  display: none;
+  border-left: 3px solid #484848;
+  padding: 5px 0 5px 10px;
+  margin: 7px 0 7px 20px;
+  width: 98%;
+  float: left;
+
+  background-color: #EDF2F7;
+  color: #555;
+  font-style: italic;
+  font-size: 11px;
+}
+
+.rightRight span
+{
+  border: 1px solid #1B6DB5;
+  padding: 1px 4px;
+  margin: 0 4px 0 0;
+  line-height: 26px;
+
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+}
+
+.rightAliases span
+{
+  border: 1px solid #ccc;
+  padding: 1px 4px;
+  margin: 2px 4px 2px 0;
+  line-height: 18px;
+  color: #888;
+
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+
+  font-size: 10px;
+  float: left;
+}
+.rightAliases span:first-child
+{
+  border: 1px solid transparent;
+  color: #333;
+  font-size: 12px;
+}
+
+/* ************************* */
+
+.userRightRow
+{
+  border:1px solid #CECECE;
+  margin:5px;
+  padding:5px;
+  cursor: pointer;
+}
+
+
+#settings div.tabs.vertical ul.sub-apps_links
+{
+  width: 150px;
+  border-right: 2px solid #fff;
+}
+
+
+div.tabs.inline > ul.links > li.superAdmin
+{
+  color: #bbb;
+  font-style: italic;
+}
+
+div.tabs.vertical > .contents > div
+{
+  padding-top: 15px;
+}
+
+.settingHomeMsg
+{
+  margin: 20px 10px;
+  padding: 20px;
+  background-color: #fff;
+}
+
+
+.settingsTitleBloc
+{
+  border:1px solid #CECECE;
+  margin:10px 0;
+  padding:10px;
+  color: #077AC1;
+  font-size: 15px;
+  background-color: #efefef;
+}
+
+
+div.formFieldTitle.settingsComponentTitle
+{
+  margin:20px 0 10px 0;
+}
+.settingCronRow
+{
+  padding: 8px 20px;
+  width: 450px;
+  border-bottom: 1px solid #ddd;
+}
+.settingCronRow a
+{
+  float: right;
+}
+
+
+/*****************************************/
+/*****************************************/
+/******** Generic form *******************/
+/*****************************************/
+
+#siteConfigFormId .formLabel
+{
+  float: left;
+  width: 175px;
+  margin-right: 15px;
+  text-align: right;
+}
+#siteConfigFormId .formField
+{
+  float: left;
+  width: 700px;
+}
+
+
+.user-pk
+{
+  width: 35px;
+  text-align: center;
+  cursor: help;
+}
+.user-sys-data
+{
+  display: none;
+}
+.user-sys-data span
+{
+  display: inline-block;
+  border-right: 1px solid #bbb;
+  margin-right: 5px;
+  padding-right: 5px;
+}
+ .user-id
+{
+  color: #666;
+}
+
+.user-pseudo
+{
+  display: inline-block;
+  color: #2a6991;
+}
+
+.user-incative
+{
+  display: inline-block;
+  height: 24px;
+  width: 150px;
+  color: #666;
+  font-style: italic;
+  cursor: help;
+  background: transparent url('/common/pictures/deleted_24.png') no-repeat top right;
+}

@@ -1,0 +1,41 @@
+.mngListCpSection
+{
+  margin-top: 20px;
+}
+.mngListCpSection div.formLabel
+{
+  width: 150px;
+  text-align: center;
+}
+
+.mngListCpSection div.formField,
+.mngListCpSection div.formField input
+{
+  width: 125px;
+  min-width: 125px;
+}
+
+#list_detail
+{
+  background-color: #f6f6f6;
+}
+#list_detail .mngListRowSection
+{
+  border-bottom: 1px solid #ddd;
+  width: 400px;
+}
+
+.mngListNewRow
+{
+  margin-top: 10px;
+}
+.mngListNewRow div.formLabel
+{
+   width: 250px;
+}
+
+.mngListNewRow div.formField,
+.mngListNewRow div.formField input
+{
+  width: 300px;
+}

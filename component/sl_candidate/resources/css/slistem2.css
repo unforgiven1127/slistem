@@ -1,0 +1,91 @@
+.default_theme .candi_detail_title
+{
+   height: 30px;
+   background: 0;
+   border-bottom: 2px solid #567994;
+   line-height: 30px;
+}
+div.candiTopSection.default_theme
+{
+  border-top: 0;
+  border-left: 0;
+}
+
+.mainTitle
+{
+  background-color: #4C6A82;
+  border-radius: 8px 8px 0 0;
+  color: #FFFFFF;
+  display: block;
+  float: left;
+  font-size: 12px;
+  height: 30px;
+  line-height: 30px;
+  margin-right: 10px;
+  text-align: center;
+  width: 175px;
+}
+
+.default_theme .top_action
+{
+  float: right;
+  width: 120px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.default_theme .top_action a
+{
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.candiTopSectLeft .default_theme .candi_detail_row
+{
+  margin: 0;
+  border-left: 1px solid #DADADA;
+}
+
+div.default_theme .candi_detail_row div.candi_detail_label
+{
+  width: 65px;
+  padding-left: 5px;
+  background: #F3F3F3;
+  border-left: 0;
+  border-right: 1px solid #DADADA;
+  color: #405863;
+  text-align: left;
+}
+
+
+.default_theme .candi_detail_value
+{
+  width: 180px;
+}
+
+.default_theme .candi_detail_row.right div.candi_detail_value {
+    width: 177px;
+}
+
+.default_theme div.meeting_history
+{
+  margin-right: 5px;
+}
+
+
+.default_theme .candi_detail_row div.candi_status_icon
+{
+  margin-left: 25px;
+}
+
+.candi_skill_bar.default_theme
+{
+  height: 34px;
+}
+
+.candi_skill_bar.default_theme span
+{
+  line-height: 17px;
+  height: 34px;
+}

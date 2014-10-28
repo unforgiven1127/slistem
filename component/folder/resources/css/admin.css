@@ -1,0 +1,70 @@
+div.foldername
+{
+  background-image: url('../img/folder_32.png');
+  background-repeat: no-repeat;
+  background-position: left;
+  height: 32px;
+  padding-left: 40px;
+  line-height: 32px;
+  font-size: 14px;
+  position: relative;
+}
+
+ul.folder
+{
+  padding-left: 16px;
+  display: block;
+}
+
+ul.folder > li
+{
+  min-height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  padding: 5px 0 5px 0;
+  display: list-item;
+  position: relative;
+}
+
+ul.folder > li > a
+{
+  font-size: 14px;
+  margin-left: 16px;
+}
+
+ul.folder > li > div,
+ul.folder > li > ul
+{
+  margin-left: 16px;
+}
+
+ul.folder > li > div.filename
+{
+  padding-left: 40px;
+  height: 32px;
+  display: block;
+  background-image: url('../img/file_32.png');
+  background-repeat: no-repeat;
+  background-position: left;
+}
+
+ul.folder > li .folder
+{
+  border-top: 1px solid #d9d9d9;
+}
+
+div.item-actions
+{
+  position: absolute;
+  right: 10px;
+  top: 0;
+  height:20px;
+}
+
+div.item-actions > a
+{
+  float: left;
+  display: block;
+  margin-left: 10px;
+}
+

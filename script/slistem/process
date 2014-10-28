@@ -1,0 +1,19 @@
+//Start with consultants
+https://slistem.devserv.com/script/cosnultant_bridge.php5
+
+
+//Companies ~55K
+https://slistem.devserv.com/script/company_bridge.php5?batch=10000
+
+
+//Candidates 320K
+https://slistem.devserv.com/script/note_bridge.php5?batch=25000
+
+
+
+//will load 1 000 000 notes ~900k in slistem
+https://slistem.devserv.com/script/note_bridge.php5?batch=50000
+
+
+//will load 100 000 char notes ~60k in slistem  offset 100000 to avoid conflict of pk
+https://slistem.devserv.com/script/charnote_bridge.php5?batch=5000

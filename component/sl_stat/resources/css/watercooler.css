@@ -1,0 +1,38 @@
+#headerId { display: none; }
+#menuactleft { display: none; }
+
+div#componentContainerId div.componentMainContainer,
+#div#componentContainerId, #menuactleft + #componentContainerId { margin: 0; width: 100%; }
+#statPageSectionRight { max-width: 100%; height: 100%; width: 78%; }
+#statPageSectionRight > div { min-width: 95%; min-height: 325px;}
+#statPageSectionRight > div.title { min-width: 98%; min-height: 20px;}
+
+
+body .h3
+{
+  font-size: 20px;
+  margin: 0 0 0 5%;
+  padding: 4px 10px;
+  text-transform: none;
+}
+.kpi_container
+{
+  margin: 0;
+}
+
+
+body #componentContainerId,
+body .componentMainContainer,
+body #menunavleft + #componentContainerId,
+body #menuactleft + #componentContainerId,
+body #menunavright + #componentContainerId,
+body #menuactright + #componentContainerId,
+body div#componentContainerId, body div#componentContainerId div.componentMainContainer
+{
+  width: 100%;
+  margin: 0;
+}
+body .scrollingContainer
+{
+  overflow: hidden;
+}

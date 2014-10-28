@@ -1,0 +1,131 @@
+#documentFormId
+{
+  margin: 20px auto 0 auto;
+}
+
+#documentFormId input[type=text],
+#documentFormId input[type=file],
+#documentFormId textarea
+{
+  width: 450px;
+}
+
+#documentFormId textarea
+{
+  height: 75px;
+}
+
+#documentFormId .formFieldContainer
+{
+  margin-bottom: 10px;
+}
+
+#doc-folders > div
+{
+  display: none;
+}
+
+#doc-folders > div:first-child
+{
+  display: block;
+}
+
+#shared-space ul li
+{
+  display: list-item;
+  margin: 2px 0 2px 0;
+  position: relative;
+}
+
+#shared-space a.subfolder,
+#shared-space a.folderitem,
+.foldername
+{
+  width: 100%;
+  line-height: 34px; height: 34px;
+  font-size: 16px;
+  display: block;
+  vertical-align: middle;
+  padding: 2px 0 2px 0;
+}
+
+#shared-space li:hover a.subfolder,
+#shared-space li:hover a.folderitem
+{
+  background: #E0E0E0;
+  color: #000;
+  z-index: 5;
+}
+
+.foldername > a
+{
+  font-size: 16px;
+}
+
+#shared-space .folder ul li a img
+{
+  float: left;
+  margin-right: 5px;
+  margin-left: 4px;
+}
+
+.foldercontent
+{
+  padding: 2px 5px 2px 5px;
+  background: #F0F0F0;
+}
+
+#shared-space .folderitem .row-actions
+{
+  position: absolute;
+  right: 50px; top: 5px;
+}
+
+#shared-space .folderitem .row-actions > span
+{
+  height: auto !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+#shared-space .folderitem .row-actions > div,
+#shared-space .folderitem .row-actions > span
+{
+  float: left;
+}
+
+/* Fast upload */
+
+#fastUploadId
+{
+  background-color: #F0F0F0;
+}
+
+#fastUploadId input[type=submit],
+#fastUploadId .formLabel,
+.foldercontent > ul > li > input,
+#fastUploadInnerId input[name=document]
+{
+  display: none;
+}
+
+#browse
+{
+  cursor: pointer;
+}
+
+#fastUploadInnerId
+{
+  padding: 0; margin: 0;
+  text-align: center;
+  background: #E0E0E0;
+  border: 2px dashed #9a9b9a;
+}
+
+.created_by
+{
+  position: absolute;
+  right: 350px;
+  top: 2px;
+  z-index: 4;
+}

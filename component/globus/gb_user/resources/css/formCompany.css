@@ -1,0 +1,5 @@
+.bloc { width: 100%; max-width: 1000px; }
+
+div.formFieldWidth1:not(.formFieldHidden):not(.formFieldLinebreaker) { display: inline-block; width: 50% !important; float: none !important; }
+.formFieldContainer:not(.formFieldHidden):not(.formFieldLinebreaker) > div { display: inline-block; }
+.formFieldContainer > div.formLabel { width: 70px !important; padding-right: 10px; text-align: right; }

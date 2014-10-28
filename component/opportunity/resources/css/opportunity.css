@@ -1,0 +1,393 @@
+
+#documentFormId
+{
+  width:60%;
+  margin: 20px auto 0 auto;
+  min-width: 400px;
+}
+
+
+#documentFormDataId input[type=text],
+#documentFormDataId input[type=file],
+#documentFormDataId textarea,
+#documentFormDataId select
+{
+  width: 350px;
+}
+
+#documentFormDataId textarea
+{
+  height: 75px;
+}
+
+.sharedListCellHeader
+{
+  float:left;
+  color:#fff;
+  background-color: #2079A3;
+  border-right: 1px solid #fff;
+  font-weight:bold;
+  height:27px;
+  text-align: center;
+
+ }
+
+.sharedListRow
+{
+  /*border-bottom: 1px solid #999;]*/
+  height:30px;
+}
+.sharedManageRow div.sharedListCell
+{
+  height: auto;
+  min-height: 25px;
+}
+
+.sharedListCell
+{
+  float:left; height: 35px; padding:0 5px; margin:0 3px;
+ /* border-right: 1px solid #dedede;*/
+  overflow-y:auto;
+  font-size: 11px;
+}
+.sharedListCell_last
+{
+  border-right: none;
+}
+.dl_link
+{
+  text-decoration: none; color:#666;
+}
+
+.dl_link:hover,
+div.sharedListCell a:hover
+{
+  color: orange;
+}
+.sharedListCell_center
+{
+  border-left: 1px solid #dedede;
+}
+
+.formFieldContainer div.formLabel
+{
+  float:left;
+  width: 100px;
+  margin-right: 15px;
+  text-align: right;
+}
+
+.formFieldContainer div.formField
+{
+  float: left;
+}
+
+.rev_hidden
+{
+  display: none;
+  background-color: #eee;
+  padding:5px;
+  border: 1px hashed #dedede
+}
+
+.listSh_row
+{
+  float:left;
+  width:100%;
+}
+
+.listSh_row_data
+{
+  width:99%;
+  float:left;
+  margin: 0;
+  padding:0 6px;
+
+}
+.listCp_row_data_odd,
+.listCp_row_data div.listCp_row_data_odd
+{
+  background-color: #EDF2F7;
+}
+.listCt_row_data_odd,
+.listCt_row_data div.listCt_row_data_odd
+{
+  background-color: #EDF2F7;
+}
+
+.ablistContainer li.shlistHeader div div {
+    background-color: #0D79BC;
+    font-weight: bold;
+    margin: 0;
+    padding-top: 3px;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    color: #FFFFFF;
+}
+
+.sh_list_cell
+{
+  float:left;
+  padding:5px 15px 0 15px;
+  white-space: nowrap;
+  height: 25px;
+  background-color: #fff;
+}
+
+.sh_list_cell a,
+.sh_list_cell div a
+{
+  color: #135393;
+}
+
+.shared_type_selected
+{
+  color: orange;
+  font-weight: bold;
+}
+
+
+/******************************************************/
+/* put  popup form labels and fields on the same line */
+/* because this form is long when adding multiple products */
+
+#addoppId
+{
+  width: 790px;
+}
+
+#addoppInnerId .formLabel
+{
+  float: left;
+  width: 95px;
+}
+
+#addoppInnerId .formField
+{
+  float: left;
+  width: 550px;
+}
+
+form#addoppId #addoppInnerId #duplicate .formField,
+form#addoppId #addoppInnerId #formcont .formField
+{
+  width: 60%;
+}
+form#addoppId #addoppInnerId #duplicate .formField select,
+form#addoppId #addoppInnerId #formcont .formField select
+{
+  width: 125px;
+}
+form#addoppId #addoppInnerId #duplicate .formField select optgroup,
+form#addoppId #addoppInnerId #formcont .formField select optgroup
+{
+  padding: 3px 0;
+}
+
+form#addoppId #addoppInnerId #duplicate .formLabel,
+form#addoppId #addoppInnerId #formcont .formLabel
+{
+  width: 30%;
+}
+
+.product_disabled
+{
+  border: 1px solid red;
+  color: #DB5902;
+  font-style: italic;
+}
+.product_locked
+{
+  color: #999;
+  font-style: italic;
+  font-size: 10px;
+}
+
+#my_opp_links ul
+{
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+#my_opp_links ul li
+{
+  min-width: 103px;
+  z-index: 2;
+  position: relative;
+}
+#MyOpportunitiesList.small ul#my_opp_links li
+{
+  margin-right: 5px;
+  padding: 10px;
+  min-width: 6%;
+}
+
+
+.item-title
+{
+  padding: 0 0 10px 10px;
+  margin-right: 20px;
+}
+
+#addoppInnerId .formSection .formLabel
+{
+  width: 55px;
+}
+#addoppInnerId .formSection .formField
+{
+  width: 125px;
+}
+
+#switchDateId
+{
+  max-width: 1000px;
+  margin: 15px auto 0 auto;
+  padding: 0 10px;
+  border-color: #ccc;
+  background-color: #F2F2F2;
+}
+#switchDateId .innerForm
+{
+  margin: 0;
+  padding: 0;
+}
+
+#switchDateId div.formFieldContainer
+{
+  width: 135px;
+  height: 32px;
+  padding-top: 10px;
+}
+
+.opp_user select
+{
+  width: 110px;
+}
+
+.monthly_opp
+{
+  width: 100%;
+  margin-bottom: 20px;
+  float: left;
+  border-bottom: 2px solid #ccc;
+}
+
+.monthly_opp .divlist-item div
+{
+  padding-top: 0;
+  padding-bottom: 0;
+
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.monthly_opp span.titleStat
+{
+  text-transform: none;
+}
+
+div.mtz-monthpicker .mtz-previous
+{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+}
+div.mtz-monthpicker .mtz-next
+{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+}
+
+#my_opp_contents > div
+{
+  padding: 10px 10px 10px 550px;
+  min-height: 370px;
+  position: relative;
+  z-index: 1;
+}
+
+#my_opp_contents > div .opp_pie_container
+{
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+#my_opp_contents > div .oppMonthList
+{
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+
+.detail-row { display: inline-block; }
+.detail-row > div {
+  height: 20px;
+  line-height: 20px;
+  padding: 0 5px 0 5px;
+  display: inline-block;
+}
+
+.detail-row > div.month
+{
+  width: 80px;
+}
+.detail-row > div.product
+{
+  width: 220px;
+}
+.detail-row > div.product_full
+{
+  width: 300px;
+}
+.detail-row > div.amount
+{
+  width: 90px;
+}
+
+.list-products
+{
+  width: 100%;
+  list-style-type: none;
+}
+
+.list-products > .detail-row
+{
+  display: list-item;
+}
+
+#switchDateId div.formFieldContainer.prod_box
+{
+  width: 105px;
+}
+
+.list_filter
+{
+  text-align: right;
+  width: 100%;
+  height: 22px;
+  line-height: 18px;
+  border-bottom: 1px solid #999;
+}
+.list_filter.left
+{
+  text-align: left;
+}
+.divlist-item .opp_status
+{
+  float: left;
+  width: 15%;
+  text-align: center;
+}
+.divlist-item .opp_detail
+{
+  float: left;
+  width: 84%;
+  position: relative;
+  border-left: 1px solid #E5EAEC;
+}

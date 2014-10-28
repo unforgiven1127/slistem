@@ -1,0 +1,22 @@
+.componentMainContainer { max-width: 1000px; }
+
+.companyDetails
+{
+  position: relative;
+}
+
+.companyDetails div span
+{
+  width: 80px; display: inline-block; color: #2F3036;
+}
+
+.companyGroups
+{
+  position: relative;
+}
+
+.add-button
+{
+  top: 0 !important;
+}
+

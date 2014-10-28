@@ -1,0 +1,493 @@
+/*
+    Document   : menu
+    Created on : May 7, 2013, 7:07:12 PM
+    Author     : root
+    Description:
+        Handles basic menu display
+*/
+
+.menu > ul > li
+{
+  display: inline-block;
+  position: relative;
+  padding: 0 5px;
+}
+
+.menu > ul > li > div > ul.subMenu
+{
+  display: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.menu > ul > li:hover > div > ul.subMenu,
+.menu > ul > li:hover > div > a
+{
+  display: block;
+}
+
+.menu > ul > li > div > ul.subMenu > li
+{
+  display: list-item;
+  border-top: 1px solid #DFDFDF;
+}
+.menu > ul > li > div > ul.subMenu > li:first-child
+{
+  border-top: none;
+}
+
+#menunavleft > ul > li,
+#menunavright > ul > li
+{
+  display: list-item;
+}
+
+#menunavtop ul.subMenu
+{
+ top:100%;
+ left:-30px;
+}
+
+#menunavbottom > ul > li > div > ul.subMenu
+{
+ bottom:100%;
+}
+
+#menunavleft > ul > li > div > ul.subMenu
+{
+ left:100%;
+ top:0;
+}
+
+#menunavright > ul > li > div > ul.subMenu
+{
+ right:100%;
+ top:0;
+}
+
+#menunavleft ul
+{
+  float: left;
+  position: relative;
+}
+
+
+#menuActionContainerId ul li:hover div
+{
+  display:block;
+}
+#menuActionContainerId ul li.menuSearchForm:hover div div
+{
+  display:none;
+}
+
+#menuactleft > ul > li
+{
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  /*background-color: #f4f4f4;*/
+  background: linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0) 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0)) repeat scroll 0 0 / 10px 10px #EBEBEB;
+
+
+}
+#menuactleft > ul > li > div.menuActionMenuContainer
+{
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  width: 180px;
+}
+
+.menuqs ul li
+{
+  margin-left: 15px;
+}
+
+
+
+ul.subMenu{
+  background: #FFF;
+  border: 1px solid #B2BBD0;
+}
+
+#menuactleft > ul > li.menu_section > div.menuActionMenuContainer
+{
+  margin: 10px 0 0px 5px;
+  height: 30px;
+}
+
+.menuActionMenuContainer > a
+{
+  color: #077AC1;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#menuactleft > ul > li.menuqs
+{
+  margin: 5px 0 7px 0;
+  border: 0;
+  background: transparent;
+}
+
+#menuactleft > ul > li.menuqs ul li a
+{
+  display: inherit;
+}
+#menuactleft > ul > li.menuqs ul li a.selected
+{
+  border-bottom: 3px solid #4680CD;
+}
+
+.menu_workspace,
+.menu_folder,
+.menu_pipeline
+{
+  background-color: #FFFFFF;
+  border-top: 1px solid #DEDEDE;
+  height: 285px;
+  margin: 0;
+  max-height: 290px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 5px 0 0 5px;
+  width: 180px;
+}
+
+ul.menuActionShort .menu_workspace,
+ul.menuActionShort .menu_folder,
+ul.menuActionShort menu_pipeline
+{
+  height: 275px;
+}
+
+.menu_pipeline select
+{
+  width: 150px;
+  margin: 0 auto;
+}
+
+.section_workspace
+{
+  border-top: 1px solid #ddd;
+}
+
+#tab_list
+{
+  width: 100%;
+  float: left;
+  background-color: #fff;
+  padding: 10px 0;
+  max-height: 195px;
+  overflow-y: auto;
+}
+#tab_list li
+{
+  width: 59%;
+  float: left;
+  height: 25px;
+  margin: 2px 0 2px 8px;
+  padding: 0 22px 0 22px;
+  cursor: pointer;
+  position: relative;
+
+  background-color: #EFEFEF;
+  border: 1px solid #DDDDDD;
+  border-radius: 3px 3px 3px 3px;
+}
+
+#tab_list li div
+{
+  font-size: 11px;
+  white-space: nowrap;
+  color: #2A6991;
+  height: 21px;
+  padding-top: 4px;
+}
+
+#tab_list li.selected
+{
+  float: right;
+  margin: 2px 8px 2px 0;
+  color: #2A6991;
+}
+
+#tab_list.multiple_tabs li.selected
+{
+  border-color: #0879DB;
+  box-shadow: 0 0 2px 1px #B5CBDD;
+}
+
+#tab_list li a.close_tab
+{
+  width: 20px;
+  display: block;
+  position: absolute;
+  right: 3px;
+  top: 5px;
+  background: transparent url('/component/sl_menu/resources/pictures/remove_tab.png') no-repeat top right;
+}
+
+
+
+
+/* ************************************** */
+/* tabs section */
+
+
+#menuactleft > ul > li.section_tab
+{
+  display: block;
+  position: fixed;
+  left: 0;
+  top: 70%;
+  width: 185px;
+  border: 0;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+.section_tab span
+{
+  display: block;
+  border-bottom: 1px solid #ddd;
+  font-size: 15px;
+  font-weight: bold;
+  color: #2A6991;
+  margin: 5px 0;
+}
+
+.section_tab div div
+{
+  margin: 3px;
+  width: 140px;
+  float: left;
+  padding: 2px 4px;
+  background-color: #d6d6d6;
+  font-size: 13px;
+}
+
+
+/* ************************************** */
+/* folder actions  */
+#menuactleft > ul > li.section_manage
+{
+  border: 0;
+  background-color: transparent;
+}
+.section_manage a
+{
+  float: right;
+  width: 32px;
+  margin: 0 5px;
+}
+
+
+.section_manage:hover img
+{
+  opacity: 0.6;
+}
+.section_manage img
+{
+  opacity: 0.15;
+  width: 22px;
+  height: 22px;
+}
+.section_manage img:hover
+{
+  opacity: 1;
+}
+
+
+/* shared foilder block */
+.shared_folder_search_input
+{
+  margin-top: 8px;
+}
+
+.shared_folder_search_input select,
+.shared_folder_search_input input
+{
+  width: 130px;
+}
+
+.shared_folder_search_input img
+{
+  cursor: pointer;
+}
+
+span.alpha
+{
+  font-size: 10px;
+  line-height: 13px;
+  font-style: italic;
+  color: #555;
+}
+
+
+#menuaction .tab_type_unknow
+{}
+#menuaction .tab_type_home
+{
+  background: #EFF3F7 url('/component/sl_menu/resources/pictures/tabs/home_16.png') no-repeat 2px 5px;
+}
+#menuaction .tab_type_candi
+{
+  background: transparent url('/component/sl_menu/resources/pictures/tabs/candidate_16.png') no-repeat 2px 5px;
+}
+#menuaction .tab_type_comp
+{
+  background: transparent url('/component/sl_menu/resources/pictures/tabs/company_16.png') no-repeat 2px 5px;
+}
+#menuaction .tab_type_pos
+{
+  background: transparent url('/component/sl_menu/resources/pictures/tabs/position_16.png') no-repeat 2px 5px;
+}
+#menuaction .tab_type_fold
+{
+  background: transparent url('/component/sl_menu/resources/pictures/tabs/folder_16.png') no-repeat 2px 5px;
+}
+#menuaction .tab_type_pipe
+{
+  background: transparent url('/component/sl_menu/resources/pictures/tabs/pipe_16.png') no-repeat 2px 5px;
+}
+
+
+/****************************************************/
+/* quick search form  */
+
+.quickSearchForm > div
+{
+  float: left;
+  width: 100%;
+  height: 22px;
+}
+.quickSearchForm .label
+{
+  width: 75px;
+  float: left;
+  margin-right: 8px;
+  font-size: 11px;
+  text-align: right;
+}
+.quickSearchForm .field
+{
+  width: 200px;
+  float: left;
+}
+.quickSearchForm .field input
+{
+  width: 195px;
+  height: 16px;
+  line-height: 16px;
+  color: #2a5389;
+}
+.qs_inline .quickSearchForm .field input
+{
+  font-weight: bold;
+}
+
+form.quickSearchForm .field input[type=checkbox]
+{
+  width: 20px;
+}
+.quickSearchForm .field select
+{
+  width: 175px;
+}
+.quickSearchForm .field select option
+{
+  font-size: 11px;
+}
+
+.quickSearchForm .field input.defaultText,
+input.defaultText
+{
+  color: #666;
+  font-weight: normal;
+  font-style: italic;
+  font-size: 10px;
+}
+
+
+.quickSearchForm .option .label
+{
+  font-size: 10px;
+}
+
+.qs_action_row
+{
+  margin-top: 12px;
+}
+/************************/
+/* Quicksearch inline */
+
+.qs_inline form
+{
+  padding: 0;
+  width: 94%;
+  margin-left: 5px;
+  padding: 5px 0;
+}
+
+li#menuqs div.qs_inline form > div
+{
+  height: 26px;
+}
+li#menuqs div.qs_inline form > div > div.label
+{
+  text-align: left;
+}
+
+li#menuqs div.qs_inline form .field
+{
+  width: 100%;
+}
+li#menuqs div.qs_inline form .field input[type=text]
+{
+  width: 99%;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom-color: #ccc;
+  background-color: #f0f0f0;
+  padding-left: 4px;
+  height: 18px;
+  line-height: 18px;
+}
+
+
+#menuactleft > ul.menuActionShort > li.menuqs
+{
+  margin-bottom: 0;
+}
+.menuActionShort .qs_inline
+{
+  border: 1px solid #ddd;
+}
+.menuActionShort .qs_action_row
+{
+  margin-top: 10px;
+}
+
+.menu_pipe_section
+{
+  border-left: 5px solid #EBEBEB;
+  line-height: 16px;
+  margin: 5px 0 15px 0;
+  padding: 5px;
+  width: 80%;
+}
+
+span.optional
+{
+  font-style: italic;
+  color: #555;
+}
+span.optional a.pipeLink
+{
+  color: #888;
+  font-style: italic;
+}

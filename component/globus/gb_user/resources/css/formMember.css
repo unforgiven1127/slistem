@@ -1,0 +1,13 @@
+
+/* ---------------*/
+/*   Add Member   */
+/* ---------------*/
+
+#formMember { width: 100%; max-width: 1000px; }
+
+#formMember .formSection > div.formFieldWidth1 { display: inline-block; width: 50% !important; float: none !important; }
+#formMember .formSection .formFieldContainer > div { display: inline-block; }
+#formMember .formSection .formFieldContainer > div.formLabel { width: 90px !important; padding-right: 10px; text-align: right; }
+#formMember .formSection { margin-bottom: 10px; clear: both; display: inline-block; width: 100%; }
+
+.fieldNamegroupfk { display: none; }

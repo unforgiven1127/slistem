@@ -1,0 +1,49 @@
+/*
+    Document   : projectb
+    Created on : Mar 13, 2013, 1:25:51 PM
+    Author     : root
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root {
+  display: block;
+}
+
+.deadline { padding-left: 36px; display: block; background: no-repeat top left url('/common/pictures/skull.png'); }
+.deadline span { font-size: 20px; line-height: 20px; }
+.red { color: #EE0000; }
+
+div.progressbar { width:100%; height: 18px; margin-bottom: 2px;  }
+
+/* Overwriting JQuery UI basic style sheet for Progress bar */
+div.progressbar.progress_low div.ui-progressbar-value {
+background: rgb(255,48,25); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(255,48,25,1) 0%, rgba(207,4,4,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,48,25,1)), color-stop(100%,rgba(207,4,4,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(255,48,25,1) 0%,rgba(207,4,4,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3019', endColorstr='#cf0404',GradientType=0 ); /* IE6-9 */
+}
+div.progressbar.progress_average div.ui-progressbar-value {
+background: rgb(249,198,103); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(249,198,103,1) 0%, rgba(247,150,33,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,198,103,1)), color-stop(100%,rgba(247,150,33,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(249,198,103,1) 0%,rgba(247,150,33,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(249,198,103,1) 0%,rgba(247,150,33,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(249,198,103,1) 0%,rgba(247,150,33,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(249,198,103,1) 0%,rgba(247,150,33,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9c667', endColorstr='#f79621',GradientType=0 ); /* IE6-9 */
+}
+div.progressbar.progress_high div.ui-progressbar-value {
+background: rgb(205,221,146); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(205,221,146,1) 19%, rgba(171,220,40,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(19%,rgba(205,221,146,1)), color-stop(100%,rgba(171,220,40,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, rgba(205,221,146,1) 19%,rgba(171,220,40,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, rgba(205,221,146,1) 19%,rgba(171,220,40,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, rgba(205,221,146,1) 19%,rgba(171,220,40,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom, rgba(205,221,146,1) 19%,rgba(171,220,40,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cddd92', endColorstr='#abdc28',GradientType=0 ); /* IE6-9 */
+}
