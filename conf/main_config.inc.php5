@@ -89,20 +89,10 @@ switch(trim($_SERVER['SERVER_NAME']))
 
     //through loadbalancer
     case 'slistem.slate.co.jp':
-    case 'beta.slate.co.jp':
 
     //direct server access
     case 'slistem1.slate.co.jp':
     case 'slistem2.slate.co.jp':
-    case 'beta1.slate.co.jp':
-    case 'beta2.slate.co.jp':
-
-    //previous domain s
-    //case 'slistem3.slate.co.jp':
-    //case 'squirrel.slate.co.jp':
-    //case 'beta3.slate.co.jp':
-
-
 
     // -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
     // -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-
@@ -186,10 +176,12 @@ switch(trim($_SERVER['SERVER_NAME']))
 
     break;
 
-
+    //dev servers
     case 'slistem.devserv.com':
     case 'slistem.bulbouscell.com':
-    case 'stephane.slate.co.jp':
+    case 'beta.slate.co.jp':
+    case 'beta1.slate.co.jp':
+    case 'beta2.slate.co.jp':
 
 
     define('DB_NAME', 'slistem');
