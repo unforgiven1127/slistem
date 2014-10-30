@@ -348,28 +348,20 @@ class CQuickSearch
     $sIndustry = trim(getValue('industry'));
     $sContact = trim(getValue('contact'));
 
-
-    $sRefId = preg_replace('/[^0-9]/', '', $sCompany);
-
-    if(!empty($sRefId) && is_numeric($sRefId))
-    {
-      $nRefId = (int)$sRefId;
-      if($nRefId != $sRefId || $nRefId < 1)
-        return 'The refId must be a positive integer.';
-
-      $this->coQb->addWhere('scom.sl_companypk = '.$nRefId);
-      $asTitle[] = ' refId = '.$nRefId;
-    }
-
     if($sCompany == 'Company')
       $sCompany = '';
 
     if(!empty($sCompany))
     {
-      if(is_numeric($sCompany))
+      $nRefId = $this->_fetchRefIdFromString($sCompany);
+
+      if((string)$nRefId == $sCompany || ('#' . $nRefId) == $sCompany)
       {
-        $this->coQb->addWhere('scom.sl_companypk = '.(int)$sCompany);
-        $asTitle[] = ' refId = '.$sCompany;
+        if($nRefId < 1)
+          return 'The refId must be a positive integer.';
+
+        $this->coQb->addWhere('scom.sl_companypk = '.$nRefId);
+        $asTitle[] = ' refId = '.$nRefId;
       }
       else
       {
