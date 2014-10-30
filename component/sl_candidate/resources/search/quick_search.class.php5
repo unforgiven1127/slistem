@@ -25,7 +25,7 @@ class CQuickSearch
       $sDataType = getValue('data_type');
     else
       $sDataType = $psDataType;
-    
+
     if(!in_array($sDataType, array('candi', 'comp', 'jd')))
     {
       assert('false; // data_type empty in query builder.');
@@ -194,7 +194,7 @@ class CQuickSearch
 
           //Try to find a refId in the search string
           $nCompanyPk = $this->_fetchRefIdFromString($sCompany);
-          if($nCompanyPk > 0)
+          if((string)$nCompanyPk == $sCompany || ('#' . $nCompanyPk) == $sCompany)
           {
             $this->coQb->addWhere('scpr.companyfk = '.$nCompanyPk);
           }
@@ -334,16 +334,6 @@ class CQuickSearch
 
 
 
-
-
-
-
-
-
-
-
-
-
   public function _buildCompanyQuickSearch($pbStrict = true)
   {
     if($pbStrict)
@@ -478,15 +468,6 @@ class CQuickSearch
 
   private function _fetchRefIdFromString($psString)
   {
-    if(is_integerString($psString, 1, 7))
-    {
-      if((int)$psString < 1)
-        return 0;
-
-      return (int)$psString;
-    }
-
-
     //second attempt: looking for # + number)
     $sFirstChar = substr($psString, 0, 1);
     $sRest = substr($psString, 1);
@@ -496,7 +477,16 @@ class CQuickSearch
       if((int)$sRest < 1)
         return 0;
 
-      return (int)$sRest;
+      return filter_var($sRest, FILTER_SANITIZE_NUMBER_INT);
+    }
+    else if(is_integerString($psString, 1, 7))
+    {
+      $cleaned_string = filter_var($psString, FILTER_SANITIZE_NUMBER_INT);
+
+      if((int)$cleaned_string < 1)
+        return 0;
+
+      return (int)$cleaned_string;
     }
 
     return 0;
