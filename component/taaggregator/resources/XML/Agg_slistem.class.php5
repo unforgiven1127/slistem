@@ -6,7 +6,8 @@ class Agg_slistem extends Agg_XML
 {
   //private $csBridgeUrl = 'https://slystem.devserv.com/api/talentAtlas_bridge.php?TA-ID-HASH=ta-123456-lentAT-7890-LAS&seekPositionFrom=1369100830';
   //private $csBridgeUrl = 'https://squirrel.slate.co.jp/api/talentAtlas_bridge.php/api/talentAtlas_bridge.php?TA-ID-HASH=ta-123456-lentAT-7890-LAS';
-  private $csBridgeUrl = 'https://slistem.slate.co.jp/api/talentAtlas_bridge.php/api/talentAtlas_bridge.php?TA-ID-HASH=ta-123456-lentAT-7890-LAS';
+  // private $csBridgeUrl = 'https://slistem.slate.co.jp/api/talentAtlas_bridge.php/api/talentAtlas_bridge.php?TA-ID-HASH=ta-123456-lentAT-7890-LAS';
+  private $csBridgeUrl = 'https://slistem.slate.co.jp/index.php5?pg=cron&hashCron=1&custom_uid=555-005&export_position=1&seekPositionFrom=1399111470&cronSilent=1';
 
   protected $nWebsitePk = 5 ;
   protected $casUserToNotify = array('Ingrid Dubreuil' =>  'idubreuil@slate.co.jp');
