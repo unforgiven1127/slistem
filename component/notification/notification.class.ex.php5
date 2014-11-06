@@ -469,8 +469,6 @@ class CNotificationEx extends CNotification
     $sNow = date('Y-m-d H:i:s');
 
 
-    //UPDATE `notification` SET `delivered` = 0 WHERE `notificationpk` >= 520;
-    //UPDATE `notification_action` SET `date_last_action` = NULL, `number_sent` = 0 WHERE `notificationfk` >= 520;
     $oDbResult = $this->_getModel()->getNotificationDetails($pnPk, $sDate);
     $bRead = $oDbResult->readFirst();
     if(!$bRead)
@@ -487,15 +485,17 @@ class CNotificationEx extends CNotification
     $oMail = CDependency::getComponentByName('mail');
     $asUsers = $this->coLogin->getUserList(0, true, true);
 
+    $message_array = array();
+
     //we have actions to check
     while($bRead)
     {
       $asData = $oDbResult->getData();
       $nActionPk = (int)$asData['notification_actionpk'];
       $bLastNaggy = false;
-      $bExec = null;
+      $bExec = 1;
 
-      //dump($asData);
+      // dump($asData);
 
       //check naggy actions
       // Naggy in progress: we have to "re-execute" the action, and update the entry (naggy -1 & last_update)
@@ -511,7 +511,6 @@ class CNotificationEx extends CNotification
           if(!$pbManual)
             echo 'Time for a nag !! Action to be executed on the '.$sNagDate.' <br />';
 
-          $bExec = $this->_executeAction($asData, $oMail, $asUsers);
           if((int)$asData['naggy'] == 1)
             $bLastNaggy = true;
 
@@ -519,7 +518,9 @@ class CNotificationEx extends CNotification
           //We've nagged the user, we log it in the db
           if($bExec)
           {
-            $sUpdate = 'UPDATE notification_action SET date_last_action = "'.date('Y-m-d H:i:s').'", number_sent = (number_sent+1), naggy = (naggy-1), status = '.(int)$bExec.' WHERE notification_actionpk = '.$nActionPk;
+            $sUpdate = 'UPDATE notification_action
+              SET date_last_action = "'.date('Y-m-d H:i:s').'", number_sent = (number_sent+1), naggy = (naggy-1), status = '.(int)$bExec.'
+              WHERE notification_actionpk = '.$nActionPk;
             $this->_getModel()->ExecuteQuery($sUpdate);
           }
         }
@@ -535,12 +536,13 @@ class CNotificationEx extends CNotification
           echo 'Not a naggy message or first nag -> exec action now !! <br />';
 
         // not a naggy action OR first action of a naggy serie
-        $bExec = $this->_executeAction($asData, $oMail, $asUsers);
 
         if($bExec != null)
         {
           //  execute action, then update (notification "delivered" [if no error of course])
-          $sUpdate = 'UPDATE notification_action SET date_last_action = "'.date('Y-m-d H:i:s').'", number_sent = number_sent+1, status = '.(int)$bExec.' WHERE notification_actionpk = '.$nActionPk;
+          $sUpdate = 'UPDATE notification_action
+            SET date_last_action = "'.date('Y-m-d H:i:s').'", number_sent = number_sent+1, status = '.(int)$bExec.'
+            WHERE notification_actionpk = '.$nActionPk;
           $this->_getModel()->ExecuteQuery($sUpdate);
         }
       }
@@ -566,11 +568,15 @@ class CNotificationEx extends CNotification
         $this->_getModel()->ExecuteQuery($sUpdate);
       }
 
+      $message_array[] = $asData;
+
       if(!$pbManual)
         echo '<hr />';
 
       $bRead = $oDbResult->readNext();
     }
+
+    $bExec = $this->_executeAction($message_array, $oMail, $asUsers);
   }
 
   /**
@@ -636,133 +642,136 @@ class CNotificationEx extends CNotification
     if(!assert('is_array($pasAction) && !empty($pasAction) && !empty($poMail) && !empty($pasUsers)'))
       return null;
 
-    if(empty($pasAction['loginfk']))
+    if(empty($pasAction[0]['loginfk']))
     {
-      assert('false; //no recipient for this action. ['.$pasAction['loginfk'].']');
+      assert('false; //no recipient for this action. ['.$pasAction[0]['loginfk'].']');
       return null;
     }
 
-    if(!isset($pasUsers[$pasAction['loginfk']]))
-    {
-      dump('recipient inactive. ['.$pasAction['loginfk'].']. We need to cancel the reminders.');
-
-      $asUpdate = array('status' => -2, 'date_last_action' => date('Y-m-d H:i:s'));
-      $this->_getModel()->update($asUpdate, 'notification_action', 'notification_actionpk = '.(int)$pasAction['notification_actionpk']);
-
-      /*TODO
-      $asUpdate = array('status' => -2, 'date_last_action' => date('Y-m-d H:i:s'));
-      $this->_getModel()->update($asUpdate, 'notification_action', 'notification_actionpk = '.(int)$pasAction['notification_actionpk']);*/
-      return true;
-    }
-
-    $nNaggy = (int)$pasAction['naggy'];
-
-    $sRecipient = $this->coLogin->getUserNameFromData($pasUsers[$pasAction['loginfk']], false, false);
-    $sEmail = $pasUsers[$pasAction['loginfk']]['email'];
+    $sRecipient = $this->coLogin->getUserNameFromData($pasUsers[$pasAction[0]['loginfk']], false, false);
+    $sEmail = $pasUsers[$pasAction[0]['loginfk']]['email'];
     if(empty($sRecipient) || empty($sEmail))
     {
-      assert('false; //no correct recipient found. ['.$pasAction['loginfk'].' / '.$sRecipient.' / '.$sEmail.']');
+      assert('false; //no correct recipient found. ['.$action['loginfk'].' / '.$sRecipient.' / '.$sEmail.']');
       return false;
     }
 
-
-    //--------------------------------------------------------
-    //--------------------------------------------------------
-    //start creating the mail content
+    $sMessage = '<div style="font-family: verdana; font-size: 12px;">Dear ' . $sRecipient . ',<br /><br />';
 
     $oPage = CDependency::getCpPage();
-    $sMessage = '<div style="font-family: verdana; font-size: 12px;">Dear '.$sRecipient.',<br /><br />';
 
+    foreach ($pasAction as $action) {
 
-    //-------------------------------
-    // build the message
-    if($pasAction['type'] == 'email')
-    {
-      $sSubject = CONST_APP_NAME;
-
-      if($pasAction['creatorfk'] != $pasAction['loginfk'])
+      if(!isset($pasUsers[$action['loginfk']]))
       {
-        $sUser = $this->coLogin->getUserLink((int)$pasAction['creatorfk']);
+        dump('recipient inactive. ['.$action['loginfk'].']. We need to cancel the reminders.');
 
-        $sDate = date('l jS F', strtotime($pasAction['date_notification']));
-        $sTime = date('H:i', strtotime($pasAction['date_notification']));
-        $sMessage.= $sUser.' has sent you a request on '.$sDate.' at '.$sTime.'.<br /><br />';
+        $asUpdate = array('status' => -2, 'date_last_action' => date('Y-m-d H:i:s'));
+        $this->_getModel()->update($asUpdate, 'notification_action', 'notification_actionpk = '.(int)$action['notification_actionpk']);
+
+        /*TODO
+        $asUpdate = array('status' => -2, 'date_last_action' => date('Y-m-d H:i:s'));
+        $this->_getModel()->update($asUpdate, 'notification_action', 'notification_actionpk = '.(int)$pasAction['notification_actionpk']);*/
+        return true;
       }
 
-      $sMessage.= '<div style="padding: 10px; border: 1px solid #f0f0f0; line-height: 20px; background-color: #f2f2f2;">';
-      $sMessage.= $pasAction['message'].'</div>';
-    }
-    else
-    {
-      //reminder
-      $sSubject = CONST_APP_NAME.' reminder';
+      $nNaggy = (int)$action['naggy'];
 
-      //dump($pasAction['creatorfk']);
-      //dump($pasAction['loginfk']);
-      if($pasAction['creatorfk'] == $pasAction['loginfk'])
+
+      //--------------------------------------------------------
+      //--------------------------------------------------------
+      //start creating the mail content
+
+      //-------------------------------
+      // build the message
+      if($action['type'] == 'email')
       {
-        $sMessage.= 'You\'ve set a reminder for ';
-        $sUser = '';
+        $sSubject = CONST_APP_NAME;
+
+        if($action['creatorfk'] != $action['loginfk'])
+        {
+          $sUser = $this->coLogin->getUserLink((int)$action['creatorfk']);
+
+          $sDate = date('l jS F', strtotime($action['date_notification']));
+          $sTime = date('H:i', strtotime($action['date_notification']));
+          $sMessage.= $sUser.' has sent you a request on '.$sDate.' at '.$sTime.'.<br /><br />';
+        }
+
+        $sMessage.= '<div style="padding: 10px; border: 1px solid #f0f0f0; line-height: 20px; background-color: #f2f2f2;">';
+        $sMessage.= $action['message'].'</div>';
       }
       else
       {
-        $sUser = $this->coLogin->getUserLink((int)$pasAction['creatorfk']);
-        $sMessage.= $sUser.' has set a reminder for you for ';
+        //reminder
+        $sSubject = CONST_APP_NAME.' reminder';
+
+        //dump($pasAction['creatorfk']);
+        //dump($pasAction['loginfk']);
+        if($action['creatorfk'] == $action['loginfk'])
+        {
+          $sMessage.= 'You\'ve set a reminder for ';
+          $sUser = '';
+        }
+        else
+        {
+          $sUser = $this->coLogin->getUserLink((int)$action['creatorfk']);
+          $sMessage.= $sUser.' has set a reminder for you for ';
+        }
+
+        $nNotif = strtotime($action['date_notification']);
+        $sToDay = date('Y-m-d');
+        $sYesterday = date('Y-m-d', strtotime('-1 day'));
+        $sDay = date('Y-m-d', $nNotif);
+
+        if($sDay == $sToDay)
+          $sMessage.= '&nbsp;&nbsp;&nbsp;<b>today</b>';
+        elseif($sDay == $sYesterday)
+          $sMessage.= '&nbsp;&nbsp;&nbsp;<b>yesterday</b>';
+        else
+          $sMessage.= 'the&nbsp;&nbsp;&nbsp;<b>'.date('jS \o\f F', strtotime($action['date_notification'])).'</b>';
+
+        $sMessage.= '&nbsp;&nbsp;at&nbsp;&nbsp;<b>'.date('H:i a', $nNotif).'</b>.';
+
+        $sDate = date('Y-m-d \a\t H:i', strtotime($action['date_created']));
+        $sMessage.= '<br /><span style="font-style: italic; color:#666;">Reminder created on the '.$sDate.'</span>.';
+
+        $sMessage.= '<br /><br />';
+        $sMessage.= '<div style="padding: 10px; border: 1px solid #f0f0f0; line-height: 20px; background-color: #f2f2f2;">';
+
+
+        //sending the message in html, so if its not a html format i convert it
+        if($action['message_format'] != 'html')
+        {
+          $action['message'] = nl2br($action['message'], true);
+        }
+
+        $sMessage.= $action['message'].'</div>';
       }
 
-      $nNotif = strtotime($pasAction['date_notification']);
-      $sToDay = date('Y-m-d');
-      $sYesterday = date('Y-m-d', strtotime('-1 day'));
-      $sDay = date('Y-m-d', $nNotif);
 
-      if($sDay == $sToDay)
-        $sMessage.= '&nbsp;&nbsp;&nbsp;<b>today</b>';
-      elseif($sDay == $sYesterday)
-        $sMessage.= '&nbsp;&nbsp;&nbsp;<b>yesterday</b>';
-      else
-        $sMessage.= 'the&nbsp;&nbsp;&nbsp;<b>'.date('jS \o\f F', strtotime($pasAction['date_notification'])).'</b>';
-
-      $sMessage.= '&nbsp;&nbsp;at&nbsp;&nbsp;<b>'.date('H:i a', $nNotif).'</b>.';
-
-      $sDate = date('Y-m-d \a\t H:i', strtotime($pasAction['date_created']));
-      $sMessage.= '<br /><span style="font-style: italic; color:#666;">Reminder created on the '.$sDate.'</span>.';
-
-      $sMessage.= '<br /><br />';
-      $sMessage.= '<div style="padding: 10px; border: 1px solid #f0f0f0; line-height: 20px; background-color: #f2f2f2;">';
+      if(!empty($action['title']))
+        $sSubject.= ' - '.mb_strimwidth($action['title'], 0, 65, '...');
 
 
-      //sending the message in html, so if its not a html format i convert it
-      if($pasAction['message_format'] != 'html')
+      //-------------------------------
+      // add a message for naggy messages
+      if($nNaggy > 1)
       {
-        $pasAction['message'] = nl2br($pasAction['message'], true);
+        $sURL = $oPage->getUrl($this->csUid, CONST_ACTION_DELETE, CONST_NOTIFY_TYPE_NAG, (int)$action['notificationpk']);
+        $sMessage.= '<br /><br /><span style="font-size: 10px; font-style: italic;">This is a "naggy" message. It means this email will be sent to you again '.$nNaggy.' more time'.(($nNaggy > 1)? 's' : '').' ('.$action['naggy_frequency'].' interval).<br />  ';
+        $sMessage.= 'To confirm you\'ve been notified and stop receiving this message, please click <a href="'.$sURL.'">here</a>.</span> <br /><br />';
+      }
+      elseif($nNaggy == 1)
+      {
+        //last action
+        $sSubject.= '  --  Last notice --';
+        $sMessage.= '<br /><br /><br /><span style="font-size: 10px; font-style: italic; color: #555555;"><b>Last notice : </b> you\'ve been reminded '.((int)$action['number_sent']+1).' time(s), this is the last email you\'ll receive.</span>';
       }
 
-      $sMessage.= $pasAction['message'].'</div>';
+      $sMessage.= '</div><div style="width: 100%; height: 40px;"></div>';
+      $sMessage .= ' ';
+
     }
-
-
-    if(!empty($pasAction['title']))
-      $sSubject.= ' - '.mb_strimwidth($pasAction['title'], 0, 65, '...');
-
-
-    //-------------------------------
-    // add a message for naggy messages
-    if($nNaggy > 1)
-    {
-      $sURL = $oPage->getUrl($this->csUid, CONST_ACTION_DELETE, CONST_NOTIFY_TYPE_NAG, (int)$pasAction['notificationpk']);
-      $sMessage.= '<br /><br /><span style="font-size: 10px; font-style: italic;">This is a "naggy" message. It means this email will be sent to you again '.$nNaggy.' more time'.(($nNaggy > 1)? 's' : '').' ('.$pasAction['naggy_frequency'].' interval).<br />  ';
-      $sMessage.= 'To confirm you\'ve been notified and stop receiving this message, please click <a href="'.$sURL.'">here</a>.</span> <br /><br />';
-    }
-    elseif($nNaggy == 1)
-    {
-      //last action
-      $sSubject.= '  --  Last notice --';
-      $sMessage.= '<br /><br /><br /><span style="font-size: 10px; font-style: italic; color: #555555;"><b>Last notice : </b> you\'ve been reminded '.((int)$pasAction['number_sent']+1).' time(s), this is the last email you\'ll receive.</span>';
-    }
-
-    $sMessage.= '</div>';
-
-
     //-------------------------------
     //send the email
     $poMail->createNewEmail();
@@ -770,8 +779,8 @@ class CNotificationEx extends CNotification
     //add a reply-to if the reminder comes from someone else
     if(!empty($sUser))
     {
-      $sReply = $pasUsers[$pasAction['creatorfk']]['email'];
-      $poMail->setReplyTo($sReply, $this->coLogin->getUserNameFromData($pasUsers[$pasAction['creatorfk']], false, true));
+      $sReply = $pasUsers[$pasAction[0]['creatorfk']]['email'];
+      $poMail->setReplyTo($sReply, $this->coLogin->getUserNameFromData($pasUsers[$pasAction[0]['creatorfk']], false, true));
     }
 
     //We manage the replyTo above, so we don't add the sender automatically
