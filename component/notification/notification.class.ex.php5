@@ -770,7 +770,7 @@ class CNotificationEx extends CNotification
         $sMessage.= '<br /><br /><br /><span style="font-size: 10px; font-style: italic; color: #555555;"><b>Last notice : </b> you\'ve been reminded '.((int)$action['number_sent']+1).' time(s), this is the last email you\'ll receive.</span>';
       }
 
-      $sMessage .= '<div style="width: 100%; height: 40px;"></div>';
+      $sMessage .= '<div style="width: 100%; height: 40px;"><hr></div>';
       $sMessage .= ' ';
 
     }
