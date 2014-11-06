@@ -658,6 +658,8 @@ class CNotificationEx extends CNotification
 
     $sMessage = '<div style="font-family: verdana; font-size: 12px;">Dear ' . $sRecipient . ',<br /><br />';
 
+    $sSubject = 'Sl[i]stem daily reminders';
+
     $oPage = CDependency::getCpPage();
 
     foreach ($pasAction as $action) {
@@ -686,7 +688,7 @@ class CNotificationEx extends CNotification
       // build the message
       if($action['type'] == 'email')
       {
-        $sSubject = CONST_APP_NAME;
+        // $sSubject = CONST_APP_NAME;
 
         if($action['creatorfk'] != $action['loginfk'])
         {
@@ -703,7 +705,7 @@ class CNotificationEx extends CNotification
       else
       {
         //reminder
-        $sSubject = CONST_APP_NAME.' reminder';
+        // $sSubject = CONST_APP_NAME.' reminder';
 
         //dump($pasAction['creatorfk']);
         //dump($pasAction['loginfk']);
@@ -750,7 +752,7 @@ class CNotificationEx extends CNotification
 
 
       if(!empty($action['title']))
-        $sSubject.= ' - '.mb_strimwidth($action['title'], 0, 65, '...');
+        // $sSubject.= ' - '.mb_strimwidth($action['title'], 0, 65, '...');
 
 
       //-------------------------------
@@ -764,7 +766,7 @@ class CNotificationEx extends CNotification
       elseif($nNaggy == 1)
       {
         //last action
-        $sSubject.= '  --  Last notice --';
+        // $sSubject.= '  --  Last notice --';
         $sMessage.= '<br /><br /><br /><span style="font-size: 10px; font-style: italic; color: #555555;"><b>Last notice : </b> you\'ve been reminded '.((int)$action['number_sent']+1).' time(s), this is the last email you\'ll receive.</span>';
       }
 
