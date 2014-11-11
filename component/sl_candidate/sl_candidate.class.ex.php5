@@ -3262,7 +3262,11 @@ class CSl_candidateEx extends CSl_candidate
         return $this->_updateCompanyFeed($pasCompanyData, true, 1);
       }
 
-      $asInsert['content'] = $sNews;
+      $dom_class = new DOMDocument();
+      $dom_class->loadHTML($sNews);
+      $fixed_html = $dom_class->saveHTML();
+
+      $asInsert['content'] = $fixed_html;
 
       $this->_getModel()->deleteByFk($asInsert['companyfk'], 'sl_company_rss', 'companyfk');
       $nPk = $this->_getModel()->add($asInsert, 'sl_company_rss');
