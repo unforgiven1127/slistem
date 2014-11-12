@@ -354,12 +354,6 @@ class CFolderEx extends CFolder
 
     $oForm->addField('select', 'type', array('label' => 'Folder type'));
 
-    //allow folders without types
-    if(!isset($pasDisplayParam['force_item_type']) || empty($pasDisplayParam['force_item_type']))
-    {
-      $oForm->addOption('type', array('value'=> '', 'label' => 'No type. Will contains subfolders.'));
-    }
-
     $aSelectedValues = array (
            'cp_uid' => $oResult->getFieldValue('cp_uid'),
            'cp_action' => $oResult->getFieldValue('cp_action'),
@@ -372,6 +366,12 @@ class CFolderEx extends CFolder
         $oForm->addOption('type', array('value'=> urlencode(serialize($aValues)), 'selected' => 'selected', 'label' => $sLabel));
       else
         $oForm->addOption('type', array('value'=> urlencode(serialize($aValues)), 'label' => $sLabel));
+    }
+
+    //allow folders without types
+    if(!isset($pasDisplayParam['force_item_type']) || empty($pasDisplayParam['force_item_type']))
+    {
+      $oForm->addOption('type', array('value'=> '', 'label' => 'No type. Will contains subfolders.'));
     }
 
     $oForm->addField('select', 'parentfolderfk', array('label' => 'Parent folder'));
