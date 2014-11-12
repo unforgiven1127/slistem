@@ -1423,7 +1423,7 @@ class CNotificationEx extends CNotification
     $oHTML = CDependency::getCpHtml();
     $asData = $oDbResult->getData();
 
-    $sHTML = $oHTML->getTitle('Reminder / messsge details');
+    $sHTML = $oHTML->getTitle('Reminder / Message details');
     $sHTML.= $oHTML->getCR();
 
 
@@ -1515,7 +1515,7 @@ class CNotificationEx extends CNotification
 
     $sHTML.= $oHTML->getBlocStart('', array('class' => 'reminder_detail_row'));
       $sHTML.= $oHTML->getBlocStart('', array('class' => 'button'));
-      $sHTML.= '<input type="button" value="close" />';
+      $sHTML.= '<input type="button" value="close" onclick="$(this).closest(\'.ui-dialog-content\').dialog(\'close\')" />';
       $sHTML.= $oHTML->getBlocEnd();
     $sHTML.= $oHTML->getBlocEnd();
 
