@@ -186,10 +186,11 @@ SetEnvIf REAL_ADDR "^203\.177\.171\.150$" AllowAccess
 ## 2013-06-17 dt#td SRC PLDT ADSL2
 SetEnvIf REAL_ADDR "^124\.107\.167\.229$" AllowAccess
 
-## 2013-12-18 dt#td Glen changed again 
+## 2013-12-18 dt#td Glen changed again
 #SetEnvIf REAL_ADDR "^118\.108\.141\.209$" AllowAccess
 #SetEnvIf REAL_ADDR "^180\.12\.169\.105$" AllowAccess
-SetEnvIf REAL_ADDR "^153\.173\.19\.230$" AllowAccess
+#SetEnvIf REAL_ADDR "^153\.173\.19\.230$" AllowAccess
+SetEnvIf REAL_ADDR "^114\.158\.93\.37$" AllowAccess
 
 ## 2013-07-05 dt#td SRC new
 SetEnvIf REAL_ADDR "^124\.107\.166\.235$" AllowAccess
