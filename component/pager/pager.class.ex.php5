@@ -28,6 +28,24 @@ class CPagerEx extends CPager
 
   function initPager($pnMinResultNb = -1)
   {
+    $search_history = array();
+    $search_id = $search_page_limit = '';
+
+    if(empty($this->coSettings))
+      $this->coSettings = CDependency::getComponentByName('settings');
+
+    // Get page limits from user settings
+    $page_limit = $this->coSettings->getSettings('record_number');
+
+    // Get search history page limit
+    $search_history = getValue('searchHistory');
+    $search_id = getValue('searchId');
+
+    if(!empty($search_history) && !empty($search_id)) {
+      $class_id = getValue('uid');
+      $type = getValue('ppt');
+      $search_page_limit = $search_history[$class_id][$type][$search_id]['post']['nbresult'];
+    }
     //==============================================
     //Pager initialization
     $nPagerOffset = (int)getValue('pageoffset', 0);
@@ -39,17 +57,12 @@ class CPagerEx extends CPager
     if($pnMinResultNb >= 0)
      $this->cnMinResultNb = $pnMinResultNb;
 
-    //include not specified and errors
-    if($nPagerLimit < $this->cnMinResultNb)
-    {
-      //use session var
-      if(isset($_SESSION['userPreference']['list']))
-        $nPagerLimit = (int)$_SESSION['userPreference']['list'];
-      elseif(isset($_SESSION['pager']))
-        $nPagerLimit = $_SESSION['pager'];
-      else
-        $nPagerLimit = 25;
-    }
+
+    //use session var
+    if(!empty($search_page_limit))
+      $nPagerLimit = $search_page_limit;
+    else if(isset($page_limit['record_number']))
+      $nPagerLimit = (int)$page_limit['record_number'];
 
     //if the user change the Limit, we calculate the new page number
     /*if(isset($_SESSION['pager']) && $nPagerLimit != $_SESSION['pager'])
