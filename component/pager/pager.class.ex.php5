@@ -44,7 +44,9 @@ class CPagerEx extends CPager
     if(!empty($search_history) && !empty($search_id)) {
       $class_id = getValue('uid');
       $type = getValue('ppt');
-      $search_page_limit = $search_history[$class_id][$type][$search_id]['post']['nbresult'];
+      if (!empty($search_history[$class_id][$type][$search_id]['post']['nbresult'])) {
+        $search_page_limit = $search_history[$class_id][$type][$search_id]['post']['nbresult'];
+      }
     }
     //==============================================
     //Pager initialization
