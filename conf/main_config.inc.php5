@@ -57,7 +57,7 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_PHPMAILER_SMTP_PORT', 465);
     define('CONST_PHPMAILER_SMTP_LOGIN', 'no_reply');
     define('CONST_PHPMAILER_SMTP_PASSWORD', 'No_Reply\'sPassword1');*/
-    define('CONST_PHPMAILER_SMTP_HOST', 'mail.bulbouscell.com');
+    define('CONST_PHPMAILER_SMTP_HOST', 'imap.slate.co.jp');
     define('CONST_PHPMAILER_SMTP_PORT', 465);
     define('CONST_PHPMAILER_SMTP_LOGIN', 'bcm@bulbouscell.com');
     define('CONST_PHPMAILER_SMTP_PASSWORD', 'AB1gOne!');
@@ -139,10 +139,8 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_PHPMAILER_ATTACHMENT_SIZE', 10485760);
 
     define('CONST_PHPMAILER_SMTP_PORT', 465); //smtp
-    define('CONST_PHPMAILER_SMTP_HOST', 'mail.slate.co.jp');
+    define('CONST_PHPMAILER_SMTP_HOST', 'imap.slate.co.jp');
     define('CONST_PHPMAILER_SMTP_LOGIN', 'slistem@slate.co.jp');
-    //define('CONST_PHPMAILER_SMTP_LOGIN', 'catchall@slistem.slate.co.jp');
-    //define('CONST_PHPMAILER_SMTP_HOST', 'imap.slistem.slate.co.jp');
 
     define('CONST_PHPMAILER_SMTP_PASSWORD', 'Slate!7000ics');
 
@@ -214,10 +212,8 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_PHPMAILER_ATTACHMENT_SIZE', 10485760);
 
     define('CONST_PHPMAILER_SMTP_PORT', 465); //smtp
-    define('CONST_PHPMAILER_SMTP_HOST', 'mail.slate.co.jp');
+    define('CONST_PHPMAILER_SMTP_HOST', 'imap.slate.co.jp');
     define('CONST_PHPMAILER_SMTP_LOGIN', 'slistem@slate.co.jp');
-    //define('CONST_PHPMAILER_SMTP_LOGIN', 'catchall@slistem.slate.co.jp');
-    //define('CONST_PHPMAILER_SMTP_HOST', 'imap.slistem.slate.co.jp');
 
     define('CONST_PHPMAILER_SMTP_PASSWORD', 'Slate!7000ics');
 
