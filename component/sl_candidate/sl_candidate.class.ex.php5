@@ -276,9 +276,22 @@ class CSl_candidateEx extends CSl_candidate
 
           case CONST_ACTION_LIST:
             //list and search
-            $asHTML = $this->_getCompanyList();
+            /*$asHTML = $this->_getCompanyList();
             $asHTML['data'] = convertToUtf8($asHTML['data']);
-            return json_encode($oPage->getAjaxExtraContent($asHTML));
+            return json_encode($oPage->getAjaxExtraContent($asHTML));*/
+            $oQB = $this->_getModel()->getQueryBuilder();
+
+            require_once('component/sl_candidate/resources/search/quick_search.class.php5');
+            $oQS = new CQuickSearch($oQB);
+            $sError = $oQS->buildQuickSearch();
+
+            if(!empty($sError))
+              return json_encode(array('alert' => $sError));
+
+            $asHTML = $this->_getCompanyList($oQB);
+
+            return json_encode($oPage->getAjaxExtraContent(array('data' => convertToUtf8($asHTML['data']),
+                'action' => 'goPopup.removeActive(\'layer\'); initHeaderManager(); ')));
             break;
 
           case CONST_ACTION_SEARCH:
@@ -5848,6 +5861,30 @@ class CSl_candidateEx extends CSl_candidate
 
     private function _getCompanyList($poQB = null)
     {
+      global $gbNewSearch;
+
+      $oLogin = CDependency::getCpLogin();
+
+      $asListMsg = array();
+      $bFilteredList = (bool)getValue('__filtered');
+
+      $nHistoryPk = (int)getValue('replay_search');
+      if($nHistoryPk > 0)
+      {
+        $this->csSearchId = getValue('searchId');
+        //$asListMsg[] = 'replay search '.$nHistoryPk.': reload qb saved in db...';
+
+        $asHistoryData = $oLogin->getUserActivityByPk($nHistoryPk);
+        $oQb = $asHistoryData['data']['qb'];
+        if(!$oQb || !is_object($oQb))
+        {
+          //dump($poQB);
+          $oQb = $this->_getModel()->getQueryBuilder();
+          $oQb->addWhere(' (false) ');
+          $asListMsg[] = ' Error, could not reload the search. ';
+        }
+      }
+
       //$poQB comes when doing a complex search
       if(empty($poQB))
       {
@@ -5861,38 +5898,58 @@ class CSl_candidateEx extends CSl_candidate
       else
         $oQb = $poQB;
 
-      $oQb->addSelect('*, GROUP_CONCAT(sind.label) as industry_list');
-      $oQb->setTable('sl_company', 'scom');
-      $oQb->addJoin('left', 'sl_attribute', 'satt', 'satt.`type` = \'cp_indus\' AND satt.itemfk = scom.sl_companypk');
-      $oQb->addJoin('left', 'sl_industry', 'sind', 'sind.sl_industrypk = satt.attributefk');
-      $oQb->addGroup('scom.sl_companypk');
-      $oQb->addOrder('scom.sl_companypk DESC');
-
-
-      // =============================================================
-
-       $asListMsg = array();
-
       // ============================================
       // search management
-      if(empty($this->csSearchId))
+
+      if(empty($this->csSearchId) && empty($nHistoryPk))
       {
+        //$asListMsg[] = ' new search id [empty sId or history]. ';
         $this->csSearchId = manageSearchHistory($this->csUid, CONST_CANDIDATE_TYPE_COMP);
         $oQb->addLimit('0, 50');
+        $nLimit = 50;
       }
       else
       {
-        $nPagerNbResult = getValue('nbresult', 50);
-        if($nPagerNbResult < 10)
-          $nPagerNbResult = 50;
+        //$asListMsg[] = ' just apply pager to reloaded search. ';
+        $oPager = CDependency::getComponentByName('pager');
+        $oPager->initPager();
+        $nLimit = $oPager->getLimit();
+        $nPagerOffset = $oPager->getOffset();
 
-        $nPagerOffset = getValue('pageoffset', 0);
-        if($nPagerOffset < 1)
-          $nPagerOffset = 1;
-
-        $oQb->addLimit((($nPagerOffset-1)*$nPagerNbResult).' ,'. $nPagerNbResult);
+        $oQb->addLimit(($nPagerOffset*$nLimit).' ,'. $nLimit);
       }
 
+      $oQb->setTable('sl_company', 'scom');
+      $oQb->addSelect('*, GROUP_CONCAT(sind.label) as industry_list');
+      $oQb->addJoin('left', 'sl_attribute', 'satt', 'satt.`type` = \'cp_indus\' AND satt.itemfk = scom.sl_companypk');
+      $oQb->addJoin('left', 'sl_industry', 'sind', 'sind.sl_industrypk = satt.attributefk');
+      $oQb->addGroup('scom.sl_companypk');
+
+
+      $sQuery = "SELECT *, GROUP_CONCAT(sind.label) as industry_list
+          FROM (sl_company) as scom
+          LEFT JOIN sl_attribute as satt ON (satt.type = 'cp_indus' AND satt.itemfk = scom.sl_companypk)
+          LEFT JOIN sl_industry as sind ON (sind.sl_industrypk = satt.attributefk)
+          GROUP BY scom.sl_companypk
+          ORDER BY scom.sl_companypk DESC
+          ";
+
+      $sSortField = getValue('sortfield');
+      $sSortOrder = getValue('sortorder', 'DESC');
+      if(!empty($sSortField))
+      {
+        if ($sSortField == 'industry_list')
+        {
+          $oQb->addOrder("sind.label $sSortOrder");
+        }
+        else
+        {
+          $oQb->addOrder("scom.$sSortField $sSortOrder");
+        }
+      }
+
+      if(!$oQb->hasOrder())
+        $oQb->addOrder('scom.sl_companypk DESC');
 
       // multi industries --> we need to group by companypk --> number result = numrows
       $oDbResult = $this->_getModel()->executeQuery($oQb->getCountSql());
@@ -5908,6 +5965,13 @@ class CSl_candidateEx extends CSl_candidate
         return array('data' => $this->_oDisplay->getBlocMessage('no company found for '.$oQb->getTitle()), 'nb_result' => $nResult, 'action' => 'goPopup.removeLastByType(\'layer\'); ');
 
 
+      if(empty($nHistoryPk) /*&& !$bLogged*/)
+      {
+        $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_LIST, CONST_CANDIDATE_TYPE_COMP, 0, array('searchId' => $this->csSearchId));
+        $sLink = 'javascript: loadAjaxInNewTab(\''.$sURL.'\', \'comp\', \'company\');';
+        $nHistoryPk = logUserHistory($this->csUid, $this->csAction, $this->csType, $this->cnPk, array('text' => implode(', ', $asListMsg).' (#'.$nResult.' results)', 'link' => $sLink, 'data' => array('qb' => $oQb)), false);
+      }
+
       $oDbResult = $this->_getModel()->executeQuery($oQb->getSql());
       $bRead = $oDbResult->readFirst();
       if(!$bRead)
@@ -5916,7 +5980,6 @@ class CSl_candidateEx extends CSl_candidate
         return array('data' => 'no company found.', 'sql' => $oQb->getSql());
       }
 
-      $oLogin = CDependency::getCpLogin();
       $asRow = array();
 
       while($bRead)
@@ -5929,7 +5992,7 @@ class CSl_candidateEx extends CSl_candidate
         $bRead = $oDbResult->readNext();
       }
 
-
+      $sListId = uniqid();
       $asParam = array('sub_template' => array('CTemplateList' => array(0 => array('row' => array('class' => 'CComp_row', 'path' => $_SERVER['DOCUMENT_ROOT'].self::getResourcePath().'template/comp_row.tpl.class.php5')))));
       $oTemplate = $this->_oDisplay->getTemplate('CTemplateList', $asParam);
       $oConf = $oTemplate->getTemplateConfig('CTemplateList');
@@ -5951,19 +6014,41 @@ class CSl_candidateEx extends CSl_candidate
           $('div.list_action_container', oCurrentLi).append(oAction).fadeIn();
         }";
 
+      //Template related -- #2
+      if($nResult <= $nLimit)
+      {
+        $sSortJs = 'javascript';
+        $sURL = '';
+        $nAjax = 0;
+      }
+      else
+      {
+        $sSortJs = '-';
+        $sURL = $this->_oPage->getAjaxUrl('sl_candidate', $this->csAction, CONST_CANDIDATE_TYPE_COMP, 0, array('searchId' => $this->csSearchId, '__filtered' => 1, 'data_type' => CONST_CANDIDATE_TYPE_COMP, 'replay_search' => $nHistoryPk));
+        $nAjax = 1;
+      }
+
       $sActionLink = $this->_oDisplay->getLink($sPic, 'javascript:;', array('onclick' => $sJavascript));
       $oConf->addColumn($sActionLink, 'a', array('id' => 'aaaaaa', 'width' => '20'));
-      $oConf->addColumn('ID', 'sl_companypk', array('width' => '43', 'sortable'=> array('javascript' => 'text'), 'style' => 'margin: 0;'));
+      $oConf->addColumn('ID', 'sl_companypk', array('width' => '43', 'sortable'=> array($sSortJs => 'text',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId), 'style' => 'margin: 0;'));
 
 
-      $oConf->addColumn('C', 'is_client', array('id' => '', 'width' => '20', 'sortable'=> array('javascript' => 'value_integer')));
-      $oConf->addColumn('NC', 'is_nc_ok', array('id' => '', 'width' => '20', 'sortable'=> array('javascript' => 'value_integer')));
-      $oConf->addColumn('L', 'level', array('id' => '', 'width' => '20', 'sortable'=> array('javascript' => 'value_integer')));
-      $oConf->addColumn('Company name', 'name', array('id' => '', 'width' => '31%', 'sortable'=> array('javascript' => 'value_integer')));
-      $oConf->addColumn('Industry', 'industry_list', array('id' => '', 'width' => '18%', 'sortable'=> array('javascript' => 'text')));
-      $oConf->addColumn('Description', 'description', array('id' => '', 'width' => '22%', 'sortable'=> array('javascript' => 'text')));
-      //$oConf->addColumn('Contact', 'contact', array('id' => '', 'width' => '15%', 'sortable'=> array('javascript' => 'text')));
-      $oConf->addColumn('Created by', 'created_by', array('id' => '', 'width' => '10%', 'sortable'=> array('javascript' => 'text')));
+      $oConf->addColumn('C', 'is_client', array('id' => '', 'width' => '20', 'sortable'=> array($sSortJs => 'value_integer',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn('NC', 'is_nc_ok', array('id' => '', 'width' => '20', 'sortable'=> array($sSortJs => 'value_integer',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn('L', 'level', array('id' => '', 'width' => '20', 'sortable'=> array($sSortJs => 'value_integer',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn('Company name', 'name', array('id' => '', 'width' => '31%', 'sortable'=> array($sSortJs => 'text',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn('Industry', 'industry_list', array('id' => '', 'width' => '18%', 'sortable'=> array($sSortJs => 'text',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn('Description', 'description', array('id' => '', 'width' => '22%', 'sortable'=> array($sSortJs => 'text',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      //$oConf->addColumn('Contact', 'contact', array('id' => '', 'width' => '15%', 'sortable'=> array($sSortJs => 'text')));
+      $oConf->addColumn('Created by', 'created_by', array('id' => '', 'width' => '10%', 'sortable'=> array($sSortJs => 'text',
+        'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
       $sTitle = $oQb->getTitle();
       if(!empty($sTitle))
@@ -5971,15 +6056,103 @@ class CSl_candidateEx extends CSl_candidate
 
       $oConf->addBlocMessage('<span class="search_result_title_nb">'.$nResult.' result(s)</span> '.implode(', ', $asListMsg), array('style' => 'cursor: crossair'), 'title');
 
-
-      $sURL = $this->_oPage->getAjaxUrl('sl_candidate', $this->csAction, CONST_CANDIDATE_TYPE_COMP, 0, array('searchId' => $this->csSearchId, '__filtered' => 1));
       $oConf->setPagerTop(true, 'right', $nResult, $sURL.'&list=1', array('ajaxTarget' => '#'.$this->csSearchId));
       $oConf->setPagerBottom(true, 'right', $nResult, $sURL.'&list=1', array('ajaxTarget' => '#'.$this->csSearchId));
 
+      //===========================================
+      //===========================================
+      //start building the HTML
+      $sHTML = '';
 
-      $sHTML = $this->_oDisplay->getBlocStart($this->csSearchId, array('class' => 'scrollingContainer'));
-      $sHTML.= $oTemplate->getDisplay($asRow);
+      /* debug
+       *
+      if(!$bFilteredList)
+        $sHTML.= $this->_oDisplay->getBlocStart($this->csSearchId, array('class' => 'scrollingContainer')).' new list';
+      else
+        $sHTML.= 'replay a search, pager offset '.$nPagerOffset.', container/search ID '.$this->csSearchId;*/
+
+      if(!$bFilteredList)
+        $sHTML.= $this->_oDisplay->getBlocStart($this->csSearchId, array('class' => 'scrollingContainer'));
+
+      $sHTML.= $this->_oDisplay->getBlocStart($sActionContainerId, array('class' => 'hidden'));
+/*        var_dump(
+  $sHTML
+  );
+die();*/
+      $sHTML.= '
+        <div><input type="checkbox"
+        onchange="if($(this).is(\':checked\')){ listSelectBox(\''.$sListId.'\', true); }else{ listSelectBox(\''.$sListId.'\', false); }"/> all</div>';
+
+      $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_FOLDER, 0, array('item_type' => CONST_CANDIDATE_TYPE_COMP));
+      $sHTML.= '<div>Create a folder from [<a href="javascript:;" onclick="
+        listBoxClicked($(\'#'.$sListId.' ul li:first\'));
+        sIds = $(\'.multi_drag\').attr(\'data-ids\');
+        if(!sIds)
+          return alert(\'Nothing selected\');
+
+        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>]';
+
+      if($nResult <= 1000)
+        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+      else
+        $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+
+      $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_ITEM, 0, array('item_type' => CONST_CANDIDATE_TYPE_COMP));
+      $sHTML.= '</div><div>Move into a folder [<a href="javascript:;" onclick="
+        listBoxClicked($(\'#'.$sListId.' ul li:first\'));
+        sIds = $(\'.multi_drag\').attr(\'data-ids\');
+        if(!sIds)
+          return alert(\'Nothing selected\');
+
+        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>]';
+
+      if($nResult <= 1000)
+        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+      else
+        $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+
+      $sHTML.= '</div>';
+
+      if(!empty($nFolderPk))
+      {
+        $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM, 0, array('folderpk' => $nFolderPk, 'item_type' => CONST_CANDIDATE_TYPE_COMP));
+        $sHTML.= '<div>Remove from folder [<a href="javascript:;" onclick="listBoxClicked($(\'#'.$sListId.' ul li:first\'));
+        sIds = $(\'.multi_drag\').attr(\'data-ids\');
+        if(!sIds)
+          return alert(\'Nothing selected\');
+
+         AjaxRequest(\''.$sURL.'&ids=\'+sIds);
+        ">selected</a>]
+        [<a href="javascript:;" onclick="AjaxRequest(\''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]</div>';
+      }
+
       $sHTML.= $this->_oDisplay->getBlocEnd();
+
+      //Add the list template to the html
+      $sHTML.= $oTemplate->getDisplay($asRow, 1, 5, 'safdassda');
+
+
+      //---------------------------------------------
+      //manage javascript action
+      $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_SAVEADD, CONST_FOLDER_TYPE_ITEM, 0);
+      $sHTML.='<script> initDragAndDrop(\''.$sURL.'\'); </script>';
+
+      if(count($asRow) == 1)
+      {
+        $asRow = current($asRow);
+        $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_COMP, (int)$asRow['sl_companypk']);
+        $sHTML.='<script> view_comp(\''.$sURL.'\'); </script>';
+      }
+
+      //DEBUG: Dropp the query at the end
+      if($oLogin->getUserPk() == 367 || isDevelopment() )
+      {
+        $sHTML.= '<a href="javascript:;" onclick="$(this).parent().find(\'.query\').toggle(); ">query... </a>
+          <span class="hidden query"><br />'.$sQuery.'</span><br /><br /><br />';
+      }
+
+      if($gbNewSearch)
+        $sHTML.= $this->_oDisplay->getBlocEnd();
 
       return array('data' => $sHTML, 'action' => ' initHeaderManager(); goPopup.removeLastByType(\'layer\'); ');
     }
