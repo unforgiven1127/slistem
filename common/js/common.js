@@ -1366,6 +1366,7 @@ function initMce(psFieldName, pbAdvanced)
       // Theme options
       menubar:false,
       toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,fullscreen",
+      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
 
       save_enablewhendirty: true,
       protect:
@@ -1390,6 +1391,7 @@ function initMce(psFieldName, pbAdvanced)
 
       // Theme options
       toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,paste,|,bullist,numlist,|,link,unlink",
+      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
 
       cleanup: true
     });
