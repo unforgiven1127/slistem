@@ -150,7 +150,7 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_MAIL_IMAP_LOG_SENT', true);
     //--------------------------------------
     //required if of of the above are true
-    define('CONST_MAIL_IMAP_PORT', 7993);  //imap
+    define('CONST_MAIL_IMAP_PORT', 993);  //imap
     define('CONST_MAIL_IMAP_LOG_PARAM_INBOX', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/debug/readonly/imap/ssl/novalidate-cert}inbox');
     define('CONST_MAIL_IMAP_LOG_PARAM_SENT', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/imap/ssl/novalidate-cert}sent');
     define('CONST_MAIL_IMAP_CATCHALL_ADDRESS', 'slistem@imap.slistem.slate.co.jp'); //use the domain to look into mail header
@@ -224,7 +224,7 @@ switch(trim($_SERVER['SERVER_NAME']))
 
     //--------------------------------------
     //required parameters if one of the above are true
-    define('CONST_MAIL_IMAP_PORT', 7993);  //imap
+    define('CONST_MAIL_IMAP_PORT', 993);  //imap
     define('CONST_MAIL_IMAP_LOG_PARAM_INBOX', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/debug/readonly/imap/ssl/novalidate-cert}inbox');
     define('CONST_MAIL_IMAP_LOG_PARAM_SENT', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/imap/ssl/novalidate-cert}sent');
     define('CONST_MAIL_IMAP_CATCHALL_ADDRESS', 'slistem@imap.slistem.slate.co.jp'); //use the domain to look into mail header
