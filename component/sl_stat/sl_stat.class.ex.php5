@@ -2314,7 +2314,7 @@ class CSl_statEx extends CSl_stat
           case 'month':
           default:
             $sDateStart = date('Y-m').'-01';
-            $sDateEnd = date('Y').'-'.(date('m')+1).'-01';
+            $sDateEnd = date('Y-m', strtotime('+1 month')).'-01';
 
             $sPeriod = ' CURRENT MONTH ';
             break;
