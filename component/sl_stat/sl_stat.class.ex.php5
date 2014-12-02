@@ -704,7 +704,7 @@ class CSl_statEx extends CSl_stat
               }
             },
             title: {
-                text: "Candidate met / monthly",
+                text: "Candidates met / monthly",
                 x: -20 //center
             },
             plotOptions:
@@ -735,7 +735,7 @@ class CSl_statEx extends CSl_stat
             },
             yAxis: {
               title: {
-                  text: "Candidate met"
+                  text: "Candidates met"
               }';
 
            if($psChartType == 'line')
@@ -957,7 +957,7 @@ class CSl_statEx extends CSl_stat
       exit('-- -- -- ');*/
 
       $sId = uniqid();
-      $sHTML = $oHTML->getTitle('Candidate met', 'h3', true);
+      $sHTML = $oHTML->getTitle('Candidates met', 'h3', true);
       $sHTML.= $oHTML->getCR();
 
       if($this->cnHeight)
@@ -1128,7 +1128,7 @@ class CSl_statEx extends CSl_stat
 
 
       $sHTML.= $oHTML->getCR();
-      $sHTML.= $oHTML->getTitle('Candidate in play', 'h3', true);
+      $sHTML.= $oHTML->getTitle('Candidates in play', 'h3', true);
       $sHTML.= $oHTML->getCR();
 
       if($this->cnHeight)
@@ -2666,7 +2666,7 @@ class CSl_statEx extends CSl_stat
 
       array_multisort($asChartData['total'], SORT_DESC, SORT_NUMERIC, $asChartData['met'], $asChartData['set']);
 
-      $sData = '{name: "Candidate met", color: "#F7B94F", data: ['.implode(',', $asChartData['met']).'], stack: "meeting",
+      $sData = '{name: "Candidates met", color: "#F7B94F", data: ['.implode(',', $asChartData['met']).'], stack: "meeting",
         dataLabels:{
           formatter: function()
           {

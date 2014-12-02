@@ -5130,7 +5130,7 @@ class CSl_candidateEx extends CSl_candidate
 
       if($bDisplayAllTabs)
       {
-        $sTab = '<ul class="candidate_form_tabs"><li onclick="toggleFormTabs(this, \'candi_data\');" class="selected"><div>Canddiate data</div></li>';
+        $sTab = '<ul class="candidate_form_tabs"><li onclick="toggleFormTabs(this, \'candi_data\');" class="selected"><div>Candidate data</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_contact\');"><div>Contact details</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_note\');"><div>Notes</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_resume\');"><div>Resume</div></li>';
@@ -5328,7 +5328,7 @@ class CSl_candidateEx extends CSl_candidate
             if(!empty($sDatePlayed))
               $sLegend = ' previously in play';
             else
-              $sLegend = ' candidate met';
+              $sLegend = ' candidates met';
 
             $asStatus = '
               <option value="2"> Contacted </option>
