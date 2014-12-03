@@ -298,7 +298,7 @@ class CSl_statEx extends CSl_stat
               break;
           }
         }
-        //dump($asUser);
+
 
 
         $this->cbDisplayLegend = false;
@@ -310,6 +310,7 @@ class CSl_statEx extends CSl_stat
       {
         $asUser = $oLogin->getUserList($_POST['loginfk'], false, true);
         $nUser = count($asUser);
+        uasort($asUser, sort_multi_array_by_value('id'));
 
         if($nUser == 1)
         {
@@ -2332,8 +2333,7 @@ class CSl_statEx extends CSl_stat
       $sCategories = $this->_getCategories($sDateStart, $sDateEnd);
 
       $anUser = array_keys($asUser);
-      /*dump($asUser);
-      dump($anUser);*/
+
       $sHTML = '';
 
 
@@ -2497,7 +2497,7 @@ class CSl_statEx extends CSl_stat
 
         $nCount++;
       }
-      arsort($asChartData['met']);
+      // arsort($asChartData['met']);
 
       /*$nMiddle = floor(count($asChartData['target1'])/2);
       $nCount = 0;
@@ -2664,7 +2664,7 @@ class CSl_statEx extends CSl_stat
         $asChartData['total'][$sUserName] = $asChartData['met'][$sUserName] + $asChartData['set'][$sUserName];
       }
 
-      array_multisort($asChartData['total'], SORT_DESC, SORT_NUMERIC, $asChartData['met'], $asChartData['set']);
+      // array_multisort($asChartData['total'], SORT_DESC, SORT_NUMERIC, $asChartData['met'], $asChartData['set']);
 
       $sData = '{name: "Candidates met", color: "#F7B94F", data: ['.implode(',', $asChartData['met']).'], stack: "meeting",
         dataLabels:{
@@ -2825,7 +2825,7 @@ class CSl_statEx extends CSl_stat
 
         $nCount++;
       }
-      arsort($asChartData['play']);
+      // arsort($asChartData['play']);
 
       $sId = uniqid();
       $sHTML = '<br />';
