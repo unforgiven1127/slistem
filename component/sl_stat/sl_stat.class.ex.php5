@@ -192,7 +192,7 @@ class CSl_statEx extends CSl_stat
     private function _getStatPage($pbInJax = false)
     {
 
-      $sDateStart = getValue('date_start');
+      $sDateStart = $original_date_start = getValue('date_start');
       if(strlen($sDateStart) == 7)
         $sDateStart.='-01';
 
@@ -204,7 +204,16 @@ class CSl_statEx extends CSl_stat
 
       $sDateEnd = getValue('date_end');
       if(strlen($sDateEnd) == 7)
-        $sDateEnd.='-01';
+      {
+        if ($original_date_start == $sDateEnd)
+        {
+          $sDateEnd = date("Y-m-t", strtotime($sDateEnd));
+        }
+        else
+        {
+          $sDateEnd.='-01';
+        }
+      }
 
       if(empty($sDateEnd) || !is_date($sDateEnd))
       {
