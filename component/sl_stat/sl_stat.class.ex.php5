@@ -2317,8 +2317,7 @@ class CSl_statEx extends CSl_stat
             break;
 
           case 'custom':
-            $sDateStart = getValue('start');
-            $sDateEnd = getValue('end');
+            // Placeholder
             break;
 
           case 'month':
