@@ -310,7 +310,6 @@ class CSl_statEx extends CSl_stat
       {
         $asUser = $oLogin->getUserList($_POST['loginfk'], false, true);
         $nUser = count($asUser);
-        uasort($asUser, sort_multi_array_by_value('id'));
 
         if($nUser == 1)
         {
@@ -320,6 +319,7 @@ class CSl_statEx extends CSl_stat
         else
         {
           $sTitle = $nUser.' users';
+          uasort($asUser, sort_multi_array_by_value('id'));
         }
       }
 
