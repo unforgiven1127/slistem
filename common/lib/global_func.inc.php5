@@ -1705,7 +1705,7 @@ function sanitizeUrl()
 }
 
 /**
- * Sorts multidimensional array by value
+ * Sorts multidimensional array by string value
  * @param string $field
  * @return array
  */
