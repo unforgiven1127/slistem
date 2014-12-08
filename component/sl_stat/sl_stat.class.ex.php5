@@ -1076,7 +1076,7 @@ class CSl_statEx extends CSl_stat
                 data: ['.implode(',', $asData['target_met']).']
             },';
 
-     //dump($asUserData);
+
      $nCount = 0;
      foreach($asUserData as $sUser => $asData)
      {
@@ -2443,27 +2443,27 @@ class CSl_statEx extends CSl_stat
 
       $oInterval = $oDateStart->diff($oDateFDM);
       $nMonth = (int)$oInterval->format('%m');
-      //dump('month: '.$nMonth);
-      //dump('month * period['.$pnTarget.']: '.($pnTarget *$nMonth));
 
+      $month_total_days = $oDateEnd->format('t');
+      $target_per_day = $pnTarget / $month_total_days;
 
       $oInterval = $oDateFDM->diff($oDateEnd);
       $nDayThisMonth = (int)$oInterval->format('%d');
       if(empty($nDayThisMonth))
         $nDayThisMonth = 1;
-      /*dump($oDateFDM);
-      dump($oDateEnd);
-      dump('this month: '.$nDayThisMonth);*/
+
 
       $oInterval = $oDateFDM->diff($oDateNow);
       $nCurrentDay = (int)$oInterval->format('%d');
-      //dump('current day: '.$nCurrentDay);
+
 
       if(empty($nCurrentDay) || (empty($nMonth) && $nDayThisMonth == $nCurrentDay))
         return $pnTarget;
-
+/*var_export(
+$target_per_day . ' '
+);*/
       //dump(round( ($pnTarget * $nMonth) + ($pnTarget / ($nCurrentDay/$nDayThisMonth)), 1, PHP_ROUND_HALF_DOWN));
-      $this->casTmpTarget[$sKey] = round( ($pnTarget * $nMonth) + ($pnTarget * ($nCurrentDay/$nDayThisMonth)), 1, PHP_ROUND_HALF_DOWN);
+      $this->casTmpTarget[$sKey] = round( ($pnTarget * $nMonth) + ($target_per_day * $nCurrentDay), 1, PHP_ROUND_HALF_DOWN);
       return $this->casTmpTarget[$sKey];
     }
 
@@ -2516,8 +2516,7 @@ class CSl_statEx extends CSl_stat
           $asChartData['target1'][$sUserName] = '{y: '.$nValue.', marker: {symbol: "url('.CONST_CRM_DOMAIN.'/component/sl_stat/resources/pictures/target_to_date.gif)"}}';
 
         $nCount++;
-      }
-      dump($asChartData['target1']);*/
+      }*/
 
       if($this->cbWatercooler)
       {
