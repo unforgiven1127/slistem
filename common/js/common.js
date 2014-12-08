@@ -1359,13 +1359,13 @@ function initMce(psFieldName, pbAdvanced)
       mode : "exact",
       elements : psFieldName,
       theme : "modern",
-      plugins : "save,layer,table,hr,textcolor,link,emoticons,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template",
+      plugins : "save,layer,table,hr,textcolor,link,emoticons,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template,code",
 
       gecko_spellcheck : true,
 
       // Theme options
       menubar:false,
-      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,fullscreen",
+      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,fullscreen,|,code",
       toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
 
       save_enablewhendirty: true,
@@ -1385,12 +1385,12 @@ function initMce(psFieldName, pbAdvanced)
       mode : "exact",
       elements : psFieldName,
       theme : "modern",
-      plugins : "save,autosave,layer,table,hr,textcolor,link,emoticons,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template",
+      plugins : "save,autosave,layer,table,hr,textcolor,link,emoticons,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template,code",
 
       gecko_spellcheck : true,
 
       // Theme options
-      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,backcolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,paste,|,bullist,numlist,|,link,unlink",
+      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,code",
       toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
 
       cleanup: true
