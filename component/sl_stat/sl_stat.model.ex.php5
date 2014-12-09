@@ -400,30 +400,18 @@ class CSl_statModelEx extends CSl_statModel
     if(!assert('is_arrayOfInt($panUserPk)'))
       return array();
 
-    /*$sQuery = 'SELECT COUNT(sl_meetingpk) as nSet, smee.created_by,
-      SUM( IF(date_met IS NOT NULL AND smee.date_created >= "'.date('Y-m-d', strtotime('-90 days', strtotime($psDateStart))).'", 1, 0)) as nMet
-      FROM sl_meeting as smee
-
-      WHERE smee.created_by IN ('.implode(',', $panUserPk).')
-        AND smee.created_by <> smee.attendeefk
-        AND smee.date_created <= "'.$psDateEnd.'"
-
-      GROUP BY smee.created_by
-      ORDER BY nSet DESC ';*/
-
     $sQuery = 'SELECT COUNT(sl_meetingpk) as nSet, smee.created_by, smee.date_created, smee.date_met,
-      SUM( IF(date_met IS NOT NULL AND (smee.date_created >= DATE_SUB(smee.date_met, INTERVAL 90 DAY)), 1, 0)) as nMet
+      SUM( IF(smee.date_met BETWEEN "'.$psDateStart.'" AND "'.$psDateEnd.'", 1, 0)) as nMet
       FROM sl_meeting as smee
 
       WHERE smee.created_by IN ('.implode(',', $panUserPk).')
         AND smee.created_by <> smee.attendeefk
-        AND smee.date_created <= "'.$psDateEnd.'"
+        AND smee.date_meeting BETWEEN "'.$psDateStart.'" AND "'.$psDateEnd.'"
 
       GROUP BY smee.created_by
-      HAVING smee.date_created >= "'.$psDateStart.'" OR (smee.date_created >= DATE_SUB(smee.date_met, INTERVAL 90 DAY))
       ORDER BY nSet DESC ';
 
-    //echo $sQuery;
+
     $asData = array();
 
     $oDbResult = $this->oDB->executeQuery($sQuery);
