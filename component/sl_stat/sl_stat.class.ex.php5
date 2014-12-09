@@ -2428,16 +2428,16 @@ class CSl_statEx extends CSl_stat
         return $this->casTmpTarget[$sKey];
 
       $nThisMonth = date('m');
-      $nThisyear = date('Y');
+      // $nThisyear = date('Y');
 
       $oDateNow = new DateTime();
 
       //FDM: first day of the month
-      $oDateFDM = new DateTime(date('Y-m-d', mktime(0, 0, 0, $nThisMonth, 1, $nThisyear)));
+      $oDateFDM = new DateTime(date('Y-m-01'));
       $oDateStart = new DateTime($psDateStart);
 
       if($nThisMonth < date('m', strtotime($psDateEnd)))
-        $oDateEnd = new DateTime(date('Y-m-d', mktime(0, 0, -1, $nThisMonth+1, 1, $nThisyear)));
+        $oDateEnd = new DateTime(date('Y-m-t'));
       else
         $oDateEnd = new DateTime($psDateEnd);
 
@@ -2459,10 +2459,7 @@ class CSl_statEx extends CSl_stat
 
       if(empty($nCurrentDay) || (empty($nMonth) && $nDayThisMonth == $nCurrentDay))
         return $pnTarget;
-/*var_export(
-$target_per_day . ' '
-);*/
-      //dump(round( ($pnTarget * $nMonth) + ($pnTarget / ($nCurrentDay/$nDayThisMonth)), 1, PHP_ROUND_HALF_DOWN));
+
       $this->casTmpTarget[$sKey] = round( ($pnTarget * $nMonth) + ($target_per_day * $nCurrentDay), 1, PHP_ROUND_HALF_DOWN);
       return $this->casTmpTarget[$sKey];
     }
