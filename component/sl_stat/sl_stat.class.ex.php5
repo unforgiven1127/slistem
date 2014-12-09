@@ -1086,7 +1086,7 @@ class CSl_statEx extends CSl_stat
           $sChart.= '
           {
             type: "'.$psChartType.'",
-            name: "Scheduled",
+            name: "Not met",
             showInLegend: false,
             stack: "'.$sUser.'",
             data: ['.implode(',', $asData['not_met']).'],
@@ -1109,11 +1109,10 @@ class CSl_statEx extends CSl_stat
           dataLabels:
           {
             enabled: true,
-            rotation: -90,
+            rotation: 0,
             color: "#FFFFFF",
             align: "center",
-            x: 4,
-            y: 10
+            verticalAlign: "top"
           }';
        }
 
@@ -1257,11 +1256,9 @@ class CSl_statEx extends CSl_stat
                 dataLabels:
                 {
                   enabled: true,
-                  rotation: -90,
                   color: "#FFFFFF",
                   align: "center",
-                  x: 4,
-                  y: 10
+                  verticalAlign: "top"
                 }';
        }
        $sChart.= '},';
@@ -1398,11 +1395,9 @@ class CSl_statEx extends CSl_stat
                  dataLabels:
                  {
                    enabled: true,
-                   rotation: -90,
                    color: "#FFFFFF",
                    align: "center",
-                   x: 4,
-                   y: 10
+                   verticalAlign: "top"
                  }';
         }
         $sChart.= '},';
@@ -1543,11 +1538,10 @@ class CSl_statEx extends CSl_stat
                  dataLabels:
                  {
                    enabled: true,
-                   rotation: -90,
+                   rotation: 0,
                    color: "#FFFFFF",
                    align: "center",
-                   x: 4,
-                   y: 10
+                   verticalAlign: "top"
                  }';
         }
         $sChart.= '},';
@@ -1861,9 +1855,7 @@ class CSl_statEx extends CSl_stat
 
     private function _nbStatusSort(&$pasData)
     {
-      //dump($pasData);
       arsort($pasData);
-     // dump($pasData);
 
       $asSortedArray = $asResult = array();
 
