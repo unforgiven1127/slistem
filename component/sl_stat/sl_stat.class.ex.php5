@@ -2662,7 +2662,7 @@ class CSl_statEx extends CSl_stat
 
       // array_multisort($asChartData['total'], SORT_DESC, SORT_NUMERIC, $asChartData['met'], $asChartData['set']);
 
-      $sData = '{name: "Candidates met", color: "#F7B94F", data: ['.implode(',', $asChartData['met']).'], stack: "meeting",
+      $sData = '{name: "Meeting set", color: "#5485B9", data: ['.implode(',', $asChartData['set']).'], stack: "meeting",
         dataLabels:{
           formatter: function()
           {
@@ -2673,7 +2673,8 @@ class CSl_statEx extends CSl_stat
           }
         }
       }';
-      $sData.= ', {name: "Meeting set", color: "#5485B9", data: ['.implode(',', $asChartData['set']).'], stack: "meeting",
+
+      $sData .= ', {name: "Candidates met", color: "#F7B94F", data: ['.implode(',', $asChartData['met']).'], stack: "meeting",
         dataLabels:{
           formatter: function()
           {
