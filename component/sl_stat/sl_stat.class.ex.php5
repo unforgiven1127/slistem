@@ -308,7 +308,10 @@ class CSl_statEx extends CSl_stat
           }
         }
 
+        $nUser = count($asUser);
 
+        if($nUser >= 1)
+          uasort($asUser, sort_multi_array_by_value('id'));
 
         $this->cbDisplayLegend = false;
         $sMainMax = '100%';
