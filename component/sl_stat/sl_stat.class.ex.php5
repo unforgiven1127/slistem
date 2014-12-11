@@ -3747,7 +3747,7 @@ class CSl_statEx extends CSl_stat
         </span>
 
         <span class="options_period">
-        Change period: <a>month</a>, <a>q1</a>, <a>q2</a>, <a>q3</a>, <a>q4</a>, <a>s1</a>, <a>s2</a>, <a>year</a>, custom ( &start=2013-01-01&end=2014-10-10 )<br />
+        Change period: <a>month</a>, <a>q1</a>, <a>q2</a>, <a>q3</a>, <a>q4</a>, <a>s1</a>, <a>s2</a>, <a>year</a>, custom ( &date_start=2013-01-01&date_end=2014-10-10 )<br />
         </span>
         <br /><br />
 
@@ -3758,32 +3758,32 @@ class CSl_statEx extends CSl_stat
 
 
         <div class="urls" style="border: 1px solid #dedede; padding: 10px;">
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=met">KPI - Met candidates</a> :<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=met
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=met">KPI - Met candidates</a> :<br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=met
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=placement">KPI - Placements</a> :<br />
-        /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement">KPI - Placements</a> :<br />
+        /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=placement_grp">KPI - Placements per team</a> :<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_grp
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement_grp">KPI - Placements per team</a> :<br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_grp
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=placement_loc">KPI - Placements per location</a> :<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_loc
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement_loc">KPI - Placements per location</a> :<br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_loc
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=set_vs_met">KPI - Set VS Met </a>:<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=set_vs_met
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=set_vs_met">KPI - Set VS Met </a>:<br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=set_vs_met
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=in_play">KPI - In_play</a>: <br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=in_play
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=in_play">KPI - In_play</a>: <br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=in_play
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&start=2013-01-01&end=2014-10-10&location=all&chart=contrib">KPI - Contributors</a>: <br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&start=2013-01-01&end=2014-10-10</span><span class="loc">&location=all</span>&chart=contrib
+        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=contrib">KPI - Contributors</a>: <br />
+         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=contrib
         <br /><br />
 
 
