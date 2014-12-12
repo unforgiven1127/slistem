@@ -102,7 +102,7 @@ class CAutocomplete extends CField
        },
        onAdd: function(oItem)
        {
-         //console.log(oItem);
+         // console.log(oItem);
          if(oItem.id == "token_clear")
            $(this).tokenInput("clear");
 
@@ -137,7 +137,7 @@ class CAutocomplete extends CField
       $sJavascript.= '}); });';
 
     //form removing the search div... retriggered by field_controls
-    $sJavascript.= ' $("#'.$this->casFieldParams['id'].'").on("remove", function(){ $(".token-input-dropdown-mac").remove(); });   ';
+    $sJavascript.= ' $("#'.$this->casFieldParams['id'].'").on("remove", function(){ $("#'.$this->casFieldParams['id'].' .token-input-dropdown-mac").remove(); }); ';
 
 
     $sHTML.= '<script language="javascript">'.$sJavascript.'</script>';
