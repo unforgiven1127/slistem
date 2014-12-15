@@ -1162,6 +1162,7 @@ class CFolderEx extends CFolder
     $this->_getModel()->deleteItemFromParentFk($pnPk);
     $this->_getModel()->deleteByFk($pnPk, 'folder_rights', 'folder');
     $this->_getModel()->deleteByPk($pnPk, 'folder');
+    self::_loadFolderTree(true);
     return array('notice' => 'Folder removed.');
   }
 

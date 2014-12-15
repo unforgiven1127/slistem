@@ -154,7 +154,7 @@ class CSl_FolderEx extends CSl_Folder
     parent::_loadFolderTree($pbRefresh, $pnPreloadOption);
 
     //then load the list (based on the tree)
-    if(!isset($_SESSION['folder_list']) || $pbRefresh)
+    // if(!isset($_SESSION['folder_list']) || $pbRefresh)
     {
       //dump('sl_folder ['.date('H:i:s').']--> no tree in session or forced refresh('.(int)$pbRefresh.')'); flush(); ob_flush();
 
@@ -171,8 +171,6 @@ class CSl_FolderEx extends CSl_Folder
     {
       dump('sl_folder --> tree in session  nothing to do'); flush(); ob_flush();
     }*/
-
-    //dump($_SESSION['folder_tree']);
 
     return true;
   }
