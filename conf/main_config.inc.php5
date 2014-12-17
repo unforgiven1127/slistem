@@ -228,6 +228,7 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_MAIL_IMAP_LOG_PARAM_INBOX', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/debug/readonly/imap/ssl/novalidate-cert}inbox');
     define('CONST_MAIL_IMAP_LOG_PARAM_SENT', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/imap/ssl/novalidate-cert}sent');
     define('CONST_MAIL_IMAP_CATCHALL_ADDRESS', 'slistem@aoy3f.slate.local'); //use the domain to look into mail header
+    define('CONST_MAIL_IMAP_ACCEPTED_DOMAIN', 'slate.co.jp,bulbouscell.com,bcmj.biz,slate-ghc.com');
 
 
     define('CONST_AVAILABLE_LANGUAGE', 'en,jp');
