@@ -187,10 +187,9 @@ SetEnvIf REAL_ADDR "^203\.177\.171\.150$" AllowAccess
 SetEnvIf REAL_ADDR "^124\.107\.167\.229$" AllowAccess
 
 ## 2013-12-18 dt#td Glen changed again
-#SetEnvIf REAL_ADDR "^118\.108\.141\.209$" AllowAccess
-#SetEnvIf REAL_ADDR "^180\.12\.169\.105$" AllowAccess
-#SetEnvIf REAL_ADDR "^153\.173\.19\.230$" AllowAccess
-SetEnvIf REAL_ADDR "^114\.158\.93\.37$" AllowAccess
+#SetEnvIf REAL_ADDR "^114\.158\.93\.37$" AllowAccess
+SetEnvIf REAL_ADDR "^126\.253\.200\.254$" AllowAccess
+SetEnvIf REAL_ADDR "^126\.70\.45\.172$" AllowAccess
 
 ## 2013-07-05 dt#td SRC new
 SetEnvIf REAL_ADDR "^124\.107\.166\.235$" AllowAccess
@@ -213,9 +212,6 @@ SetEnvIf REAL_ADDR "^192\.168\.10\.99$" AllowAccess
 
 ## 2014-02-05 dt#td Ryan home
 SetEnvIf REAL_ADDR "^118\.21\.0\.196$" AllowAccess
-
-## 2014-02-12 dt#td Glen Mid Feb 2014
-SetEnvIf REAL_ADDR "^126\.70\.45\.172$" AllowAccess
 
 ## 2014-02-17 dt#td Hong Kong Feb 2014
 SetEnvIf REAL_ADDR "^58\.152\.223\.104$" AllowAccess
