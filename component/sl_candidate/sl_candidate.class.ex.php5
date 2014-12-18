@@ -3171,10 +3171,10 @@ class CSl_candidateEx extends CSl_candidate
       //If launched manually, we try an accurate search.
       //If no result, the function will be launched a second time
       //can't use as_epq= anymore, google is getting rid of RSS feeds
-      if($pbManual && $pnAttempt == 0)
+      /*if($pbManual && $pnAttempt == 0)
         $sNewsUrl = 'http://news.google.com/news/search?output=rss&gl=jp&geo=jp&q='.$pasCompanyData['name'];
-      else
-        $sNewsUrl = 'http://news.google.com/news/search?output=rss&gl=jp&q='.urlencode($pasCompanyData['name']);
+      else*/
+        $sNewsUrl = 'https://news.google.com/news/feeds?pz=1&cf=all&&output=rss&q='.urlencode($pasCompanyData['name']);
 
       try
       {
