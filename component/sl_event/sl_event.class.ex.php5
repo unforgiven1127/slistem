@@ -118,13 +118,13 @@ class CSl_eventEx extends CSl_event
 
       if($pbAddLink)
       {
-        $sHTML.= '<div class="tab_bottom_link top">';
+        $sHTML.= '<div class="tab_bottom_link">';
         $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
 
         if($psLinkDefaultType == 'character')
           $sLabel = 'Add a character note';
         else
-          $sLabel = 'Add a  note';
+          $sLabel = 'Add a note';
 
         $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
         $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
@@ -201,23 +201,6 @@ class CSl_eventEx extends CSl_event
     }
 
     $sHTML.= '<div class="floathack" />';
-
-
-    if(!$bAddLink || ($pbAddLink && count($asNotes) > 3))
-    {
-      $sHTML.= '<div class="tab_bottom_link">';
-      $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
-
-      if($psLinkDefaultType == 'character')
-        $sLabel = 'Add a character note';
-      else
-        $sLabel = 'Add a  note';
-
-      $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
-      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">'.$sLabel.'</a>';
-      $sHTML.= '</div>';
-    }
 
     return array('content' => $sHTML, 'nb_result' => count($asNotes), 'priority' => $nPriotity);
   }

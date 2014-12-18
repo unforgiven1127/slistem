@@ -1484,18 +1484,24 @@ class CSl_candidateEx extends CSl_candidate
         {
           if($pasCandidateData['date_added'] > $sAMonthAgo)
           {
-            $sHTML.= '<div class="contact_warning">Achtung !! Candidate created on the '.$sLastUpdate.' </div>';
+            $sHTML.= '<div class="contact_warning">Candidate created on the '.$sLastUpdate.' </div>';
           }
           elseif($pasCandidateData['date_updated'] > $sAMonthAgo)
           {
-            $sHTML.= '<div class="contact_warning">Achtung !! Candidate updated on the '.$sLastUpdate.' </div>';
+            $sHTML.= '<div class="contact_warning">Candidate updated on the '.$sLastUpdate.' </div>';
           }
           else
-            $sHTML.= '<div class="contact_warning">Achtung !! Candidate met on the '.$sLastUpdate.' </div>';
+            $sHTML.= '<div class="contact_warning">Candidate met on the '.$sLastUpdate.' </div>';
 
 
         }
 
+        $sHTML.= $this->_oDisplay->getBlocStart('', array('class' => 'tab_bottom_link'));
+        $sURL = $oPage->getAjaxUrl('sl_candidate', CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_CONTACT, (int)$pasCandidateData['sl_candidatepk']);
+        $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
+        $sHTML.= '<a href="javascript:;" onclick="$(\'#tabLink2\').click(); '.$sJavascript.'">Add/edit contact details</a>';
+        $sHTML.= $this->_oDisplay->getBlocEnd();
+        $sHTML.= $this->_oDisplay->getFloatHack();
 
         while($bRead)
         {
@@ -1616,11 +1622,6 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       $sHTML.= $this->_oDisplay->getFloatHack();
-      $sHTML.= $this->_oDisplay->getBlocStart('', array('class' => 'tab_bottom_link'));
-      $sURL = $oPage->getAjaxUrl('sl_candidate', CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_CONTACT, (int)$pasCandidateData['sl_candidatepk']);
-      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-      $sHTML.= '<a href="javascript:;" onclick="$(\'#tabLink2\').click(); '.$sJavascript.'">Add/edit contact details</a>';
-      $sHTML.= $this->_oDisplay->getBlocEnd();
 
       return array('content' => $sHTML, 'nb_result' => $nCount, 'priority' => $nPriority);
     }
@@ -1823,6 +1824,25 @@ class CSl_candidateEx extends CSl_candidate
       $nDocument = count($asDocument);
       $nPriority = 0;
 
+      $asItem['document_title'] = $sTitle;
+      $asItem['callback'] = $sCallback;
+
+      $sHTML.= '<div class="floathack" />';
+      $sHTML.= '<div class="tab_bottom_link">';
+
+      $sURL = $oPage->getAjaxUrl('sharedspace', CONST_ACTION_ADD, CONST_SS_TYPE_DOCUMENT, 0, $asItem);
+      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
+      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'"> Upload a document</a>';
+
+      $sHTML.= '&nbsp;&nbsp;-&nbsp;&nbsp;';
+
+      $sURL = $oPage->getAjaxUrl('sl_candidate', CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_DOC, 0, $asItem);
+      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 1000; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
+      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">Create a resume</a>';
+      $sHTML.= '</div>';
+      $sHTML.= '<div class="floathack" />';
+
+
       if($nDocument == 0)
         $sHTML.= '<div class="entry"><div class="note_content"><em>No document found.</em></div></div>';
       else
@@ -1867,21 +1887,6 @@ class CSl_candidateEx extends CSl_candidate
 
 
       $sHTML.= '<div class="floathack" />';
-      $sHTML.= '<div class="tab_bottom_link">';
-
-      $asItem['document_title'] = $sTitle;
-      $asItem['callback'] = $sCallback;
-
-      $sURL = $oPage->getAjaxUrl('sharedspace', CONST_ACTION_ADD, CONST_SS_TYPE_DOCUMENT, 0, $asItem);
-      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'"> Upload a document</a>';
-
-      $sHTML.= '&nbsp;&nbsp;-&nbsp;&nbsp;';
-
-      $sURL = $oPage->getAjaxUrl('sl_candidate', CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_DOC, 0, $asItem);
-      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 1000; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">Create a resume</a>';
-      $sHTML.= '</div>';
 
       return array('content' => $sHTML, 'nb_result' => $nDocument, 'priority' => $nPriority);
     }
@@ -1900,15 +1905,18 @@ class CSl_candidateEx extends CSl_candidate
       $nPosition = $nPriority = 0;
       $sHTML = '';
 
-      if(empty($asPosition['active']) && empty($asPosition['inactive']))
-      {
-        $sHTML = '<div class="tab_bottom_link">
-            <em>No application found.</em>
-            <br /><a href="javascript:;" onclick="
+      $sHTML.= '<div class="tab_bottom_link">
+            <a href="javascript:;" onclick="
             oConf = goPopup.getConfig();
-            oConf.height = 600;
+            oConf.height = 500;
             oConf.width = 900;
             goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');">pitch to new position</a>
+        </div>';
+
+      if(empty($asPosition['active']) && empty($asPosition['inactive']))
+      {
+        $sHTML .= '<div class="entry">
+            <em>No application found.</em>
          </div>';
       }
       else
@@ -1957,15 +1965,6 @@ class CSl_candidateEx extends CSl_candidate
             $sHTML.= $sHistory;
           }
         }
-
-
-        $sHTML.= '<div class="tab_bottom_link">
-            <a href="javascript:;" onclick="
-            oConf = goPopup.getConfig();
-            oConf.height = 500;
-            oConf.width = 900;
-            goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');">pitch to new position</a>
-         </div>';
 
       }
 

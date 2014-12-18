@@ -472,7 +472,7 @@ div.candiHoriHalfSizeTabs .aTabContent
   margin: 0 2px 0px 0;
   border-bottom: 1px solid #d0d0d0;
   padding: 2px 0 8px 0;
-  position: relative;
+  /*position: relative;*/
 }
 
 div.aTabContent div.entry:nth-child(odd)
@@ -488,7 +488,7 @@ div.aTabContent div.entry:nth-child(odd)
 .tab_bottom_link
 {
   border: 1px solid #DDDDDD;
-  margin: 20px 20% 10px;
+  margin: 20px 20% 20px;
   padding: 4px;
   text-align: center;
   float: left;
