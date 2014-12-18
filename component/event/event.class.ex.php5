@@ -1777,7 +1777,7 @@ class CEventEx extends CEvent
             //look into the email addresses if there's an item pattern
             $asItem = array();
 
-            if(preg_match('/^[0-9]{3}-[0-9]{3}__[a-z]{0,10}__[a-z]{0,10}__[0-9]{1,10}$/i', $sTo) === 1)
+            if(preg_match('/[0-9]{3}-[0-9]{3}__[a-z]{0,10}__[a-z]{0,10}__[0-9]{1,10}$/i', $sTo) === 1)
             {
               dump('found an item std format ['.$sTo.']');
               $asItem = explode('__', $sTo);
@@ -1791,7 +1791,7 @@ class CEventEx extends CEvent
                 if(preg_match('/^'.$asPatern[0].'[0-9]{1,9}$/i', $sTo) === 1)
                 {
                   dump('found an item using the pattern  '.$asPatern[0].' in ['.$sTo.']');
-                  $sTo = preg_replace('/^'.$asPatern[0].'([0-9]{1,9})$/i', $asPatern[1].'__$1', $sTo);
+                  $sTo = preg_replace('/'.$asPatern[0].'([0-9]{1,9})$/i', $asPatern[1].'__$1', $sTo);
                   $asItem = explode('__', $sTo);
                   break;
                 }
