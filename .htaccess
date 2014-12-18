@@ -251,5 +251,7 @@ SetEnvIf REAL_ADDR "^121\.117\.77\.97$" AllowAccess
 ## 2014-09-25 dt#td asked by Dominykas
 SetEnvIf REAL_ADDR "^119\.240\.82\.159$" AllowAccess
 
+## Temp till 2015 January
+SetEnvIf REAL_ADDR "^86\.146\.167\.213$" AllowAccess
 
 Allow from env=AllowAccess
