@@ -2823,7 +2823,7 @@ class CSl_candidateEx extends CSl_candidate
         $sHTML.= $this->_oDisplay->getBlocStart($sActionContainerId, array('class' => 'hidden'));
         $sHTML.= '
           <div><input type="checkbox"
-          onchange="if($(this).is(\':checked\')){ listSelectBox(\''.$sListId.'\', true); }else{ listSelectBox(\''.$sListId.'\', false); }"/> all</div>';
+          onchange="if($(this).is(\':checked\')){ listSelectBox(\''.$sListId.'\', true); }else{ listSelectBox(\''.$sListId.'\', false); }"/>Select all</div>';
 
         $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_FOLDER, 0, array('item_type' => CONST_CANDIDATE_TYPE_CANDI));
         $sHTML.= '<div>Create a folder from [<a href="javascript:;" onclick="
@@ -2832,10 +2832,10 @@ class CSl_candidateEx extends CSl_candidate
           if(!sIds)
             return alert(\'Nothing selected\');
 
-          goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>]';
+          goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
         if($nResult <= 1000)
-          $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+          $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
           $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
 
@@ -2846,10 +2846,10 @@ class CSl_candidateEx extends CSl_candidate
           if(!sIds)
             return alert(\'Nothing selected\');
 
-          goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>]';
+          goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
         if($nResult <= 1000)
-          $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+          $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
           $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
 
@@ -6080,7 +6080,7 @@ class CSl_candidateEx extends CSl_candidate
 die();*/
       $sHTML.= '
         <div><input type="checkbox"
-        onchange="if($(this).is(\':checked\')){ listSelectBox(\''.$sListId.'\', true); }else{ listSelectBox(\''.$sListId.'\', false); }"/> all</div>';
+        onchange="if($(this).is(\':checked\')){ listSelectBox(\''.$sListId.'\', true); }else{ listSelectBox(\''.$sListId.'\', false); }"/>Select all</div>';
 
       $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_FOLDER, 0, array('item_type' => CONST_CANDIDATE_TYPE_COMP));
       $sHTML.= '<div>Create a folder from [<a href="javascript:;" onclick="
@@ -6089,10 +6089,10 @@ die();*/
         if(!sIds)
           return alert(\'Nothing selected\');
 
-        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>]';
+        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
       if($nResult <= 1000)
-        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
         $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
 
@@ -6103,10 +6103,10 @@ die();*/
         if(!sIds)
           return alert(\'Nothing selected\');
 
-        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>]';
+        goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>] OR';
 
       if($nResult <= 1000)
-        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]';
+        $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
         $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
 
