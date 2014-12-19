@@ -1365,10 +1365,11 @@ function initMce(psFieldName, pbAdvanced)
 
       // Theme options
       menubar:false,
-      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,fullscreen,|,code",
-      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
+      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,cut,copy,|,bullist,numlist,|,link,unlink,|,fullscreen,|,code",
+      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,pastetext",
 
       save_enablewhendirty: true,
+      paste_as_text: true,
       protect:
       [
         /\<\/?(if|endif)\>/g, // Protect <if> & </endif>
@@ -1388,10 +1389,11 @@ function initMce(psFieldName, pbAdvanced)
       plugins : "save,autosave,layer,table,hr,textcolor,link,emoticons,media,searchreplace,print,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,template,code",
 
       gecko_spellcheck : true,
+      paste_as_text: true,
 
       // Theme options
-      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,paste,|,bullist,numlist,|,link,unlink,|,code",
-      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,removeformat",
+      toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,|,bullist,numlist,|,link,unlink,|,code",
+      toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,pastetext",
 
       cleanup: true
     });
