@@ -96,6 +96,19 @@ class CSl_eventEx extends CSl_event
     $sHTML = '';
 
 
+    $sHTML.= '<div class="tab_bottom_link">';
+    $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
+
+    if($psLinkDefaultType == 'character')
+      $sLabel = 'Add a character note';
+    else
+      $sLabel = 'Add a note';
+
+    $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
+    $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
+    $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">'.$sLabel.'</a>';
+    $sHTML.= '</div>';
+
     if(empty($asNotes))
     {
       $sHTML.= '<div class="entry"><div class="note_content"><em>No entry found.</em></div></div>';
@@ -114,25 +127,6 @@ class CSl_eventEx extends CSl_event
       $s1HourAgo = date('Y-m-d H:i:s', strtotime('-1 hour'));
       $dAMonthAgo = date('Y-m-d H:i:s', strtotime('-1 month'));
       $dTwoMonthAgo = date('Y-m-d H:i:s', strtotime('-2 month'));
-
-
-      if($pbAddLink)
-      {
-        $sHTML.= '<div class="tab_bottom_link">';
-        $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
-
-        if($psLinkDefaultType == 'character')
-          $sLabel = 'Add a character note';
-        else
-          $sLabel = 'Add a note';
-
-        $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
-        $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-        $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">'.$sLabel.'</a>';
-        $sHTML.= '</div>';
-
-        $bAddLink = true;
-      }
 
       foreach($asNotes as $asNote)
       {
@@ -199,8 +193,6 @@ class CSl_eventEx extends CSl_event
         $sHTML.= $oHTML->getBlocEnd();
       }
     }
-
-    $sHTML.= '<div class="floathack" />';
 
     return array('content' => $sHTML, 'nb_result' => count($asNotes), 'priority' => $nPriotity);
   }

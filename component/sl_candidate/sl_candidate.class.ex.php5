@@ -1501,7 +1501,6 @@ class CSl_candidateEx extends CSl_candidate
         $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
         $sHTML.= '<a href="javascript:;" onclick="$(\'#tabLink2\').click(); '.$sJavascript.'">Add/edit contact details</a>';
         $sHTML.= $this->_oDisplay->getBlocEnd();
-        $sHTML.= $this->_oDisplay->getFloatHack();
 
         while($bRead)
         {
@@ -1620,8 +1619,6 @@ class CSl_candidateEx extends CSl_candidate
       {
         $sHTML = '<div class="entry"><div class="note_content"><em>No contact details.</em></div></div>';
       }
-
-      $sHTML.= $this->_oDisplay->getFloatHack();
 
       return array('content' => $sHTML, 'nb_result' => $nCount, 'priority' => $nPriority);
     }
@@ -1827,7 +1824,6 @@ class CSl_candidateEx extends CSl_candidate
       $asItem['document_title'] = $sTitle;
       $asItem['callback'] = $sCallback;
 
-      $sHTML.= '<div class="floathack" />';
       $sHTML.= '<div class="tab_bottom_link">';
 
       $sURL = $oPage->getAjaxUrl('sharedspace', CONST_ACTION_ADD, CONST_SS_TYPE_DOCUMENT, 0, $asItem);
@@ -1840,7 +1836,6 @@ class CSl_candidateEx extends CSl_candidate
       $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 1000; oConf.height = 750;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
       $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">Create a resume</a>';
       $sHTML.= '</div>';
-      $sHTML.= '<div class="floathack" />';
 
 
       if($nDocument == 0)
@@ -1878,15 +1873,10 @@ class CSl_candidateEx extends CSl_candidate
                  '.$asDocData['title'].'<br />'.$asDocData['initial_name'].'
               </a>
               </div>
-
-            <div class="floatHack" />
             </div>
           </div>';
         }
       }
-
-
-      $sHTML.= '<div class="floathack" />';
 
       return array('content' => $sHTML, 'nb_result' => $nDocument, 'priority' => $nPriority);
     }
@@ -1910,7 +1900,7 @@ class CSl_candidateEx extends CSl_candidate
             oConf = goPopup.getConfig();
             oConf.height = 500;
             oConf.width = 900;
-            goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');">pitch to new position</a>
+            goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');">Pitch to new position</a>
         </div>';
 
       if(empty($asPosition['active']) && empty($asPosition['inactive']))
@@ -1961,7 +1951,7 @@ class CSl_candidateEx extends CSl_candidate
               $sHTML.= $this->_oDisplay->getBloc('', 'Inactive & expired positions', array('class' => 'position_separator'));
 
 
-            $sHTML.= $this->_oDisplay->getFloatHack();  //to keep the odd/par colors in order
+
             $sHTML.= $sHistory;
           }
         }
