@@ -78,7 +78,8 @@ SetEnvIf REAL_ADDR "^69\.176\.163\.134$" AllowAccess
 # stef
 SetEnvIf REAL_ADDR "^125\.198\.95\.101$" AllowAccess
 
-
+## Dominic
+SetEnvIf REAL_ADDR "^209\.145\.120\.145$" AllowAccess
 
 
 ## 2010-09-30 dt#td  Slate SRC1
