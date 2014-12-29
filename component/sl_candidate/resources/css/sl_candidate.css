@@ -473,6 +473,7 @@ div.candiHoriHalfSizeTabs .aTabContent
   border-bottom: 1px solid #d0d0d0;
   padding: 2px 0 8px 0;
   position: relative;
+  overflow: auto;
 }
 
 div.aTabContent div.entry:nth-child(odd)
