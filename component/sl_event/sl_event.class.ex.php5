@@ -150,7 +150,7 @@ class CSl_eventEx extends CSl_event
 
             $sHTML.= $oHTML->getSpanStart();
 
-            if(empty($asNote['created_by']) || $asNote['created_by'] == -1)
+            if(empty($asUsers[$asNote['created_by']]) || $asNote['created_by'] == -1)
               $sHTML.= ' by '.$oLogin->getUserLink(-1);
             else
               $sHTML.= ' by '.$oLogin->getUserLink($asUsers[$asNote['created_by']], true);
