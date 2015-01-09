@@ -122,7 +122,7 @@ function saveTreeValue(poElement, psInputId, psFieldId, psContainerId)
   $("input[name="+psFieldId+"_lvl_2]", oTreeContainer).val( $(".TSelect_lvl_2 li.selected", oTreeContainer).val() );
 
   $(oTreeContainer).fadeOut("fast");
-  $(poElement).closest('.formFieldContainer').next(':visible').find('input,textarea,select').focus();
+  // $(poElement).closest('.formFieldContainer').next(':visible').find('input,textarea,select').focus();
 }
 
 
