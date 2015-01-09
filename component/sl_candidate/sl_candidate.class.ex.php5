@@ -6379,6 +6379,9 @@ die();*/
         if(empty($asData['industryfk']))
           $asError[] = 'Industry field is required.';
 
+        if(empty($asData['occupationfk']))
+          $asError[] = 'Occupation field is required.';
+
         if(empty($asData['companyfk']) || !is_key($asData['companyfk']))
           $asError[] = 'Company field is required.';
 
