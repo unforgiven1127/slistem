@@ -5564,19 +5564,17 @@ class CSl_candidateEx extends CSl_candidate
           $oForm->addField('textarea', 'note', array('label' => 'note', 'style' => 'width: 550px;'));
           $oForm->setFieldDisplayparams('note', array('style' => 'width: 800px;', 'class' => 'note_field'));
 
-          $oForm->addField('misc', '', array('type' => 'text', 'text' => '
-            <a href="javascript:;"
-            onclick="$(this).closest(\'.candidate_inner_section\').find(\'textarea\').each(function()
-            {
-              initMce($(this).attr(\'name\'));
-            });
-
-            $(this).closest(\'.candidate_inner_section\').find(\'#character_html\').val(1);
-
-          ">Advanced editor</a>'));
-
           $oForm->addField('input', 'character_html', array('type' => 'hidden', 'value' => 0, 'id' => 'character_html'));
           $oForm->closeSection();
+
+          $sHTML .= '
+            <script>
+              $(\'.candidate_inner_section\').find(\'textarea\').each(function()
+              {
+                initMce($(this).attr(\'name\'));
+              });
+            </script>
+            ';
 
         $oForm->closeSection();
       }
