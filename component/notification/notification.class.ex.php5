@@ -551,7 +551,7 @@ class CNotificationEx extends CNotification
 
     $oPage = CDependency::getCpPage();
 
-    $sSubject = 'Sl[i]stem daily reminders';
+    $sSubject = CONST_APP_NAME . ' daily reminders';
 
     foreach ($pasAction as $id => $user_messages)
     {
@@ -559,6 +559,8 @@ class CNotificationEx extends CNotification
       if (empty($pasUsers[$id]))
         continue;
 
+      $email_count = count($user_messages);
+      $sUser = '';
 
       $sRecipient = $this->coLogin->getUserNameFromData($pasUsers[$id], false, false);
       $sEmail = $pasUsers[$id]['email'];
@@ -673,11 +675,11 @@ class CNotificationEx extends CNotification
       $poMail->createNewEmail();
 
       //add a reply-to if the reminder comes from someone else
-      /*if(!empty($sUser))
+      if(!empty($sUser) && $email_count == 1)
       {
-        $sReply = $pasUsers[$pasAction['creatorfk']]['email'];
-        $poMail->setReplyTo($sReply, $this->coLogin->getUserNameFromData($pasUsers[$pasAction['creatorfk']], false, true));
-      }*/
+        $sReply = $pasUsers[$message_info['creatorfk']]['email'];
+        $poMail->setReplyTo($sReply, $this->coLogin->getUserNameFromData($pasUsers[$message_info['creatorfk']], false, true));
+      }
 
       //We manage the replyTo above, so we don't add the sender automatically
       $poMail->setFrom(CONST_PHPMAILER_EMAIL, CONST_PHPMAILER_DEFAULT_FROM, false);
