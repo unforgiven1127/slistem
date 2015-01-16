@@ -1068,9 +1068,9 @@ class CSl_positionEx extends CSl_position
       $oForm->addField('select', 'validity', array('label' => 'Reset after'));
       $oForm->addoption('validity', array('label' => '1 week', 'value' => 0.25));
       $oForm->addoption('validity', array('label' => '2 weeks', 'value' => 0.5));
-      $oForm->addoption('validity', array('label' => '1 month', 'value' => 1, 'selected' => 'selected'));
+      $oForm->addoption('validity', array('label' => '1 month', 'value' => 1));
       $oForm->addoption('validity', array('label' => '3 months', 'value' => 3));
-      $oForm->addoption('validity', array('label' => '6 months', 'value' => 6));
+      $oForm->addoption('validity', array('label' => '6 months', 'value' => 6, 'selected' => 'selected'));
       $oForm->addField('misc', '', array('type' => 'text', 'label' => '&nbsp;', 'text'=> '<em style="color: #999; font-size: 11px;">* after N months (above) without update, the status will automatically switch to "stalled". </em>'));
 
       //dump($pasLink['credited_user']);
