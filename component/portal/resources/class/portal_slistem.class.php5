@@ -49,14 +49,6 @@ class CPortalSlistemEx extends CPortalEx
 
 
     $sHTML.= $oDisplay->getBlocStart('', array('class' => 'portalContainer'));
-    $sHTML.= $oDisplay->getBlocStart('', array('style' => 'border: 1px solid #ddd; max-height: 120px; margin: 10px auto; padding: 10px; width: 750px; background-color: #f5f5f5;'));
-
-      $sHTML.= $oDisplay->getTitleLine('Announcement');
-
-      $sHTML.= $oDisplay->getText('<br />Welcome to Sl[i]stem 3.0<br /> '
-              . 'Please visit <a href="http://it.slate.co.jp/slistem3-beta-release/" target="_blank" style="font-weight: bold; color: red; ">the presentation page</a> to get more details about the new features in this version.');
-
-    $sHTML.= $oDisplay->getBlocEnd();
 
 
     $sHTML.= $oDisplay->getBlocStart('', array('style' => 'min-height: 150px;'));
