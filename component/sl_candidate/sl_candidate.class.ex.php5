@@ -7707,12 +7707,15 @@ die();*/
         exit('['.implode(',', $asJson).']');
       }
 
+      require_once('component/sl_candidate/resources/search/quick_search.class.php5');
+
       $poQB = $this->_getModel()->getQueryBuilder();
       $poQB->setTable('sl_company', 'scom');
 
 
-      $sRefId = preg_replace('/[^0-9]/i', '', $sSearchString);
-      if((int)$sRefId == (int)$sSearchString && (int)$sRefId > 0)
+
+      $sRefId = CQuickSearch::_fetchRefIdFromString($sSearchString);
+      if((string)$sRefId == $sSearchString || ('#' . $sRefId) == $sSearchString)
       {
         $poQB->addSelect('scom.*');
         $poQB->addWhere('scom.sl_companypk = '.(int)$sRefId);
