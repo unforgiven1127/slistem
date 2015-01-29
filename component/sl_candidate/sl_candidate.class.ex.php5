@@ -2824,10 +2824,10 @@ class CSl_candidateEx extends CSl_candidate
 
           goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-        if($nResult <= 1000)
+        if($nResult <= 50000)
           $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
-          $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+          $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
 
         $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_ITEM, 0, array('item_type' => CONST_CANDIDATE_TYPE_CANDI));
         $sHTML.= '</div><div>Move into a folder [<a href="javascript:;" onclick="
@@ -2838,10 +2838,10 @@ class CSl_candidateEx extends CSl_candidate
 
           goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-        if($nResult <= 1000)
+        if($nResult <= 50000)
           $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
-          $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+          $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
 
         $sHTML.= '</div>';
 
@@ -6079,10 +6079,10 @@ die();*/
 
         goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-      if($nResult <= 1000)
+      if($nResult <= 50000)
         $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
-        $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+        $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
 
       $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_ADD, CONST_FOLDER_TYPE_ITEM, 0, array('item_type' => CONST_CANDIDATE_TYPE_COMP));
       $sHTML.= '</div><div>Move into a folder [<a href="javascript:;" onclick="
@@ -6093,10 +6093,10 @@ die();*/
 
         goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>] OR';
 
-      if($nResult <= 1000)
+      if($nResult <= 50000)
         $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
-        $sHTML.= ' [<span title="Too many results. Can\'t save more than 1000 results." style="font-style: italic">all</span> ]';
+        $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
 
       $sHTML.= '</div>';
 
