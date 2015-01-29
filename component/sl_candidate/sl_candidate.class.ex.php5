@@ -1607,7 +1607,7 @@ class CSl_candidateEx extends CSl_candidate
               var oConf = goPopup.getConfig();
               oConf.height = 500;
               oConf.width = 850;
-              goPopup.setLayerFromAjax(oConf, \'https://slistem.devserv.com/index.php5?uid=333-333&ppa=ppaa&ppt=msg&ppk=0&loginfk='.$nLoginFk.'&pg=ajx\'); " >'.$sUserName.'</a> if you need to access this.</em>', array('class' => 'contactDescription'));
+              goPopup.setLayerFromAjax(oConf, \''.CONST_CRM_DOMAIN.'/index.php5?uid=333-333&ppa=ppaa&ppt=msg&ppk=0&loginfk='.$nLoginFk.'&pg=ajx\'); " >'.$sUserName.'</a> if you need to access this.</em>', array('class' => 'contactDescription'));
 
 
           $sHTML.= $this->_oDisplay->getListItem($sItem);
