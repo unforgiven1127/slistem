@@ -1541,7 +1541,8 @@ class CSl_candidateEx extends CSl_candidate
             $sUser = '';
 
           $sItem = $this->_oDisplay->getBloc('', '&nbsp;', array('class' => 'contactIcon contact_type'.$asData['type'], 'title' => $asTypeTitle[$asData['type']]));
-          $bVisible = (bool)$asData['visible'];
+
+          $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData['pk']);
 
           if(!$bRmMasked && $bVisible)
           {
@@ -1621,6 +1622,32 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       return array('content' => $sHTML, 'nb_result' => $nCount, 'priority' => $nPriority);
+    }
+
+    private function check_contact_info_visibility($candidate_data, $current_user)
+    {
+
+      $visible = false;
+
+      if ($candidate_data['visibility'] == 1)
+      {
+        $visible = true;
+      }
+      else if ($candidate_data['creatorfk'] == $current_user)
+      {
+        $visible = true;
+      }
+      else if (!empty($candidate_data['custom_visibility']))
+      {
+        $user_list = explode(',', $candidate_data['custom_visibility']);
+
+        if (in_array($current_user, $user_list))
+        {
+          $visible = true;
+        }
+      }
+
+      return $visible;
     }
 
     /** return the lastest update feed obout the candidate company
@@ -4566,7 +4593,10 @@ class CSl_candidateEx extends CSl_candidate
       while($bRead)
       {
         $asData = $oDbResult->getData();
-        if($asData['visible'])
+
+        $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData['pk']);
+
+        if($bVisible)
         {
           $this->_getContactFormRow($oForm, $nCount, $asTypes, $asData);
           $nCount++;

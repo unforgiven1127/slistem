@@ -180,7 +180,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
     if(!assert('is_bool($pbVisibleOnly) && is_bool($pbGrouped)'))
       return new CDbResult();
 
-    if($pbVisibleOnly)
+    /*if($pbVisibleOnly)
     {
       $oLogin = CDependency::getCpLogin();
       if(empty($pnUser))
@@ -195,9 +195,9 @@ class CSl_candidateModelEx extends CSl_candidateModel
 
     }
     else
-      $sRestrictionSQL = ', 1 as visible';
+      $sRestrictionSQL = ', 1 as visible';*/
 
-    $sQuery = 'SELECT *, scon.loginfk as creatorfk '.$sRestrictionSQL.'
+    $sQuery = 'SELECT *, scon.loginfk as creatorfk
       ,GROUP_CONCAT(scvi.loginfk) as custom_visibility
       FROM sl_contact as scon
       LEFT JOIN sl_contact_visibility as scvi ON (scvi.sl_contactfk = scon.sl_contactpk )
