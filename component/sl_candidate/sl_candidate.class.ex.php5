@@ -1434,6 +1434,10 @@ class CSl_candidateEx extends CSl_candidate
       $nPriority = 0;
       $sHTML = '';
       $bRmMasked = false;
+      $is_creator = false;
+
+      if ($pasCandidateData['creatorfk'] == $this->casUserData['loginpk'])
+        $is_creator = true;
 
       //if there's a RM, we hide contact details
       if(!empty($pasCandidateData['rm']) && !isset($pasCandidateData['rm'][$this->casUserData['loginpk']])
@@ -1542,7 +1546,7 @@ class CSl_candidateEx extends CSl_candidate
 
           $sItem = $this->_oDisplay->getBloc('', '&nbsp;', array('class' => 'contactIcon contact_type'.$asData['type'], 'title' => $asTypeTitle[$asData['type']]));
 
-          $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData['pk']);
+          $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData, $is_creator);
 
           if(!$bRmMasked && $bVisible)
           {
@@ -1624,24 +1628,32 @@ class CSl_candidateEx extends CSl_candidate
       return array('content' => $sHTML, 'nb_result' => $nCount, 'priority' => $nPriority);
     }
 
-    private function check_contact_info_visibility($candidate_data, $current_user)
+    private function check_contact_info_visibility($candidate_contact, $current_user_data, $is_creator)
     {
 
       $visible = false;
 
-      if ($candidate_data['visibility'] == 1)
+      if ($current_user_data['admin'])
       {
         $visible = true;
       }
-      else if ($candidate_data['creatorfk'] == $current_user)
+      else if ($is_creator)
       {
         $visible = true;
       }
-      else if (!empty($candidate_data['custom_visibility']))
+      else if ($candidate_contact['visibility'] == 1)
       {
-        $user_list = explode(',', $candidate_data['custom_visibility']);
+        $visible = true;
+      }
+      else if ($candidate_contact['creatorfk'] == $current_user_data['pk'])
+      {
+        $visible = true;
+      }
+      else if (!empty($candidate_contact['custom_visibility']))
+      {
+        $user_list = explode(',', $candidate_contact['custom_visibility']);
 
-        if (in_array($current_user, $user_list))
+        if (in_array($current_user_data['pk'], $user_list))
         {
           $visible = true;
         }
@@ -4565,6 +4577,8 @@ class CSl_candidateEx extends CSl_candidate
 
       $bIsAdmin = (bool)$this->casUserData['is_admin'];
 
+      $candidate_information = $this->_getModel()->getCandidateData($pnCandiPk);
+
       $oDbResult = $this->_getModel()->getContact($pnCandiPk, 'candi', $this->casUserData['pk'], array_keys($this->casUserData['group']), !$bIsAdmin);
       $bRead = $oDbResult->readFirst();
 
@@ -4572,6 +4586,11 @@ class CSl_candidateEx extends CSl_candidate
       $nNewFields = 4 - $nContact;
       if($nNewFields <= 0)
         $nNewFields = 1;
+
+      $is_creator = false;
+
+      if ($candidate_information['created_by'] == $this->casUserData['loginpk'])
+        $is_creator = true;
 
       $oPage = CDependency::getCpPage();
 
@@ -4594,7 +4613,7 @@ class CSl_candidateEx extends CSl_candidate
       {
         $asData = $oDbResult->getData();
 
-        $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData['pk']);
+        $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData, $is_creator);
 
         if($bVisible)
         {
