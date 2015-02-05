@@ -148,7 +148,7 @@ class CCandidate_sl3 extends CTemplate
           $sValue = ' - ';
         else
         {
-          $sValue = (int)date('Y') - (int)date('Y', strtotime($pasCandidateData['date_birth']));
+          $sValue = DateTime::createFromFormat('Y-m-d', $pasCandidateData['date_birth'])->diff(new DateTime('now'))->y;
           if($pasCandidateData['is_birth_estimation'])
             $sValue = '~ '.$sValue.' yrs (calc. '.$pasCandidateData['date_birth'].' )';
           else
