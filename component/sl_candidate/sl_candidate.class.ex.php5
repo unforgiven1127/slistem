@@ -5730,8 +5730,8 @@ class CSl_candidateEx extends CSl_candidate
        $oForm->addoption('level', array('label' => 'C', 'value' => '3', 'selected' => (($asCompanyData['level'] == 3)? 'selected':'')));
 
        $oForm->addField('select', 'is_client', array('label'=> 'Client '));
-       $oForm->addoption('is_client', array('label' => 'No', 'value' => '0'));
-       $oForm->addoption('is_client', array('label' => 'Yes', 'value' => '1', 'selected' => (($asCompanyData['is_client'] == 1)? 'selected':'')));
+       $oForm->addoption('is_client', array('label' => 'No', 'value' => '0', 'selected' => ''));
+       $oForm->addoption('is_client', array('label' => 'Yes', 'value' => '1'));
 
        $oForm->addField('input', 'company_name', array('label'=> 'Company name', 'value' => $asCompanyData['name']));
        $oForm->setFieldControl('company_name', array('jsFieldNotEmpty' => '', 'jsFieldMinSize' => '2'));
