@@ -1,6 +1,7 @@
 <?php
 
-require_once('component/login/login.class.php5');
+require_once 'component/login/login.class.php5';
+require_once 'component/sl_candidate/resources/class/slate_vars.class.php5';
 
 class CLoginEx extends CLogin
 {
@@ -8,6 +9,7 @@ class CLoginEx extends CLogin
   private $cbIsAdmin;
   private $casUserData;
   private $casRight;
+  private $coSlateVars = null;
 
   public function __construct()
   {
@@ -198,6 +200,26 @@ class CLoginEx extends CLogin
       return $sFullName;
     //}
   }
+
+    public function getVars()
+    {
+      if($this->coSlateVars !== null)
+        return $this->coSlateVars;
+
+      if(empty($_SESSION['slate_vars']))
+      {
+        $this->coSlateVars = new CSlateVars();
+        $_SESSION['slate_vars'] = serialize($this->coSlateVars);
+      }
+      else
+      {
+        $this->coSlateVars = unserialize($_SESSION['slate_vars']);
+        if($this->coSlateVars == false)
+          assert('false; // could not restore the var object');
+      }
+
+      return $this->coSlateVars;
+    }
 
 
   public function getUserLink($pvUser = 0, $pbFriendly = false, $pbFullName = false)
@@ -1080,6 +1102,7 @@ class CLoginEx extends CLogin
     $asUpdate['firstname'] = getValue('firstname');
     $asUpdate['lastname'] = getValue('lastname');
     $asUpdate['pseudo'] = getValue('pseudo');
+    $asUpdate['nationalityfk'] = getValue('nationality');
     $asUpdate['phone'] = getValue('phone');
     $asUpdate['phone_ext'] = getValue('phone_ext');
     $asUpdate['position'] = getValue('position');
@@ -1453,6 +1476,9 @@ class CLoginEx extends CLogin
 
     $oForm->addField('input', 'pseudo', array('label'=>$this->casText['LOGIN_PSEUDO'], 'class' => '', 'value' => $oResult->getFieldValue('pseudo')));
     $oForm->setFieldControl('pseudo', array('jsFieldMinSize' => '2', 'jsFieldMaxSize' => 255));
+
+    $oForm->addField('select', 'nationality', array('label'=>$this->casText['LOGIN_NATIONALITY'], 'class' => ''));
+    $oForm->addOptionHtml('nationality', $this->getVars()->getNationalityOption($oResult->getFieldValue('nationalityfk')));
 
     if($bmanager)
     {

@@ -93,7 +93,8 @@ $gasLang = array('en'=>
                'LOGIN_GROUP'=>'Groups',
                'LOGIN_GROUP_INVALID'=>'Group value incorrect',
                'LOGIN_ACTIVE_USER'=>'Active user ?',
-               'LOGIN_PSEUDO'=>'Pseudo'
+               'LOGIN_PSEUDO'=>'Pseudo',
+               'LOGIN_NATIONALITY'=>'Nationality'
 
            ),
     'ph'=>
@@ -189,7 +190,8 @@ $gasLang = array('en'=>
                'LOGIN_GROUP'=>'Groups',
                'LOGIN_GROUP_INVALID'=>'Group value incorrect',
                'LOGIN_ACTIVE_USER'=>'Active user ?',
-               'LOGIN_PSEUDO'=>'Pseudo'
+               'LOGIN_PSEUDO'=>'Pseudo',
+               'LOGIN_NATIONALITY'=>'Nationality'
            ),
       'jp'=>
            array(
@@ -284,7 +286,8 @@ $gasLang = array('en'=>
                'LOGIN_GROUP'=>'Groups',
                'LOGIN_GROUP_INVALID'=>'Group value incorrect',
                'LOGIN_ACTIVE_USER'=>'Active user ?',
-               'LOGIN_PSEUDO'=>'Pseudo'
+               'LOGIN_PSEUDO'=>'Pseudo',
+               'LOGIN_NATIONALITY'=>'Nationality'
 
            )
         );

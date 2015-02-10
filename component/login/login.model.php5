@@ -22,6 +22,7 @@ class CLoginModel extends CModel
     $this->_tableMap['login']['email'] = array('controls' => array('isValidEmail(%)'));
     $this->_tableMap['login']['lastname'] = array('controls' => array('!empty(%)'));
     $this->_tableMap['login']['firstname'] = array('controls' => array('!empty(%)'));
+    $this->_tableMap['login']['nationalityfk'] = array('controls' => array('is_numeric(%)'));
     $this->_tableMap['login']['position'] = array('controls' => array());
     $this->_tableMap['login']['phone'] = array('controls' => array());
     $this->_tableMap['login']['phone_ext'] = array('controls' => array());
