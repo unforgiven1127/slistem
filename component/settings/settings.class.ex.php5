@@ -1236,7 +1236,7 @@ class CSettingsEx extends CSettings
 
     $sURL = $oPage->getUrl('settings', CONST_ACTION_SAVEADD, CONST_TYPE_SETTING_MENU);
 
-    $sQuery = 'SELECT * FROM settings WHERE fieldname = "menu"';
+    $sQuery = 'SELECT * FROM settings WHERE fieldname = "menunav1"';
     $oDbResult = $oDB->ExecuteQuery($sQuery);
     $bRead = $oDbResult->readFirst();
     if(!$bRead)
@@ -1261,7 +1261,7 @@ class CSettingsEx extends CSettings
         $oForm->addField('misc', '', array('type'=> 'br'));
       }
 
-      $oForm->addField('misc', '', array('type'=> 'text', 'text' => 'use the manu_generator here: <a href="/component/settings/resources/menu_generator.php" target="_blank">menu_generator.php</a>'));
+      $oForm->addField('misc', '', array('type'=> 'text', 'text' => 'use the menu_generator here: <a href="/component/settings/resources/menu_generator.php" target="_blank">menu_generator.php</a>'));
 
     $sHTML.= $oForm->getDisplay();
     $sHTML.= $oHTML->getBlocEnd();
