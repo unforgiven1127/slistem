@@ -1705,13 +1705,21 @@ function sanitizeUrl()
 }
 
 /**
- * Sorts multidimensional array by string value
+ * Sorts multidimensional array by string value using natural order, can be reversed
  * @param string $field
- * @return array
+ * @param string $order
+ * @return -1, 0, 1
  */
-function sort_multi_array_by_value($field)
+function sort_multi_array_by_value($field, $order = 'natural')
 {
   return function ($a, $b) use ($field) {
+    if ($order == 'reverse')
+    {
+      return strnatcmp($b[$field], $a[$field]);
+    }
+    else
+    {
         return strnatcmp($a[$field], $b[$field]);
+    }
   };
 }
