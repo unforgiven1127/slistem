@@ -1712,14 +1712,14 @@ function sanitizeUrl()
  */
 function sort_multi_array_by_value($field, $order = 'natural')
 {
-  return function ($a, $b) use ($field) {
+  return function ($a, $b) use ($field, $order) {
     if ($order == 'reverse')
     {
       return strnatcmp($b[$field], $a[$field]);
     }
     else
     {
-        return strnatcmp($a[$field], $b[$field]);
+      return strnatcmp($a[$field], $b[$field]);
     }
   };
 }
