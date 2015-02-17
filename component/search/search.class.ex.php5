@@ -1279,6 +1279,11 @@ class CSearchEx extends CSearch
             $sOperator = $this->_getSqlOperator($asFieldData['data'], $sFieldOperator, $vFieldValue);
             $sCondition = str_replace('<YYY>', $sOperator, $asFieldData['sql']['unmanageable']);
 
+            if ($sFieldOperator == 'notin')
+              $sCondition = str_replace('<logic>', 'AND', $sCondition);
+            else
+              $sCondition = str_replace('<logic>', 'OR', $sCondition);
+
             $asMatch = array();
             preg_match_all('/<<([^>]{2,})>>/i', $sCondition, $asMatch);
             //dump($asMatch);

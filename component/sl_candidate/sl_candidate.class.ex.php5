@@ -156,7 +156,9 @@ class CSl_candidateEx extends CSl_candidate
     if($this->csAction == CONST_ACTION_LIST || $this->csAction == CONST_ACTION_SEARCH)
     {
       if(!getValue('searchId') || getValue('clear_search'))
+      {
         $this->csSearchId = manageSearchHistory($this->csUid, $this->csType, true);
+      }
       else
       {
         /*dump('load search from id: '.getValue('searchId'));

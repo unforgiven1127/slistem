@@ -113,7 +113,7 @@
         'join' => array(
             array('type' => 'left', 'table' => 'sl_industry', 'alias' => 'sind', 'clause' => 'sind.sl_industrypk = scpr.industryfk', 'select' => 'sind.label as industry', 'where' => '')),
         'fts' => false,
-        'unmanageable' => ' (sind.sl_industrypk IN (XXX) OR sind.parentfk IN (XXX)) '
+        'unmanageable' => ' (sind.sl_industrypk <YYY> (XXX) <logic> sind.parentfk <YYY> (XXX)) '
       )
     );
 
@@ -146,7 +146,7 @@
         'field' => '',
         'join' => array(array('type' => 'inner', 'table' => 'sl_occupation', 'alias' => 'socc', 'clause' => 'socc.sl_occupationpk = scpr.occupationfk', 'select' => 'socc.label as occupation', 'where' => '')),
         'fts' => false,
-        'unmanageable' => ' (socc.sl_occupationpk IN (XXX) OR socc.parentfk IN (XXX)) '
+        'unmanageable' => ' (socc.sl_occupationpk <YYY> (XXX) <logic> socc.parentfk <YYY> (XXX)) '
       )
     );
 
@@ -180,7 +180,7 @@
            array('type' => 'left', 'table' => 'sl_attribute', 'alias' => 'satt', 'clause' => 'satt.`type` = "candi_occu" AND satt.itemfk = scan.sl_candidatepk ', 'select' => '', 'where' => '')
         ),
         'fts' => false,
-        'unmanageable' => ' (socc.sl_occupationpk IN (XXX) OR socc.parentfk IN (XXX) OR satt.attributefk IN (XXX)) '
+        'unmanageable' => ' (socc.sl_occupationpk <YYY> (XXX) <logic> socc.parentfk <YYY> (XXX) <logic> satt.attributefk <YYY> (XXX)) '
       )
     );
 
@@ -2704,7 +2704,7 @@
             array('type' => 'left', 'table' => 'sl_attribute', 'alias' => 'satt', 'clause' => 'satt.`type` = "candi_indus" AND satt.itemfk = scan.sl_candidatepk ', 'select' => '', 'where' => '')
             ),
         'fts' => false,
-        'unmanageable' => ' (sind.sl_industrypk IN (XXX) OR sind.parentfk IN (XXX) OR satt.attributefk IN (XXX) ) '
+        'unmanageable' => ' (sind.sl_industrypk <YYY> (XXX) <logic> sind.parentfk IN<YYY> (XXX) <logic> satt.attributefk <YYY> (XXX) ) '
       )
     );
 
