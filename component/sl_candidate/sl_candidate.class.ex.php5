@@ -2988,10 +2988,16 @@ class CSl_candidateEx extends CSl_candidate
 
         case 'pitched':
         case 'resume_sent':
-        case 'placed':
 
           $asListMsg[] = $sBy.' [ '.str_replace('_', ' ', $sFilter).' ] candidates';
           $poQB->addJoin('inner', 'sl_position_link', 'spli', 'spli.candidatefk = scan.sl_candidatepk AND spli.active = 1 AND spli.status '.$asStatus[$sFilter].' AND spli.created_by = '.$nLoginfk.'');
+          $pbPosField = true;
+          break;
+
+        case 'placed':
+
+          $asListMsg[] = $sBy.' [ '.str_replace('_', ' ', $sFilter).' ] candidates';
+          $poQB->addJoin('inner', 'sl_position_link', 'spli', 'spli.candidatefk = scan.sl_candidatepk AND spli.status '.$asStatus[$sFilter].' AND spli.created_by = '.$nLoginfk.'');
           $pbPosField = true;
           break;
 
