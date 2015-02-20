@@ -294,6 +294,7 @@ define('CONST_ACTION_DOWNLOAD', 'ppadown');
 define('CONST_ACTION_SEARCH', 'ppasea');
 define('CONST_ACTION_RESULTS', 'ppares');
 define('CONST_ACTION_MANAGE', 'ppam');
+define('CONST_ACTION_REVENUE', 'pprev');
 define('CONST_ACTION_TRANSFER','ppat');
 define('CONST_ACTION_SAVETRANSFER','ppast');
 define('CONST_ACTION_SAVEMANAGE','ppasm');

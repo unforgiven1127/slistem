@@ -764,4 +764,124 @@ class CSl_statModelEx extends CSl_statModel
     return $asData;
   }
 
+  public function get_revenue_data()
+  {
+    $revenue_data = $revenue_data_raw = array();
+
+    $query = "SELECT id, amount, location, status, refund_amount FROM revenue";
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while($read)
+    {
+      $row = $db_result->getData();
+      $revenue_data_raw[$row['id']] = $row;
+
+      $read = $db_result->readNext();
+    }
+
+    $query = "SELECT revenue_member.*, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality
+              FROM revenue_member
+              LEFT JOIN login ON revenue_member.loginpk = login.loginpk
+              LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk
+              ";
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while($read)
+    {
+      $row = $db_result->getData();
+
+      $current_revenue_info = $revenue_data_raw[$row['revenue_id']];
+
+      if (!isset($revenue_data[$row['loginpk']]['paid']))
+        $revenue_data[$row['loginpk']]['paid'] = $revenue_data[$row['loginpk']]['signed'] = $revenue_data[$row['loginpk']]['total_amount'] = 0;
+
+      if (empty($revenue_data[$row['loginpk']]['name']))
+      {
+        if (!$row['status'])
+          $revenue_data[$row['loginpk']]['name'] = 'Former';
+        else
+          $revenue_data[$row['loginpk']]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+      }
+
+      if (empty($revenue_data[$row['loginpk']]['nationality']))
+        $revenue_data[$row['loginpk']]['nationality'] = $row['nationality'];
+
+      if (empty($revenue_data[$row['loginpk']]['placed']))
+        $revenue_data[$row['loginpk']]['placed'] = $this->get_placement_number($row['loginpk']);
+
+      if (empty($revenue_data[$row['loginpk']]['team']))
+        $revenue_data[$row['loginpk']]['team'] = $this->get_user_team($row['loginpk']);
+
+      switch ($current_revenue_info['status']) {
+        case 'signed':
+        case 'delayed':
+          $revenue_data[$row['loginpk']]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
+          break;
+
+        case 'paid':
+        case 'refund':
+          $revenue_data[$row['loginpk']]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+          break;
+      }
+
+      $revenue_data[$row['loginpk']]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+
+      $read = $db_result->readNext();
+    }
+
+    uasort($revenue_data, sort_multi_array_by_value('total_amount', 'reverse'));
+
+    return $revenue_data;
+  }
+
+  private function get_placement_number($user_id)
+  {
+    $placements = 0;
+
+    $query = "SELECT count(DISTINCT scan.sl_candidatepk) AS placed
+      FROM sl_candidate AS scan
+      INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = '".$user_id."')";
+
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
+
+      if ($read)
+        $placements = $db_result->getFieldValue('placed');
+
+      return $placements;
+  }
+
+  private function get_user_team($user_id)
+  {
+    $group = 'Not defined';
+    $raw_info = array();
+
+    $query = "SELECT login_group_member.login_groupfk, login_group.title
+      FROM login_group_member
+      LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk
+      WHERE login_group_member.loginfk = '".$user_id."'";
+
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
+
+      while ($read)
+      {
+        $row = $db_result->getData();
+
+        if ($row['login_groupfk'] >= 1 && $row['login_groupfk'] <= 10)
+        {
+          $group = $row['title'];
+          break;
+        }
+
+        $read = $db_result->readNext();
+      }
+
+
+      return $group;
+  }
 }

@@ -162,6 +162,10 @@ class CSl_statEx extends CSl_stat
       case CONST_ACTION_MANAGE:
         return $this->_getGraphPageList();
         break;
+
+      case CONST_ACTION_REVENUE:
+        return $this->get_revenue_chart();
+        break;
     }
 
     return '';
@@ -3959,5 +3963,87 @@ class CSl_statEx extends CSl_stat
 
      return $sHTML;
     }
-}
 
+    private function get_revenue_chart()
+    {
+      // $login_object = CDependency::getCpLogin();
+
+
+      $revenue_data = $this->_getModel()->get_revenue_data();
+
+
+      $this->_oPage->addCssFile($this->getResourcePath().'/css/revenue.css');
+
+      $html = $this->_oDisplay->getBlocStart('', array('class' => 'revenue_container'));
+
+      $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_header_row'));
+
+      $html.= '<div class="revenue_chart_title">All - Individual Revenue Leaders 2014</div>';
+
+      $html.= '<div class="revenue_chart_cell_title rank_column"><div class="text_padding_left_5">Rank</div></div>';
+      $html.= '<div class="revenue_chart_cell_title name_column"><div class="text_padding_left_5">Name</div></div>';
+      $html.= '<div class="revenue_chart_cell_title flag_column">&nbsp;</div>';
+      $html.= '<div class="revenue_chart_cell_title amount_column"><div class="text_padding_left_5">Signed</div></div>';
+      $html.= '<div class="revenue_chart_cell_title amount_column"><div class="text_padding_left_5">Paid</div></div>';
+      $html.= '<div class="revenue_chart_cell_title team_column"><div class="text_padding_left_5">Team</div></div>';
+      $html.= '<div class="revenue_chart_cell_title placed_column remove_border"><div class="text_padding_left_5">Placed</div></div>';
+
+      $html.= $this->_oDisplay->getBlocEnd();
+
+      $row_number_rank = 1;
+      $total_paid = $total_signed = $total_placed = 0;
+      $decimals = 2;
+
+      foreach ($revenue_data as $key => $value)
+      {
+        if ($row_number_rank % 2 === 0)
+          $even = 'even_row';
+        else
+          $even = '';
+
+        if (empty($value['nationality']))
+          $flag_pic = 'world_32.png';
+        else
+          $flag_pic = $value['nationality'].'_32.png';
+
+
+        $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_row '.$even));
+
+        $html.= '<div class="revenue_chart_cell rank_column"><div class="text_padding_right_5">'.$row_number_rank.'</div></div>';
+        $html.= '<div class="revenue_chart_cell name_column">'.$value['name'].'</div>';
+        $html.= '<div class="revenue_chart_cell flag_column">'.$this->_oDisplay->getPicture('/common/pictures/flags/'.$flag_pic).'</div>';
+        $html.= '<div class="revenue_chart_cell amount_column align_text_right">
+          <div class="text_padding_right_5">&yen;'.number_format($value['signed'], $decimals, '.', ',').'</div></div>';
+        $html.= '<div class="revenue_chart_cell amount_column align_text_right">
+          <div class="text_padding_right_5">&yen;'.number_format($value['paid'], $decimals, '.', ',').'</div></div>';
+        $html.= '<div class="revenue_chart_cell team_column">'.$value['team'].'</div>';
+        $html.= '<div class="revenue_chart_cell placed_column align_text_right remove_border">
+          <div class="text_padding_right_5">'.$value['placed'].'</div></div>';
+
+        $html.= $this->_oDisplay->getBlocEnd();
+
+        $row_number_rank += 1;
+
+        $total_paid += $value['paid'];
+        $total_signed += $value['signed'];
+        $total_placed += $value['placed'];
+      }
+
+
+      $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_footer_row'));
+
+      $html.= '<div class="revenue_chart_cell_footer total_text_column"><div class="text_padding_right_5">Total</div></div>';
+      $html.= '<div class="revenue_chart_cell_footer amount_column align_text_right"><div class="text_padding_right_5">
+        &yen;'.number_format($total_signed, $decimals, '.', ',').'</div></div>';
+      $html.= '<div class="revenue_chart_cell_footer amount_column align_text_right"><div class="text_padding_right_5">
+        &yen;'.number_format($total_paid, $decimals, '.', ',').'</div></div>';
+      $html.= '<div class="revenue_chart_cell_footer team_column">&nbsp;</div>';
+      $html.= '<div class="revenue_chart_cell_footer placed_column align_text_right remove_border"><div class="text_padding_right_5">'.$total_placed.'</div></div>';
+
+      $html.= $this->_oDisplay->getBlocEnd();
+
+      $html.= $this->_oDisplay->getBlocEnd();
+
+      return $html;
+    }
+}
