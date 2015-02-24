@@ -790,45 +790,60 @@ class CSl_statModelEx extends CSl_statModel
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
 
+    $revenue_data['former'] = array('name' => 'Former', 'nationality' => 0, 'do_not_count_placed' => array());
+
     while($read)
     {
       $row = $db_result->getData();
 
       $current_revenue_info = $revenue_data_raw[$row['revenue_id']];
 
-      if (!isset($revenue_data[$row['loginpk']]['paid']))
-        $revenue_data[$row['loginpk']]['paid'] = $revenue_data[$row['loginpk']]['signed'] = $revenue_data[$row['loginpk']]['total_amount'] = 0;
-
-      if (empty($revenue_data[$row['loginpk']]['name']))
+      if (!$row['status'])
       {
-        if (!$row['status'])
-          $revenue_data[$row['loginpk']]['name'] = 'Former';
-        else
-          $revenue_data[$row['loginpk']]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+        $user_id = 'former';
+
+        if (empty($revenue_data[$user_id]['placed']))
+          $revenue_data[$user_id]['placed'] = 0;
+
+        if (!isset($revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']]))
+          $revenue_data[$user_id]['placed'] += $this->get_placement_number($row['loginpk']);
+
+        $revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']] = '';
+      }
+      else
+      {
+        $user_id = $row['loginpk'];
+
+        if (empty($revenue_data[$user_id]['nationality']))
+          $revenue_data[$user_id]['nationality'] = $row['nationality'];
+
+        if (empty($revenue_data[$user_id]['placed']))
+          $revenue_data[$user_id]['placed'] = $this->get_placement_number($user_id);
+
+        if (empty($revenue_data[$user_id]['name']))
+            $revenue_data[$user_id]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
       }
 
-      if (empty($revenue_data[$row['loginpk']]['nationality']))
-        $revenue_data[$row['loginpk']]['nationality'] = $row['nationality'];
+      if (!isset($revenue_data[$user_id]['paid']))
+        $revenue_data[$user_id]['paid'] = $revenue_data[$user_id]['signed'] = $revenue_data[$user_id]['total_amount'] = 0;
 
-      if (empty($revenue_data[$row['loginpk']]['placed']))
-        $revenue_data[$row['loginpk']]['placed'] = $this->get_placement_number($row['loginpk']);
-
-      if (empty($revenue_data[$row['loginpk']]['team']))
-        $revenue_data[$row['loginpk']]['team'] = $this->get_user_team($row['loginpk']);
+      if (empty($revenue_data[$user_id]['team']))
+        $revenue_data[$user_id]['team'] = $this->get_user_team($user_id);
 
       switch ($current_revenue_info['status']) {
         case 'signed':
         case 'delayed':
-          $revenue_data[$row['loginpk']]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
+          $revenue_data[$user_id]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
           break;
 
         case 'paid':
         case 'refund':
-          $revenue_data[$row['loginpk']]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+          $revenue_data[$user_id]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
           break;
       }
 
-      $revenue_data[$row['loginpk']]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+      if ($row['status'])
+        $revenue_data[$user_id]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
 
       $read = $db_result->readNext();
     }
@@ -859,28 +874,29 @@ class CSl_statModelEx extends CSl_statModel
   {
     $group = 'Not defined';
     $raw_info = array();
+    if ($user_id != 'former')
+    {
+      $query = "SELECT login_group_member.login_groupfk, login_group.title
+        FROM login_group_member
+        LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk
+        WHERE login_group_member.loginfk = '".$user_id."'";
 
-    $query = "SELECT login_group_member.login_groupfk, login_group.title
-      FROM login_group_member
-      LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk
-      WHERE login_group_member.loginfk = '".$user_id."'";
+        $db_result = $this->oDB->executeQuery($query);
+        $read = $db_result->readFirst();
 
-      $db_result = $this->oDB->executeQuery($query);
-      $read = $db_result->readFirst();
-
-      while ($read)
-      {
-        $row = $db_result->getData();
-
-        if ($row['login_groupfk'] >= 1 && $row['login_groupfk'] <= 10)
+        while ($read)
         {
-          $group = $row['title'];
-          break;
+          $row = $db_result->getData();
+
+          if ($row['login_groupfk'] >= 1 && $row['login_groupfk'] <= 10)
+          {
+            $group = $row['title'];
+            break;
+          }
+
+          $read = $db_result->readNext();
         }
-
-        $read = $db_result->readNext();
       }
-
 
       return $group;
   }
