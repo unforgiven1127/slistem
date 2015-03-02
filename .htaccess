@@ -203,8 +203,8 @@ SetEnvIf REAL_ADDR "^124\.155\.54\.210$" AllowAccess
 ## 2013-08-13 dt#td Aoyama 3rd floor high speed line
 SetEnvIf REAL_ADDR "^221\.113\.50\.237$" AllowAccess
 
-## 2013-10-09 dt#td Ira temporary dba
-SetEnvIf REAL_ADDR "^141\.170\.255\.12$" AllowAccess
+## 2013-10-09 dt#td Ira
+SetEnvIf REAL_ADDR "^46\.175\.150\.92$" AllowAccess
 
 ## 2013-10-10 dt#td Ryoko home (replacing old one)
 SetEnvIf REAL_ADDR "^118\.8\.23\.54$" AllowAccess
@@ -237,7 +237,7 @@ SetEnvIf REAL_ADDR "^118\.8\.16\.113$" AllowAccess
 SetEnvIf REAL_ADDR "^70\.72\.234\.11$" AllowAccess
 
 ## 2014-08-01 dt#td Larry
-SetEnvIf REAL_ADDR "^122\.132\.113\.189$" AllowAccess
+SetEnvIf REAL_ADDR "^119\.240\.77\.173$" AllowAccess
 
 ## 2014-08-04 dt#td Pam home
 SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
