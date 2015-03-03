@@ -8348,48 +8348,51 @@ die();*/
       $oModel = new CModel(true);
       $asSummary = array();
 
-      //1. move reminders / dba req / notifications
+      //1. merge profile data
+      $this->merge_candidate_profiles($pnCandidatePk, $nTarget);
+
+      //2. move reminders / dba req / notifications
       $asData = array('cp_pk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'notification_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$pnCandidatePk, true);
       $asSummary['reminders'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //2. move meetings
+      //3. move meetings
       $asData = array('candidatefk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'sl_meeting', 'candidatefk = '.$pnCandidatePk, true);
       $asSummary['meetings'] = $oDbResult->getFieldValue('_affected_rows');
 
 
-      //3. move positions_link (for history)
+      //4. move positions_link (for history)
       $asData = array('candidatefk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'sl_position_link', 'candidatefk = '.$pnCandidatePk, true);
       $asSummary['positions'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //4. documents
+      //5. documents
       $asData = array('cp_pk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'document_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$pnCandidatePk, true);
       $asSummary['documents'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //5. contact
+      //6. contact
       $asData = array('itemfk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'sl_contact', 'item_type = "candi" AND itemfk = '.$pnCandidatePk, true);
       $asSummary['contacts'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //6. attribute
+      //7. attribute
       $asData = array('itemfk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'sl_attribute', 'type LIKE "candi%" AND itemfk = '.$pnCandidatePk, true);
       $asSummary['attributes'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //7. RM
+      //8. RM
       $asData = array('candidatefk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'sl_candidate_rm', 'candidatefk = '.$pnCandidatePk, true);
       $asSummary['rm'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //8. notes
+      //9. notes
       $asData = array('cp_pk' => $nTarget);
       $oDbResult = $oModel->update($asData, 'event_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$pnCandidatePk, true);
       $asSummary['notes'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //9. add note summura, copy UID
+      //10. add note summary, copy UID
       $oEvent = CDependency::getComponentByName('sl_event');
       $sNote = 'The candidate #'.$pnCandidatePk.' has been merge on this candidate profile.<br />';
       $sNote.= 'All data have been moved accross, previous UID : '.$asCandidate['uid'].'<br />';
@@ -8494,5 +8497,77 @@ die();*/
         $sTitle = 'candidate #'.$pasOldData['sl_candidatepk'].' has been updated.';
         $this->_getModel()->_logChanges($pasOldData, 'sl_candidate', $sTitle);
       }
+    }
+
+    private function merge_candidate_profiles($origin_id, $target_id)
+    {
+      $model_object = new CModel(true);
+
+      // merge sl_candidate part
+      $where = "sl_candidatepk IN ($origin_id, $target_id)";
+
+      $result = $model_object->getByWhere('sl_candidate', $where);
+      $read = $result->readFirst();
+
+      $candidate_data = array();
+
+      while($read)
+      {
+        $raw_data = $result->getData();
+
+        if ($raw_data['sl_candidatepk'] == $origin_id)
+          $candidate_data['origin'] = $raw_data;
+        else if ($raw_data['sl_candidatepk'] == $target_id)
+          $candidate_data['target'] = $raw_data;
+
+        $read = $result->readNext();
+      }
+
+      $skip_columns = array('sl_candidatepk', 'date_created', 'created_by', 'statusfk', 'sex', 'firstname', 'lastname',
+                      '_sys_status', '_sys_redirect');
+
+      foreach ($candidate_data['target'] as $key => $value)
+      {
+        if (in_array($key, $skip_columns))
+          unset($candidate_data['target'][$key]);
+        else if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
+          $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+      }
+
+      $sl_candidate_object = $model_object->update($candidate_data['target'], 'sl_candidate', 'sl_candidatepk = '.$target_id, true);
+
+      // merge sl_candidate_profile part
+      $where = "candidatefk IN ($origin_id, $target_id)";
+
+      $result = $model_object->getByWhere('sl_candidate_profile', $where);
+      $read = $result->readFirst();
+
+      $candidate_data = array();
+
+      while($read)
+      {
+        $raw_data = $result->getData();
+
+        if ($raw_data['candidatefk'] == $origin_id)
+          $candidate_data['origin'] = $raw_data;
+        else if ($raw_data['candidatefk'] == $target_id)
+          $candidate_data['target'] = $raw_data;
+
+        $read = $result->readNext();
+      }
+
+      $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'created_by', 'updated_by', 'date_created', 'date_updated',
+                      'profile_rating', 'uid',);
+
+      foreach ($candidate_data['target'] as $key => $value)
+      {
+        if (in_array($key, $skip_columns))
+          unset($candidate_data['target'][$key]);
+        else if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
+          $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+      }
+
+      $sl_candidate_profile_object = $model_object->update($candidate_data['target'], 'sl_candidate_profile', 'candidatefk = '.$target_id, true);
+
     }
 }
