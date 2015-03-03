@@ -1,5 +1,5 @@
 <?php
-
+header("X-XSS-Protection: 0");
 //if you want session to be handled in database
 require_once('./common/lib/db_session.inc.php5');
 session_start();
@@ -91,7 +91,7 @@ if(!empty($_POST['mail']))
   $sMessage.= "\n\n";
 
 
-  $bSent = mail('sboudoux@bulbouscell.com', 'Error on BCM', $sMessage);
+  $bSent = mail('dcepulis@slate-ghc.com', 'Error on Slistem ', $sMessage);
   if(!$bSent)
   {
     $oFs = @fopen($_SERVER['DOCUMENT_ROOT'].'/error_report.txt', 'a+');
@@ -111,32 +111,32 @@ if(!empty($_POST['mail']))
 <html>
 
 <head>
-<title>BC Media - CRM</title>
+  <title>Slistem Error report</title>
 
-<link media="screen" type="text/css" href="/common/style/style.css?n=1317368869" rel="stylesheet">
-<script src="/common/js/jquery.js" type="text/javascript"></script>
-<style>
-form
-{
-  line-height: 20px;
-}
-input[type=text], textarea
-{
-  width: 820px;
-}
-fieldset
-{
-  padding: 0 15px;
-}
-.error_report_body{ font-size:12px; background-color: #f0f0f0; }
-.error_main_container{ width: 900px; margin: 25px auto; }
-</style>
+  <link media="screen" type="text/css" href="/common/style/style.css?n=1317368869" rel="stylesheet">
+  <script src="/common/js/jquery.js" type="text/javascript"></script>
+  <style>
+  form
+  {
+    line-height: 20px;
+  }
+  input[type=text], textarea
+  {
+    width: 820px;
+  }
+  fieldset
+  {
+    padding: 0 15px;
+  }
+  .error_report_body{ font-size:12px; background-color: #f0f0f0; }
+  .error_main_container{ width: 900px; margin: 25px auto; }
+  </style>
 </head>
 
 <body class="error_report_body" style="">
   <div class="error_main_container">
 
-  <?php
+<?php
 
 if(!empty($_POST['mail']))
 {
@@ -161,7 +161,7 @@ else
  Do not hesitate to contact us directly if you are stuck because of this error.<br />
  <br />
 
- <form name="dumpForm" method="post" enctype="multipart/form-data" action="/error_report.php5" >
+ <form name="dumpForm" method="post" enctype="multipart/form-data" action="" >
 
  <input type="hidden" name="mail" value="'.  uniqid() .'" />';
 
@@ -209,8 +209,7 @@ Screenshot : <br /><br />
 
  </form>';
 }
-
-echo '
-</div>
+?>
+  </div>
 </body>
-</html>';
+</html>
