@@ -5621,7 +5621,6 @@ class CSl_candidateEx extends CSl_candidate
           $oForm->addField('textarea', 'note', array('label' => 'note', 'style' => 'width: 550px;'));
           $oForm->setFieldDisplayparams('note', array('style' => 'width: 800px;', 'class' => 'note_field'));
 
-          $oForm->addField('input', 'character_html', array('type' => 'hidden', 'value' => 0, 'id' => 'character_html'));
           $oForm->closeSection();
 
           $sHTML .= '
@@ -6847,15 +6846,7 @@ die();*/
       $asError = array();
 
       $sCharacter = getValue('character_note');
-      $nCharacterHtml = getValue('character_html');
-
-      if(!$nCharacterHtml)
-        $sCharacter = strip_tags($sCharacter);
-
       $sNote = getValue('note');
-
-      if(!$nCharacterHtml)
-        $sNote = strip_tags($sNote);
 
       if(empty($sCharacter) && empty($sNote))
         $asError[] = 'You have to input at least a note or a character note.';
