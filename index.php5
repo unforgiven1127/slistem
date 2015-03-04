@@ -1,4 +1,4 @@
-  <?php
+<?php
 
 //if you want session to be handled in database
 require_once('./common/lib/db_session.inc.php5');
