@@ -3987,7 +3987,8 @@ class CSl_statEx extends CSl_stat
         array('name' => 'Francis', 'signed' => 4496000, 'paid' => 2201000, 'team' => 'IT', 'placed' => 1, 'nationality' => 'US'),
         array('name' => 'Jean', 'signed' => 318600, 'paid' => 0, 'team' => 'Pharma', 'placed' => 1, 'nationality' => 'FR'),
         array('name' => 'Kismet', 'signed' => 551250, 'paid' => 0, 'team' => 'IT', 'placed' => 0, 'nationality' => 'IN'),
-        array('name' => 'Glen', 'signed' => 0, 'paid' => 0, 'team' => 'Industiral', 'placed' => 0, 'nationality' => 'AU'),
+        array('name' => 'Shigeyuki', 'signed' => 0, 'paid' => 0, 'team' => 'Industrial', 'placed' => 0, 'nationality' => 'JP'),
+        array('name' => 'Glen', 'signed' => 0, 'paid' => 0, 'team' => 'IT', 'placed' => 0, 'nationality' => 'AU'),
         array('name' => 'Former', 'signed' => 0, 'paid' => 0, 'team' => 'Not defined', 'placed' => 0, 'nationality' => ''),
         );
 
