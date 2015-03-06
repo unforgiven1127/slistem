@@ -3608,190 +3608,208 @@ class CSl_positionEx extends CSl_position
 
     private function _exportPositionXml()
     {
-      $oXml =	simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
+      $xml =	simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
 
 
       //https://slistem.devserv.com/index.php5?pg=cron&cronSilent=1&hashCron=1&custom_uid=555-005&export_position=1&seekPositionFrom=1363593824
-      $sTimestamp = (int)getValue('seekPositionFrom', 0);
-      if(!empty($sTimestamp))
+      $start_time = (int)getValue('start_time', 0);
+      $end_time = (int)getValue('end_time', 0);
+
+      if(!empty($start_time) && !empty($end_time))
       {
-        $sDateStart = date('Y-m-d H:i:s', $sTimestamp);
+        $start_date = date('Y-m-d H:i:s', $start_time);
+        $end_date = date('Y-m-d H:i:s', $end_time);
 
-        $oQb = $this->_getModel()->getQueryBuilder();
-        $oQb->addSelect('*, sind.label as industry ');
-        $oQb->addWhere('spos.date_created >= "'.$sDateStart.'" AND spde.is_public = 1');
+        $language = filter_var(getValue('language', 'en'), FILTER_SANITIZE_STRING);
 
-        $asPosition = $this->getPositionList($oQb, true);
-        if(!empty($asPosition))
+        $query_builder = $this->_getModel()->getQueryBuilder();
+        $query_builder->addSelect('*, sind.label as industry ');
+        $query_builder->addWhere('spos.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'" AND spde.is_public = 1 AND spde.language = "'.$language.'"');
+
+        $raw_position_data = $this->getPositionList($query_builder, true);
+        if(!empty($raw_position_data))
         {
-          $oNewPosition = $oXml->addChild('newposition');
-          $oNewPosition->addAttribute('nb', count($asPosition));
+          $new_position = $xml->addChild('new_position');
+          $new_position->addAttribute('nb', count($raw_position_data));
 
-          foreach($asPosition as $asPosData)
+          foreach($raw_position_data as $posistion_data)
           {
-            //dump($asPosData);
-            $asPosData['sl_positionpk'] = (int)$asPosData['sl_positionpk'];
-            //echo 'add position: '. $asPosData['sl_positionpk'].' <br />';
-
-            $asPosData['company_name'] = 'asd asd';
-            $asPosData['location_name'] = 'asaasd asd';
+            $posistion_data['sl_positionpk'] = (int)$posistion_data['sl_positionpk'];
 
             try
             {
-              //dump($asPosData);
-              $oPosDetail = $oNewPosition->addChild('position');
+              $position_details = $new_position->addChild('position');
 
-              $oPosDetail->addChild('id', cleanXmlString($asPosData['sl_positionpk']));
-              $oPosDetail->addChild('company', cleanXmlString($asPosData['company_name']));
-              $oPosDetail->addChild('title', cleanXmlString($asPosData['title']));
+              $position_details->addChild('category', 0);
+              $position_details->addChild('job_type', 1);
 
-              $asPosData['jd_salary_from'] = (int)$asPosData['salary_from'];
-              $asPosData['jd_salary_to'] = (int)$asPosData['salary_to'];
-              $oPosDetail->addChild('salary', cleanXmlString($asPosData['jd_salary_from'].' - '.$asPosData['jd_salary_to']));
+              $position_details->addChild('position_id', cleanXmlString($posistion_data['sl_positionpk']));
+              $position_details->addChild('company_name', cleanXmlString($posistion_data['name']));
+              $position_details->addChild('company_id', cleanXmlString($posistion_data['companyfk']));
 
-              //$oPosDetail->addChild('location', cleanXmlString($asPosData['location_name']));
+              $position_details->addChild('page_title', cleanXmlString($posistion_data['title']));
+              $position_details->addChild('position_title', cleanXmlString($posistion_data['title']));
 
-              $oPosDetail->addChild('industry', cleanXmlString($asPosData['industry']));
-              $oPosDetail->addChild('industry_id', cleanXmlString($asPosData['sl_industrypk']));
-              $oPosDetail->addChild('industry_parent', cleanXmlString($asPosData['parentfk']));
+              $position_details->addChild('salary', cleanXmlString($posistion_data['salary_from'].' - '.$posistion_data['salary_to']));
+              $position_details->addChild('salary_low', cleanXmlString($posistion_data['salary_from']));
+              $position_details->addChild('salary_high', cleanXmlString($posistion_data['salary_to']));
 
-              $oPosDetail->addChild('career', cleanXmlString($asPosData['career_level']));
+              // $position_details->addChild('location', cleanXmlString($posistion_data['location_name']));
+              $position_details->addChild('location', '');
 
-              //dump($asPosData['moderation']);
-              if(!empty($asPosData['moderation']))
+              $position_details->addChild('station', '');
+              $position_details->addChild('work_hours', '');
+              $position_details->addChild('holidays', '');
+
+              $temp_meta_keywords = preg_replace('/[^ \w]+/', '', strtolower($posistion_data['title']));
+              $temp_meta_keywords = str_replace(' ', ', ', str_replace('  ', ' ', $temp_meta_keywords));
+
+              $position_details->addChild('meta_keywords', cleanXmlString($temp_meta_keywords));
+
+              $position_details->addChild('industry_name', cleanXmlString($posistion_data['industry']));
+              $position_details->addChild('industry_id', cleanXmlString($posistion_data['sl_industrypk']));
+              $position_details->addChild('industry_parent', cleanXmlString($posistion_data['parentfk']));
+
+              $position_details->addChild('career', cleanXmlString($posistion_data['career_level']));
+
+              if(!empty($posistion_data['moderation']))
               {
-                if($asPosData['language'] == 'en')
-                  $oPosDetail->addChild('priority', cleanXmlString('1'));
+                if($posistion_data['language'] == 'en')
+                  $position_details->addChild('priority', cleanXmlString('1'));
                 else
-                  $oPosDetail->addChild('priority', cleanXmlString('11'));
+                  $position_details->addChild('priority', cleanXmlString('11'));
               }
               else
-                $oPosDetail->addChild('priority', cleanXmlString('0'));
+                $position_details->addChild('priority', cleanXmlString('0'));
 
-              $oPosDetail->addChild('cons_name', cleanXmlString($asPosData['firstname'].' '.$asPosData['lastname']));
-              $oPosDetail->addChild('cons_email', cleanXmlString($asPosData['email']));
-              $oPosDetail->addChild('date_created', $asPosData['date_created']);
+              $position_details->addChild('cons_name', cleanXmlString($posistion_data['firstname'].' '.$posistion_data['lastname']));
+              $position_details->addChild('cons_email', cleanXmlString($posistion_data['email']));
+              $position_details->addChild('date_created', $posistion_data['date_created']);
 
-              switch($asPosData['lvl_english'])
+              switch($posistion_data['lvl_english'])
               {
-                case $asPosData['lvl_english'] >= 8: $sEnglishLevel = 'Native'; $nEnglishLevel = 4; break;
-                case $asPosData['lvl_english'] >= 6: $sEnglishLevel = 'Fluent'; $nEnglishLevel = 3; break;
-                case $asPosData['lvl_english'] >= 4: $sEnglishLevel = 'Business'; $nEnglishLevel = 2; break;
-                case $asPosData['lvl_english'] >= 2: $sEnglishLevel = 'Basic'; $nEnglishLevel = 1; break;
-                default:                            $sEnglishLevel = '-'; $nEnglishLevel = 0;break;
+                case $posistion_data['lvl_english'] >= 8: $english_level_word = 'Native'; $english_level_number = 4; break;
+                case $posistion_data['lvl_english'] >= 6: $english_level_word = 'Fluent'; $english_level_number = 3; break;
+                case $posistion_data['lvl_english'] >= 4: $english_level_word = 'Business'; $english_level_number = 2; break;
+                case $posistion_data['lvl_english'] >= 2: $english_level_word = 'Basic'; $english_level_number = 1; break;
+                default:                            $english_level_word = '-'; $english_level_number = 0; break;
               }
-              $oPosDetail->addChild('english', cleanXmlString($sEnglishLevel));
-              $oPosDetail->addChild('english_nb', cleanXmlString($nEnglishLevel));
+              $position_details->addChild('english', cleanXmlString($english_level_word));
+              $position_details->addChild('english_nb', $english_level_number);
 
-              switch($asPosData['lvl_japanese'])
+              switch($posistion_data['lvl_japanese'])
               {
-                case $asPosData['lvl_japanese'] >= 8: $sJapaneseLevel = 'Native'; $nJapaneseLevel = 4; break;
-                case $asPosData['lvl_japanese'] >= 6: $sJapaneseLevel = 'Fluent'; $nJapaneseLevel = 3; break;
-                case $asPosData['lvl_japanese'] >= 4: $sJapaneseLevel = 'Business'; $nJapaneseLevel = 2;  break;
-                case $asPosData['lvl_japanese'] >= 2: $sJapaneseLevel = 'Basic'; $nJapaneseLevel = 1;  break;
-                default:                             $sJapaneseLevel = '-'; $nJapaneseLevel = 0;  break;
+                case $posistion_data['lvl_japanese'] >= 8: $japanese_level_word = 'Native'; $japanese_level_number = 4; break;
+                case $posistion_data['lvl_japanese'] >= 6: $japanese_level_word = 'Fluent'; $japanese_level_number = 3; break;
+                case $posistion_data['lvl_japanese'] >= 4: $japanese_level_word = 'Business'; $japanese_level_number = 2;  break;
+                case $posistion_data['lvl_japanese'] >= 2: $japanese_level_word = 'Basic'; $japanese_level_number = 1;  break;
+                default:                             $japanese_level_word = '-'; $japanese_level_number = 0; break;
               }
-              $oPosDetail->addChild('japanese', cleanXmlString($sJapaneseLevel));
-              $oPosDetail->addChild('japanese_nb', cleanXmlString($nJapaneseLevel));
+              $position_details->addChild('japanese', cleanXmlString($japanese_level_word));
+              $position_details->addChild('japanese_nb', $japanese_level_number);
 
 
-              $asRequirements = array();
-              if(!empty($asPosData['age_from']))
-                $asRequirements[] = 'Age: '.$asPosData['age_from'].' - '.$asPosData['age_to'];
+              $requirements = array();
+              if(!empty($posistion_data['age_from']))
+                $requirements[] = 'Age: '.$posistion_data['age_from'].' - '.$posistion_data['age_to'];
 
-              if(!empty($asPosData['requirements']))
-                $asRequirements[] = $asPosData['requirements'];
+              if(!empty($posistion_data['requirements']))
+                $requirements[] = $posistion_data['requirements'];
 
-              if(!empty($asRequirements))
-                $oPosDetail->addChild('requirements', cleanXmlString(implode("\n", $asRequirements)));
-                //$oPosDetail->addChild('requirements', implode("\n", $asRequirements));
+              if(!empty($requirements))
+                $position_details->addChild('requirements', cleanXmlString(implode("\n", $requirements)));
+                //$position_details->addChild('requirements', implode("\n", $requirements));
 
-              $asDescription =  array();
-              if(!empty($asPosData['description']))
-                $asDescription[] = $asPosData['description'];
+              $description =  array();
+              if(!empty($posistion_data['description']))
+                $description[] = $posistion_data['description'];
 
-              if(!empty($asPosData['responsibilities']))
-                $asDescription[] = $asPosData['responsibilities'];
+              if(!empty($posistion_data['responsibilities']))
+                $description[] = $posistion_data['responsibilities'];
 
-              /*if(!empty($asPosData['jd_type']))
-                $asDescription[] = ' - '.$asPosData['jd_type'].' - ';*/
+              /*if(!empty($posistion_data['jd_type']))
+                $description[] = ' - '.$posistion_data['jd_type'].' - ';*/
 
-              if(!empty($asPosData['industry']))
-                $asDescription[] = $asPosData['industry'];
+              if(!empty($posistion_data['industry']))
+                $description[] = $posistion_data['industry'];
 
-              /*if(!empty($asPosData['dept']))
-                $asDescription[] = $asPosData['jd_dept'];
+              /*if(!empty($posistion_data['dept']))
+                $description[] = $posistion_data['jd_dept'];*/
 
+              $merged_description = implode("\n", $description);
 
-              if(!empty($asPosData['jd_industry']))
-                $asDescription[] = $asPosData['industry'];*/
+              if(!empty($merged_description))
+              {
+                $position_details->addChild('position_desc', cleanXmlString($merged_description));
+                $position_details->addChild('meta_desc', cleanXmlString(substr($merged_description, 0, 200).'...'));
+              }
+              else
+              {
+                $position_details->addChild('position_desc', '');
+                $position_details->addChild('meta_desc', '');
+              }
 
-              //dump($asDescription);
-              $sDescription = implode("\n", $asDescription);
-              //dump($sDescription);
-              //dump(cleanXmlString($sDescription));
-
-              if(!empty($sDescription))
-                $oPosDetail->addChild('description', cleanXmlString($sDescription));
+              $position_details->addChild('data', serialize($posistion_data));
             }
             catch(Exception $e)
             {
-              echo 'error with this row : ';  dump($asPosData);
+              echo 'error with this row : ';  dump($posistion_data);
             }
           }
         }
 
         //trace
-        $sXml = $oXml->saveXML();
-        $sXml = str_replace('&gt;&lt;', '&gt;<br />&lt;', htmlentities($sXml));
-        $sXml = str_replace('&lt;/position&gt;', '&lt;/position&gt;<br />', $sXml);
+        $xml_string = $xml->saveXML();
+        $xml_string = str_replace('&gt;&lt;', '&gt;<br />&lt;', htmlentities($xml_string));
+        $xml_string = str_replace('&lt;/position&gt;', '&lt;/position&gt;<br />', $xml_string);
       }
 
 
-      //https://slistem.devserv.com/index.php5?pg=cron&cronSilent=1&hashCron=1&custom_uid=555-005&export_position=1&positionToCheck=5600,3215,4523,6520,3569,5412
-      $sPositionsToCheck = getValue('positionToCheck');
-      if(!empty($sPositionsToCheck))
+      //https://slistem.devserv.com/index.php5?pg=cron&cronSilent=1&hashCron=1&custom_uid=555-005&export_position=1&position_to_check=5600,3215,4523,6520,3569,5412
+      $positions_to_check = getValue('position_to_check');
+      if(!empty($positions_to_check))
       {
-        $asPositionIds = explode(',', $sPositionsToCheck);
-        if(!empty($asPositionIds))
+        $position_ids = explode(',', $positions_to_check);
+        if(!empty($position_ids))
         {
           //check if the parameters
           $bValidIds = true;
-          foreach($asPositionIds as $sPositionId)
+          foreach($position_ids as $position_id)
           {
-            if(!is_numeric($sPositionId))
+            if(!is_numeric($position_id))
               $bValidIds = false;
           }
 
-          $oCheck = $oXml->addChild('checkposition');
+          $check = $xml->addChild('check_position');
 
           if(!$bValidIds)
           {
-            $oCheck->addChild('error', 'Wrong parameters to check positions');
+            $check->addChild('error', 'Wrong parameters to check positions');
           }
           else
           {
-            $oQb = $this->_getModel()->getQueryBuilder();
-            $oQb->addSelect('*, sind.label as industry ');
-            $oQb->addWhere('spos.sl_positionpk IN ('.$sPositionsToCheck.') ');
-            $asPosition = $this->getPositionList($oQb, true);
+            $query_builder = $this->_getModel()->getQueryBuilder();
+            $query_builder->addSelect('*, sind.label as industry ');
+            $query_builder->addWhere('spos.sl_positionpk IN ('.$positions_to_check.') ');
+            $raw_position_data = $this->getPositionList($query_builder, true);
 
-            foreach($asPosition as $asPosData)
+            foreach($raw_position_data as $posistion_data)
             {
-              $oPosition = $oCheck->addChild('position');
-              $oPosition->addChild('id', (int)$asPosData['sl_positionpk']);
-              $oPosition->addChild('status', $asPosData['status']);
+              $oPosition = $check->addChild('position');
+              $oPosition->addChild('id', (int)$posistion_data['sl_positionpk']);
+              $oPosition->addChild('status', $posistion_data['status']);
             }
           }
         }
 
         //trace
-        $sXml = $oXml->saveXML();
-        $sXml = str_replace('&gt;&lt;', '&gt;<br />&lt;', htmlentities($sXml));
-        $sXml = str_replace('&lt;/position&gt;', '&lt;/position&gt;<br />', $sXml);
+        $xml_string = $xml->saveXML();
+        $xml_string = str_replace('&gt;&lt;', '&gt;<br />&lt;', htmlentities($xml_string));
+        $xml_string = str_replace('&lt;/position&gt;', '&lt;/position&gt;<br />', $xml_string);
       }
 
-      echo $oXml->saveXML();
+      echo $xml->saveXML();
+      // echo $xml_string;
       exit();
   }
 
