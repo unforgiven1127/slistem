@@ -3974,7 +3974,21 @@ class CSl_statEx extends CSl_stat
         $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
       }
 
-      $revenue_data = $this->_getModel()->get_revenue_data();
+      // $revenue_data = $this->_getModel()->get_revenue_data(date('Y'));
+
+      $revenue_data = array(array('name' => 'Philip', 'signed' => 21118294, 'paid' => 6987082, 'team' => 'Industrial', 'placed' => 4, 'nationality' => 'CA'),
+        array('name' => 'Soni', 'signed' => 16409630, 'paid' => 0, 'team' => 'IT', 'placed' => 5, 'nationality' => 'UK'),
+        array('name' => 'Larry', 'signed' => 15078797, 'paid' => 4126000, 'team' => 'IT', 'placed' => 6, 'nationality' => 'CA'),
+        array('name' => 'Ryoko', 'signed' => 13068275, 'paid' => 3770000, 'team' => 'Pharma', 'placed' => 1, 'nationality' => 'JP'),
+        array('name' => 'Mitch', 'signed' => 10713893, 'paid' => 0, 'team' => 'Pharma', 'placed' => 2, 'nationality' => 'NZ'),
+        array('name' => 'Ingrid', 'signed' => 8762500, 'paid' => 977500, 'team' => 'F&A', 'placed' => 4, 'nationality' => 'FR'),
+        array('name' => 'Yonoshin', 'signed' => 8086365, 'paid' => 1770000, 'team' => 'Pharma', 'placed' => 4, 'nationality' => 'JP'),
+        array('name' => 'Francis', 'signed' => 4496000, 'paid' => 2201000, 'team' => 'IT', 'placed' => 1, 'nationality' => 'US'),
+        array('name' => 'Jean', 'signed' => 318600, 'paid' => 0, 'team' => 'Pharma', 'placed' => 1, 'nationality' => 'FR'),
+        array('name' => 'Kismet', 'signed' => 551250, 'paid' => 0, 'team' => 'IT', 'placed' => 0, 'nationality' => 'IN'),
+        array('name' => 'Glen', 'signed' => 0, 'paid' => 0, 'team' => 'Industiral', 'placed' => 0, 'nationality' => 'AU'),
+        array('name' => 'Former', 'signed' => 0, 'paid' => 0, 'team' => 'Not defined', 'placed' => 0, 'nationality' => ''),
+        );
 
       $this->_oPage->addCssFile($this->getResourcePath().'/css/revenue.css');
 
@@ -4000,8 +4014,8 @@ class CSl_statEx extends CSl_stat
 
       foreach ($revenue_data as $key => $value)
       {
-        if (empty($value['placed']))
-          continue;
+        /*if (empty($value['placed']))
+          continue;*/
 
         if ($row_number_rank % 2 === 0)
           $even = 'even_row';
