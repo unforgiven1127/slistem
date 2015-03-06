@@ -3749,7 +3749,7 @@ class CSl_positionEx extends CSl_position
                 $position_details->addChild('meta_desc', '');
               }
 
-              $position_details->addChild('data', serialize($posistion_data));
+              $position_details->addChild('data', cleanXmlString(serialize($posistion_data)));
             }
             catch(Exception $e)
             {
