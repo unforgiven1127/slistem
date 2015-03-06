@@ -764,102 +764,113 @@ class CSl_statModelEx extends CSl_statModel
     return $asData;
   }
 
-  public function get_revenue_data()
+  public function get_revenue_data($request_date = '2014')
   {
     $revenue_data = $revenue_data_raw = array();
 
-    $query = "SELECT id, amount, location, status, refund_amount FROM revenue";
+    $date_start = $request_date.'-01-01';
+    $date_end = $request_date.'-12-31';
+
+    $query = "SELECT id, amount, location, status, refund_amount ";
+    $query .= "FROM revenue ";
+    $query .= "WHERE date_signed BETWEEN '".$date_start."' AND '".$date_end."'";
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
-
-    while($read)
+    if ($read)
     {
-      $row = $db_result->getData();
-      $revenue_data_raw[$row['id']] = $row;
-
-      $read = $db_result->readNext();
-    }
-
-    $query = "SELECT revenue_member.*, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality
-              FROM revenue_member
-              LEFT JOIN login ON revenue_member.loginpk = login.loginpk
-              LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk
-              ";
-
-    $db_result = $this->oDB->executeQuery($query);
-    $read = $db_result->readFirst();
-
-    $revenue_data['former'] = array('name' => 'Former', 'nationality' => 0, 'do_not_count_placed' => array());
-
-    while($read)
-    {
-      $row = $db_result->getData();
-
-      $current_revenue_info = $revenue_data_raw[$row['revenue_id']];
-
-      if (!$row['status'])
+      while($read)
       {
-        $user_id = 'former';
+        $row = $db_result->getData();
+        $revenue_data_raw[$row['id']] = $row;
 
-        if (empty($revenue_data[$user_id]['placed']))
-          $revenue_data[$user_id]['placed'] = 0;
-
-        if (!isset($revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']]))
-          $revenue_data[$user_id]['placed'] += $this->get_placement_number($row['loginpk']);
-
-        $revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']] = '';
+        $read = $db_result->readNext();
       }
-      else
+
+      $query = "SELECT revenue_member.*, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality ";
+      $query .= "FROM revenue_member ";
+      $query .= "LEFT JOIN login ON revenue_member.loginpk = login.loginpk ";
+      $query .= "LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk";
+
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
+
+      $revenue_data['former'] = array('name' => 'Former', 'nationality' => 0, 'do_not_count_placed' => array(), 'total_amount' => 0);
+
+      while($read)
       {
-        $user_id = $row['loginpk'];
+        $row = $db_result->getData();
 
-        if (empty($revenue_data[$user_id]['nationality']))
-          $revenue_data[$user_id]['nationality'] = $row['nationality'];
+        if (isset($revenue_data_raw[$row['revenue_id']]))
+        {
+          $current_revenue_info = $revenue_data_raw[$row['revenue_id']];
 
-        if (empty($revenue_data[$user_id]['placed']))
-          $revenue_data[$user_id]['placed'] = $this->get_placement_number($user_id);
+          if (!$row['status'])
+          {
+            $user_id = 'former';
 
-        if (empty($revenue_data[$user_id]['name']))
-            $revenue_data[$user_id]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+            if (empty($revenue_data[$user_id]['placed']))
+              $revenue_data[$user_id]['placed'] = 0;
+
+            if (!isset($revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']]))
+              $revenue_data[$user_id]['placed'] += $this->get_placement_number($row['loginpk'], $request_date);
+
+            $revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']] = '';
+          }
+          else
+          {
+            $user_id = $row['loginpk'];
+
+            if (empty($revenue_data[$user_id]['nationality']))
+              $revenue_data[$user_id]['nationality'] = $row['nationality'];
+
+            if (empty($revenue_data[$user_id]['placed']))
+              $revenue_data[$user_id]['placed'] = $this->get_placement_number($user_id, $request_date);
+
+            if (empty($revenue_data[$user_id]['name']))
+                $revenue_data[$user_id]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+          }
+
+          if (!isset($revenue_data[$user_id]['paid']))
+            $revenue_data[$user_id]['paid'] = $revenue_data[$user_id]['signed'] = $revenue_data[$user_id]['total_amount'] = 0;
+
+          if (empty($revenue_data[$user_id]['team']))
+            $revenue_data[$user_id]['team'] = $this->get_user_team($user_id);
+
+          switch ($current_revenue_info['status']) {
+            case 'signed':
+            case 'delayed':
+              $revenue_data[$user_id]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
+              break;
+
+            case 'paid':
+            case 'refund':
+              $revenue_data[$user_id]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+              break;
+          }
+
+          if ($row['status'])
+            $revenue_data[$user_id]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
+        }
+        $read = $db_result->readNext();
       }
 
-      if (!isset($revenue_data[$user_id]['paid']))
-        $revenue_data[$user_id]['paid'] = $revenue_data[$user_id]['signed'] = $revenue_data[$user_id]['total_amount'] = 0;
-
-      if (empty($revenue_data[$user_id]['team']))
-        $revenue_data[$user_id]['team'] = $this->get_user_team($user_id);
-
-      switch ($current_revenue_info['status']) {
-        case 'signed':
-        case 'delayed':
-          $revenue_data[$user_id]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
-          break;
-
-        case 'paid':
-        case 'refund':
-          $revenue_data[$user_id]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
-          break;
-      }
-
-      if ($row['status'])
-        $revenue_data[$user_id]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
-
-      $read = $db_result->readNext();
+      uasort($revenue_data, sort_multi_array_by_value('total_amount', 'reverse'));
     }
-
-    uasort($revenue_data, sort_multi_array_by_value('total_amount', 'reverse'));
-
     return $revenue_data;
   }
 
-  private function get_placement_number($user_id)
+  private function get_placement_number($user_id, $request_date)
   {
     $placements = 0;
 
-    $query = "SELECT count(DISTINCT scan.sl_candidatepk) AS placed
-      FROM sl_candidate AS scan
-      INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = '".$user_id."')";
+    $date_start = $request_date.'-01-01 00:00:00';
+    $date_end = $request_date.'-12-31 23:59:59';
+
+    $query = "SELECT count(DISTINCT scan.sl_candidatepk) AS placed ";
+    $query .= "FROM sl_candidate AS scan ";
+    $query .= "INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = '".$user_id."' ";
+    $query .= "AND spli.date_created BETWEEN '".$date_start."' AND '".$date_end."')";
 
       $db_result = $this->oDB->executeQuery($query);
       $read = $db_result->readFirst();
@@ -876,10 +887,10 @@ class CSl_statModelEx extends CSl_statModel
     $raw_info = array();
     if ($user_id != 'former')
     {
-      $query = "SELECT login_group_member.login_groupfk, login_group.title
-        FROM login_group_member
-        LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk
-        WHERE login_group_member.loginfk = '".$user_id."'";
+      $query = "SELECT login_group_member.login_groupfk, login_group.title ";
+      $query .= "FROM login_group_member ";
+      $query .= "LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk ";
+      $query .= "WHERE login_group_member.loginfk = '".$user_id."'";
 
         $db_result = $this->oDB->executeQuery($query);
         $read = $db_result->readFirst();

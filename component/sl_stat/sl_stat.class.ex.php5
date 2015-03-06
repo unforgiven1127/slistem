@@ -3966,11 +3966,15 @@ class CSl_statEx extends CSl_stat
 
     private function get_revenue_chart()
     {
-      // $login_object = CDependency::getCpLogin();
+      $this->cbWatercooler = (bool)getValue('watercooler');
 
+      if(!empty($this->cbWatercooler))
+      {
+        //add class to hide everything except charts
+        $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
+      }
 
       $revenue_data = $this->_getModel()->get_revenue_data();
-
 
       $this->_oPage->addCssFile($this->getResourcePath().'/css/revenue.css');
 
@@ -3978,7 +3982,7 @@ class CSl_statEx extends CSl_stat
 
       $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_header_row'));
 
-      $html.= '<div class="revenue_chart_title">All - Individual Revenue Leaders 2014</div>';
+      $html.= '<div class="revenue_chart_title">All - Individual Revenue Leaders '.date('Y').'</div>';
 
       $html.= '<div class="revenue_chart_cell_title rank_column"><div class="text_padding_left_5">Rank</div></div>';
       $html.= '<div class="revenue_chart_cell_title name_column"><div class="text_padding_left_5">Name</div></div>';
@@ -3996,6 +4000,9 @@ class CSl_statEx extends CSl_stat
 
       foreach ($revenue_data as $key => $value)
       {
+        if (empty($value['placed']))
+          continue;
+
         if ($row_number_rank % 2 === 0)
           $even = 'even_row';
         else
