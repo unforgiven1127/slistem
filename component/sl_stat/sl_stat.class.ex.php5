@@ -3967,6 +3967,7 @@ class CSl_statEx extends CSl_stat
     private function get_revenue_chart()
     {
       $this->cbWatercooler = (bool)getValue('watercooler');
+      $location = getValue('location', 'All');
 
       if(!empty($this->cbWatercooler))
       {
@@ -3996,7 +3997,7 @@ class CSl_statEx extends CSl_stat
 
       $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_header_row'));
 
-      $html.= '<div class="revenue_chart_title">All - Individual Revenue Leaders '.date('Y').'</div>';
+      $html.= '<div class="revenue_chart_title">'.ucfirst($location).' - Individual Revenue Leaders '.date('Y').'</div>';
 
       $html.= '<div class="revenue_chart_cell_title rank_column"><div class="text_padding_left_5">Rank</div></div>';
       $html.= '<div class="revenue_chart_cell_title name_column"><div class="text_padding_left_5">Name</div></div>';
