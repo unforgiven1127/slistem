@@ -4002,8 +4002,8 @@ class CSl_statEx extends CSl_stat
 
       $html.= '<div class="revenue_chart_cell_title rank_column"><div class="text_padding_left_5">Rank</div></div>';
       $html.= '<div class="revenue_chart_cell_title name_column"><div class="text_padding_left_5">Name</div></div>';
-      $html.= '<div class="revenue_chart_cell_title flag_column">&nbsp;</div>';
-      $html.= '<div class="revenue_chart_cell_title amount_column"><div class="text_padding_left_5">Signed</div></div>';
+      $html.= '<div class="revenue_chart_cell_title flag_column remove_border">&nbsp;</div>';
+      $html.= '<div class="revenue_chart_cell_title amount_column border_left"><div class="text_padding_left_5">Signed</div></div>';
       $html.= '<div class="revenue_chart_cell_title amount_column"><div class="text_padding_left_5">Paid</div></div>';
       $html.= '<div class="revenue_chart_cell_title team_column"><div class="text_padding_left_5">Team</div></div>';
       $html.= '<div class="revenue_chart_cell_title placed_column remove_border"><div class="text_padding_left_5">Placed</div></div>';
@@ -4012,7 +4012,7 @@ class CSl_statEx extends CSl_stat
 
       $row_number_rank = 1;
       $total_paid = $total_signed = $total_placed = 0;
-      $decimals = 2;
+      $decimals = 0;
 
       foreach ($revenue_data as $key => $value)
       {
@@ -4060,7 +4060,7 @@ class CSl_statEx extends CSl_stat
         &yen;'.number_format($total_signed, $decimals, '.', ',').'</div></div>';
       $html.= '<div class="revenue_chart_cell_footer amount_column align_text_right"><div class="text_padding_right_5">
         &yen;'.number_format($total_paid, $decimals, '.', ',').'</div></div>';
-      $html.= '<div class="revenue_chart_cell_footer team_column">&nbsp;</div>';
+      $html.= '<div class="revenue_chart_cell_footer team_column remove_border">&nbsp;</div>';
       $html.= '<div class="revenue_chart_cell_footer placed_column align_text_right remove_border"><div class="text_padding_right_5">'.$total_placed.'</div></div>';
 
       $html.= $this->_oDisplay->getBlocEnd();

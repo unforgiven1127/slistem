@@ -14,7 +14,6 @@
 .revenue_chart_row
 {
 	font-weight: bold;
-	font-size: 18px;
 	overflow: auto;
 }
 .revenue_chart_row:hover
@@ -86,6 +85,10 @@
 {
 	width: 17%;
 }
+.border_left
+{
+	border-left: 1px solid #D4DADF;
+}
 .remove_border
 {
 	border: none;
@@ -107,4 +110,29 @@
 .align_text_right
 {
 	text-align: right;
+}
+@media (min-width: 700px)
+{
+    .revenue_chart_header_row div,
+	.revenue_chart_footer_row div
+	{
+		font-size: 25px;
+	}
+	.revenue_chart_row div
+	{
+		font-size: 25px;
+	}
+}
+
+@media (min-width: 1200px)
+{
+    .revenue_chart_header_row div,
+	.revenue_chart_footer_row div
+	{
+		font-size: 40px;
+	}
+	.revenue_chart_row div
+	{
+		font-size: 40px;
+	}
 }
