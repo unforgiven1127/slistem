@@ -3644,7 +3644,7 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('job_type', 1);
 
               $position_details->addChild('position_id', cleanXmlString($posistion_data['sl_positionpk']));
-              $position_details->addChild('company_name', cleanXmlString($posistion_data['name']));
+              $position_details->addChild('company_name', cleanXmlString('Company name not publicy visible'));
               $position_details->addChild('company_id', cleanXmlString($posistion_data['companyfk']));
 
               $position_details->addChild('page_title', cleanXmlString($posistion_data['title']));
