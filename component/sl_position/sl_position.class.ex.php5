@@ -204,14 +204,13 @@ class CSl_positionEx extends CSl_position
         break;
 
       case CONST_POSITION_TYPE_PLACEMENT:
-
         //admin: 101,  199: yuko, 343 rossana, stephane: 367, Nic: 278, 309
-        if(!in_array($this->casUserData['loginpk'], array(101,199,343,367,278,309)))
+        /*if(!in_array($this->casUserData['loginpk'], array(101,199,343,367,278,309,468)))
         {
           return json_encode(array('data' =>
               $this->_oDisplay->getCR(3).
               $this->_oDisplay->getBlocMessage('Accounting usage only...<br>Ask Yuko or Rossana for help.')));
-        }
+        }*/
 
 
 
@@ -254,10 +253,10 @@ class CSl_positionEx extends CSl_position
     {
       case CONST_POSITION_TYPE_PLACEMENT:
 
-        if(!in_array($this->casUserData['loginpk'], array(101,199,343,367,278,309)))
+        /*if(!in_array($this->casUserData['loginpk'], array(101,199,343,367,278,309,468)))
         {
           return $this->_oDisplay->getCR(3).$this->_oDisplay->getBlocMessage('Accounting usage only...<br>Ask Yuko or Rossana for help.');
-        }
+        }*/
 
         switch($this->csAction)
         {
