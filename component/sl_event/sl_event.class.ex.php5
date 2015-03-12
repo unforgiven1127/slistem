@@ -306,7 +306,7 @@ class CSl_eventEx extends CSl_event
     $oForm->setFieldControl('title', array('jsFieldMinSize' => '2','jsFieldMaxSize' => 255));
 
     $oForm->addField('textarea', 'content', array('label'=>'Description', 'value' => $oDbResult->getFieldValue('content'), 'isTinymce' => 1));
-    $oForm->setFieldControl('content', array('jsFieldMinSize' => '2','jsFieldMaxSize' => 4096));
+    $oForm->setFieldControl('content', array('jsFieldMinSize' => '2','jsFieldMaxSize' => 9000));
 
 
     $sHTML = '';
