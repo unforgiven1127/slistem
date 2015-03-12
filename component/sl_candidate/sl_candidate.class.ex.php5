@@ -6267,7 +6267,7 @@ die();*/
       if(!empty($asError))
       {
         if(isset($this->casCandidateData['dup_tab']))
-          return array('popupError' => implode("\n", $asError),  'data' => $this->casCandidateData['dup_tab'], 'action' => ' $(\'li.tab_duplicate\').show(0).click(); ');
+          return array('popupError' => implode("\n", $asError),  'data' =>  utf8_encode($this->casCandidateData['dup_tab']), 'action' => ' $(\'li.tab_duplicate\').show(0).click(); ');
 
         return array('popupError' => implode("\n", $asError));
       }
