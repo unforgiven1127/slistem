@@ -8501,6 +8501,7 @@ die();*/
       $read = $result->readFirst();
 
       $candidate_data = array();
+      $older_entry = 'target';
 
       while($read)
       {
@@ -8514,15 +8515,22 @@ die();*/
         $read = $result->readNext();
       }
 
-      $skip_columns = array('sl_candidatepk', 'date_created', 'created_by', 'statusfk', 'sex', 'firstname', 'lastname',
-                      '_sys_status', '_sys_redirect');
+      $skip_columns = array('sl_candidatepk', 'firstname', 'lastname', '_sys_status', '_sys_redirect');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
         if (in_array($key, $skip_columns))
           unset($candidate_data['target'][$key]);
-        else if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
-          $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+        else
+        {
+          if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
+            $older_entry = 'origin';
+
+          if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
+            $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+          else
+            $candidate_data['target'][$key] = $candidate_data[$older_entry][$key];
+        }
       }
 
       $sl_candidate_object = $model_object->update($candidate_data['target'], 'sl_candidate', 'sl_candidatepk = '.$target_id, true);
@@ -8547,15 +8555,35 @@ die();*/
         $read = $result->readNext();
       }
 
-      $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'created_by', 'updated_by', 'date_created', 'date_updated',
-                      'profile_rating', 'uid',);
+      $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'uid',);
 
       foreach ($candidate_data['target'] as $key => $value)
       {
+        if ($key == 'date_updated')
+        {
+          if (!empty($candidate_data['target']['date_updated']) && !empty($candidate_data['origin']['date_updated']))
+          {
+            if (strtotime($candidate_data['target']['date_updated']) < strtotime($candidate_data['origin']['date_updated']))
+              $candidate_data['target']['date_updated'] = $candidate_data['origin']['date_updated'];
+          }
+          else
+          {
+            if (empty($candidate_data['target']['date_updated']))
+              $candidate_data['target']['date_updated'] = $candidate_data['origin']['date_updated'];
+          }
+
+          continue;
+        }
+
         if (in_array($key, $skip_columns))
           unset($candidate_data['target'][$key]);
-        else if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
-          $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+        else
+        {
+          if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
+            $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+          else
+            $candidate_data['target'][$key] = $candidate_data[$older_entry][$key];
+        }
       }
 
       $sl_candidate_profile_object = $model_object->update($candidate_data['target'], 'sl_candidate_profile', 'candidatefk = '.$target_id, true);
