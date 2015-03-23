@@ -147,7 +147,7 @@ SetEnvIf REAL_ADDR "^203\.109\.161\.230$" AllowAccess
 SetEnvIf REAL_ADDR "^183\.181\.128\.245$" AllowAccess
 
 ## 2011-03-18 dt#td Ryoko Kamo Home
-SetEnvIf REAL_ADDR "^114\.164\.203\.104$" AllowAccess
+SetEnvIf REAL_ADDR "^114\.145\.136\.131$" AllowAccess
 
 ## 2011-03-01 dt#td aoyama 3rd floor
 SetEnvIf REAL_ADDR "^183\.77\.226\.168$" AllowAccess
