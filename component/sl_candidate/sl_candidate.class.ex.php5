@@ -8555,21 +8555,26 @@ die();*/
         $read = $result->readNext();
       }
 
-      $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'uid',);
+      $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'uid');
+      $newer_fields = array('date_updated', 'companyfk', 'department', 'title', 'industryfk', 'occupationfk');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
-        if ($key == 'date_updated')
+        if (in_array($key, $newer_fields))
         {
           if (!empty($candidate_data['target']['date_updated']) && !empty($candidate_data['origin']['date_updated']))
           {
             if (strtotime($candidate_data['target']['date_updated']) < strtotime($candidate_data['origin']['date_updated']))
-              $candidate_data['target']['date_updated'] = $candidate_data['origin']['date_updated'];
+            {
+              $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+            }
           }
           else
           {
             if (empty($candidate_data['target']['date_updated']))
-              $candidate_data['target']['date_updated'] = $candidate_data['origin']['date_updated'];
+            {
+              $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+            }
           }
 
           continue;
