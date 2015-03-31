@@ -1681,16 +1681,23 @@ class CEventEx extends CEvent
     $asEmail = CDependency::getCpLogin()->getUserEmailList();
 
     $asEmail = array_flip($asEmail);
-    $asEmail['sboudoux@slate.co.jp'] = 367;
-    $asEmail['sboudoux@bulbouscell.com'] = 367;
-    //dump($asEmail);
+
+    // Developer filter exclusion
+    $asEmail['dcepulis@slate.co.jp'] = 468;
+    $asEmail['dcepulis@slate-ghc.com'] = 468;
+    // Fake researcher/consultant emails
+    $asEmail['ewright@bcmj.biz'] = 1;
+    $asEmail['rhayashi@bcmj.biz'] = 1;
+    $asEmail['ksimon@bcmj.biz'] = 1;
+    $asEmail['jcartwright@bcmj.biz'] = 1;
+    $asEmail['jbrown@bcmj.biz'] = 1;
 
     $asAliases = explode(',', CONST_EVENT_SYNC_ALIASES);
     foreach($asAliases as $nKey => $sPatern)
     {
       $asAliases[$nKey] = explode('=', $sPatern);
     }
-    //dump($asAliases);
+
 
 
     //===========================================================================
