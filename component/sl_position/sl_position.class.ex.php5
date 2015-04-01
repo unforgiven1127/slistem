@@ -3905,7 +3905,7 @@ class CSl_positionEx extends CSl_position
         $oMail->setFrom(CONST_PHPMAILER_EMAIL, CONST_PHPMAILER_DEFAULT_FROM);
         $oMail->addRecipient($asUserData[$nRecipient]['email'], $asUserData[$nRecipient]['firstname'].' '.$asUserData[$nRecipient]['lastname']);
 
-        $oMail->send('Slistem notification - event on position #'.$pasPosition['positionfk'], $sContent);
+        $bSent = $oMail->send('Slistem notification - event on position #'.$pasPosition['positionfk'], $sContent);
         assert('!empty($bSent)');
       }
     }
