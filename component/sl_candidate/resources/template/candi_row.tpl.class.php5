@@ -146,6 +146,11 @@ class CCandi_row extends CTemplate
     $asOption['onclick'] = 'view_candi(\''.$sViewURL.'\');';
     switch($pasData['grade'])
     {
+      case 1:
+        $asOption['class'].= ' tplCandi_grade_met';
+        $asOption['title'] = 'Met grade candidate';
+        break;
+
       case 2:
         $asOption['class'].= ' tplCandi_grade_low';
         $asOption['title'] = 'Low grade candidate';
