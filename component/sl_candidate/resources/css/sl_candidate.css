@@ -875,6 +875,11 @@ div.list_action_container > div > div:first-child
   background: transparent url('/common/pictures/slistem/candi_grade_low_16.png') no-repeat center 5px;
   background: transparent url('/common/pictures/slistem/grade_met_16.png') no-repeat center 5px;
 }
+.tplCandi_grade_low
+{
+  background: transparent url('/common/pictures/slistem/candi_grade_low_16.png') no-repeat center 5px;
+  background: transparent url('/common/pictures/slistem/grade_low_16.png') no-repeat center 5px;
+}
 .tplCandi_grade_high
 {
   background: transparent url('/common/pictures/slistem/candi_grade_high_16.png') no-repeat center 5px;
