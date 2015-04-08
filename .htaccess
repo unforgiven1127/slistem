@@ -81,7 +81,6 @@ SetEnvIf REAL_ADDR "^125\.198\.95\.101$" AllowAccess
 ## Dominic
 SetEnvIf REAL_ADDR "^209\.145\.120\.145$" AllowAccess
 
-
 ## 2010-09-30 dt#td  Slate SRC1
 SetEnvIf REAL_ADDR "^115\.146\.154\.242$" AllowAccess
 
@@ -96,9 +95,6 @@ SetEnvIf REAL_ADDR "^24\.84\.160\.239$" AllowAccess
 
 ## 2010-09-30 dt#td  Ray and Pam home
 SetEnvIf REAL_ADDR "^222\.229\.22\.94$" AllowAccess
-
-## 2010-09-30 dt#td  Sawada Brazil
-SetEnvIf REAL_ADDR "^189\.111\.195\.152$" AllowAccess
 
 ## 2009-12-21 dt#td  as per Murano Consulting ticket number 3973
 SetEnvIf REAL_ADDR "^24\.83\.72\.129$" AllowAccess
@@ -164,9 +160,6 @@ SetEnvIf REAL_ADDR "^124\.155\.40\.41$" AllowAccess
 ## 2012-11-01 dt#td Frank New November
 SetEnvIf REAL_ADDR "^220\.215\.220\.13$" AllowAccess
 
-## 2012-11-05 dt#td Ryoko Kamo Home 5th November
-SetEnvIf REAL_ADDR "^118\.8\.23\.54$" AllowAccess
-
 ## 2012-12-15 dt#td David Australia
 SetEnvIf REAL_ADDR "^220\.233\.66\.141$" AllowAccess
 
@@ -178,9 +171,6 @@ SetEnvIf REAL_ADDR "^124\.107\.166\.235$" AllowAccess
 
 ## 2013-03-01 dt#td Manila ADSL lines
 SetEnvIf REAL_ADDR "^112\.199\.38\.154$" AllowAccess
-
-## 2013-03-01 dt#td Ryoko in Abu Dhabi
-SetEnvIf REAL_ADDR "^195\.229\.241\.172$" AllowAccess
 
 ## 2013-03-27 dt#td Globe Internet SRC
 SetEnvIf REAL_ADDR "^203\.177\.171\.150$" AllowAccess
@@ -205,9 +195,6 @@ SetEnvIf REAL_ADDR "^221\.113\.50\.237$" AllowAccess
 ## 2013-10-09 dt#td Ira
 SetEnvIf REAL_ADDR "^46\.175\.150\.92$" AllowAccess
 
-## 2013-10-10 dt#td Ryoko home (replacing old one)
-SetEnvIf REAL_ADDR "^118\.8\.23\.54$" AllowAccess
-
 ## 2013-11-12 dt#td Alternate Entrance
 SetEnvIf REAL_ADDR "^192\.168\.10\.99$" AllowAccess
 
@@ -228,9 +215,6 @@ SetEnvIf REAL_ADDR "^122\.249\.125\.253$" AllowAccess
 
 ## 2014-04-30 dt#td Hong Kong
 SetEnvIf REAL_ADDR "^101\.78\.237\.101$" AllowAccess
-
-## 2014-05-26 dt#td Ryoko 26th May 2014
-SetEnvIf REAL_ADDR "^118\.8\.16\.113$" AllowAccess
 
 ## 2014-07-22 dt#td Ryan again
 SetEnvIf REAL_ADDR "^70\.72\.234\.11$" AllowAccess
