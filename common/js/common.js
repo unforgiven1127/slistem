@@ -269,8 +269,6 @@ function AjaxRequest(psUrl, psLoadingScreen, psFormToSerialize, psZoneToRefresh,
       dataType: "JSON",
       success: function(oJsonData)
       {
-        //console.log(oJsonData);
-
         mngAjaxScreen(psLoadingScreen);
 
         // pager Issue here
@@ -279,7 +277,10 @@ function AjaxRequest(psUrl, psLoadingScreen, psFormToSerialize, psZoneToRefresh,
 
         if(oJsonData.error)
         {
-          $('#'+psZoneToRefresh).html('<div class="notice3">'+oJsonData.error+'</div>');
+          // $('#'+psZoneToRefresh).html('<div class="notice3">'+oJsonData.error+'</div>');
+
+          goPopup.setErrorMessage(oJsonData.error, true);
+          $(document).ajaxSuccess().unbind();
 
           //requested by server
           if(oJsonData.action)
