@@ -73,10 +73,8 @@ class CModel
         {
           foreach($this->_tableMap[$psTablename][$sFieldName]['controls'] as $sControl)
           {
-            /*dump('$avFields["'.$sFieldName.'"]');
-            dump($avFields["$sFieldName"]. ' || '.$sControl);*/
-
             $sAssert = str_replace('%', '$avFieldValue', $sControl);
+            // var_export($sControl); echo "\n";
             if(!assert($sAssert.'; // field: '.$sFieldName.' - control: '.$sControl.' - value: '.var_export($avFieldValue, true)))
             {
               //dump($avFields[$sFieldName]);
@@ -295,7 +293,7 @@ class CModel
     if(is_object($oDBResult))
     {
       $pasValues['pk'] = (int)$oDBResult->getFieldValue('pk');
-      return $oDBResult->getFieldValue('pk');
+      return (int)$oDBResult->getFieldValue('pk');
     }
 
     return true;

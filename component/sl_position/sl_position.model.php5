@@ -61,30 +61,6 @@ class CSl_positionModel extends CModel
     $this->_tableMap['sl_position_credit']['created_by'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
 
 
-
-    $this->_tableMap['sl_placement']['sl_placementpk'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => 'pk');
-    $this->_tableMap['sl_placement']['date_created'] = array('controls'=>array(),'type'=>'datetime');
-    $this->_tableMap['sl_placement']['positionfk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['sl_placement']['candidatefk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['sl_placement']['closed_by'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['sl_placement']['date_signed'] = array('controls'=>array(),'type'=>'datetime');
-    $this->_tableMap['sl_placement']['date_start'] = array('controls'=>array(),'type'=>'datetime');
-    $this->_tableMap['sl_placement']['date_paid'] = array('controls'=>array('is_datetime(%)'),'type'=>'datetime');
-    $this->_tableMap['sl_placement']['date_due'] = array('controls'=>array('is_date(%)'),'type'=>'date');
-    $this->_tableMap['sl_placement']['salary'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
-    $this->_tableMap['sl_placement']['rate'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
-    $this->_tableMap['sl_placement']['amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
-    $this->_tableMap['sl_placement']['comment'] = array();
-    $this->_tableMap['sl_placement']['location'] =  array('controls'=>array('!empty(%)'), 'type'=>'text');
-
-    $this->_tableMap['sl_placement_payment']['sl_placement_paymentpk'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => 'pk');
-    $this->_tableMap['sl_placement_payment']['placementfk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['sl_placement_payment']['date_created'] = array('controls'=>array('is_datetime(%)'),'type'=>'datetime');
-    $this->_tableMap['sl_placement_payment']['loginfk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['sl_placement_payment']['amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
-    $this->_tableMap['sl_placement_payment']['percentage'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
-    $this->_tableMap['sl_placement_payment']['placed'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-
     $this->_tableMap['revenue']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
     $this->_tableMap['revenue']['date_created'] = array('controls'=>array(),'type'=>'date');
     $this->_tableMap['revenue']['position'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
