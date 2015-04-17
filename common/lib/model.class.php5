@@ -295,7 +295,7 @@ class CModel
     if(is_object($oDBResult))
     {
       $pasValues['pk'] = (int)$oDBResult->getFieldValue('pk');
-      return (int)$oDBResult->getFieldValue('pk');
+      return $oDBResult->getFieldValue('pk');
     }
 
     return true;

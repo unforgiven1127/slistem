@@ -212,8 +212,6 @@ class CSl_positionEx extends CSl_position
               $this->_oDisplay->getBlocMessage('Accounting usage only...<br>Ask Yuko or Rossana for help.')));
         }*/
 
-
-
         switch($this->csAction)
         {
           case CONST_ACTION_ADD:
@@ -2901,271 +2899,254 @@ class CSl_positionEx extends CSl_position
     {
       $this->_oPage->addCssFile($this->getResourcePath().'css/sl_placement.css');
       $this->_oPage->addJsFile($this->getResourcePath().'js/sl_placement.js');
-      $oHTML = $this->_oDisplay;
+      $html_object = $this->_oDisplay;
 
 
-      $sHTML = $oHTML->getBlocStart('placementFullContainer');
-      $sHTML.= $oHTML->getTitle('Placements', 'h3', true);
+      $html = $html_object->getBlocStart('placementFullContainer');
+      $html.= $html_object->getTitle('Placements', 'h3', true);
 
-      $sHTML.= $oHTML->getBlocStart('', array('class' => 'placement_filter'));
-      $sHTML.= $this->_getPlacementFilterForm();
-      $sHTML.= $oHTML->getBlocEnd();
+      $html.= $html_object->getBlocStart('', array('class' => 'placement_filter'));
+      $html.= $this->_getPlacementFilterForm();
+      $html.= $html_object->getBlocEnd();
 
-      $sURL =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_ADD, CONST_POSITION_TYPE_PLACEMENT);
-      $sHTML.= $oHTML->getBlocStart('', array('class' => 'placement_add_button'));
-      $sHTML.= $oHTML->getLink('+ add a new placement', 'javascript:;', array('onclick' => ' editPop(\''.$sURL.'\'); '));
-      $sHTML.= $oHTML->getBlocEnd();
+      $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_ADD, CONST_POSITION_TYPE_PLACEMENT);
+      $html.= $html_object->getBlocStart('', array('class' => 'placement_add_button'));
+      $html.= $html_object->getLink('+ add a new placement', 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
+      $html.= $html_object->getBlocEnd();
 
 
-      $sHTML.= $oHTML->getBlocStart('', array('class' => 'placement_list'));
+      $html.= $html_object->getBlocStart('', array('class' => 'placement_list'));
 
-      $asFilter = $this->_getPlacementFilter();
-      $oDbPlacement = $this->_getModel()->getPlacement($asFilter, true);
-      $bRead = $oDbPlacement->readFirst();
+      $filter = $this->_getPlacementFilter();
+      $raw_placement_data = $this->_getModel()->getPlacement($filter, true);
+      $read = $raw_placement_data->readFirst();
 
-      if(!$bRead)
+      if(!$read)
       {
-        $sHTML.= $oHTML->getBlocMessage('no placement to display.');
+        $html.= $html_object->getBlocMessage('no placement to display.');
       }
       else
       {
-        $oLogin = CDependency::getCpLogin();
-        $asPlacement = array();
+        $login_object = CDependency::getCpLogin();
+        $placement_array = array();
 
-        while($bRead)
+        while($read)
         {
-          //dump($oDbPlacement);
-          $asData = $oDbPlacement->getData();
+          $raw_data = $raw_placement_data->getData();
 
-          if(!isset($asPlacement[$asData['sl_placementpk']]))
+          if(!isset($placement_array[$raw_data['id']]))
           {
 
-            if(empty($asData['closed_by']))
-              $asData['consultant'] = ' - ';
+            if(empty($raw_data['closed_by']))
+              $raw_data['consultant'] = ' - ';
             else
-              $asData['consultant'] = $oLogin->getUserLink((int)$asData['closed_by']);
+              $raw_data['consultant'] = $login_object->getUserLink((int)$raw_data['closed_by']);
 
-            $sEncoding = mb_detect_encoding($asData['position']);
-            /*var_dump($asData['positionfk']);
-            var_dump($sEncoding);
-            var_dump($asData['position']);*/
-
-            $asData['position'] = mb_convert_encoding($asData['position'], 'UTF-8', $sEncoding);
-            $sEncoding = mb_detect_encoding($asData['position']);
-            /*var_dump($sEncoding);
-            var_dump($asData['position']);*/
+            $encoding = mb_detect_encoding($raw_data['position']);
 
 
-            $bPaid = !empty($asData['date_paid']);
+            $raw_data['position'] = mb_convert_encoding($raw_data['position'], 'UTF-8', $encoding);
+            $encoding = mb_detect_encoding($raw_data['position']);
 
-            $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_EDIT, CONST_POSITION_TYPE_PLACEMENT, (int)$asData['sl_placementpk']);
-            $sPic = $oHTML->getPicture(self::getResourcePath().'/pictures/edit_16.png');
-            $asData['action'] = $oHTML->getLink($sPic, 'javascript:;', array('onclick' => ' editPop(\''.$sURL.'\'); '));
 
-            if(!$bPaid)
+            $paid = !empty($raw_data['date_paid']);
+
+            $url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_EDIT, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+            $picture = $html_object->getPicture(self::getResourcePath().'/pictures/edit_16.png');
+            $raw_data['action'] = $html_object->getLink($picture, 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
+
+            if(!$paid)
             {
-              $sURL =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VALIDATE, CONST_POSITION_TYPE_PLACEMENT, (int)$asData['sl_placementpk']);
-              $sPic = $oHTML->getPicture(self::getResourcePath().'/pictures/pay_inactive_16.png', 'Set this placement paid ?');
-              $asData['action'].= '&nbsp;&nbsp;&nbsp;'.$oHTML->getLink($sPic, 'javascript:;', array('onclick' => 'if(window.confirm(\'Set this placement paid ?\')){ AjaxRequest(\''.$sURL.'\'); }; '));
+              $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VALIDATE, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+              $picture = $html_object->getPicture(self::getResourcePath().'/pictures/pay_inactive_16.png', 'Set this placement paid ?');
+              $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Set this placement paid ?\')){ AjaxRequest(\''.$url.'\'); }; '));
             }
             else
             {
-              $asData['action'].= '&nbsp;&nbsp;&nbsp;'.$oHTML->getPicture(self::getResourcePath().'/pictures/pay_16.png', 'Paid');
+              $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getPicture(self::getResourcePath().'/pictures/pay_16.png', 'Paid');
             }
 
-            $sURL =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_DELETE, CONST_POSITION_TYPE_PLACEMENT, (int)$asData['sl_placementpk']);
-            $sPic = $oHTML->getPicture(self::getResourcePath().'/pictures/delete_16.png');
-            $asData['action'].= '&nbsp;&nbsp;&nbsp;'.$oHTML->getLink($sPic, 'javascript:;', array('onclick' => 'if(window.confirm(\'Delete this placement ?\')){ AjaxRequest(\''.$sURL.'\'); }; '));
+            $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_DELETE, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+            $picture = $html_object->getPicture(self::getResourcePath().'/pictures/delete_16.png');
+            $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Delete this placement ?\')){ AjaxRequest(\''.$url.'\'); }; '));
 
 
-            $asData['candidate'] =
-            $asData['candidate'] = $oHTML->getBloc('', '#'.$asData['candidatefk'].' '.$asData['candidate'], array('class' => 'placement_candidate'));
+            $raw_data['candidate'] = $html_object->getBloc('', '#'.$raw_data['candidate'].' <b>'.$raw_data['candidate_name'].'</b>', array('class' => 'placement_candidate'));
 
-            $asData['position'] = '#'.$asData['position'];
-            $asData['amount'] = number_format($asData['amount'], 0, '.', ',');
-            $asData['amount'] = $oHTML->getBloc('', $asData['amount'].'&yen;', array('style' => 'width: 100%; text-align: center; '));
-            $asPlacement[$asData['sl_placementpk']] = $asData;
+            $raw_data['position'] = '#'.$raw_data['position'];
+            $raw_data['amount_formatted'] = number_format($raw_data['amount'], 0, '.', ',');
+            $raw_data['amount_formatted'] = $html_object->getBloc('', $raw_data['amount_formatted'].'&yen;', array('style' => 'width: 100%; text-align: center; '));
+            $placement_array[$raw_data['id']] = $raw_data;
           }
 
-          if($asData['paid_user'])
+          if($raw_data['paid_user'])
           {
-            $asData['paid_amount'] = number_format($asData['paid_amount'], 0, '.', ',');
+            $raw_data['paid_amount'] = number_format($raw_data['amount'], 0, '.', ',');
 
-            if(isset($asPlacement[$asData['sl_placementpk']]['recipient']))
-              $asPlacement[$asData['sl_placementpk']]['recipient'].= ', ';
+            if(isset($placement_array[$raw_data['id']]['recipient']))
+              $placement_array[$raw_data['id']]['recipient'].= ', ';
             else
-              $asPlacement[$asData['sl_placementpk']]['recipient']= '';
+              $placement_array[$raw_data['id']]['recipient']= '';
 
-            if($asData['placed'] > 0)
-            {
-              $asPlacement[$asData['sl_placementpk']]['recipient'].= $oLogin->getUserLink((int)$asData['paid_user'], true).'
-                <span class="placement_share placement" title="Placement credited to this user. Amount: '.$asData['paid_amount'].' yen" > ('.$asData['percentage'].'%)</span>';
-            }
-            else
-            {
-              $asPlacement[$asData['sl_placementpk']]['recipient'].= $oLogin->getUserLink((int)$asData['paid_user'], true).'
-                <span class="placement_share" title="Amount: '.$asData['paid_amount'].' yen"> ('.$asData['percentage'].'%)</span>';
-            }
+            $placement_array[$raw_data['id']]['recipient'].= $login_object->getUserLink((int)$raw_data['paid_user'], true).'
+              <span class="placement_share" title="Amount: '.$raw_data['paid_amount'].' yen"> ('.$raw_data['percentage'].'%)</span>';
           }
 
-          $bRead = $oDbPlacement->readNext();
+          $read = $raw_placement_data->readNext();
         }
 
 
         //initialize the template
-        $asParam = array('sub_template' => array('CTemplateList' => array(0 => array('row' => 'CTemplateRow'))));
-        $oTemplate = $oHTML->getTemplate('CTemplateList', $asParam);
+        $template_param = array('sub_template' => array('CTemplateList' => array(0 => array('row' => 'CTemplateRow'))));
+        $template = $html_object->getTemplate('CTemplateList', $template_param);
 
         //get the config object for a specific template (contains default value so it works without config)
-        $oConf = $oTemplate->getTemplateConfig('CTemplateList');
-        $oConf->setRenderingOption('full', 'full', 'full');
+        $template_config = $template->getTemplateConfig('CTemplateList');
+        $template_config->setRenderingOption('full', 'full', 'full');
 
-        $oConf->setPagerTop(false);
-        $oConf->setPagerBottom(false);
+        $template_config->setPagerTop(false);
+        $template_config->setPagerBottom(false);
 
-        $oConf->addColumn('Date', 'date_signed', array('width' => 85, 'sortable'=> array('javascript' => 'integer')));
-        $oConf->addColumn('Closed by', 'consultant', array('width' => 140, 'sortable'=> array('javascript' => 1)));
-        $oConf->addColumn('Position', 'position', array('width' => 225, 'sortable'=> array('javascript' => 1)));
-        $oConf->addColumn('Inv. amount', 'amount', array('width' => 90, 'sortable'=> array('javascript' => 1)));
-        $oConf->addColumn('Payment(s) to', 'recipient', array('width' => 230, 'sortable'=> array('javascript' => 1)));
-        $oConf->addColumn('Candidate', 'candidate', array('width' => 175, 'sortable'=> array('javascript' => 1)));
-        $oConf->addColumn('Action', 'action', array('width' => 85));
+        $template_config->addColumn('Date', 'date_signed', array('width' => 85, 'sortable'=> array('javascript' => 'integer')));
+        $template_config->addColumn('Closed by', 'consultant', array('width' => 140, 'sortable'=> array('javascript' => 1)));
+        $template_config->addColumn('Position', 'position', array('width' => 225, 'sortable'=> array('javascript' => 1)));
+        $template_config->addColumn('Inv. amount', 'amount_formatted', array('width' => 90, 'sortable'=> array('javascript' => 1)));
+        $template_config->addColumn('Payment(s) to', 'recipient', array('width' => 230, 'sortable'=> array('javascript' => 1)));
+        $template_config->addColumn('Candidate', 'candidate', array('width' => 175, 'sortable'=> array('javascript' => 1)));
+        $template_config->addColumn('Action', 'action', array('width' => 85));
 
 
-        $sHTML.= $oTemplate->getDisplay($asPlacement);
+        $html.= $template->getDisplay($placement_array);
       }
 
-      $sHTML.= $oHTML->getBlocEnd();
-      return $sHTML;
+      $html.= $html_object->getBlocEnd();
+      return $html;
     }
 
     private function _getPlacementFilterForm()
     {
-      $oLogin = CDependency::getCpLogin();
+      $login = CDependency::getCpLogin();
 
-      $nConsultant = (int)getValue('loginpk', 0);
-      $nCandidatefk = (int)getValue('candidatefk', 0);
-      $sPosition = getValue('cp_jd_key');
+      $consultant = (int)getValue('loginpk', 0);
+      $candidate = (int)getValue('candidate', 0);
+      $position = getValue('cp_jd_key');
 
-      $oForm = $this->_oDisplay->initForm('placementFilterForm');
-      $sURL = $this->_oPage->getUrl($this->csUid, CONST_ACTION_LIST, CONST_POSITION_TYPE_PLACEMENT, 0);
-      $oForm->setFormParams('placementFilterForm', false, array('action' => $sURL));
-      $oForm->setFormDisplayParams(array('noCancelButton' => true, /*'noSubmitButton' => 1,*/ 'columns' => 1));
+      $form_object = $this->_oDisplay->initForm('placementFilterForm');
+      $url = $this->_oPage->getUrl($this->csUid, CONST_ACTION_LIST, CONST_POSITION_TYPE_PLACEMENT, 0);
+      $form_object->setFormParams('placementFilterForm', false, array('action' => $url));
+      $form_object->setFormDisplayParams(array('noCancelButton' => true, 'columns' => 1));
 
-      $sDateStart = getValue('date_start');
-      $sDateEnd = '';
-      if(!empty($sDateStart))
+      $start_date = getValue('date_start');
+      $end_date = '';
+      if(!empty($start_date))
       {
-        $asDate = explode(' to ', $sDateStart);
-        $sDateStart = $asDate[0];
-        if(!isset($asDate[1]))
-          $sDateEnd = date('Y-m', strtotime('+1 months')).'-01';
+        $date_array = explode(' to ', $start_date);
+        $start_date = $date_array[0];
+        if(!isset($date_array[1]))
+          $end_date = date('Y-m', strtotime('+1 months')).'-01';
+        else
+          $end_date = $date_array[1];
       }
 
-      /*if(empty($sDateStart))
-        $sDateStart = date('Y-m', strtotime('-2 months')).'-01';
 
-      if(empty($sDateEnd))
-        $sDateEnd = date('Y-m', strtotime('+1 months')).'-01';*/
-
-
-      $sURL = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
-      $oForm->addField('selector', 'loginpk', array('label'=>'Consultant', 'url' => $sURL));
-      if($nConsultant)
+      $url = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
+      $form_object->addField('selector', 'loginpk', array('label'=>'Consultant', 'url' => $url));
+      if($consultant)
       {
-        $sUser = strip_tags($oLogin->getUserLink($nConsultant));
-        $oForm->addOption( 'loginpk', array('label' => $sUser, 'value' => $nConsultant));
+        $user = strip_tags($login->getUserLink($consultant));
+        $form_object->addOption( 'loginpk', array('label' => $user, 'value' => $consultant));
       }
 
-      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD);
-      $oForm->addField('selector', 'cp_jd_key', array('label' => 'Position', 'url' => $sURL));
-      if($sPosition)
+      $url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD);
+      $form_object->addField('selector', 'cp_jd_key', array('label' => 'Position', 'url' => $url));
+      if($position)
       {
-        $asKey = explode('_', $sPosition);
-        $oPosition = $this->_getModel()->getPositionByPk((int)$asKey[1]);
-        $oPosition->readFirst();
+        $key = explode('_', $position);
+        $position_data = $this->_getModel()->getPositionByPk((int)$key[1]);
+        $position_data->readFirst();
 
-        $oForm->addOption( 'cp_jd_key', array('label' => $oPosition->getFieldValue('title'), 'value' => $sPosition));
+        $form_object->addOption( 'cp_jd_key', array('label' => $position_data->getFieldValue('title'), 'value' => $position));
       }
 
-      if(empty($sDateStart))
-        $oForm->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From'));
+      if(empty($start_date))
+        $form_object->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From'));
       else
-        $oForm->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From', 'value' => $sDateStart.' to '.$sDateEnd));
+        $form_object->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From', 'value' => $start_date.' to '.$end_date));
 
-      $oForm->setFieldDisplayParams('date_start', array('class' => 'date_selector'));
+      $form_object->setFieldDisplayParams('date_start', array('class' => 'date_selector'));
 
-      $sURL = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_CANDI, 0, array('autocomplete' => 1));
-      $oForm->addField('selector', 'candidatefk', array('label' => 'Candidate', 'url' => $sURL));
-      if($nCandidatefk)
+      $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_CANDI, 0, array('autocomplete' => 1));
+      $form_object->addField('selector', 'candidate', array('label' => 'Candidate', 'url' => $url));
+      if($candidate)
       {
-        $oCandidate = CDependency::getComponentByName('sl_candidate');
-        $asCandidate = $oCandidate->getCandidateData($nCandidatefk, false);
-        $oForm->addOption( 'candidatefk', array('label' => $asCandidate['firstname'].' '.$asCandidate['lastname'], 'value' => $nCandidatefk));
+        $candidate_object = CDependency::getComponentByName('sl_candidate');
+        $candidate_data = $candidate_object->getCandidateData($candidate, false);
+        $form_object->addOption( 'candidate', array('label' => $candidate_data['firstname'].' '.$candidate_data['lastname'], 'value' => $candidate));
       }
 
-      return $oForm->getDisplay();
+      return $form_object->getDisplay();
     }
 
     private function _getPlacementFilter()
     {
-      $nConsultant = (int)getValue('loginpk', 0);
-      $nCandidatefk = (int)getValue('candidatefk', 0);
+      $consultant = (int)getValue('loginpk', 0);
+      $candidate = (int)getValue('candidate', 0);
 
-      $sPosition = getValue('cp_jd_key');
-      $sPeriod = getValue('date_start');
+      $position = getValue('cp_jd_key');
+      $period = getValue('date_start');
 
-      $asSql = array();
+      $sql_array = array();
 
-      if(!empty($nConsultant))
-        $asSql[] = ' spla.closed_by = '.$nConsultant;
+      if(!empty($consultant))
+        $sql_array[] = ' rev.closed_by = '.$consultant;
 
-      if(!empty($nCandidatefk))
-        $asSql[] = ' spla.candidatefk = '.$nCandidatefk;
+      if(!empty($candidate))
+        $sql_array[] = ' rev.candidate = '.$candidate;
 
-      if(!empty($sPosition))
+      if(!empty($position))
       {
-        $asPosition = explode('_', $sPosition);
-        if(count($asPosition) == 2)
-          $asSql[] = ' spos.sl_positionpk = '.(int)$asPosition[1];
+        $position_list = explode('_', $position);
+        if(count($position_list) == 2)
+          $sql_array[] = ' spos.sl_positionpk = '.(int)$position_list[1];
       }
 
-      if(!empty($sPeriod))
+      if(!empty($period))
       {
-        $asDate = explode(' to ', $sPeriod);
-        $sDateStart = $asDate[0];
-        if(isset($asDate[1]))
-          $sDateEnd =  $asDate[1];
+        $date_array = explode(' to ', $period);
+        $start_date = $date_array[0];
 
-        if(empty($sDateStart))
-          $sDateStart = date('Y-m', strtotime('-2 months')).'-01';
+        if(isset($date_array[1]))
+          $end_date =  $date_array[1];
 
-        if(empty($sDateEnd))
-          $sDateEnd = date('Y-m', strtotime('+2 months', strtotime($sDateStart))).'-01';
+        if(empty($start_date))
+          $start_date = date('Y-m', strtotime('-2 months')).'-01';
 
-        $asSql[] = '(spla.date_signed >= "'.$sDateStart.'" AND spla.date_signed <= "'.$sDateEnd.'") ';
+        if(empty($end_date))
+          $end_date = date('Y-m', strtotime('+2 months', strtotime($start_date))).'-01';
+
+        $sql_array[] = '(rev.date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
       }
 
-      return $asSql;
+      return $sql_array;
     }
 
 
 
-    private function _getPlacementForm($pnPlacementPk = 0)
+    private function _getPlacementForm($revenue_id = 0)
     {
       $this->_oPage->addCssFile($this->getResourcePath().'css/sl_placement.css');
       $this->_oPage->addJsFile($this->getResourcePath().'js/sl_placement.js');
       $oLogin = CDependency::getCpLogin();
 
       $asPaymentRow = array();
-      $asPaymentRow[0] = array(array(), 100, '', 1);
-      $asPaymentRow[1] = array(array(), '', '', 0);
-      $asPaymentRow[2] = array(array(), '', '', 0);
-      $asPaymentRow[3] = array(array(), '', '', 0);
-      $asPaymentRow[4] = array(array(), '', '', 0);
+      $asPaymentRow[0] = array(array(), 100, '');
+      $asPaymentRow[1] = array(array(), '', '');
+      $asPaymentRow[2] = array(array(), '', '');
+      $asPaymentRow[3] = array(array(), '', '');
+      $asPaymentRow[4] = array(array(), '', '');
 
 
-      if(empty($pnPlacementPk))
+      if(empty($revenue_id))
       {
         $oDdPlacement = new CDbResult();
         $oDdPlacement->setFieldValue('date_signed', date('Y-m-d'));
@@ -3173,7 +3154,7 @@ class CSl_positionEx extends CSl_position
       }
       else
       {
-        $oDdPlacement = $this->_getModel()->getByPk($pnPlacementPk, 'sl_placement');
+        $oDdPlacement = $this->_getModel()->get_revenue_info($revenue_id);
         $bRead = $oDdPlacement->readFirst();
         if(!$bRead)
           return __LINE__.' - Can not find the placement.';
@@ -3181,14 +3162,14 @@ class CSl_positionEx extends CSl_position
         $oDdPlacement->setFieldValue('date_signed', substr($oDdPlacement->getFieldValue('date_signed'), 0, 10));
         $oDdPlacement->setFieldValue('date_start', substr($oDdPlacement->getFieldValue('date_start'), 0, 10));
 
-        $nPositionfk = (int)$oDdPlacement->getFieldValue('positionfk');
+        $nPositionfk = (int)$oDdPlacement->getFieldValue('position');
         $oPosition = $this->_getModel()->getPositionByPk($nPositionfk);
         $oPosition->readFirst();
         $sPosition = '#'.$nPositionfk.' - '.$oPosition->getFieldValue('title');
         $sPositionKey = $oPosition->getFieldValue('companyfk').'_'.$nPositionfk;
 
         //fetch candidate data
-        $nCandidatefk = (int)$oDdPlacement->getFieldValue('candidatefk');
+        $nCandidatefk = (int)$oDdPlacement->getFieldValue('candidate');
         $oCandidate = CDependency::getComponentByUid('555-001');
         $asCandidate = $oCandidate->getCandidateData($nCandidatefk , false);
         $sCandidate = '#'.$nCandidatefk. ' - '.$asCandidate['firstname'].' '.$asCandidate['lastname'];
@@ -3198,19 +3179,18 @@ class CSl_positionEx extends CSl_position
         $sConsultant = strip_tags($oLogin->getUserLink($nLoginfk));
 
 
-        $oDdPayment = $this->_getModel()->getByfk($pnPlacementPk, 'sl_placement_payment', 'placement', '*', 'percentage DESC');
+        $oDdPayment = $this->_getModel()->get_revenue_members($revenue_id);
         $bRead = $oDdPayment->readFirst();
         $nCount = 0;
         while($bRead)
         {
-          $nPaidLoginfk = (int)$oDdPayment->getFieldValue('loginfk');
+          $nPaidLoginfk = (int)$oDdPayment->getFieldValue('loginpk');
           $sPaidConsultant = strip_tags($oLogin->getUserLink($nPaidLoginfk));
 
           $asPaymentRow[$nCount] = array(
             array('label' =>$sPaidConsultant, 'value' => $nPaidLoginfk),
             $oDdPayment->getFieldValue('percentage'),
-            $oDdPayment->getFieldValue('amount'),
-            $oDdPayment->getFieldValue('placed'));
+            $oDdPayment->getFieldValue('split_amount'));
 
           $bRead = $oDdPayment->readNext();
           $nCount++;
@@ -3219,7 +3199,7 @@ class CSl_positionEx extends CSl_position
 
 
       $oForm = $this->_oDisplay->initForm('placementFilterForm');
-      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SAVEADD, CONST_POSITION_TYPE_PLACEMENT, $pnPlacementPk);
+      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SAVEADD, CONST_POSITION_TYPE_PLACEMENT, $revenue_id);
       $oForm->setFormDisplayParams(array('noCancelButton' => true));
 
 
@@ -3233,7 +3213,7 @@ class CSl_positionEx extends CSl_position
       $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD, 0, array('placement' => 1));
       $oForm->addField('selector', 'pla_cp_jd_key', array('label' => 'Company or position', 'url' => $sURL, 'onadd' => $sJavascript, 'required' => 1));
       $oForm->setFieldControl('pla_cp_jd_key', array('jsFieldNotEmpty' => 1));
-      if(!empty($pnPlacementPk))
+      if(!empty($revenue_id))
       {
         $oForm->addOption('pla_cp_jd_key', array('label' => $sPosition, 'value' => $sPositionKey));
       }
@@ -3246,23 +3226,23 @@ class CSl_positionEx extends CSl_position
       //filled in javascript
       $oForm->addField('select', 'pla_candidatefk', array('label'=>'Candidate', 'onchange' => 'mirrorSelection(this, \'pla_loginfkId\'); '));
       $oForm->setFieldControl('pla_candidatefk', array('jsFieldNotEmpty' => 1));
-      if(!empty($pnPlacementPk))
-        $oForm->addOption('pla_candidatefk', array('label' => $sCandidate, 'value' => $oDdPlacement->getFieldValue('candidatefk')));
+      if(!empty($revenue_id))
+        $oForm->addOption('pla_candidatefk', array('label' => $sCandidate, 'value' => $oDdPlacement->getFieldValue('candidate')));
 
 
       $oForm->addField('select', 'pla_loginfk', array('label'=>'Deal closed by', 'onchange' => 'mirrorSelection(this, \'pla_candidatefkId\');'));
       $oForm->setFieldControl('pla_loginfk', array('jsFieldNotEmpty' => 1));
-      if(!empty($pnPlacementPk))
+      if(!empty($revenue_id))
         $oForm->addOption('pla_loginfk', array('label' => $sConsultant, 'value' => $oDdPlacement->getFieldValue('closed_by')));
 
       $sLocation = $oDdPlacement->getFieldValue('location');
       $oForm->addField('select', 'location', array('label' => 'Location', 'value' => $sLocation));
 
-      $oForm->addOption('location', array('label' => 'Tokyo', 'value' => 'tok'));
-      $oForm->addOption('location', array('label' => 'Manila', 'value' => 'man'));
-      $oForm->addOption('location', array('label' => 'Canada', 'value' => 'can'));
-      $oForm->addOption('location', array('label' => 'Hong Kong', 'value' => 'hon'));
-      $oForm->addOption('location', array('label' => 'Singapore', 'value' => 'sin'));
+      $oForm->addOption('location', array('label' => 'Tokyo', 'value' => 'Tokyo'));
+      $oForm->addOption('location', array('label' => 'Manila', 'value' => 'Manila'));
+      $oForm->addOption('location', array('label' => 'Canada', 'value' => 'Canada'));
+      $oForm->addOption('location', array('label' => 'Hong Kong', 'value' => 'Hong Kong'));
+      $oForm->addOption('location', array('label' => 'Singapore', 'value' => 'Singapore'));
 
 
       $oForm->addField('misc', '', array('type' => 'br'));
@@ -3288,6 +3268,9 @@ class CSl_positionEx extends CSl_position
 
       $sJavascript = 'updatePaymentAmount(this); ';
       $oForm->addField('input', 'amount', array('type' => 'text', 'label' => 'Invoice amount (&yen;)', 'id' => 'pla_amountId', 'onchange' => $sJavascript, 'value' => $oDdPlacement->getFieldValue('amount')));
+
+      $oForm->addField('input', 'refund_amount', array('type' => 'text', 'label' => 'Refund (&yen;)', 'value' => $oDdPlacement->getFieldValue('refund_amount')));
+
       $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;', 'text' => '<a href=\'javascript:;\' onclick=\'updatePaymentAmount($("#pla_amountId"));\'>
          re-calculate split amount</a>'));
 
@@ -3298,7 +3281,7 @@ class CSl_positionEx extends CSl_position
 
       $oForm->addSection('payment_section', array('class' => 'payment_section'), 'Payments details');
 
-      $sURL = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER, array('all_users' => 1));
+      $sURL = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER, 0, array('all_users' => 1));
       for($nCount = 0; $nCount < 5; $nCount++)
       {
 
@@ -3310,13 +3293,12 @@ class CSl_positionEx extends CSl_position
           $oForm->addOption('pay_loginfk['.$nCount.']', array('label' => $asPaymentRow[$nCount][0]['label'], 'value' => $asPaymentRow[$nCount][0]['value']));
         }
 
-        $oForm->addField('input', 'pay_split['.$nCount.']', array('type' =>'text', 'label' => 'split %', 'class' => 'split', 'value' =>  $asPaymentRow[$nCount][1]));
-        $oForm->addField('input', 'pay_amount['.$nCount.']', array('type' =>'text', 'label' => 'amount &yen;', 'id' => 'pay_amount'.$nCount, 'value' =>  $asPaymentRow[$nCount][2]));
+        if (empty($asPaymentRow[$nCount][2]))
+          $asPaymentRow[$nCount][2] = 0;
 
-        if(!empty($asPaymentRow[$nCount][3]))
-          $oForm->addField('checkbox', 'pay_placed['.$nCount.']', array('label' => 'placed', 'value' => $asPaymentRow[$nCount][3], 'checked' => 'checked'));
-        else
-          $oForm->addField('checkbox', 'pay_placed['.$nCount.']', array('label' => 'placed', 'value' => $asPaymentRow[$nCount][3]));
+        $oForm->addField('input', 'pay_split['.$nCount.']', array('type' =>'text', 'label' => 'split %', 'class' => 'split', 'value' =>  $asPaymentRow[$nCount][1]));
+        $oForm->addField('input', 'pay_amount['.$nCount.']', array('type' =>'text', 'label' => 'amount &yen;', 'id' => 'pay_amount'.$nCount,
+          'value' =>  number_format($asPaymentRow[$nCount][2], 0, '.', ',') ));
 
 
         if($nCount === 0)
@@ -3332,163 +3314,159 @@ class CSl_positionEx extends CSl_position
       return $oForm->getDisplay();
     }
 
-    private function _savePlacement($nPlacementPk = 0)
+    private function _savePlacement($revenue_id = 0)
     {
-      $asPlacement = array();
+      $revenue_array = array();
 
-      if(empty($nPlacementPk))
+      if(empty($revenue_id))
       {
-        $asPlacement['date_created'] = date('Y-m-d H:i:s');
+        $revenue_array['date_created'] = date('Y-m-d H:i:s');
       }
       else
       {
         //editing
-        $oDdPlacement = $this->_getModel()->getByPk($nPlacementPk, 'sl_placement');
-        $bRead = $oDdPlacement->readFirst();
-        if(!$bRead)
+        $existing_placement = $this->_getModel()->get_revenue_info($revenue_id);
+        $read = $existing_placement->readFirst();
+        if(!$read)
           return __LINE__.' - Can not find the placement.';
       }
 
-      $asPlacement['positionfk'] = getValue('pla_cp_jd_key');
-      if(empty($asPlacement['positionfk']))
+      $revenue_array['position'] = getValue('pla_cp_jd_key');
+      if(empty($revenue_array['position']))
         return array('error' => 'You must select a position');
 
-      $asKey = explode('_', $asPlacement['positionfk']);
+      $asKey = explode('_', $revenue_array['position']);
       if(count($asKey) !== 2 || !is_numeric($asKey[1]))
         return array('error' => __LINE__.' - The selected position is incorrect');
 
-      $asPlacement['positionfk'] = (int)$asKey[1];
+      $revenue_array['position'] = (int)$asKey[1];
 
 
-      $asPlacement['candidatefk'] = (int)getValue('pla_candidatefk');
-      if(empty($asPlacement['candidatefk']))
+      $revenue_array['candidate'] = (int)getValue('pla_candidatefk');
+      if(empty($revenue_array['candidate']))
         return array('error' => 'You must select a candidate');
 
-      $asPlacement['closed_by'] = (int)getValue('pla_loginfk');
-      if(empty($asPlacement['closed_by']))
+      $revenue_array['closed_by'] = (int)getValue('pla_loginfk');
+      if(empty($revenue_array['closed_by']))
         return array('error' => 'You must select a consultant');
 
-      $asPlacement['date_start'] = getValue('date_start');
-      if(!is_date($asPlacement['date_start']))
+      $revenue_array['date_start'] = getValue('date_start');
+      if(!is_date($revenue_array['date_start']))
         return array('error' => 'The start date is incorrect ');
 
-      $asPlacement['date_due'] = getValue('date_due');
-      if(!is_date($asPlacement['date_due']))
+      $revenue_array['date_due'] = getValue('date_due');
+      if(!is_date($revenue_array['date_due']))
         return array('error' => 'The due date is incorrect ');
 
-      $asPlacement['date_signed'] = getValue('date_signed');
-      if(!is_date($asPlacement['date_signed']))
+      $revenue_array['date_signed'] = getValue('date_signed');
+      if(!is_date($revenue_array['date_signed']))
         return array('error' => 'The signed date is incorrect ');
 
 
-      $asPlacement['amount'] = (int) preg_replace('/[^0-9]/i', '', getValue('amount'));
-      if($asPlacement['amount'] < 10000)
+      $revenue_array['amount'] = filter_var(getValue('amount'), FILTER_SANITIZE_NUMBER_INT);
+      if($revenue_array['amount'] < 10000)
         return array('error' => 'Invoice amount is incorrect. Value must be > &yen; 10,000');
 
-      $asPlacement['salary'] = (int)preg_replace('/[^0-9]/i', '', getValue('salary'));
-      if($asPlacement['salary'] < 10000)
+      $revenue_array['salary'] = filter_var(getValue('salary'), FILTER_SANITIZE_NUMBER_INT);
+      if($revenue_array['salary'] < 10000)
         return array('error' => 'Billable salary is incorrect. Value must be > &yen; 10,000');
 
-      $asPlacement['rate'] = (int)preg_replace('/[^0-9]/i', '', getValue('rate'));
-      if($asPlacement['rate'] < 0 || $asPlacement['rate'] > 100)
-        return array('error' => 'Invoice rate must be between 0 - 100 % [value: '.$asPlacement['rate'].']');
+      $revenue_array['salary_rate'] = filter_var(getValue('rate'), FILTER_SANITIZE_NUMBER_INT);
+      if($revenue_array['salary_rate'] < 0 || $revenue_array['salary_rate'] > 100)
+        return array('error' => 'Invoice rate must be between 0 - 100 % [value: '.$revenue_array['salary_rate'].']');
 
-      $asPlacement['comment'] = getValue('comment');
+      $revenue_array['comment'] = getValue('comment');
 
-      $asPlacement['location'] = getValue('location');
-      if(empty($asPlacement['location']))
+      $revenue_array['currency'] = 'jpy';
+
+      $revenue_array['refund_amount'] = filter_var(getValue('refund_amount'), FILTER_SANITIZE_NUMBER_INT);
+      if (empty($revenue_array['refund_amount']))
+        $revenue_array['refund_amount'] = 0;
+
+      $revenue_array['location'] = getValue('location');
+      if(empty($revenue_array['location']))
         return array('error' => 'Location can\'t be empty.');
 
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //check payment rows
-      $asPayment = array();
-      $asPaidUser = array();
-      $nSplit = 0;
-      $nPlacementCount = 0;
+      $revenue_members = array();
+      $paid_user = array();
+      $split_amount = 0;
 
-      for($nCount = 0; $nCount < 4; $nCount++)
+      for($count = 0; $count < 4; $count++)
       {
-        if(isset($_POST['pay_loginfk'][$nCount]) && !empty($_POST['pay_loginfk'][$nCount]))
+        if(isset($_POST['pay_loginfk'][$count]) && !empty($_POST['pay_loginfk'][$count]))
         {
-          if(empty($_POST['pay_split'][$nCount]) || empty($_POST['pay_amount'][$nCount]))
+          if(empty($_POST['pay_split'][$count]) || empty($_POST['pay_amount'][$count]))
             return array('error' => 'Every payment needs a split % and an amount.');
 
-          if(in_array((int)$_POST['pay_loginfk'][$nCount], $asPaidUser))
+          if(in_array((int)$_POST['pay_loginfk'][$count], $paid_user))
             return array('error' => 'You have multiple payments for the same user.');
 
-          $_POST['pay_split'][$nCount] = str_replace(',', '', $_POST['pay_split'][$nCount]);
-          $_POST['pay_amount'][$nCount] = str_replace(',', '', $_POST['pay_amount'][$nCount]);
-          if(isset($_POST['pay_placed'][$nCount]))
-          {
-            $_POST['pay_placed'][$nCount] = 1;
-            $nPlacementCount++;
-          }
-          else
-            $_POST['pay_placed'][$nCount] = 0;
+          $_POST['pay_split'][$count] = str_replace(',', '', $_POST['pay_split'][$count]);
+          $_POST['pay_amount'][$count] = str_replace(',', '', $_POST['pay_amount'][$count]);
 
-          if(!is_numeric($_POST['pay_split'][$nCount]))
-            return array('error' => 'The split value ['.$_POST['pay_split'][$nCount].'] is incorrect on payment line #'.($nCount+1));
+          if(!is_numeric($_POST['pay_split'][$count]))
+            return array('error' => 'The split value ['.$_POST['pay_split'][$count].'] is incorrect on payment line #'.($count+1));
 
-          if(!is_numeric($_POST['pay_amount'][$nCount]))
-            return array('error' => 'The amount value ['.$_POST['pay_amount'][$nCount].'] is incorrect on payment line #'.($nCount+1));
+          if(!is_numeric($_POST['pay_amount'][$count]))
+            return array('error' => 'The amount value ['.$_POST['pay_amount'][$count].'] is incorrect on payment line #'.($count+1));
 
 
-          $nSplit+= (float)$_POST['pay_split'][$nCount];
+          $split_amount+= (float)$_POST['pay_split'][$count];
 
-          $asPayment[] = array(
-            'placementfk' => 0,
-            'date_created' => date('Y-m-d H:i:s'),
-            'loginfk' => (int)$_POST['pay_loginfk'][$nCount],
-            'amount' => (float)$_POST['pay_amount'][$nCount],
-            'percentage' => (float)$_POST['pay_split'][$nCount],
-            'placed' => (int)($_POST['pay_placed'][$nCount]));
+          $revenue_members[] = array(
+            'revenue_id' => 0,
+            'loginpk' => (int)$_POST['pay_loginfk'][$count],
+            'percentage' => (float)$_POST['pay_split'][$count],
+            'split_amount' => (float)$_POST['pay_amount'][$count]);
 
-          $asPaidUser[] = (int)$_POST['pay_loginfk'][$nCount];
+          $paid_user[] = (int)$_POST['pay_loginfk'][$count];
         }
       }
 
-      if(empty($nPlacementCount))
-        return array('error' => 'At least one of the consultants must be credited for the placement.');
-
       //check sum of splits
-      if($nSplit > 100)
-        return array('error' => 'The total split ['.$nSplit.'%] is exceeding 100% ');
-      elseif($nSplit < 100)
-        return array('error' => 'The total split ['.$nSplit.'%] is lower than 100% ');
+      if($split_amount > 100)
+        return array('error' => 'The total split ['.$split_amount.'%] is exceeding 100% ');
+      elseif($split_amount < 100)
+        return array('error' => 'The total split ['.$split_amount.'%] is lower than 100% ');
 
 
 
       // -----------------------------------------------------------------
       //Everything checked... Save placement and get PK to create/update payments
-      if(empty($nPlacementPk))
+      if(empty($revenue_id))
       {
         // Last test:  check we're not creating a duplicate placement
-        $oDbCheckPayment = $this->_getModel()->getByWhere('sl_placement', 'positionfk = '.$asPlacement['positionfk']);
-        $bRead = $oDbCheckPayment->readFirst();
+        $check_existing_payment = $this->_getModel()->getByWhere('revenue', 'position = '.$revenue_array['position']);
+
+        $bRead = $check_existing_payment->readFirst();
         if($bRead)
           return array('error' => 'There is already a placement for this position.');
 
-        $nPlacementPk = $this->_getModel()->add($asPlacement, 'sl_placement');
-        if(!$nPlacementPk)
+        $revenue_array['status'] = 'signed';
+
+        $revenue_id = $this->_getModel()->add($revenue_array, 'revenue');
+        if(!$revenue_id)
           return array('error' => __LINE__.' - Could not save the placement');
       }
       else
       {
-        $bUpdate = $this->_getModel()->update($asPlacement, 'sl_placement', 'sl_placementpk = '.$nPlacementPk);
-        if(!$bUpdate)
+        $update = $this->_getModel()->update($revenue_array, 'revenue', 'id = '.$revenue_id);
+        if(!$update)
           return array('error' => __LINE__.' - Could not save the placement');
 
         //need to delete the payment
-        $this->_getModel()->deleteByFk($nPlacementPk, 'sl_placement_payment', 'placementfk');
+        $this->_getModel()->deleteByFk($revenue_id, 'revenue_member', 'id');
       }
 
 
-      //dump($asPayment);
-      foreach($asPayment as $asPaymentDetail)
+
+      foreach($revenue_members as $member)
       {
-        $asPaymentDetail['placementfk'] = $nPlacementPk;
-        $this->_getModel()->add($asPaymentDetail, 'sl_placement_payment');
+        $member['revenue_id'] = (int)$revenue_id;
+        $this->_getModel()->add($member, 'revenue_member');
       }
 
       return array('notice' => 'Placement saved.', 'action' => ' setTimeout(\' $(\\\'#placementFilterFormId\\\').submit();\', 1000); ');
@@ -3557,49 +3535,49 @@ class CSl_positionEx extends CSl_position
       return array('data' => $asResult);
     }
 
-    private function _setPlacementPaid($pnPlacementPk)
+    private function _setPlacementPaid($revenue_id)
     {
-      if(!assert('is_key($pnPlacementPk)'))
+      if(!assert('is_key($revenue_id)'))
         return array('error' => 'Wrong parameters');
 
-      $oPlacement = $this->_getModel()->getByPk($pnPlacementPk, 'sl_placement');
-      $bRead = $oPlacement->readFirst();
-      if(!$bRead)
+      $revenue = $this->_getModel()->getByWhere('revenue', 'id = '.$revenue_id);
+      $read = $revenue->readFirst();
+      if(!$read)
         return array('error' => 'Could not find the placement.');
 
-      $sDatePaid = (int)$oPlacement->getFieldValue('date_paid');
-      if(!empty($sDatePaid))
-        return array('error' => 'Placement already set \'paid\' on the '.$sDatePaid.'.');
+      $revenue_status = $revenue->getFieldValue('status');
+      if ($revenue_status == 'paid' || $revenue_status == 'refund')
+        return array('error' => 'Placement already set \'paid\'.');
 
-      $asData = array();
-      $asData['sl_placementpk'] = $pnPlacementPk;
-      $asData['date_paid'] = date('Y-m-d H:i:s');
+      $data = array();
+      $data['date_paid'] = date('Y-m-d');
+      $data['status'] = 'paid';
 
-      $bUpdated = $this->_getModel()->update($asData, 'sl_placement', 'sl_placementpk = '.$pnPlacementPk);
+      $updated = $this->_getModel()->update($data, 'revenue', 'id = '.$revenue_id);
 
-      if(!$bUpdated)
+      if(!$updated)
         return array('error' => 'Sorry, can not update the placement.');
 
       return array('notice' => 'Placement is now set to paid.', 'action' => ' setTimeout(\' $(\\\'#placementFilterFormId\\\').submit();\', 1000); ');
     }
 
-    private function _deletePlacement($pnPlacementPk)
+    private function _deletePlacement($revenue_id)
     {
-      if(!assert('is_key($pnPlacementPk)'))
+      if(!assert('is_key($revenue_id)'))
         return array('error' => 'Wrong parameters');
 
-      $oPlacement = $this->_getModel()->getByPk($pnPlacementPk, 'sl_placement');
-      $bRead = $oPlacement->readFirst();
-      if(!$bRead)
+      $revenue = $this->_getModel()->getByWhere('revenue', 'id = '.$revenue_id);
+      $read = $revenue->readFirst();
+      if(!$read)
         return array('error' => 'Could not find the placement.');
 
-      $sDatePaid = (int)$oPlacement->getFieldValue('date_paid');
-      if(!empty($sDatePaid))
+      $revenue_status = $revenue->getFieldValue('status');
+      if ($revenue_status == 'paid' || $revenue_status == 'refund')
         return array('error' => 'Sorry, you can not delete a paid placement.');
 
 
-      $this->_getModel()->deleteByPk($pnPlacementPk, 'sl_placement');
-      $this->_getModel()->deleteByFk($pnPlacementPk, 'sl_placement_payment', 'placementfk');
+      $this->_getModel()->deleteByWhere('revenue', 'id = '.$revenue_id);
+      $this->_getModel()->deleteByWhere('revenue_member', 'revenue_id = '.$revenue_id);
 
       return array('notice' => 'Placement deleted.', 'action' => ' setTimeout(\' $(\\\'#placementFilterFormId\\\').submit();\', 1000); ');
     }

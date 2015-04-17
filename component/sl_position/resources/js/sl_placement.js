@@ -83,7 +83,7 @@ function updatePaymentAmount(poTag)
     var nSplit = $(this).val();
     if(!isNaN(nSplit))
     {
-      $('#pay_amount'+nIndex, oSection).val( Math.round(parseInt(sInvoiceAmount) * (nSplit /100)) );
+      $('#pay_amount'+nIndex, oSection).val( Math.round(parseInt(sInvoiceAmount) * (nSplit / 100)) );
     }
   });
 }

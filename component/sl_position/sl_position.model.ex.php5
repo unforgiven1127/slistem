@@ -279,46 +279,42 @@ class CSl_positionModelEx extends CSl_positionModel
 
 
 
-  public function getPlacement($pasFilter = array(), $pbWithPayment = false, $pnLimit = 150)
+  public function getPlacement($filter = array(), $with_payment = false, $limit = 150)
   {
-    if($pbWithPayment)
+    if($with_payment)
     {
-       $sExtraSelect = ', sppa.loginfk as paid_user, sppa.percentage, sppa.amount as paid_amount, sppa.placed ';
-       $sExtraQuery = ' LEFT JOIN sl_placement_payment as sppa ON (sppa.placementfk = spla.sl_placementpk) ';
+       $extra_select = ', revmem.loginpk as paid_user, revmem.percentage ';
+       $extra_query = ' LEFT JOIN revenue_member as revmem ON (revmem.revenue_id = rev.id) ';
     }
     else
-      $sExtraSelect = $sExtraQuery = '';
+      $extra_select = $extra_query = '';
 
-    $sQuery = ' SELECT DISTINCT(spde.positionfk), spla.*, spos.companyfk, DATE_FORMAT(spla.date_signed, "%Y-%m-%d") as date_signed,
-      CONCAT(scan.firstname, " ", scan.lastname) as candidate,
-      CONCAT(spde.positionfk, " ", spde.title) as position '.$sExtraSelect.'
-      FROM sl_placement as spla
+      $query = ' SELECT DISTINCT(spde.positionfk), rev.*, spos.companyfk,
+      CONCAT(scan.firstname, " ", scan.lastname) as candidate_name,
+      CONCAT(spde.positionfk, " ", spde.title) as position '.$extra_select.'
+      FROM revenue as rev
 
-      INNER JOIN sl_position as spos ON (spos.sl_positionpk = spla.positionfk)
+      INNER JOIN sl_position as spos ON (spos.sl_positionpk = rev.position)
       INNER JOIN sl_position_detail as spde ON (spde.positionfk = spos.sl_positionpk)
-      INNER JOIN sl_candidate as scan ON (scan.sl_candidatepk = spla.candidatefk)
-      '.$sExtraQuery;
+      INNER JOIN sl_candidate as scan ON (scan.sl_candidatepk = rev.candidate)
+      '.$extra_query;
 
-    if(!empty($pasFilter))
-      $sQuery.= ' WHERE '.implode(' AND ', $pasFilter);
+    if(!empty($filter))
+      $query.= ' WHERE '.implode(' AND ', $filter);
 
 
-    $sQuery.= 'ORDER BY date_created DESC ';
+    $query.= ' ORDER BY date_created DESC ';
 
-    if($pbWithPayment)
-      $sQuery.= ', placed DESC ';
+    if($limit > 0)
+      $query.= 'LIMIT 0, '.$limit;
 
-    if($pnLimit > 0)
-      $sQuery.= 'LIMIT 0, '.$pnLimit;
-
-    //echo $sQuery.'<br />';
-    return $this->executeQuery($sQuery);
+    return $this->executeQuery($query);
   }
 
   public function getPlacementOptions($pnPositionFk)
   {
     //Active or placed candidates
-    $sQuery = '
+    $query = '
         SELECT DISTINCT(spli.candidatefk), spli.*,
         CONCAT(scan.firstname, " ", scan.lastname) as candidate,
         CONCAT(slog.firstname, " ", slog.lastname) as consultant,
@@ -351,7 +347,21 @@ class CSl_positionModelEx extends CSl_positionModel
             )';
 
     //echo $sQuery.'<br />';
-    return $this->executeQuery($sQuery);
+    return $this->executeQuery($query);
+  }
+
+  public function get_revenue_info($revenue_id)
+  {
+    $query = 'SELECT * FROM revenue WHERE id = '.$revenue_id;
+
+    return $this->executeQuery($query);
+  }
+
+  public function get_revenue_members($revenue_id)
+  {
+    $query = 'SELECT * FROM revenue_member WHERE revenue_id = '.$revenue_id.' ORDER BY percentage DESC';
+
+    return $this->executeQuery($query);
   }
 
   public function getCurrentStatus($pbActiveOnly = false)

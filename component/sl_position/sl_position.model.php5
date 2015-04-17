@@ -85,6 +85,30 @@ class CSl_positionModel extends CModel
     $this->_tableMap['sl_placement_payment']['percentage'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
     $this->_tableMap['sl_placement_payment']['placed'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
 
+    $this->_tableMap['revenue']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
+    $this->_tableMap['revenue']['date_created'] = array('controls'=>array(),'type'=>'date');
+    $this->_tableMap['revenue']['position'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue']['candidate'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue']['closed_by'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue']['date_signed'] = array('controls'=>array(),'type'=>'date');
+    $this->_tableMap['revenue']['date_start'] = array('controls'=>array(),'type'=>'date');
+    $this->_tableMap['revenue']['date_paid'] = array('controls'=>array(),'type'=>'date');
+    $this->_tableMap['revenue']['date_due'] = array('controls'=>array(),'type'=>'date');
+    $this->_tableMap['revenue']['salary'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+    $this->_tableMap['revenue']['salary_rate'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+    $this->_tableMap['revenue']['refund_amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+    $this->_tableMap['revenue']['amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+    $this->_tableMap['revenue']['comment'] = array();
+    $this->_tableMap['revenue']['currency'] = array();
+    $this->_tableMap['revenue']['status'] = array();
+    $this->_tableMap['revenue']['location'] =  array('controls'=>array('!empty(%)'), 'type'=>'text');
+
+    $this->_tableMap['revenue_member']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
+    $this->_tableMap['revenue_member']['revenue_id'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue_member']['loginpk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue_member']['split_amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+    $this->_tableMap['revenue_member']['percentage'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
+
     return true;
   }
 }
