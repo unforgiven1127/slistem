@@ -70,20 +70,25 @@ function mirrorSelection(poTag, psTargetId)
 
 
 
-function updatePaymentAmount(poTag)
+function updatePaymentAmount(tag)
 {
-  var sInvoiceAmount = $(poTag).val();
-  if(!sInvoiceAmount || isNaN(sInvoiceAmount))
+  var full_salary = $('#full_salary').val();
+  var salary_rate = $('#salary_rate').val();
+  if(!full_salary || isNaN(full_salary) || !salary_rate || isNaN(salary_rate))
     return false;
 
-  var oSection = $(poTag).closest('form').find('.payment_section');
+  var invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
 
-  $('.formFieldContainer .split', oSection).each(function(nIndex)
+  $('#pla_amountId').val(invoice_amount);
+
+  var payment_section = $(tag).closest('form').find('.payment_section');
+
+  $('.formFieldContainer .split', payment_section).each(function(field_index)
   {
-    var nSplit = $(this).val();
-    if(!isNaN(nSplit))
+    var split_percentage = $(this).val();
+    if(!isNaN(split_percentage))
     {
-      $('#pay_amount'+nIndex, oSection).val( Math.round(parseInt(sInvoiceAmount) * (nSplit / 100)) );
+      $('#pay_amount'+field_index, payment_section).val( Math.round(parseInt(invoice_amount) * (split_percentage / 100)) );
     }
   });
 }
