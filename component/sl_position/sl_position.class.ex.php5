@@ -3244,6 +3244,16 @@ class CSl_positionEx extends CSl_position
       $oForm->addOption('location', array('label' => 'Hong Kong', 'value' => 'Hong Kong'));
       $oForm->addOption('location', array('label' => 'Singapore', 'value' => 'Singapore'));
 
+      $oForm->addField('misc', '', array('type' => 'br'));
+
+
+      $current_revenue_status = $oDdPlacement->getFieldValue('status');
+      $oForm->addField('select', 'revenue_status', array('label' => 'Status', 'value' => $current_revenue_status));
+
+      $oForm->addOption('revenue_status', array('label' => 'Signed', 'value' => 'signed'));
+      $oForm->addOption('revenue_status', array('label' => 'Paid', 'value' => 'paid'));
+      $oForm->addOption('revenue_status', array('label' => 'Delayed', 'value' => 'delayed'));
+      $oForm->addOption('revenue_status', array('label' => 'Refund', 'value' => 'refund'));
 
       $oForm->addField('misc', '', array('type' => 'br'));
 
@@ -3381,6 +3391,7 @@ class CSl_positionEx extends CSl_position
         return array('error' => 'Invoice rate must be between 0 - 100 % [value: '.$revenue_array['salary_rate'].']');
 
       $revenue_array['comment'] = getValue('comment');
+      $revenue_array['status'] = getValue('revenue_status');
 
       $revenue_array['currency'] = 'jpy';
 
@@ -3463,7 +3474,7 @@ class CSl_positionEx extends CSl_position
           return array('error' => __LINE__.' - Could not save the placement');
 
         //need to delete the payment
-        $this->_getModel()->deleteByFk($revenue_id, 'revenue_member', 'id');
+        $this->_getModel()->deleteByWhere('revenue_member', 'revenue_id = '.$revenue_id);
       }
 
 
