@@ -722,7 +722,7 @@ class CNotificationEx extends CNotification
           //check if we need to stop the action:
           if((empty($message_info['naggy']) || $bLastNaggy))
           {
-            $sUpdate = 'UPDATE notification SET delivered = 1 WHERE notificationpk = '.$message_info['notification_actionpk'];
+            $sUpdate = 'UPDATE notification SET delivered = 1 WHERE notificationpk = '.$message_info['notificationpk'];
             $this->_getModel()->ExecuteQuery($sUpdate);
           }
         }
@@ -732,9 +732,9 @@ class CNotificationEx extends CNotification
         foreach ($user_messages as $message_info)
         {
           if((int)$message_info['delivered'] == 0)
-            $sUpdate = 'UPDATE notification SET delivered = -1 WHERE notificationpk = '.(int)$message_info['notificationfk'];
+            $sUpdate = 'UPDATE notification SET delivered = -1 WHERE notificationpk = '.(int)$message_info['notificationpk'];
           else
-            $sUpdate = 'UPDATE notification SET delivered = 999 WHERE notificationpk = '.(int)$message_info['notificationfk'];
+            $sUpdate = 'UPDATE notification SET delivered = 999 WHERE notificationpk = '.(int)$message_info['notificationpk'];
           $this->_getModel()->ExecuteQuery($sUpdate);
 
         }
