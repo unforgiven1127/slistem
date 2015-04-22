@@ -1,9 +1,10 @@
-.revenue_container
+.revenue_table
 {
 	width: 100%;
+	border-collapse: collapse;
+	font-weight: bold;
 }
-.revenue_chart_header_row,
-.revenue_chart_footer_row
+.revenue_table th
 {
 	background-color: #48768F;
 	text-align: center;
@@ -11,114 +12,45 @@
 	overflow: auto;
 	color: white;
 }
-.revenue_chart_row
+.revenue_table td,
+.revenue_table th
 {
-	font-weight: bold;
-	overflow: auto;
+	font-size: 18px;
+	border-right: 1px solid #D4DADF;
+	padding: 0 5px;
 }
-.revenue_chart_row:hover
+.hover_row:hover
 {
 	background-color: #F9E3B3;
 }
-.revenue_chart_row div
+.revenue_table_footer
 {
-	font-weight: bold;
-	font-size: 18px;
+	background-color: #48768F;
 }
-.revenue_chart_header_row div,
-.revenue_chart_footer_row div
+.revenue_table_footer td
 {
-	font-weight: bold;
-	font-size: 18px;
-}
-.revenue_chart_title
-{
-	color: inherit;
-	border-bottom: 1px solid #D4DADF;
-}
-.revenue_chart_cell_title
-{
-	text-align: left;
-	color: inherit;
-	float: left;
-	border-right: 1px solid #D4DADF;
-	padding: 5px 0;
-}
-.revenue_chart_cell_footer
-{
-	float: left;
-	border-right: 1px solid #D4DADF;
-	color: inherit;
-	padding: 5px 0;
-}
-.revenue_chart_cell
-{
-	float: left;
-	border-right: 1px solid #D4DADF;
-	text-align: center;
-	padding: 5px 0 0;
-	height: 40px;
-	line-height: 30px;
-}
-.rank_column, .placed_column
-{
-	width: 8%;
-}
-.name_column
-{
-	width: 23%;
-}
-.flag_column
-{
-	width: 7%;
-}
-.amount_column
-{
-	width: 18%;
-}
-.total_text_column
-{
-	width: 38%;
-	padding-left: 2px;
-}
-.team_column
-{
-	width: 17%;
+	color: white;
 }
 .border_left
 {
 	border-left: 1px solid #D4DADF;
 }
-.remove_border
-{
-	border: none;
-}
-.text_padding_left_5
-{
-	padding-left: 5px;
-	color: inherit;
-}
-.text_padding_right_5
-{
-	padding-right: 5px;
-	color: inherit;
-}
 .even_row
 {
 	background-color: #E3E9EF;
 }
-.align_text_right
+.text_right
 {
 	text-align: right;
 }
+.text_center
+{
+	text-align: center;
+}
 @media (min-width: 700px)
 {
-    .revenue_chart_header_row div,
-	.revenue_chart_footer_row div
-	{
-		font-size: 25px;
-	}
-	.revenue_chart_row div
+    .revenue_table td,
+	.revenue_table th
 	{
 		font-size: 25px;
 	}
@@ -126,12 +58,8 @@
 
 @media (min-width: 1200px)
 {
-    .revenue_chart_header_row div,
-	.revenue_chart_footer_row div
-	{
-		font-size: 40px;
-	}
-	.revenue_chart_row div
+    .revenue_table td,
+	.revenue_table th
 	{
 		font-size: 40px;
 	}

@@ -764,16 +764,19 @@ class CSl_statModelEx extends CSl_statModel
     return $asData;
   }
 
-  public function get_revenue_data($request_date = '2014')
+  public function get_revenue_data($request_date = '2014', $location = '')
   {
     $revenue_data = $revenue_data_raw = array();
 
     $date_start = $request_date.'-01-01';
     $date_end = $request_date.'-12-31';
 
-    $query = "SELECT id, amount, location, status, refund_amount ";
-    $query .= "FROM revenue ";
-    $query .= "WHERE date_signed BETWEEN '".$date_start."' AND '".$date_end."'";
+    $query = 'SELECT id, amount, location, status, refund_amount, currency ';
+    $query .= 'FROM revenue ';
+    $query .= 'WHERE date_signed BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
+
+    if (!empty($location))
+      $query = ' AND location = "'.$location.'"';
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
@@ -787,15 +790,16 @@ class CSl_statModelEx extends CSl_statModel
         $read = $db_result->readNext();
       }
 
-      $query = "SELECT revenue_member.*, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality ";
-      $query .= "FROM revenue_member ";
-      $query .= "LEFT JOIN login ON revenue_member.loginpk = login.loginpk ";
-      $query .= "LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk";
+      $query = 'SELECT revenue_member.*, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality ';
+      $query .= 'FROM revenue_member ';
+      $query .= 'LEFT JOIN login ON revenue_member.loginpk = login.loginpk ';
+      $query .= 'LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk';
 
       $db_result = $this->oDB->executeQuery($query);
       $read = $db_result->readFirst();
 
-      $revenue_data['former'] = array('name' => 'Former', 'nationality' => 0, 'do_not_count_placed' => array(), 'total_amount' => 0);
+      $revenue_data['former'] = array('name' => 'Former', 'nationality' => 0, 'do_not_count_placed' => array(), 'total_amount' => 0,
+        'placed' => 0, 'paid' => 0, 'signed' => 0, 'team' => 'Not defined');
 
       while($read)
       {
@@ -867,10 +871,10 @@ class CSl_statModelEx extends CSl_statModel
     $date_start = $request_date.'-01-01 00:00:00';
     $date_end = $request_date.'-12-31 23:59:59';
 
-    $query = "SELECT count(DISTINCT scan.sl_candidatepk) AS placed ";
-    $query .= "FROM sl_candidate AS scan ";
-    $query .= "INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = '".$user_id."' ";
-    $query .= "AND spli.date_created BETWEEN '".$date_start."' AND '".$date_end."')";
+    $query = 'SELECT count(DISTINCT scan.sl_candidatepk) AS placed ';
+    $query .= 'FROM sl_candidate AS scan ';
+    $query .= 'INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = "'.$user_id.'" ';
+    $query .= 'AND spli.date_created BETWEEN "'.$date_start.'" AND "'.$date_end.'")';
 
       $db_result = $this->oDB->executeQuery($query);
       $read = $db_result->readFirst();
@@ -887,10 +891,10 @@ class CSl_statModelEx extends CSl_statModel
     $raw_info = array();
     if ($user_id != 'former')
     {
-      $query = "SELECT login_group_member.login_groupfk, login_group.title ";
-      $query .= "FROM login_group_member ";
-      $query .= "LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk ";
-      $query .= "WHERE login_group_member.loginfk = '".$user_id."'";
+      $query = 'SELECT login_group_member.login_groupfk, login_group.title ';
+      $query .= 'FROM login_group_member ';
+      $query .= 'LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk ';
+      $query .= 'WHERE login_group_member.loginfk = "'.$user_id.'"';
 
         $db_result = $this->oDB->executeQuery($query);
         $read = $db_result->readFirst();
