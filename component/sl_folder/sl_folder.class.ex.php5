@@ -25,8 +25,7 @@ class CSl_FolderEx extends CSl_Folder
           'Companies' => array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => CONST_CANDIDATE_TYPE_COMP)
           );
 
-      //dump('sl_folder ['.date('H:i:s').']--> __construct '); flush(); ob_flush();
-      self::_loadFolderTree((bool)getValue('refresh_folder', 0), 1);
+      // self::_loadFolderTree((bool)getValue('refresh_folder', 0), 1);
     }
   }
 
@@ -95,7 +94,7 @@ class CSl_FolderEx extends CSl_Folder
               return json_encode($asResult);
 
             //refresh tree
-             self::_loadFolderTree(true, 1);
+             // self::_loadFolderTree(true, 1);
 
             return json_encode(array(
             'notice' => 'Folder updated.',
@@ -143,36 +142,16 @@ class CSl_FolderEx extends CSl_Folder
    * Redifine !! Loads the Folder tree and store it in session
   */
 
-  protected function _loadFolderTree($pbRefresh = false, $pnPreloadOption = 2)
+  protected function _loadFolderTree($preload_option = 2)
   {
-    if(!assert('is_integer($pnPreloadOption)'))
+    if(!assert('is_integer($preload_option)'))
       return false;
 
-    //dump('sl_folder ['.date('H:i:s').']--> _loadFolderTree '); flush(); ob_flush();
-
     //load the tree in session
-    parent::_loadFolderTree($pbRefresh, $pnPreloadOption);
+    $folder_tree = parent::_loadFolderTree($preload_option);
 
-    //then load the list (based on the tree)
-    // if(!isset($_SESSION['folder_list']) || $pbRefresh)
-    {
-      //dump('sl_folder ['.date('H:i:s').']--> no tree in session or forced refresh('.(int)$pbRefresh.')'); flush(); ob_flush();
-
-       //dump('covert tree to list....');
-       //dump($_SESSION['folder_tree']);
-
-       $oLogin = CDependency::getCpLogin();
-       $_SESSION['folder_list'] = $this->_getUserFolderList($oLogin->getuserPk());
-
-       //dump('--! --! --!');
-       //dump($_SESSION['folder_list']);
-    }
-    /*else
-    {
-      dump('sl_folder --> tree in session  nothing to do'); flush(); ob_flush();
-    }*/
-
-    return true;
+    $login_object = CDependency::getCpLogin();
+    return $this->_getUserFolderList($login_object->getuserPk(), $folder_tree);
   }
 
 
@@ -225,7 +204,7 @@ class CSl_FolderEx extends CSl_Folder
               <a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'\');">Add a new folder</a>
           </div>';
 
-     $sHTML.= implode('', $_SESSION['folder_list']) .'
+     $sHTML.= implode('', $this->_loadFolderTree(1)) .'
         </div>
         <div class="floatHack"></div>
       </li>';
@@ -304,16 +283,9 @@ class CSl_FolderEx extends CSl_Folder
   {
     //load the full folder tree to start making the list
     // + add a first new folder row
-    if($pasTree === null)
-      $pasTree = $_SESSION['folder_tree'];
 
     if(empty($pasTree))
       return '';
-
-    //dump('_getUserFolderList()');
-    //dump($pasTree);
-    //dump($pnUserPk);
-    //dump($pnLevel);
 
 
     $asList = array();
@@ -471,7 +443,7 @@ class CSl_FolderEx extends CSl_Folder
 
     $sList.= '</ul>';
     $sURL = $oPage->getAjaxUrl('sl_folder', CONST_ACTION_SAVEADD, CONST_FOLDER_TYPE_ITEM, 0);
-    $sList.='<script> initDrop(\''.$sURL.'\'); </script>';
+    $sList.= "<script> initDrop('".$sURL."'); </script>";
     $oLogin->logUserAction($nUserPk, $this->csUid, CONST_ACTION_SEARCH, CONST_FOLDER_TYPE_FOLDER, 0, array('text' => $sSearchLabel, 'data' => $sList));
 
     return array('data' => $sList);
@@ -487,7 +459,7 @@ class CSl_FolderEx extends CSl_Folder
     $sHTML = '<div id="userFolderRow_0" class="userFolderRow userFolderNew" data-folderpk="-1" data-folder-type="candi" >
               <a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'\');">Add a new folder</a>
           </div>';
-    $sHTML.= implode('', $this->_getUserFolderList($oLogin->getuserPk()));
+    $sHTML.= implode('', $this->_loadFolderTree(1));
 
     $sURL = $oPage->getAjaxUrl('sl_folder', CONST_ACTION_SAVEADD, CONST_FOLDER_TYPE_ITEM, 0);
     $sHTML.='<script> initDrop(\''.$sURL.'\'); </script>';
@@ -700,7 +672,7 @@ class CSl_FolderEx extends CSl_Folder
       $asResult['action'].= ';  goPopup.removeLastByType(\'layer\');  ';
 
 
-    self::_loadFolderTree(true, 1);
+    // self::_loadFolderTree(true, 1);
 
     $asResult['delay'] = 1250;
     return $asResult;

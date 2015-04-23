@@ -135,18 +135,18 @@ class CFolderEx extends CFolder
     $oHTML = CDependency::getCpHtml();
     $sHTML = '';
 
-    if(!isset($_SESSION['folder_tree']))
-      self::_loadFolderTree();
+
+    $folder_tree = self::_loadFolderTree();
 
     $sPic = $oHTML->getPicture($this->getResourcePath().'img/folder_32.png', 'Browse folder');
 
-    if(!empty($_SESSION['folder_tree'][0]['content']['subfolders']))
+    if(!empty($folder_tree[0]['content']['subfolders']))
     {
       $sHTML = $oHTML->getListItemStart('folderslink');
         $sHTML.= $oHTML->getBlocStart();
           $sHTML.= $oHTML->getLink($sPic, 'javascript;', array('id' => 'showfolder-menu', 'onclick' => '$(\'#folderlist-menu\').toggle(); return false;'));
           $sHTML.= $oHTML->getListStart('folderlist-menu');
-          $sHTML.= $this->_displayFolder($_SESSION['folder_tree'][0]);
+          $sHTML.= $this->_displayFolder($folder_tree[0]);
           $sHTML.= $oHTML->getListEnd();
         $sHTML.= $oHTML->getBlocEnd();
       $sHTML.= $oHTML->getListItemEnd();
@@ -374,8 +374,10 @@ class CFolderEx extends CFolder
       $oForm->addOption('type', array('value'=> '', 'label' => 'No type. Will contains subfolders.'));
     }
 
+    $folder_tree = self::_loadFolderTree(1);
+
     $oForm->addField('select', 'parentfolderfk', array('label' => 'Parent folder'));
-    $aSelectOptions = $this->_getSelectOptions($_SESSION['folder_tree'][0], 0, $this->_userPk);
+    $aSelectOptions = $this->_getSelectOptions($folder_tree[0], 0, $this->_userPk);
 
     foreach ($aSelectOptions as $aSelectOption)
     {
@@ -559,12 +561,14 @@ class CFolderEx extends CFolder
 
     $oHTML = CDependency::getCpHtml();
 
-    if(!self::_loadFolderTree(true))
+    $folder_tree = self::_loadFolderTree(1);
+
+    if(empty($folder_tree))
       return 'Impossible to load folders. Please contact your administrator.';
 
     $aParams = array('class' => 'folders');
     $sHTML = $oHTML->getBlocStart('', $aParams);
-    $sHTML .= $this->_displayFolderAdmin($_SESSION['folder_tree'][0], $psType);
+    $sHTML .= $this->_displayFolderAdmin($folder_tree[0], $psType);
     $sHTML .= $oHTML->getBlocEnd();
 
     return $sHTML;
@@ -765,34 +769,20 @@ class CFolderEx extends CFolder
 
   // Loads the Folder tree and store it in session
 
-  protected function _loadFolderTree($pbRefresh = false, $pnPreloadOption = null)
+  protected function _loadFolderTree($preload_option = null)
   {
-    if(!assert('is_null($pnPreloadOption) || is_integer($pnPreloadOption)'))
+    if(!assert('is_integer($preload_option)'))
       return false;
 
-    //dump('     folder ['.date('H:i:s').']--> _loadFolderTree '); flush(); ob_flush();
+    if($preload_option != null)
+      $this->cnPreloadOption = $preload_option;
 
-    //dump('load folder tree');
-    if(!isset($_SESSION['folder_tree']) || $pbRefresh)
-    {
-      //dump('     folder ['.date('H:i:s').']--> rebuild folder tree '); flush(); ob_flush();
+    $folder_tree = $this->_getFolderTree();
 
-      if($pnPreloadOption != null)
-        $this->cnPreloadOption = $pnPreloadOption;
-
-      //dump('get folder tree');
-      $aFolderTree = $this->_getFolderTree();
-      //dump('======> folder tree loaded -> '. count($aFolderTree));
-
-      if(!empty($aFolderTree))
-      {
-        $_SESSION['folder_tree'] = $aFolderTree;
-        return true;
-      }
-      else
-       return false;
-    }
-    return true;
+    if (!empty($folder_tree))
+      return $folder_tree;
+    else
+     return false;
   }
 
   // Returns a folder tree of a specific type asked
@@ -818,16 +808,11 @@ class CFolderEx extends CFolder
 
   public function getFolderTree()
   {
-    if(!isset($_SESSION['folder_tree']))
-      self::_loadFolderTree();
-
-    return $_SESSION['folder_tree'];
+    return self::_loadFolderTree();
   }
 
   protected function _getFolderTree()
   {
-    //dump('_getFolderTree ['.date('H:i:s').']'); flush(); ob_flush();
-
     $oFolders = $this->_getModel()->getFolders($this->_userPk);
     $asFolders = $oFolders->getAll();
 
@@ -1033,7 +1018,7 @@ class CFolderEx extends CFolder
 
     //dump('folder --> added item -> need refresh tree'); flush(); ob_flush();
 
-    self::_loadFolderTree(true);
+    // self::_loadFolderTree(true);
     if(empty($psCallback))
       return array('notice' => 'Item saved in folder successfully', 'nb_added' => $nCount, 'reload' => 1);
 
@@ -1131,9 +1116,7 @@ class CFolderEx extends CFolder
       }
     }
 
-
-
-    self::_loadFolderTree(true);
+    // self::_loadFolderTree(true);
 
 
     if(!empty($this->casAfterSavingAction))
@@ -1162,7 +1145,7 @@ class CFolderEx extends CFolder
     $this->_getModel()->deleteItemFromParentFk($pnPk);
     $this->_getModel()->deleteByFk($pnPk, 'folder_rights', 'folder');
     $this->_getModel()->deleteByPk($pnPk, 'folder');
-    self::_loadFolderTree(true);
+    // self::_loadFolderTree(true);
     return array('notice' => 'Folder removed.');
   }
 
