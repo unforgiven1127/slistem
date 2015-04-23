@@ -3253,6 +3253,7 @@ class CSl_positionEx extends CSl_position
       $oForm->addOption('revenue_status', array('label' => 'Signed', 'value' => 'signed'));
       $oForm->addOption('revenue_status', array('label' => 'Paid', 'value' => 'paid'));
       $oForm->addOption('revenue_status', array('label' => 'Delayed', 'value' => 'delayed'));
+      $oForm->addOption('revenue_status', array('label' => 'Retainer', 'value' => 'retainer'));
       $oForm->addOption('revenue_status', array('label' => 'Refund', 'value' => 'refund'));
 
       $oForm->addField('misc', '', array('type' => 'br'));
