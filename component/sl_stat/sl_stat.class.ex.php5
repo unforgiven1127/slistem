@@ -3997,7 +3997,6 @@ class CSl_statEx extends CSl_stat
 
       $html = '<table class="revenue_table">';
 
-      // $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_header_row')); revenue_chart_title
       $html.= '<tr>';
       $html.= '<th colspan="7">'.ucfirst($location).' - Individual Revenue Leaders '.date('Y').'</th>';
       $html.= '</tr>';
@@ -4011,8 +4010,6 @@ class CSl_statEx extends CSl_stat
       $html.= '<th>Team</th>';
       $html.= '<th>Placed</th>';
       $html.= '</tr>';
-
-      // $html.= $this->_oDisplay->getBlocEnd();
 
       $row_number_rank = 1;
       $total_paid = $total_signed = $total_placed = 0;
@@ -4033,9 +4030,6 @@ class CSl_statEx extends CSl_stat
         else
           $flag_pic = $value['nationality'].'_32.png';
 
-
-        // $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_row '.$even));
-
         $html.= '<tr class="hover_row'.$even.'">';
         $html.= '<td class="text_right">'.$row_number_rank.'</td>';
         $html.= '<td class="text_center">'.$value['name'].'</td>';
@@ -4054,9 +4048,6 @@ class CSl_statEx extends CSl_stat
         $total_signed += $value['signed'];
         $total_placed += $value['placed'];
       }
-
-
-      // $html.= $this->_oDisplay->getBlocStart('', array('class' => 'revenue_chart_footer_row'));
 
       $html.= '<tr class="revenue_table_footer">';
       $html.= '<td class="text_center" colspan="3">Total</td>';
