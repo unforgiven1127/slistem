@@ -3968,6 +3968,7 @@ class CSl_statEx extends CSl_stat
     {
       $this->cbWatercooler = (bool)getValue('watercooler');
       $location = getValue('location', 'All');
+      $year = getValue('year', date('Y'));
 
       if(!empty($this->cbWatercooler))
       {
@@ -3975,8 +3976,10 @@ class CSl_statEx extends CSl_stat
         $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
       }
 
-      // $revenue_data = $this->_getModel()->get_revenue_data(date('Y'));
-      $revenue_data = $this->_getModel()->get_revenue_data('2013');
+      if (!is_numeric($year))
+        $year = date('Y');
+
+      $revenue_data = $this->_getModel()->get_revenue_data($year);
 
       /*$revenue_data = array(array('name' => 'Philip', 'signed' => 21118294, 'paid' => 6987082, 'team' => 'Industrial', 'placed' => 4, 'nationality' => 'CA'),
         array('name' => 'Soni', 'signed' => 16409630, 'paid' => 0, 'team' => 'IT', 'placed' => 5, 'nationality' => 'UK'),
@@ -3998,7 +4001,7 @@ class CSl_statEx extends CSl_stat
       $html = '<table class="revenue_table">';
 
       $html.= '<tr>';
-      $html.= '<th colspan="7">'.ucfirst($location).' - Individual Revenue Leaders '.date('Y').'</th>';
+      $html.= '<th colspan="7">'.ucfirst($location).' - Individual Revenue Leaders '.$year.'</th>';
       $html.= '</tr>';
 
       $html.= '<tr>';
