@@ -721,9 +721,10 @@ class CSl_positionEx extends CSl_position
                  AND(
                       (spli.active = 1 AND spli.status > 0  AND spli.status < 200)
                       OR
-                      (spli.active = 0 AND spli.status >= 101  AND spli.status < 150 AND spli.date_created > "'.$sAMonthAgo.'" )
+                      (spli.active = 0 AND spli.status >= 101  AND spli.status < 150)
                      )
                   ');
+        // (spli.active = 0 AND spli.status >= 101  AND spli.status < 150 AND spli.date_created > "'.$sAMonthAgo.'" )
       }
 
 
