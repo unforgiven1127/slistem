@@ -180,15 +180,15 @@
   function getContactTypes()
   {
    return array(
-       1 => array('label' => 'Home', 'control' => ''),
-       2 => array('label' => 'Work', 'control' => ''),
-       3 => array('label' => 'Web', 'control' => ''),
-       4 => array('label' => 'Fax', 'control' => ''),
-       5 => array('label' => 'Email', 'control' => ''),
-       6 => array('label' => 'Mobile', 'control' => ''),
-       7 => array('label' => 'Facebook', 'control' => ''),
-       8 => array('label' => 'LinkedIn', 'control' => ''),
-       9 => array('label' => 'Info', 'control' => '')
+        1 => array('label' => 'Work', 'control' => ''),
+        2 => array('label' => 'Email', 'control' => ''),
+        3 => array('label' => 'Mobile', 'control' => ''),
+        4 => array('label' => 'Facebook', 'control' => ''),
+        5 => array('label' => 'LinkedIn', 'control' => ''),
+        6 => array('label' => 'Web', 'control' => ''),
+        7 => array('label' => 'Home', 'control' => ''),
+        8 => array('label' => 'Fax', 'control' => ''),
+        9 => array('label' => 'Info', 'control' => '')
        );
   }
 

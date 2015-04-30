@@ -4682,7 +4682,7 @@ class CSl_candidateEx extends CSl_candidate
         {
           case 0: $pasData['type'] = 1; break;
           case 1: $pasData['type'] = 2; break;
-          case 2: $pasData['type'] = 8; break;
+          case 2: $pasData['type'] = 3; break;
           default:
             $pasData['type'] = 5; break;
         }
