@@ -855,6 +855,7 @@ class CSl_statModelEx extends CSl_statModel
 
             case 'paid':
             case 'refund':
+            case 'retainer':
               $revenue_data[$user_id]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
               break;
           }
