@@ -764,9 +764,12 @@ class CSl_statModelEx extends CSl_statModel
     return $asData;
   }
 
-  public function get_revenue_data($request_date = '2014', $location = '')
+  public function get_revenue_data($request_date = '', $location = '')
   {
     $revenue_data = $revenue_data_raw = array();
+
+    if (empty($request_date))
+      $request_date = date('Y');
 
     $date_start = $request_date.'-01-01';
     $date_end = $request_date.'-12-31';
