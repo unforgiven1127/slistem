@@ -9,7 +9,6 @@ header('Cache-Control: no-cache');
 // Connect to redis
 $GLOBALS['redis'] = new Redis();
 $GLOBALS['redis']->pconnect('127.0.0.1');
-$GLOBALS['redis']->set('test', 1547);
 
 
 //$nMemory = memory_get_usage();
