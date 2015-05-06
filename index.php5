@@ -5,6 +5,13 @@ require_once('./common/lib/db_session.inc.php5');
 
 session_start();
 header('Cache-Control: no-cache');
+
+// Connect to redis
+$GLOBALS['redis'] = new Redis();
+$GLOBALS['redis']->pconnect('127.0.0.1');
+$GLOBALS['redis']->set('test', 1547);
+
+
 //$nMemory = memory_get_usage();
 
 //prevent infinite loops if assert fires another assert (mailAssert) that is firing a new assert that ...

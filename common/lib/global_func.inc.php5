@@ -552,6 +552,11 @@ function _live_dump($pvTrace, $psTitle = null)
           $avDataSrc = $_COOKIE;
           break;
 
+        case 'redis':
+          if($GLOBALS['redis']->exists($psVarName))
+            return $GLOBALS['redis']->get($psVarName);
+          break;
+
         default:
           assert('false; // wrong type');
           return '';
@@ -603,6 +608,9 @@ function _live_dump($pvTrace, $psTitle = null)
 
       return $_COOKIE[$psVarName];
     }
+
+    if($GLOBALS['redis']->exists($psVarName))
+      return $GLOBALS['redis']->get($psVarName);
 
     return $pvDefaultValue;
   }
