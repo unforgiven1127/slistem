@@ -553,7 +553,7 @@ function _live_dump($pvTrace, $psTitle = null)
           break;
 
         case 'redis':
-          if($GLOBALS['redis']->exists($psVarName))
+          if(check_redis_key($psVarName))
             return $GLOBALS['redis']->get($psVarName);
           break;
 
@@ -609,12 +609,26 @@ function _live_dump($pvTrace, $psTitle = null)
       return $_COOKIE[$psVarName];
     }
 
-    if($GLOBALS['redis']->exists($psVarName))
+    if(check_redis_key($psVarName))
       return $GLOBALS['redis']->get($psVarName);
 
     return $pvDefaultValue;
   }
 
+  function save_to_redis($key_name, $value)
+  {
+    return $GLOBALS['redis']->set($key_name, $value);
+  }
+
+  function delete_from_redis($key_name)
+  {
+    return $GLOBALS['redis']->delete($key_name);
+  }
+
+  function check_redis_key($key_name)
+  {
+    return $GLOBALS['redis']->exists($key_name);
+  }
 
   function getFormatedDate($psFormat, $psDate = '')
   {
