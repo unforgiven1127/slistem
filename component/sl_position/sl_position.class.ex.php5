@@ -1322,7 +1322,7 @@ class CSl_positionEx extends CSl_position
         if(empty($nLinkPk))
           return array('error' => __LINE__.' - Could not link the candidate to the position.');
 
-        $sMessage = 'Status changed to ['.$asStatus[$asData['status']].'] for position #'.$nPositionPk;
+        $sMessage = 'Status changed to ['.$asStatus[$asData['status']].'] for position #'.$nPositionPk.' - '.$asPosition['title'];
         $this->_getModel()->_logChanges($asData, 'position ', $sMessage, '',
                 array('cp_uid' => '555-001', 'cp_action' => 'ppae', 'cp_type' => 'candi', 'cp_pk' => $asData['candidatefk']));
 
