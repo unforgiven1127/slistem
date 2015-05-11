@@ -3766,18 +3766,6 @@ class CSl_statEx extends CSl_stat
          /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=met
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement">KPI - Placements</a> :<br />
-        /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement
-        <br /><br />
-
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement_grp">KPI - Placements per team</a> :<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_grp
-        <br /><br />
-
-        <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=placement_loc">KPI - Placements per location</a> :<br />
-         /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=placement_loc
-        <br /><br />
-
         <a href="/index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1&period=custom&date_start=2013-01-01&date_end=2014-10-10&location=all&chart=set_vs_met">KPI - Set VS Met </a>:<br />
          /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=set_vs_met
         <br /><br />
