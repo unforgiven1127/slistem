@@ -163,8 +163,12 @@ class CSl_statEx extends CSl_stat
         return $this->_getGraphPageList();
         break;
 
-      case CONST_ACTION_REVENUE:
+      case ACTION_REVENUE_CHART:
         return $this->get_revenue_chart();
+        break;
+
+      case ACTION_CCM_CHART:
+        return $this->get_ccm_chart();
         break;
     }
 
@@ -3756,7 +3760,7 @@ class CSl_statEx extends CSl_stat
         <br /><br />
 
         grp: 1 - 10 (fin, lifescience,auto,it,cns,other,law,admin,hr)<br />
-        grp: 103 manager, 105 admin, 106 tokyo, 107 manila, 108 consiltant, 109 researcher, 110 HKong, 113 Canada, 114 analyst<br />
+        grp: 103 manager, 105 admin, 106 tokyo, 107 manila, 108 consultant, 109 researcher, 110 HKong, 113 Canada, 114 analyst<br />
         grp: 115 active, 116 real users, 117 singapore <br /><br />
 
 
@@ -3778,6 +3782,9 @@ class CSl_statEx extends CSl_stat
          /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=contrib
         <br /><br />
 
+        <a href="/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1">Revenue chart</a>: <br />
+         /index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1<span class="loc">&location=all</span>
+        <br /><br />
 
         </div>
         ';
@@ -4033,5 +4040,31 @@ class CSl_statEx extends CSl_stat
       $html.= '</table>';
 
       return $html;
+    }
+
+    private function get_ccm_chart()
+    {
+      $this->cbWatercooler = (bool)getValue('watercooler');
+      $location = getValue('location', 'All');
+      $start_date = getValue('year', '');
+      $end_date = getValue('year', '');
+
+      if(!empty($this->cbWatercooler))
+      {
+        //add class to hide everything except charts
+        $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
+      }
+
+      $this->_oPage->addJsFile(self::getResourcePath().'/js/highchart_extend.js');
+
+      if (!is_numeric($start_date))
+        $year = date('Y-01-01 00:00:00');
+
+      if (!is_numeric($end_date))
+        $year = date('Y-12-31 23:59:59');
+
+
+
+
     }
 }
