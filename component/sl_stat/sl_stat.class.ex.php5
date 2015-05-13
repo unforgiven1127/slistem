@@ -3964,6 +3964,7 @@ class CSl_statEx extends CSl_stat
       $this->cbWatercooler = (bool)getValue('watercooler');
       $location = getValue('location', 'All');
       $year = getValue('year', date('Y'));
+      $swap_time = 1000 * 60 * 4; // 4 minutes
 
       if(!empty($this->cbWatercooler))
       {
@@ -4039,6 +4040,10 @@ class CSl_statEx extends CSl_stat
 
       $html.= '</table>';
 
+      $html.= '<script>';
+      $html.= 'setTimeout(function(){ window.location.replace("/index.php5?uid=555-006&ppa=ppccm&ppk=0&watercooler=1"); }, ('.$swap_time.'));';
+      $html.= '</script>';
+
       return $html;
     }
 
@@ -4048,6 +4053,7 @@ class CSl_statEx extends CSl_stat
       $location = getValue('location', 'All');
       $start_date = getValue('year', '');
       $end_date = getValue('year', '');
+      $swap_time = 1000 * 60 * 2; //2 minute
 
       if(!empty($this->cbWatercooler))
       {
@@ -4055,16 +4061,123 @@ class CSl_statEx extends CSl_stat
         $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
       }
 
+      $oChart = CDependency::getComponentByName('charts');
+      $oChart->includeChartsJs();
+
       $this->_oPage->addJsFile(self::getResourcePath().'/js/highchart_extend.js');
 
       if (!is_numeric($start_date))
-        $year = date('Y-01-01 00:00:00');
+        $start_date = date('Y-01-01 00:00:00');
 
       if (!is_numeric($end_date))
-        $year = date('Y-12-31 23:59:59');
+        $end_date = date('Y-12-31 23:59:59');
+
+      $ccm_data = $this->_getModel()->get_ccm_data($start_date, $end_date);
+
+      $ccm_count = $names = array();
+
+      foreach ($ccm_data as $value)
+      {
+        $ccm_count[] = $value['ccm_count'];
+        $names[] = '"'.$value['name'].'"';
+      }
 
 
+      $html = '<div id="title" style="overflow: auto; margin-bottom: 40px;">
+        <div class="h3" style="float: left;">
+          Total CCMs &nbsp;|&nbsp; Dates: '.date('Y-01-01').' to '.date('Y-12-31').'
+        </div>
+      </div>';
+
+      $html .= '<div id="ccm_chart" style="height: 600px;;  margin: 0 auto;"></div>';
 
 
+      $html .= '<script>
+        $(function () {
+          $("#ccm_chart").highcharts({
+              chart:
+              {
+                events :
+                {
+                  load : edgeExtend,
+                  redraw : edgeExtend
+                },
+                marginBottom: 80
+              },
+              title:
+              {
+                  text: ""
+              },
+              xAxis:
+              {
+                  categories: ['.implode(',', $names).'],
+                  crosshair: true,
+                  labels: {
+                    style: {
+                        fontSize:\'25px\'
+                    }
+                  }
+              },
+              yAxis:
+              {
+                  min: 0,
+                  title: {
+                      text: "Number of CCMs",
+                      style:
+                      {
+                        fontSize:\'30px\'
+                      }
+                  },
+                  labels: {
+                    style: {
+                        fontSize:\'30px\'
+                    }
+                  }
+              },
+              tooltip:
+              {
+                  headerFormat: "<span style=\'font-size:20px\'>{point.key}</span><table>",
+                  pointFormat: "<tr><td style=\'color:{series.color};padding:0;font-size:20px\'>{series.name}: </td>" +
+                      "<td style=\'padding:0;;font-size:20px;font-weight:bold\'>{point.y}</td></tr>",
+                  footerFormat: "</table>",
+                  shared: true,
+                  useHTML: true
+              },
+              plotOptions:
+              {
+                  column: {
+                      pointPadding: 0.2,
+                      borderWidth: 0
+                  }
+              },
+              series:
+              [{
+                  type: "column",
+                  name: "Total CCMs",
+                  pointWidth: 80,
+                  data: ['.implode(',', $ccm_count).'],
+                  dataLabels:
+                  {
+                    enabled: true,
+                    /*rotation: -90,*/
+                    style:
+                    {
+                      color: "#FFFFFF",
+                      fontWeight: "bold",
+                      fontSize: 20
+                    },
+                    align: "center",
+                    x: 0,
+                    y: 25
+                  }
+              }]
+          });
+      });
+
+      setTimeout(function(){ window.location.replace("/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1"); }, ('.$swap_time.'));
+      </script>
+      ';
+
+      return $html;
     }
 }

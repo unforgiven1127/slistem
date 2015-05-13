@@ -906,23 +906,66 @@ class CSl_statModelEx extends CSl_statModel
       $query .= 'LEFT JOIN login_group ON login_group_member.login_groupfk = login_group.login_grouppk ';
       $query .= 'WHERE login_group_member.loginfk = "'.$user_id.'"';
 
-        $db_result = $this->oDB->executeQuery($query);
-        $read = $db_result->readFirst();
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
 
-        while ($read)
+      while ($read)
+      {
+        $row = $db_result->getData();
+
+        if ($row['login_groupfk'] >= 1 && $row['login_groupfk'] <= 10)
         {
-          $row = $db_result->getData();
-
-          if ($row['login_groupfk'] >= 1 && $row['login_groupfk'] <= 10)
-          {
-            $group = $row['title'];
-            break;
-          }
-
-          $read = $db_result->readNext();
+          $group = $row['title'];
+          break;
         }
+
+        $read = $db_result->readNext();
+      }
+    }
+
+    return $group;
+  }
+
+  public function get_ccm_data($start_date, $end_date)
+  {
+    $ccm_result_array = array();
+    // Ignore administrators and QA people unless they do normal consulting/researcher jobs
+    $ignore_users = array('nicholas', 'dcepulis', 'dba', 'administrator');
+
+    $query = 'SELECT DISTINCT sl_position_link.positionfk, login.firstname, login.lastname, login.id';
+    $query .= ' FROM sl_position_link';
+    $query .= ' LEFT JOIN login';
+    $query .= ' ON sl_position_link.created_by = login.loginpk';
+    $query .= ' WHERE sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+    $query .= ' AND sl_position_link.status BETWEEN 50 AND 60';
+    $query .= ' ORDER BY login.lastname';
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      if (in_array($row['id'], $ignore_users))
+      {
+        $read = $db_result->readNext();
+        continue;
       }
 
-      return $group;
+      if (empty($ccm_result_array[$row['id']]['ccm_count']))
+      {
+        $ccm_result_array[$row['id']]['ccm_count'] = 1;
+        $ccm_result_array[$row['id']]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+      }
+      else
+        $ccm_result_array[$row['id']]['ccm_count'] += 1;
+
+      $read = $db_result->readNext();
+    }
+
+    uasort($ccm_result_array, sort_multi_array_by_value('ccm_count', 'reverse'));
+
+    return $ccm_result_array;
   }
 }
