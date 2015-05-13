@@ -795,7 +795,7 @@ class CSl_statModelEx extends CSl_statModel
 
       $query = 'SELECT revenue_member.*, login.id, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality ';
       $query .= 'FROM revenue_member ';
-      $query .= 'LEFT JOIN login ON revenue_member.loginpk = login.loginpk ';
+      $query .= 'LEFT JOIN login ON revenue_member.loginpk = login.loginpk AND login.position LIKE "Consultant"';
       $query .= 'LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk';
 
       $db_result = $this->oDB->executeQuery($query);
