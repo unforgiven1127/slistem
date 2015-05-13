@@ -4040,9 +4040,11 @@ class CSl_statEx extends CSl_stat
 
       $html.= '</table>';
 
-      $html.= '<script>';
-      $html.= 'setTimeout(function(){ window.location.replace("/index.php5?uid=555-006&ppa=ppccm&ppk=0&watercooler=1"); }, ('.$swap_time.'));';
-      $html.= '</script>';
+      /*$html.= '<script>';
+      $html.= 'setTimeout(function(){';
+      $html.= 'window.location.replace("/index.php5?uid=555-006&ppa=ppccm&ppt=ccm&ppk=0&watercooler=1");';
+      $html.= '}, ('.$swap_time.'));';
+      $html.= '</script>';*/
 
       return $html;
     }
