@@ -3964,7 +3964,10 @@ class CSl_statEx extends CSl_stat
       $this->cbWatercooler = (bool)getValue('watercooler');
       $location = getValue('location', 'All');
       $year = getValue('year', date('Y'));
+
       $swap_time = 1000 * 60 * 4; // 4 minutes
+      $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1';
+      // $url = '/index.php5?uid=555-006&ppa=ppccm&ppt=ccm&ppk=0&watercooler=1';
 
       if(!empty($this->cbWatercooler))
       {
@@ -4040,11 +4043,11 @@ class CSl_statEx extends CSl_stat
 
       $html.= '</table>';
 
-      /*$html.= '<script>';
+      $html.= '<script>';
       $html.= 'setTimeout(function(){';
-      $html.= 'window.location.replace("/index.php5?uid=555-006&ppa=ppccm&ppt=ccm&ppk=0&watercooler=1");';
+      $html.= 'window.location.replace("'.$url.'");';
       $html.= '}, ('.$swap_time.'));';
-      $html.= '</script>';*/
+      $html.= '</script>';
 
       return $html;
     }
@@ -4055,7 +4058,9 @@ class CSl_statEx extends CSl_stat
       $location = getValue('location', 'All');
       $start_date = getValue('year', '');
       $end_date = getValue('year', '');
+
       $swap_time = 1000 * 60 * 2; //2 minute
+      $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1';
 
       if(!empty($this->cbWatercooler))
       {
@@ -4176,7 +4181,7 @@ class CSl_statEx extends CSl_stat
           });
       });
 
-      setTimeout(function(){ window.location.replace("/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1"); }, ('.$swap_time.'));
+      setTimeout(function(){ window.location.replace("'.$url.'"); }, ('.$swap_time.'));
       </script>
       ';
 
