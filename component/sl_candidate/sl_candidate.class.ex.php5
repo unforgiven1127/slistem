@@ -1550,7 +1550,7 @@ class CSl_candidateEx extends CSl_candidate
 
           $bVisible = $this->check_contact_info_visibility($asData, $this->casUserData, $is_creator);
 
-          if(!$bRmMasked && $bVisible)
+          if(!$bRmMasked && $bVisible || $asData['visibility'] == 1)
           {
             switch($asData['type'])
             {
