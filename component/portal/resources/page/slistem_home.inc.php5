@@ -72,7 +72,7 @@ if(isset($_GET['action']) && $_GET['action'] =='gallery')
       $asPic = array();
       while(false !== ($sFile = readdir($oFs)))
       {
-        $sExt = substr($sFile, -4);
+        $sExt = strtolower(substr($sFile, -4));
         if(in_array($sExt, $asExtension))
         {
           $asPic[] = '<li><a class="home_gal" href="/conf/custom_config/slistem/gallery/'.$sFile.'" target="_blank"><img src="/conf/custom_config/slistem/gallery/'.$sFile.'" /></a></li>';
