@@ -462,7 +462,8 @@ class CSl_positionEx extends CSl_position
        $oForm->closeSection('pubField');
 
 
-      $oForm->addField('select', 'language', array('label' => 'language', 'onchange' => 'alert(\'Please fill all the fields below in \'+ $(\'option:selected\', this).text()); '));
+      $oForm->addField('select', 'language', array('label' => 'language',
+        'onchange' => 'alert(\'Please fill all the fields below in \'+ $(\'option:selected\', this).text()); '));
       $oForm->addOption('language', array('label' => 'English', 'value' => 'en'));
 
       if($oDbResult->getFieldValue('language') == 'jp')
@@ -471,12 +472,17 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('language', array('label' => 'Japanese', 'value' => 'jp'));
 
       //specific for each language
-      $oForm->addField('input', 'title', array('label' => 'title', 'value' => $oDbResult->getFieldValue('title'), 'class' => 'public_important_field'));
-      $oForm->addField('input', 'career_level', array('label' => 'career level', 'value' => $oDbResult->getFieldValue('career_level'), 'class' => 'public_important_field'));
+      $oForm->addField('input', 'title', array('label' => 'title', 'value' => $oDbResult->getFieldValue('title'),
+        'class' => 'public_important_field'));
+      $oForm->addField('input', 'career_level', array('label' => 'career level',
+        'value' => $oDbResult->getFieldValue('career_level'), 'class' => 'public_important_field'));
 
-      $oForm->addField('textarea', 'description', array('label' => 'description', 'value' => $oDbResult->getFieldValue('description'), 'class' => 'public_important_field', 'allowTinymce' => 1));
-      $oForm->addField('textarea', 'requirements', array('label' => 'requirements', 'value' => $oDbResult->getFieldValue('requirements'), 'class' => 'public_important_field', 'allowTinymce' => 1));
-      $oForm->addField('textarea', 'responsabilities', array('label' => 'Responsibilities', 'value' => $oDbResult->getFieldValue('responsabilities'), 'class' => 'public_important_field', 'allowTinymce' => 1));
+      $oForm->addField('textarea', 'description', array('label' => 'description',
+        'value' => $oDbResult->getFieldValue('description'), 'class' => 'public_important_field', 'allowTinymce' => 1));
+      $oForm->addField('textarea', 'requirements', array('label' => 'requirements',
+        'value' => $oDbResult->getFieldValue('requirements'), 'class' => 'public_important_field', 'allowTinymce' => 1));
+      $oForm->addField('textarea', 'responsabilities', array('label' => 'Responsibilities',
+        'value' => $oDbResult->getFieldValue('responsabilities'), 'class' => 'public_important_field', 'allowTinymce' => 1));
 
 
       return $oForm->getDisplay();
@@ -537,6 +543,9 @@ class CSl_positionEx extends CSl_position
       //field for sl_position_detail table
       $asPosition['language'] = getValue('language');
       $asPosition['title'] = getValue('title');
+      if(empty($asPosition['title']))
+        return array('error' => __LINE__.' - You must enter title.');
+
       $asPosition['career_level'] = getValue('career_level');
       $asPosition['description'] = getValue('description');
       $asPosition['requirements'] = getValue('requirements');
