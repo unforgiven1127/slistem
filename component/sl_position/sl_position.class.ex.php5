@@ -2919,10 +2919,9 @@ class CSl_positionEx extends CSl_position
       $html.= $html_object->getBlocStart('', array('class' => 'placement_list'));
 
       $filter = $this->_getPlacementFilter();
-      $raw_placement_data = $this->_getModel()->getPlacement($filter, true);
-      $read = $raw_placement_data->readFirst();
+      $revenue_data = $this->_getModel()->getPlacement($filter, true);
 
-      if(!$read)
+      if(!$revenue_data)
       {
         $html.= $html_object->getBlocMessage('no placement to display.');
       }
@@ -2931,69 +2930,66 @@ class CSl_positionEx extends CSl_position
         $login_object = CDependency::getCpLogin();
         $placement_array = array();
 
-        while($read)
+        foreach ($revenue_data as $key => $revenue)
         {
-          $raw_data = $raw_placement_data->getData();
-
-          if(!isset($placement_array[$raw_data['id']]))
+          if(!isset($placement_array[$revenue['id']]))
           {
 
-            if(empty($raw_data['closed_by']))
-              $raw_data['consultant'] = ' - ';
+            if(empty($revenue['closed_by']))
+              $revenue['consultant'] = ' - ';
             else
-              $raw_data['consultant'] = $login_object->getUserLink((int)$raw_data['closed_by']);
+              $revenue['consultant'] = $login_object->getUserLink((int)$revenue['closed_by']);
 
-            $encoding = mb_detect_encoding($raw_data['position']);
-
-
-            $raw_data['position'] = mb_convert_encoding($raw_data['position'], 'UTF-8', $encoding);
-            $encoding = mb_detect_encoding($raw_data['position']);
+            $encoding = mb_detect_encoding($revenue['position']);
+            $revenue['position'] = mb_convert_encoding($revenue['position'], 'UTF-8', $encoding);
 
 
-            $paid = !empty($raw_data['date_paid']);
+            $paid = !empty($revenue['date_paid']);
 
-            $url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_EDIT, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+            $url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_EDIT, CONST_POSITION_TYPE_PLACEMENT, (int)$revenue['id']);
             $picture = $html_object->getPicture(self::getResourcePath().'/pictures/edit_16.png');
-            $raw_data['action'] = $html_object->getLink($picture, 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
+            $revenue['action'] = $html_object->getLink($picture, 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
 
             if(!$paid)
             {
-              $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VALIDATE, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+              $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VALIDATE, CONST_POSITION_TYPE_PLACEMENT, (int)$revenue['id']);
               $picture = $html_object->getPicture(self::getResourcePath().'/pictures/pay_inactive_16.png', 'Set this placement paid ?');
-              $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Set this placement paid ?\')){ AjaxRequest(\''.$url.'\'); }; '));
+              $revenue['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Set this placement paid ?\')){ AjaxRequest(\''.$url.'\'); }; '));
             }
             else
             {
-              $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getPicture(self::getResourcePath().'/pictures/pay_16.png', 'Paid');
+              $revenue['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getPicture(self::getResourcePath().'/pictures/pay_16.png', 'Paid');
             }
 
-            $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_DELETE, CONST_POSITION_TYPE_PLACEMENT, (int)$raw_data['id']);
+            $url =  $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_DELETE, CONST_POSITION_TYPE_PLACEMENT, (int)$revenue['id']);
             $picture = $html_object->getPicture(self::getResourcePath().'/pictures/delete_16.png');
-            $raw_data['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Delete this placement ?\')){ AjaxRequest(\''.$url.'\'); }; '));
+            $revenue['action'].= '&nbsp;&nbsp;&nbsp;'.$html_object->getLink($picture, 'javascript:;', array('onclick' => 'if(window.confirm(\'Delete this placement ?\')){ AjaxRequest(\''.$url.'\'); }; '));
 
-
-            $raw_data['candidate'] = $html_object->getBloc('', '#'.$raw_data['candidate'].' <b>'.$raw_data['candidate_name'].'</b>', array('class' => 'placement_candidate'));
-
-            $raw_data['position'] = '#'.$raw_data['position'];
-            $raw_data['amount_formatted'] = number_format($raw_data['amount'], 0, '.', ',');
-            $raw_data['amount_formatted'] = $html_object->getBloc('', $raw_data['amount_formatted'].'&yen;', array('style' => 'width: 100%; text-align: center; '));
-            $placement_array[$raw_data['id']] = $raw_data;
-          }
-
-          if($raw_data['paid_user'])
-          {
-            $raw_data['paid_amount'] = number_format($raw_data['amount'], 0, '.', ',');
-
-            if(isset($placement_array[$raw_data['id']]['recipient']))
-              $placement_array[$raw_data['id']]['recipient'].= ', ';
+            if ($revenue['candidate'] == 'retainer')
+              $candidate_info = '<b>'.$revenue['candidate_name'].'</b>';
             else
-              $placement_array[$raw_data['id']]['recipient']= '';
+              $candidate_info = $revenue['candidate'].' <b>'.$revenue['candidate_name'].'</b>';
 
-            $placement_array[$raw_data['id']]['recipient'].= $login_object->getUserLink((int)$raw_data['paid_user'], true).'
-              <span class="placement_share" title="Amount: '.$raw_data['paid_amount'].' yen"> ('.$raw_data['percentage'].'%)</span>';
+            $revenue['candidate'] = $html_object->getBloc('', $candidate_info, array('class' => 'placement_candidate'));
+
+            $revenue['position'] = $revenue['position'];
+            $revenue['amount_formatted'] = number_format($revenue['amount'], 0, '.', ',');
+            $revenue['amount_formatted'] = $html_object->getBloc('', $revenue['amount_formatted'].'&yen;', array('style' => 'width: 100%; text-align: center; '));
+            $placement_array[$revenue['id']] = $revenue;
           }
 
-          $read = $raw_placement_data->readNext();
+          foreach ($revenue['paid_users'] as $user)
+          {
+            $revenue['paid_amount'] = number_format($revenue['amount'], 0, '.', ',');
+
+            if(isset($placement_array[$revenue['id']]['recipient']))
+              $placement_array[$revenue['id']]['recipient'].= ', ';
+            else
+              $placement_array[$revenue['id']]['recipient']= '';
+
+            $placement_array[$revenue['id']]['recipient'].= $login_object->getUserLink((int)$user['user'], true).'
+              <span class="placement_share" title="Amount: '.$revenue['paid_amount'].' yen"> ('.$user['percentage'].'%)</span>';
+          }
         }
 
 
@@ -3099,10 +3095,10 @@ class CSl_positionEx extends CSl_position
       $sql_array = array();
 
       if(!empty($consultant))
-        $sql_array[] = ' rev.closed_by = '.$consultant;
+        $sql_array[] = ' closed_by = '.$consultant;
 
       if(!empty($candidate))
-        $sql_array[] = ' rev.candidate = '.$candidate;
+        $sql_array[] = ' candidate = '.$candidate;
 
       if(!empty($position))
       {
@@ -3125,7 +3121,7 @@ class CSl_positionEx extends CSl_position
         if(empty($end_date))
           $end_date = date('Y-m', strtotime('+2 months', strtotime($start_date))).'-01';
 
-        $sql_array[] = '(rev.date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
+        $sql_array[] = '(date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
       }
 
       return $sql_array;
