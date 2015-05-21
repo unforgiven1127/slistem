@@ -232,7 +232,7 @@ SetEnvIf REAL_ADDR "^121\.117\.77\.97$" AllowAccess
 SetEnvIf REAL_ADDR "^119\.240\.82\.159$" AllowAccess
 
 ## 2014-09-25 dt#td Larry
-SetEnvIf REAL_ADDR "^70\.50\.96\.53$" AllowAccess
+SetEnvIf REAL_ADDR "^174\.93\.23\.182$" AllowAccess
 
 ## 2015-05-12 dt#td Roman IP
 SetEnvIf REAL_ADDR "^195\.16\.79\.100$" AllowAccess
