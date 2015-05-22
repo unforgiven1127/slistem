@@ -102,7 +102,7 @@ class CEventModelEx extends CEventModel
     }
 
     if(empty($psOrder))
-      $sQuery.= ' ORDER BY even.date_display DESC ';
+      $sQuery.= ' ORDER BY even.date_create DESC ';
     else
       $sQuery.= ' ORDER BY '.$psOrder;
 

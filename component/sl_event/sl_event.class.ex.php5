@@ -84,10 +84,7 @@ class CSl_eventEx extends CSl_event
     if(!assert('is_key($pnItemPk) && !empty($psItemType)'))
       return array();
 
-    //$asNotes = $this->getNotes($pnItemPk, $psItemType, $psNoteType);
     $asNotes = $this->getNotes($pnItemPk, $psItemType, $psNoteType, $pasExcludeType);
-    //dump($asNotes);
-
 
     $oPage = CDependency::getCpPage();
     $oHTML = CDependency::getCpHtml();
