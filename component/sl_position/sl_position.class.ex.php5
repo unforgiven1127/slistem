@@ -3224,10 +3224,7 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('pla_cp_jd_key', array('label' => $sPosition, 'value' => $sPositionKey));
       }
 
-
-
       $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;', 'text' => 'Only positions with active candidates or recently filled will appear in the field above.'));
-
 
       //filled in javascript
       $oForm->addField('select', 'pla_candidatefk', array('label'=>'Candidate', 'onchange' => 'mirrorSelection(this, \'pla_loginfkId\'); '));
@@ -3235,8 +3232,15 @@ class CSl_positionEx extends CSl_position
       if(!empty($revenue_id))
         $oForm->addOption('pla_candidatefk', array('label' => $sCandidate, 'value' => $oDdPlacement->getFieldValue('candidate')));
 
+      $oForm->addOption('pla_candidatefk', array('label' => '-', 'value' => ''));
+      $oForm->addOption('pla_candidatefk', array('label' => 'Retainer', 'value' => 'retainer'));
 
       $oForm->addField('select', 'pla_loginfk', array('label'=>'Deal closed by', 'onchange' => 'mirrorSelection(this, \'pla_candidatefkId\');'));
+
+      $url = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
+      $oForm->addField('selector', 'pla_loginfk_retainer', array('label'=>'Deal closed by', 'url' => $url,
+        'type' => 'hidden'));
+
       $oForm->setFieldControl('pla_loginfk', array('jsFieldNotEmpty' => 1));
       if(!empty($revenue_id))
         $oForm->addOption('pla_loginfk', array('label' => $sConsultant, 'value' => $oDdPlacement->getFieldValue('closed_by')));
@@ -3259,7 +3263,6 @@ class CSl_positionEx extends CSl_position
       $oForm->addOption('revenue_status', array('label' => 'Signed', 'value' => 'signed'));
       $oForm->addOption('revenue_status', array('label' => 'Paid', 'value' => 'paid'));
       $oForm->addOption('revenue_status', array('label' => 'Delayed', 'value' => 'delayed'));
-      $oForm->addOption('revenue_status', array('label' => 'Retainer', 'value' => 'retainer'));
       $oForm->addOption('revenue_status', array('label' => 'Refund', 'value' => 'refund'));
 
       $oForm->addField('misc', '', array('type' => 'br'));
@@ -3291,7 +3294,8 @@ class CSl_positionEx extends CSl_position
         'id' => 'pla_amountId', 'onchange' => $sJavascript, 'value' => $oDdPlacement->getFieldValue('amount')));
       $oForm->setFieldControl('amount', array('jsFieldNotEmpty' => 1, 'jsFieldTypeCurrencyJpy' => 1));
 
-      $oForm->addField('input', 'refund_amount', array('type' => 'text', 'label' => 'Refund (&yen;)', 'value' => $oDdPlacement->getFieldValue('refund_amount')));
+      $oForm->addField('input', 'refund_amount', array('type' => 'text', 'label' => 'Refund (&yen;)',
+        'value' => $oDdPlacement->getFieldValue('refund_amount')));
 
       $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;',
         'text' => '<a href=\'javascript:;\' onclick=\'updatePaymentAmount($("#pla_amountId"));\'>re-calculate split amount</a>'));
@@ -3353,18 +3357,21 @@ class CSl_positionEx extends CSl_position
           return __LINE__.' - Can not find the placement.';
       }
 
+      $revenue_array['candidate'] = getValue('pla_candidatefk');
+
       $revenue_array['position'] = getValue('pla_cp_jd_key');
       if(empty($revenue_array['position']))
         return array('error' => 'You must select a position');
 
-      $asKey = explode('_', $revenue_array['position']);
-      if(count($asKey) !== 2 || !is_numeric($asKey[1]))
-        return array('error' => __LINE__.' - The selected position is incorrect');
+      if ($revenue_array['candidate'] != 'retainer')
+      {
+        $asKey = explode('_', $revenue_array['position']);
+        if((count($asKey) !== 2 || !is_numeric($asKey[1])))
+          return array('error' => __LINE__.' - The selected position is incorrect');
 
-      $revenue_array['position'] = (int)$asKey[1];
+        $revenue_array['position'] = (int)$asKey[1];
+      }
 
-
-      $revenue_array['candidate'] = (int)getValue('pla_candidatefk');
       if(empty($revenue_array['candidate']))
         return array('error' => 'You must select a candidate');
 
@@ -3461,13 +3468,15 @@ class CSl_positionEx extends CSl_position
       //Everything checked... Save placement and get PK to create/update payments
       if(empty($revenue_id))
       {
-        // Last test:  check we're not creating a duplicate placement
-        $check_existing_payment = $this->_getModel()->getByWhere('revenue', 'position = '.$revenue_array['position']);
+        // Last test:  check we're not creating a duplicate placement except for retainers
+        if ($revenue_array['candidate'] != 'retainer')
+        {
+          $check_existing_payment = $this->_getModel()->getByWhere('revenue', 'position = "'.$revenue_array['position'].'"');
 
-        $bRead = $check_existing_payment->readFirst();
-        if($bRead)
-          return array('error' => 'There is already a placement for this position.');
-
+          $bRead = $check_existing_payment->readFirst();
+          if($bRead)
+            return array('error' => 'There is already a placement for this position.');
+        }
         $revenue_array['status'] = 'signed';
 
         $revenue_id = $this->_getModel()->add($revenue_array, 'revenue');

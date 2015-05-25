@@ -29,10 +29,13 @@ function refreshPlacementForm(poItem, psUrl)
 
       $('#pla_candidatefkId').html('');
       $('#pla_loginfkId').html('');
+      $('.fieldNamepla_loginfk').show();
+      $('.fieldNamepla_loginfk_retainer').hide();
       var bFirst = true;
       $.each(oJson.data, function(nIndex, oValue)
       {
         $('#pla_candidatefkId').append('<option value="'+oValue.candidatepk+'">'+oValue.candidate+'</option>');
+        $('#pla_candidatefkId').append('<option value="retainer">Retainer</option>');
         $('#pla_loginfkId').append('<option value="'+oValue.consultantpk+'">'+oValue.consultant+'</option>');
 
 
@@ -59,16 +62,29 @@ function refreshPlacementForm(poItem, psUrl)
 }
 
 
-function mirrorSelection(poTag, psTargetId)
+function mirrorSelection(origin, target)
 {
-  var nIndexSelected = $(poTag).prop("selectedIndex");
-  //alert('selected index: '+ nIndexSelected+' set #'+psTargetId);
+  var selected_index = $(origin).prop("selectedIndex");
+  var selected_value = $(origin).val();
 
-  $('#'+psTargetId).prop("selectedIndex", nIndexSelected);
+  if (selected_value === 'retainer')
+  {
+    retainer_setup();
+  }
+  else
+  {
+    $('#'+target).prop("selectedIndex", selected_index);
+  }
+
   return true;
 }
 
-
+function retainer_setup()
+{
+  $('#pla_cp_jd_keyId').tokenInput("clear").tokenInput("add", {id: 'retainer', name: 'Retainer'});
+  $('.fieldNamepla_loginfk').hide();
+  $('.fieldNamepla_loginfk_retainer').show();
+}
 
 function updatePaymentAmount(tag)
 {
@@ -101,3 +117,14 @@ function editPop(psUrl)
   oConf.width = 950;
   goPopup.setLayerFromAjax(oConf, psUrl);
 }
+
+$(document).ready(function () {
+    $(document).on('change', '#pla_loginfk_retainerId', function () {
+        var user_id = $(this).val();
+        var user_title = $('.pla_loginfk_retainer_item p').text();
+
+        $('#pay_loginfk0Id').tokenInput("clear").tokenInput("add", {id: user_id, name: user_title});
+        $('#pla_loginfkId').html('');
+        $('#pla_loginfkId').append('<option value="'+user_id+'">'+user_title+'</option>');
+    });
+});

@@ -204,6 +204,7 @@ class CFormEx extends CForm
       $psFieldName = uniqid();
 
     $oField = $this->getField($psFieldType, $psFieldName, $pasFieldParams);
+
     $this->caoFormFields[$psFieldName] = $oField;
 
     return true;

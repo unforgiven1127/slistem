@@ -63,8 +63,8 @@ class CSl_positionModel extends CModel
 
     $this->_tableMap['revenue']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
     $this->_tableMap['revenue']['date_created'] = array('controls'=>array(),'type'=>'date');
-    $this->_tableMap['revenue']['position'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
-    $this->_tableMap['revenue']['candidate'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue']['position'] = array('controls'=>array());
+    $this->_tableMap['revenue']['candidate'] = array('controls'=>array());
     $this->_tableMap['revenue']['closed_by'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
     $this->_tableMap['revenue']['date_signed'] = array('controls'=>array(),'type'=>'date');
     $this->_tableMap['revenue']['date_start'] = array('controls'=>array(),'type'=>'date');

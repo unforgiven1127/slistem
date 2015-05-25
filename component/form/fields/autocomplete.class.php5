@@ -10,6 +10,14 @@ class CAutocomplete extends CField
     parent::__construct($psFieldName, $pasFieldParams);
   }
 
+  public function isVisible()
+  {
+    if(isset($this->casFieldParams['type']) && $this->casFieldParams['type'] == 'hidden')
+      return false;
+
+    return true;
+  }
+
   public function addOption($pasFieldParams)
   {
     if(!assert('is_array($pasFieldParams)'))
@@ -152,7 +160,7 @@ class CAutocomplete extends CField
 
 
 
-    if(!empty($this->casFieldParams['label']) && $this->isVisible())
+    if(!empty($this->casFieldParams['label']))
     {
       $sHTML.= '<div class="formLabel">'.$this->casFieldParams['label'].'</div>';
       unset($this->casFieldParams['label']);
