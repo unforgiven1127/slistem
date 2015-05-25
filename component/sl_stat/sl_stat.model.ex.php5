@@ -850,18 +850,16 @@ class CSl_statModelEx extends CSl_statModel
           if (empty($revenue_data[$user_id]['team']))
             $revenue_data[$user_id]['team'] = $this->get_user_team($user_id);
 
-          switch ($current_revenue_info['status']) {
-            case 'signed':
-            case 'delayed':
-              $revenue_data[$user_id]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
-              break;
-
+          switch ($current_revenue_info['status'])
+          {
             case 'paid':
             case 'refund':
             case 'retainer':
               $revenue_data[$user_id]['paid'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
               break;
           }
+
+          $revenue_data[$user_id]['signed'] += $current_revenue_info['amount'] * ($row['percentage'] / 100);
 
           if ($row['status'])
             $revenue_data[$user_id]['total_amount'] += ($current_revenue_info['amount'] - $current_revenue_info['refund_amount']) * ($row['percentage'] / 100);
