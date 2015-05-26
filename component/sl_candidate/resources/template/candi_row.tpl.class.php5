@@ -183,7 +183,7 @@ class CCandi_row extends CTemplate
     $sHTML.= $oDisplay->getBloc('', '&nbsp;', $asOption);
 
 
-    if(empty($pasData['_is_admin']) && $pasData['_sys_redirect'] > 0)
+    /*if(empty($pasData['_is_admin']) && $pasData['_sys_redirect'] > 0)
     {
       set_array($pasColumnParam[6]['tag'], '');
       $asOption = array('class' => $pasColumnParam[6]['tag'].' tplCandiRow_continuous tpl_link_cell');
@@ -210,7 +210,7 @@ class CCandi_row extends CTemplate
       $asOption = array('class' => 'merged');
       $sHTML.= $oDisplay->getBloc('', 'Candidate [#'.$pasData['sl_candidatepk'].'] merged to #'.$pasData['_sys_redirect'], $asOption);
     }
-    else
+    else*/
     {
       set_array($pasColumnParam[6]['tag'], '');
       $asOption = array('class' => $pasColumnParam[6]['tag'].' tplCandiRow_continuous tpl_link_cell');
