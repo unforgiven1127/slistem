@@ -308,7 +308,7 @@ class CSl_positionModelEx extends CSl_positionModel
     }
 
     $i = 0;
-// var_export($query); die();
+
     foreach ($revenue_data as $revenue)
     {
       $prepared_data[$revenue['id']]['id'] = $revenue['id'];
@@ -366,6 +366,8 @@ class CSl_positionModelEx extends CSl_positionModel
         $i += 1;
       }
     }
+
+    uasort($prepared_data, sort_multi_array_by_value('date_signed', 'reverse'));
 
     return $prepared_data;
   }
