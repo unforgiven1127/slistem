@@ -284,7 +284,9 @@ class CSl_positionModelEx extends CSl_positionModel
     $extra_select = $extra_query = '';
     $raw_revenue_data = $raw_data = $revenue_data = $prepared_data = array();
 
-    $query = 'SELECT * FROM revenue';
+    $query = 'SELECT revenue.*, CONCAT(spde.positionfk, " ", spde.title) as position';
+    $query .= ' FROM revenue';
+    $query .= ' INNER JOIN sl_position_detail as spde ON (spde.positionfk = revenue.position)';
 
     if(!empty($filter))
         $query.= ' WHERE '.implode(' AND ', $filter);
@@ -306,7 +308,7 @@ class CSl_positionModelEx extends CSl_positionModel
     }
 
     $i = 0;
-
+// var_export($query); die();
     foreach ($revenue_data as $revenue)
     {
       $prepared_data[$revenue['id']]['id'] = $revenue['id'];
@@ -316,6 +318,7 @@ class CSl_positionModelEx extends CSl_positionModel
       $prepared_data[$revenue['id']]['date_signed'] = $revenue['date_signed'];
       $prepared_data[$revenue['id']]['candidate'] = $revenue['candidate'];
       $prepared_data[$revenue['id']]['amount'] = $revenue['amount'];
+      $prepared_data[$revenue['id']]['position'] = $revenue['position'];
 
       if ($revenue['candidate'] == 'retainer')
       {
@@ -329,15 +332,9 @@ class CSl_positionModelEx extends CSl_positionModel
            $extra_query = ' LEFT JOIN revenue_member as revmem ON (revmem.revenue_id = '.$revenue['id'].') ';
         }
 
-        $query = ' SELECT DISTINCT(spde.positionfk), spos.companyfk,
-        CONCAT(scan.firstname, " ", scan.lastname) as candidate_name,
-        CONCAT(spde.positionfk, " ", spde.title) as position '.$extra_select.'
-        FROM sl_position as spos
-
-        INNER JOIN sl_position_detail as spde ON (spde.positionfk = spos.sl_positionpk)
-        INNER JOIN sl_candidate as scan ON (scan.sl_candidatepk = '.$revenue['candidate'].')
-        '.$extra_query.'
-        WHERE spos.sl_positionpk = '.$revenue['position'];
+        $query = 'SELECT CONCAT(scan.firstname, " ", scan.lastname) as candidate_name'.$extra_select;
+        $query .= 'FROM sl_candidate as scan'.$extra_query;
+        $query .= 'WHERE scan.sl_candidatepk = '.$revenue['candidate'];
       }
 
       $raw_placement_data = $this->executeQuery($query);
@@ -349,12 +346,10 @@ class CSl_positionModelEx extends CSl_positionModel
 
         if ($revenue['candidate'] == 'retainer')
         {
-          $prepared_data[$revenue['id']]['position'] = 'Retainer';
           $prepared_data[$revenue['id']]['candidate_name'] = 'Retainer';
         }
         else
         {
-          $prepared_data[$revenue['id']]['position'] = $raw_data['position'];
           $prepared_data[$revenue['id']]['candidate_name'] = $raw_data['candidate_name'];
         }
 

@@ -935,7 +935,7 @@ class CSl_statModelEx extends CSl_statModel
     $query .= ' LEFT JOIN login';
     $query .= ' ON sl_position_link.created_by = login.loginpk';
     $query .= ' WHERE sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' AND sl_position_link.status BETWEEN 50 AND 60';
+    $query .= ' AND sl_position_link.status = 51';
     $query .= ' ORDER BY login.lastname';
 
     $db_result = $this->oDB->executeQuery($query);

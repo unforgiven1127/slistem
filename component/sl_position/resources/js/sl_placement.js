@@ -29,7 +29,6 @@ function refreshPlacementForm(poItem, psUrl)
 
       $('#pla_candidatefkId').html('');
       $('#pla_loginfkId').html('');
-      $('.fieldNamepla_loginfk').show();
       $('.fieldNamepla_loginfk_retainer').hide();
       var bFirst = true;
       $.each(oJson.data, function(nIndex, oValue)
@@ -81,8 +80,6 @@ function mirrorSelection(origin, target)
 
 function retainer_setup()
 {
-  $('#pla_cp_jd_keyId').tokenInput("clear").tokenInput("add", {id: 'retainer', name: 'Retainer'});
-  $('.fieldNamepla_loginfk').hide();
   $('.fieldNamepla_loginfk_retainer').show();
 }
 

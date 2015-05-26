@@ -98,16 +98,10 @@
   src: url('/common/style/font/FiraSans-Light.ttf');
 }
 
-*
+body
 {
   font-family: source,fira, "Myriad pro";
   font-size: 12px;
-}
-
-
-
-body
-{
   background: transparent;
   overflow-x: hidden;
 }

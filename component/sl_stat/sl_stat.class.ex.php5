@@ -4092,11 +4092,11 @@ class CSl_statEx extends CSl_stat
 
       $html = '<div id="title" style="overflow: auto; margin-bottom: 40px;">
         <div class="h3" style="float: left;">
-          Total CCMs &nbsp;|&nbsp; Dates: '.date('Y-01-01').' to '.date('Y-12-31').'
+          Total CCM1 &nbsp;|&nbsp; Dates: '.date('Y').'-Jan-01 to '.date('Y').'-Dec-31
         </div>
       </div>';
 
-      $html .= '<div id="ccm_chart" style="height: 600px;;  margin: 0 auto;"></div>';
+      $html .= '<div id="ccm_chart" style="height: 600px;;  margin: 0 auto; width: 95%"></div>';
 
 
       $html .= '<script>
@@ -4121,7 +4121,7 @@ class CSl_statEx extends CSl_stat
                   crosshair: true,
                   labels: {
                     style: {
-                        fontSize:\'25px\'
+                        fontSize:\'20px\'
                     }
                   }
               },
@@ -4129,11 +4129,7 @@ class CSl_statEx extends CSl_stat
               {
                   min: 0,
                   title: {
-                      text: "Number of CCMs",
-                      style:
-                      {
-                        fontSize:\'30px\'
-                      }
+                      text: ""
                   },
                   labels: {
                     style: {
@@ -4152,16 +4148,16 @@ class CSl_statEx extends CSl_stat
               },
               plotOptions:
               {
-                  column: {
+                  bar: {
                       pointPadding: 0.2,
                       borderWidth: 0
                   }
               },
               series:
               [{
-                  type: "column",
-                  name: "Total CCMs",
-                  pointWidth: 80,
+                  type: "bar",
+                  name: "Total CCM1",
+                  pointWidth: 25,
                   data: ['.implode(',', $ccm_count).'],
                   dataLabels:
                   {
@@ -4170,18 +4166,17 @@ class CSl_statEx extends CSl_stat
                     style:
                     {
                       color: "#FFFFFF",
-                      fontWeight: "bold",
-                      fontSize: 20
+                      fontWeight: "bold"
                     },
                     align: "center",
-                    x: 0,
-                    y: 25
+                    x: -10,
+                    y: 0
                   }
               }]
           });
       });
 
-      setTimeout(function(){ window.location.replace("'.$url.'"); }, ('.$swap_time.'));
+      // setTimeout(function(){ window.location.replace("'.$url.'"); }, ('.$swap_time.'));
       </script>
       ';
 

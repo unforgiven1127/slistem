@@ -3177,8 +3177,15 @@ class CSl_positionEx extends CSl_position
         //fetch candidate data
         $nCandidatefk = (int)$oDdPlacement->getFieldValue('candidate');
         $oCandidate = CDependency::getComponentByUid('555-001');
-        $asCandidate = $oCandidate->getCandidateData($nCandidatefk , false);
-        $sCandidate = '#'.$nCandidatefk. ' - '.$asCandidate['firstname'].' '.$asCandidate['lastname'];
+        if ($oDdPlacement->getFieldValue('candidate') == 'retainer')
+        {
+          $sCandidate = 'Retainer';
+        }
+        else
+        {
+          $asCandidate = $oCandidate->getCandidateData($nCandidatefk , false);
+          $sCandidate = '#'.$nCandidatefk. ' - '.$asCandidate['firstname'].' '.$asCandidate['lastname'];
+        }
 
         //fetch consultant name
         $nLoginfk = (int)$oDdPlacement->getFieldValue('closed_by');
@@ -3232,13 +3239,16 @@ class CSl_positionEx extends CSl_position
       if(!empty($revenue_id))
         $oForm->addOption('pla_candidatefk', array('label' => $sCandidate, 'value' => $oDdPlacement->getFieldValue('candidate')));
 
-      $oForm->addOption('pla_candidatefk', array('label' => '-', 'value' => ''));
-      $oForm->addOption('pla_candidatefk', array('label' => 'Retainer', 'value' => 'retainer'));
+      if ($oDdPlacement->getFieldValue('candidate') != 'retainer')
+      {
+        $oForm->addOption('pla_candidatefk', array('label' => '-', 'value' => ''));
+        $oForm->addOption('pla_candidatefk', array('label' => 'Retainer', 'value' => 'retainer'));
+      }
 
       $oForm->addField('select', 'pla_loginfk', array('label'=>'Deal closed by', 'onchange' => 'mirrorSelection(this, \'pla_candidatefkId\');'));
 
       $url = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
-      $oForm->addField('selector', 'pla_loginfk_retainer', array('label'=>'Deal closed by', 'url' => $url,
+      $oForm->addField('selector', 'pla_loginfk_retainer', array('label'=>'&nbsp;', 'url' => $url,
         'type' => 'hidden'));
 
       $oForm->setFieldControl('pla_loginfk', array('jsFieldNotEmpty' => 1));
@@ -3363,14 +3373,11 @@ class CSl_positionEx extends CSl_position
       if(empty($revenue_array['position']))
         return array('error' => 'You must select a position');
 
-      if ($revenue_array['candidate'] != 'retainer')
-      {
-        $asKey = explode('_', $revenue_array['position']);
-        if((count($asKey) !== 2 || !is_numeric($asKey[1])))
-          return array('error' => __LINE__.' - The selected position is incorrect');
+      $asKey = explode('_', $revenue_array['position']);
+      if((count($asKey) !== 2 || !is_numeric($asKey[1])))
+        return array('error' => __LINE__.' - The selected position is incorrect');
 
-        $revenue_array['position'] = (int)$asKey[1];
-      }
+      $revenue_array['position'] = (int)$asKey[1];
 
       if(empty($revenue_array['candidate']))
         return array('error' => 'You must select a candidate');
