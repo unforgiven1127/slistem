@@ -776,7 +776,7 @@ class CSl_statModelEx extends CSl_statModel
 
     $query = 'SELECT id, amount, location, status, refund_amount, currency ';
     $query .= 'FROM revenue ';
-    $query .= 'WHERE date_signed BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
+    $query .= 'WHERE date_due BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
 
     if (!empty($location))
       $query = ' AND location = "'.$location.'"';
