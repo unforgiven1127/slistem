@@ -5760,7 +5760,7 @@ class CSl_candidateEx extends CSl_candidate
       $oForm->addField('textarea', 'description', array('label'=> 'Description', 'value' => $asCompanyData['description']));
 
 
-      $oForm->addField('misc', '', array('type'=> 'title', 'title' => 'Structure & employees'));
+      $oForm->addSection('', array('folded' => 1), 'Structure & employees');
 
       $oForm->addField('input', 'revenue', array('label'=> 'Annual revenue', 'value' => $asCompanyData['revenue']));
       $oForm->setFieldControl('revenue', array('jsFieldMinSize' => '2'));
@@ -5781,7 +5781,7 @@ class CSl_candidateEx extends CSl_candidate
 
       $oForm->addField('input', 'num_branch_japan', array('label'=> '# branch(es) in japan', 'value' => $asCompanyData['num_branch_japan']));
       $oForm->setFieldControl('num_branch_japan', array('jsFieldTypeIntegerPositive' => '1'));
-
+      $oForm->closeSection();
 
 
        $oForm->addSection('', array('folded' => 1), 'Contact details');
