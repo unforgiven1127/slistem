@@ -808,7 +808,7 @@ class CSl_statModelEx extends CSl_statModel
       {
         $row = $db_result->getData();
 
-        if ($row['id'] == 'bizreach' || $row['id'] == 'othercollab')
+        if ($row['id'] == 'bizreach' || $row['id'] == 'othercollab' || empty($row['id']))
         {
           $read = $db_result->readNext();
           continue;
