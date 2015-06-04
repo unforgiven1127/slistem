@@ -793,6 +793,8 @@ class CSl_statModelEx extends CSl_statModel
         $read = $db_result->readNext();
       }
 
+      $array_for_printing = $revenue_data_raw;
+
       $query = 'SELECT revenue_member.*, login.id, login.firstname, login.lastname, login.status, sl_nationality.shortname AS nationality ';
       $query .= 'FROM revenue_member ';
       $query .= 'LEFT JOIN login ON revenue_member.loginpk = login.loginpk AND login.position LIKE "Consultant"';
@@ -813,6 +815,8 @@ class CSl_statModelEx extends CSl_statModel
           $read = $db_result->readNext();
           continue;
         }
+
+        $array_for_printing[$row['revenue_id']]['members'][$row['loginpk']] = $row;
 
         if (isset($revenue_data_raw[$row['revenue_id']]))
         {
