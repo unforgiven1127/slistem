@@ -3104,16 +3104,18 @@ class CSl_positionEx extends CSl_position
       $sql_array = array();
 
       if(!empty($consultant))
-        $sql_array[] = ' closed_by = '.$consultant;
+      {
+        $sql_array['member'] = $consultant;
+      }
 
       if(!empty($candidate))
-        $sql_array[] = ' candidate = '.$candidate;
+        $sql_array['revenue'][] = ' candidate = '.$candidate;
 
       if(!empty($position))
       {
         $position_list = explode('_', $position);
         if(count($position_list) == 2)
-          $sql_array[] = ' spos.sl_positionpk = '.(int)$position_list[1];
+          $sql_array['revenue'][] = ' position = '.(int)$position_list[1];
       }
 
       if(!empty($period))
@@ -3130,7 +3132,7 @@ class CSl_positionEx extends CSl_position
         if(empty($end_date))
           $end_date = date('Y-m', strtotime('+2 months', strtotime($start_date))).'-01';
 
-        $sql_array[] = '(date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
+        $sql_array['revenue'][] = '(date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
       }
 
       return $sql_array;

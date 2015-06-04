@@ -288,8 +288,8 @@ class CSl_positionModelEx extends CSl_positionModel
     $query .= ' FROM revenue';
     $query .= ' INNER JOIN sl_position_detail as spde ON (spde.positionfk = revenue.position)';
 
-    if(!empty($filter))
-        $query.= ' WHERE '.implode(' AND ', $filter);
+    if (!empty($filter['revenue']))
+        $query.= ' WHERE '.implode(' AND ', $filter['revenue']);
 
     $raw_revenue_data = $this->executeQuery($query);
 
@@ -328,8 +328,8 @@ class CSl_positionModelEx extends CSl_positionModel
       {
         if($with_payment)
         {
-           $extra_select = ', revmem.loginpk, revmem.percentage ';
-           $extra_query = ' LEFT JOIN revenue_member as revmem ON (revmem.revenue_id = '.$revenue['id'].') ';
+          $extra_select = ', revmem.loginpk, revmem.percentage ';
+          $extra_query = ' LEFT JOIN revenue_member as revmem ON (revmem.revenue_id = '.$revenue['id'].') ';
         }
 
         $query = 'SELECT CONCAT(scan.firstname, " ", scan.lastname) as candidate_name'.$extra_select;
@@ -339,6 +339,8 @@ class CSl_positionModelEx extends CSl_positionModel
 
       $raw_placement_data = $this->executeQuery($query);
       $read = $raw_placement_data->readFirst();
+
+      $test_array = array();
 
       while($read)
       {
@@ -355,7 +357,21 @@ class CSl_positionModelEx extends CSl_positionModel
 
         $prepared_data[$revenue['id']]['paid_users'][] = array('user' => $raw_data['loginpk'], 'percentage' => $raw_data['percentage']);
 
+        $test_array[$raw_data['loginpk']] = '';
+
         $read = $raw_placement_data->readNext();
+      }
+
+      if (!empty($filter['member']))
+      {
+        if ($filter['member'] != $revenue['closed_by'])
+        {
+          if (!isset($test_array[$filter['member']]))
+          {
+            unset($prepared_data[$revenue['id']]);
+            continue;
+          }
+        }
       }
 
       if ($limit > 0)
