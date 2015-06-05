@@ -3299,16 +3299,22 @@ class CSl_positionEx extends CSl_position
         'id' => 'salary_rate', 'value' => $oDdPlacement->getFieldValue('salary_rate')));
       $oForm->setFieldControl('rate', array('jsFieldNotEmpty' => 1));
 
-      $sJavascript = 'updatePaymentAmount(this); ';
       $oForm->addField('input', 'amount', array('type' => 'text', 'label' => 'Invoice amount (&yen;)',
-        'id' => 'pla_amountId', 'onchange' => $sJavascript, 'value' => $oDdPlacement->getFieldValue('amount')));
+        'id' => 'pla_amountId', 'value' => $oDdPlacement->getFieldValue('amount')));
       $oForm->setFieldControl('amount', array('jsFieldNotEmpty' => 1, 'jsFieldTypeCurrencyJpy' => 1));
 
       $oForm->addField('input', 'refund_amount', array('type' => 'text', 'label' => 'Refund (&yen;)',
         'value' => $oDdPlacement->getFieldValue('refund_amount')));
 
       $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;',
-        'text' => '<a href=\'javascript:;\' onclick=\'updatePaymentAmount($("#pla_amountId"));\'>re-calculate split amount</a>'));
+        'text' => '
+          <div style="float: left;">
+            <a href=\'javascript:;\' onclick=\'updatePaymentAmount($("#pla_amountId"));\'>calculate split amount</a>
+          </div>
+          <div style="float: right;">
+            <a href=\'javascript:;\' onclick=\'update_payment_percentage($("#pla_amountId"));\'>calculate split percentage</a>
+          </div>
+        '));
 
 
       $oForm->addField('textarea', 'comment', array('label' => 'Contact & notes', 'value' => $oDdPlacement->getFieldValue('comment')));
@@ -3332,8 +3338,10 @@ class CSl_positionEx extends CSl_position
         if (empty($asPaymentRow[$nCount][2]))
           $asPaymentRow[$nCount][2] = 0;
 
-        $oForm->addField('input', 'pay_split['.$nCount.']', array('type' =>'text', 'label' => 'split %', 'class' => 'split', 'value' =>  $asPaymentRow[$nCount][1]));
-        $oForm->addField('input', 'pay_amount['.$nCount.']', array('type' =>'text', 'label' => 'amount &yen;', 'id' => 'pay_amount'.$nCount,
+        $oForm->addField('input', 'pay_split['.$nCount.']', array('type' =>'text', 'label' => 'split %',
+          'class' => 'split', 'id' => 'split'.$nCount, 'value' =>  $asPaymentRow[$nCount][1]));
+        $oForm->addField('input', 'pay_amount['.$nCount.']', array('type' =>'text', 'label' => 'amount &yen;',
+          'id' => 'pay_amount'.$nCount, 'class' => 'pay_amount',
           'value' =>  number_format($asPaymentRow[$nCount][2], 0, '.', ',') ));
 
 

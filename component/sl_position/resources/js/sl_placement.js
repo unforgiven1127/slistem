@@ -106,6 +106,40 @@ function updatePaymentAmount(tag)
   });
 }
 
+function update_payment_percentage(tag)
+{
+  var invoice_amount = $('#pla_amountId').val();
+  var full_salary = $('#full_salary').val();
+  var salary_rate = $('#salary_rate').val();
+  var calculated_percentage;
+
+  if (!invoice_amount)
+  {
+    if (!full_salary && !salary_rate)
+    {
+      return false;
+    }
+    else
+    {
+      invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
+    }
+  }
+
+  var payment_section = $(tag).closest('form').find('.payment_section');
+
+  $('.formFieldContainer .pay_amount', payment_section).each(function(field_index)
+  {
+    var split_amount = $(this).val();
+
+    if(!isNaN(split_amount) || !split_amount || split_amount > 0)
+    {
+      calculated_percentage = parseFloat(split_amount / invoice_amount * 100).toFixed(2);
+
+      if (calculated_percentage > 0)
+        $('#split'+field_index, payment_section).val(calculated_percentage);
+    }
+  });
+}
 
 function editPop(psUrl)
 {
