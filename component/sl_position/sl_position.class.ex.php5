@@ -3315,7 +3315,7 @@ class CSl_positionEx extends CSl_position
 
 
 
-      $oForm->addSection('payment_section', array('class' => 'payment_section'), 'Payments details');
+      $oForm->addSection('payment_section', array('class' => 'payment_section'), 'Payment details');
 
       $sURL = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER, 0, array('all_users' => 1));
       for($nCount = 0; $nCount < 5; $nCount++)
