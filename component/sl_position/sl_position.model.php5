@@ -82,6 +82,7 @@ class CSl_positionModel extends CModel
     $this->_tableMap['revenue_member']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
     $this->_tableMap['revenue_member']['revenue_id'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
     $this->_tableMap['revenue_member']['loginpk'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
+    $this->_tableMap['revenue_member']['user_position'] = array();
     $this->_tableMap['revenue_member']['split_amount'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
     $this->_tableMap['revenue_member']['percentage'] = array('controls'=>array('is_numeric(%)'),'type'=>'float');
 

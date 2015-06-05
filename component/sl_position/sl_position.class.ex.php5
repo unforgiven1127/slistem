@@ -3455,9 +3455,15 @@ class CSl_positionEx extends CSl_position
 
           $split_amount+= (float)$_POST['pay_split'][$count];
 
+          $user = (int)$_POST['pay_loginfk'][$count];
+
+          $db_result = $this->_getModel()->getByPk($user, 'login');
+          $user_data = $db_result->getData();
+
           $revenue_members[] = array(
             'revenue_id' => 0,
-            'loginpk' => (int)$_POST['pay_loginfk'][$count],
+            'loginpk' => $user,
+            'user_position' => $user_data['position'],
             'percentage' => (float)$_POST['pay_split'][$count],
             'split_amount' => (float)$_POST['pay_amount'][$count]);
 
