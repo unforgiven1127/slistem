@@ -3233,8 +3233,6 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('pla_cp_jd_key', array('label' => $sPosition, 'value' => $sPositionKey));
       }
 
-      $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;', 'text' => 'Only positions with active candidates or recently filled will appear in the field above.'));
-
       //filled in javascript
       $oForm->addField('select', 'pla_candidatefk', array('label'=>'Candidate', 'onchange' => 'mirrorSelection(this, \'pla_loginfkId\'); '));
       $oForm->setFieldControl('pla_candidatefk', array('jsFieldNotEmpty' => 1));
