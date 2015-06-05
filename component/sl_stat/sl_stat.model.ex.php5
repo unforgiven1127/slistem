@@ -883,21 +883,21 @@ class CSl_statModelEx extends CSl_statModel
   {
     $placements = 0;
 
-    $date_start = $request_date.'-01-01 00:00:00';
-    $date_end = $request_date.'-12-31 23:59:59';
+    $date_start = $request_date.'-01-01';
+    $date_end = $request_date.'-12-31';
 
-    $query = 'SELECT count(DISTINCT scan.sl_candidatepk) AS placed ';
-    $query .= 'FROM sl_candidate AS scan ';
-    $query .= 'INNER JOIN sl_position_link AS spli ON (spli.candidatefk = scan.sl_candidatepk AND spli.status = 101 AND spli.created_by = "'.$user_id.'" ';
-    $query .= 'AND spli.date_created BETWEEN "'.$date_start.'" AND "'.$date_end.'")';
+    $query = 'SELECT COUNT(id) AS placed';
+    $query .= ' FROM revenue';
+    $query .= ' WHERE closed_by = '.$user_id.' AND candidate != "retainer"';
+    $query .= ' AND date_due BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
 
-      $db_result = $this->oDB->executeQuery($query);
-      $read = $db_result->readFirst();
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
 
-      if ($read)
-        $placements = $db_result->getFieldValue('placed');
+    if ($read)
+      $placements = $db_result->getFieldValue('placed');
 
-      return $placements;
+    return $placements;
   }
 
   private function get_user_team($user_id)
