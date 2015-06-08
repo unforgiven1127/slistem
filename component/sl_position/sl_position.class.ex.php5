@@ -3304,7 +3304,7 @@ class CSl_positionEx extends CSl_position
       $oForm->setFieldControl('amount', array('jsFieldNotEmpty' => 1, 'jsFieldTypeCurrencyJpy' => 1));
 
       $oForm->addField('input', 'refund_amount', array('type' => 'text', 'label' => 'Refund (&yen;)',
-        'value' => $oDdPlacement->getFieldValue('refund_amount')));
+        'id' => 'refund_amount', 'value' => $oDdPlacement->getFieldValue('refund_amount')));
 
       $oForm->addField('misc', '', array('type' =>'text',  'label' => '&nbsp;',
         'text' => '
@@ -3427,6 +3427,9 @@ class CSl_positionEx extends CSl_position
       $revenue_array['refund_amount'] = filter_var(getValue('refund_amount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
       if (empty($revenue_array['refund_amount']))
         $revenue_array['refund_amount'] = 0;
+
+      if($revenue_array['refund_amount'] > $revenue_array['amount'])
+        return array('error' => 'Refund amount cannot be higher than invoice amount');
 
       $revenue_array['location'] = getValue('location');
       if(empty($revenue_array['location']))

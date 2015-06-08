@@ -87,10 +87,24 @@ function updatePaymentAmount(tag)
 {
   var full_salary = $('#full_salary').val();
   var salary_rate = $('#salary_rate').val();
+  var refund_amount = $('#refund_amount').val();
   if(!full_salary || isNaN(full_salary) || !salary_rate || isNaN(salary_rate))
     return false;
 
   var invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
+
+  if(!isNaN(refund_amount) || refund_amount > 0)
+  {
+    if (refund_amount > invoice_amount)
+    {
+      $('#refund_amount').css('border', '1px solid red');
+    }
+    else
+    {
+      invoice_amount -= refund_amount;
+      $('#refund_amount').css('border', '');
+    }
+  }
 
   $('#pla_amountId').val(invoice_amount);
 
@@ -111,6 +125,7 @@ function update_payment_percentage(tag)
   var invoice_amount = $('#pla_amountId').val();
   var full_salary = $('#full_salary').val();
   var salary_rate = $('#salary_rate').val();
+  var refund_amount = $('#refund_amount').val();
   var calculated_percentage;
 
   if (!invoice_amount)
@@ -122,6 +137,19 @@ function update_payment_percentage(tag)
     else
     {
       invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
+    }
+  }
+
+  if(!isNaN(refund_amount) || refund_amount > 0)
+  {
+    if (refund_amount > invoice_amount)
+    {
+      $('#refund_amount').css('border', '1px solid red');
+    }
+    else
+    {
+      invoice_amount -= refund_amount;
+      $('#refund_amount').css('border', '');
     }
   }
 
