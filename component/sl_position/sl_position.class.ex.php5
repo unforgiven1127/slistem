@@ -3462,7 +3462,7 @@ class CSl_positionEx extends CSl_position
             return array('error' => 'The amount value ['.$_POST['pay_amount'][$count].'] is incorrect on payment line #'.($count+1));
 
 
-          $split_amount+= (float)$_POST['pay_split'][$count];
+          $split_amount+= $_POST['pay_split'][$count];
 
           $user = (int)$_POST['pay_loginfk'][$count];
 
@@ -3474,14 +3474,14 @@ class CSl_positionEx extends CSl_position
             'loginpk' => $user,
             'user_position' => $user_data['position'],
             'percentage' => (float)$_POST['pay_split'][$count],
-            'split_amount' => (float)$_POST['pay_amount'][$count]);
+            'split_amount' => $_POST['pay_amount'][$count]);
 
           $paid_user[] = (int)$_POST['pay_loginfk'][$count];
         }
       }
 
       //check sum of splits
-      if($split_amount > 100)
+      if($split_amount > 100.0000001)
         return array('error' => 'The total split ['.$split_amount.'%] is exceeding 100% ');
       elseif($split_amount < 100)
         return array('error' => 'The total split ['.$split_amount.'%] is lower than 100% ');
