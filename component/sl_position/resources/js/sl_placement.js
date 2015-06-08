@@ -91,7 +91,7 @@ function updatePaymentAmount(tag)
   if(!full_salary || isNaN(full_salary) || !salary_rate || isNaN(salary_rate))
     return false;
 
-  var invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
+  var invoice_amount = (parseInt(full_salary) * (salary_rate / 100));
 
   if(!isNaN(refund_amount) || refund_amount > 0)
   {
@@ -106,7 +106,7 @@ function updatePaymentAmount(tag)
     }
   }
 
-  $('#pla_amountId').val(invoice_amount);
+  $('#pla_amountId').val(Math.round(invoice_amount));
 
   var payment_section = $(tag).closest('form').find('.payment_section');
 
@@ -136,7 +136,7 @@ function update_payment_percentage(tag)
     }
     else
     {
-      invoice_amount = Math.round(parseInt(full_salary) * (salary_rate / 100));
+      invoice_amount = parseInt(full_salary) * (salary_rate / 100);
     }
   }
 
