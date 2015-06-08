@@ -133,7 +133,7 @@ function update_payment_percentage(tag)
 
     if(!isNaN(split_amount) || !split_amount || split_amount > 0)
     {
-      calculated_percentage = parseFloat(split_amount / invoice_amount * 100).toFixed(2);
+      calculated_percentage = parseFloat(split_amount / invoice_amount * 100).toFixed(5);
 
       if (calculated_percentage > 0)
         $('#split'+field_index, payment_section).val(calculated_percentage);
