@@ -126,8 +126,8 @@
 }
 #placementFormId .payment_section .formFieldContainer .formField input
 {
-  width: 80px;
-  min-width: 80px;
+  width: 75px;
+  min-width: 75px;
   text-align: center;
 }
 
