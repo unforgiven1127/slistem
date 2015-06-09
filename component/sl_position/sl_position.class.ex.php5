@@ -3493,14 +3493,14 @@ class CSl_positionEx extends CSl_position
       if(empty($revenue_id))
       {
         // Last test:  check we're not creating a duplicate placement except for retainers
-        if ($revenue_array['candidate'] != 'retainer')
+        /*if ($revenue_array['candidate'] != 'retainer')
         {
           $check_existing_payment = $this->_getModel()->getByWhere('revenue', 'position = "'.$revenue_array['position'].'"');
 
           $bRead = $check_existing_payment->readFirst();
           if($bRead)
             return array('error' => 'There is already a placement for this position.');
-        }
+        }*/
         $revenue_array['status'] = 'signed';
 
         $revenue_id = $this->_getModel()->add($revenue_array, 'revenue');
