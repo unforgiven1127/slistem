@@ -88,16 +88,22 @@ function updatePaymentAmount(tag)
   var full_salary = $('#full_salary').val();
   var salary_rate = $('#salary_rate').val();
   var refund_amount = $('#refund_amount').val();
+  var check = false;
   if(!full_salary || isNaN(full_salary) || !salary_rate || isNaN(salary_rate))
-    return false;
+    check = true;
 
   var invoice_amount = (parseInt(full_salary) * (salary_rate / 100));
 
-  if(!isNaN(refund_amount) || refund_amount > 0)
+  if(!refund_amount && refund_amount > 0)
   {
-    if (refund_amount > invoice_amount)
+    if (refund_amount > invoice_amount && invoice_amount > 0)
     {
       $('#refund_amount').css('border', '1px solid red');
+    }
+    else if (!invoice_amount)
+    {
+      invoice_amount = refund_amount;
+      $('#refund_amount').css('border', '');
     }
     else
     {
@@ -105,6 +111,8 @@ function updatePaymentAmount(tag)
       $('#refund_amount').css('border', '');
     }
   }
+  else if (check)
+    return false;
 
   $('#pla_amountId').val(Math.round(invoice_amount));
 
@@ -127,12 +135,13 @@ function update_payment_percentage(tag)
   var salary_rate = $('#salary_rate').val();
   var refund_amount = $('#refund_amount').val();
   var calculated_percentage;
+  var check = false;
 
   if (!invoice_amount)
   {
     if (!full_salary && !salary_rate)
     {
-      return false;
+      check = true;
     }
     else
     {
@@ -140,11 +149,16 @@ function update_payment_percentage(tag)
     }
   }
 
-  if(!isNaN(refund_amount) || refund_amount > 0)
+  if(refund_amount && refund_amount > 0)
   {
-    if (refund_amount > invoice_amount)
+    if (refund_amount > invoice_amount && invoice_amount > 0)
     {
       $('#refund_amount').css('border', '1px solid red');
+    }
+    else if (invoice_amount === '')
+    {
+      invoice_amount = refund_amount;
+      $('#refund_amount').css('border', '');
     }
     else
     {
@@ -152,6 +166,8 @@ function update_payment_percentage(tag)
       $('#refund_amount').css('border', '');
     }
   }
+  else if (check)
+    return false;
 
   var payment_section = $(tag).closest('form').find('.payment_section');
 

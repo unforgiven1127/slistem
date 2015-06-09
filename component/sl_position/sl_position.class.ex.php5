@@ -3407,16 +3407,16 @@ class CSl_positionEx extends CSl_position
         return array('error' => 'The signed date is incorrect ');
 
 
-      $revenue_array['amount'] = filter_var(getValue('amount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-      if($revenue_array['amount'] < 10000)
-        return array('error' => 'Invoice amount is incorrect. Value must be > &yen; 10,000');
+      $revenue_array['amount'] = filter_var(getValue('amount', 0), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+      if (empty($revenue_array['amount']))
+        $revenue_array['amount'] = 0;
 
-      $revenue_array['salary'] = filter_var(getValue('salary'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-      if($revenue_array['salary'] < 10000)
-        return array('error' => 'Billable salary is incorrect. Value must be > &yen; 10,000');
+      $revenue_array['salary'] = filter_var(getValue('salary', 0), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+      if (empty($revenue_array['salary']))
+        $revenue_array['salary'] = 0;
 
-      $revenue_array['salary_rate'] = filter_var(getValue('rate'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-      if($revenue_array['salary_rate'] < 0 || $revenue_array['salary_rate'] > 100)
+      $revenue_array['salary_rate'] = filter_var(getValue('rate', 0), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+      if($revenue_array['salary_rate'] > 100)
         return array('error' => 'Invoice rate must be between 0 - 100 % [value: '.$revenue_array['salary_rate'].']');
 
       $revenue_array['comment'] = getValue('comment');
@@ -3424,17 +3424,21 @@ class CSl_positionEx extends CSl_position
 
       $revenue_array['currency'] = 'jpy';
 
-      $revenue_array['refund_amount'] = filter_var(getValue('refund_amount'), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+      $revenue_array['refund_amount'] = filter_var(getValue('refund_amount', 0), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
       if (empty($revenue_array['refund_amount']))
         $revenue_array['refund_amount'] = 0;
 
-      if($revenue_array['refund_amount'] > $revenue_array['amount'])
+      if($revenue_array['refund_amount'] > $revenue_array['amount'] && $revenue_array['amount'] > 0)
         return array('error' => 'Refund amount cannot be higher than invoice amount');
 
       $revenue_array['location'] = getValue('location');
       if(empty($revenue_array['location']))
         return array('error' => 'Location can\'t be empty.');
 
+
+      if (empty($revenue_array['amount']) && empty($revenue_array['salary']) &&
+          empty($revenue_array['salary_rate']) && empty($revenue_array['refund_amount']))
+        return array('error' => '');
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       //check payment rows
