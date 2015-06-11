@@ -94,7 +94,7 @@ function updatePaymentAmount(tag)
 
   var invoice_amount = (parseInt(full_salary) * (salary_rate / 100));
 
-  if(!refund_amount && refund_amount > 0)
+  if(refund_amount && refund_amount > 0)
   {
     if (refund_amount > invoice_amount && invoice_amount > 0)
     {
