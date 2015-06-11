@@ -29,12 +29,12 @@ var CPopup = function()
       title: null,
       buttons: {},
 
-      width: 400,
-      height: 210,
-      maxHeight:800,
-      maxWidth:1400,
-      minHeight:30,
-      minWidth:60,
+      width: 450,
+      height: 260,
+      maxHeight:850,
+      maxWidth:1450,
+      minHeight:40,
+      minWidth:70,
       position: {},
 
       autoOpen: true,
@@ -43,7 +43,7 @@ var CPopup = function()
       closeText: '',
       dialogClass: '',
       draggable: true,
-      resizable: true,
+      resizable: false,
 
       hide: {effect: 'fade', delay: 0, duration: 100},
       show:{effect: 'fade', delay: 0, duration: 250},
