@@ -108,13 +108,12 @@ function updatePaymentAmount(tag)
     else
     {
       invoice_amount -= refund_amount;
+      $('#pla_amountId').val(Math.round(invoice_amount));
       $('#refund_amount').css('border', '');
     }
   }
   else if (check)
     return false;
-
-  $('#pla_amountId').val(Math.round(invoice_amount));
 
   var payment_section = $(tag).closest('form').find('.payment_section');
 
