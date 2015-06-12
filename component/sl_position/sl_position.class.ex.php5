@@ -3225,7 +3225,7 @@ class CSl_positionEx extends CSl_position
       $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_PLACEMENT);
       $sJavascript = 'refreshPlacementForm(oItem, \''.$sURL.'\' ); ';
 
-      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD, 0, array('placement' => 1));
+      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD, 0, array('placement' => 0));
       $oForm->addField('selector', 'pla_cp_jd_key', array('label' => 'Company or position', 'url' => $sURL, 'onadd' => $sJavascript, 'required' => 1));
       $oForm->setFieldControl('pla_cp_jd_key', array('jsFieldNotEmpty' => 1));
       if(!empty($revenue_id))
