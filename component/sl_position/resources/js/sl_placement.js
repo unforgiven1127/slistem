@@ -89,6 +89,7 @@ function updatePaymentAmount(tag)
   var salary_rate = $('#salary_rate').val();
   var refund_amount = $('#refund_amount').val();
   var check = false;
+  var skip_invoice_amount = false;
   if(!full_salary || isNaN(full_salary) || !salary_rate || isNaN(salary_rate))
     check = true;
 
@@ -103,17 +104,20 @@ function updatePaymentAmount(tag)
     else if (!invoice_amount)
     {
       invoice_amount = refund_amount;
+      skip_invoice_amount = true;
       $('#refund_amount').css('border', '');
     }
     else
     {
       invoice_amount -= refund_amount;
-      $('#pla_amountId').val(Math.round(invoice_amount));
       $('#refund_amount').css('border', '');
     }
   }
   else if (check)
     return false;
+
+  if (!skip_invoice_amount)
+    $('#pla_amountId').val(Math.round(invoice_amount));
 
   var payment_section = $(tag).closest('form').find('.payment_section');
 
