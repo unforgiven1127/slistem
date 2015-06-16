@@ -888,7 +888,7 @@ class CSl_statModelEx extends CSl_statModel
 
     $query = 'SELECT COUNT(id) AS placed';
     $query .= ' FROM revenue';
-    $query .= ' WHERE closed_by = '.$user_id.' AND candidate != "retainer"';
+    $query .= ' WHERE closed_by = '.$user_id.' AND placement_count = "yes"';
     $query .= ' AND date_due BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
 
     $db_result = $this->oDB->executeQuery($query);

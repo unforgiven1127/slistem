@@ -3277,6 +3277,21 @@ class CSl_positionEx extends CSl_position
 
       $oForm->addField('misc', '', array('type' => 'br'));
 
+      $placement_count = $oDdPlacement->getFieldValue('placement_count');
+
+      if($placement_count === 'no')
+      {
+        $oForm->addField('checkbox', 'placement_count', array('legend' => 'Count as placement',
+          'value' => 'yes'));
+      }
+      else
+      {
+        $oForm->addField('checkbox', 'placement_count', array('legend' => 'Count as placement',
+          'value' => 'yes', 'checked' => 'checked'));
+      }
+
+      $oForm->addField('misc', '', array('type' => 'br'));
+
 
       $oForm->addField('input', 'date_signed', array('type' => 'date', 'label' => 'Date signed', 'value' => $oDdPlacement->getFieldValue('date_signed')));
       $oForm->setFieldControl('date_signed', array('jsFieldNotEmpty' => 1, 'jsFieldMinSize' => 10));
@@ -3422,6 +3437,8 @@ class CSl_positionEx extends CSl_position
       $revenue_array['comment'] = getValue('comment');
       $revenue_array['status'] = getValue('revenue_status');
 
+      $revenue_array['placement_count'] = getValue('placement_count', 'no');
+
       $revenue_array['currency'] = 'jpy';
 
       $revenue_array['refund_amount'] = filter_var(getValue('refund_amount', 0), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
@@ -3515,7 +3532,7 @@ class CSl_positionEx extends CSl_position
       {
         $update = $this->_getModel()->update($revenue_array, 'revenue', 'id = '.$revenue_id);
         if(!$update)
-          return array('error' => __LINE__.' - Could not save the placement');
+          return array('error' => __LINE__.' - Could not update the placement');
 
         //need to delete the payment
         $this->_getModel()->deleteByWhere('revenue_member', 'revenue_id = '.$revenue_id);

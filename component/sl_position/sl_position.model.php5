@@ -77,6 +77,7 @@ class CSl_positionModel extends CModel
     $this->_tableMap['revenue']['comment'] = array();
     $this->_tableMap['revenue']['currency'] = array();
     $this->_tableMap['revenue']['status'] = array();
+    $this->_tableMap['revenue']['placement_count'] = array();
     $this->_tableMap['revenue']['location'] =  array('controls'=>array('!empty(%)'), 'type'=>'text');
 
     $this->_tableMap['revenue_member']['id'] = array('controls'=>array('is_null(%) || is_key(%)'),'type'=>'int','index' => '');
