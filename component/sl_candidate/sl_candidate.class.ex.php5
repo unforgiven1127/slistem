@@ -8494,41 +8494,67 @@ die();*/
     private function merge_candidate_profiles($origin_id, $target_id)
     {
       $model_object = new CModel(true);
-
-      $where = "sl_candidatepk IN ($origin_id, $target_id)";
-
-      $result = $model_object->getByWhere('sl_candidate', $where);
-      $read = $result->readFirst();
-
       $candidate_data = array();
       $false_name_array = array('mr', 'ms', 'mr.', 'ms.', 'mrs', 'mrs.');
       $older_entry = 'target';
+      $swap = false;
 
-      while($read)
-      {
-        $raw_data = $result->getData();
+      // origin cadidate info
+      $query = 'SELECT sl_candidate.*, sl_position_link.date_created AS link_date,';
+      $query .= ' sl_candidate_profile.date_updated';
+      $query .= ' FROM sl_candidate';
+      $query .= ' LEFT JOIN  sl_position_link';
+      $query .= ' ON sl_position_link.candidatefk = '.$origin_id.' AND status = 101';
+      $query .= ' LEFT JOIN  sl_candidate_profile';
+      $query .= ' ON sl_candidate_profile.candidatefk = '.$origin_id;
+      $query .= ' WHERE sl_candidate.sl_candidatepk = '.$origin_id;
 
-        if ($raw_data['sl_candidatepk'] == $origin_id)
-          $candidate_data['origin'] = $raw_data;
-        else if ($raw_data['sl_candidatepk'] == $target_id)
-          $candidate_data['target'] = $raw_data;
+      $result = $this->_getModel()->executeQuery($query);
+      $read = $result->readFirst();
 
-        $read = $result->readNext();
-      }
+      $raw_data = $result->getData();
+
+      $candidate_data['origin'] = $raw_data;
+
+      // target cadidate info
+      $query = 'SELECT sl_candidate.*, sl_position_link.date_created AS link_date,';
+      $query .= ' sl_candidate_profile.date_updated';
+      $query .= ' FROM sl_candidate';
+      $query .= ' LEFT JOIN sl_position_link';
+      $query .= ' ON sl_position_link.candidatefk = '.$target_id.' AND status = 101';
+      $query .= ' LEFT JOIN sl_candidate_profile';
+      $query .= ' ON sl_candidate_profile.candidatefk = '.$target_id;
+      $query .= ' WHERE sl_candidate.sl_candidatepk = '.$target_id;
+
+      $result = $this->_getModel()->executeQuery($query);
+      $read = $result->readFirst();
+
+      $raw_data = $result->getData();
+
+      $candidate_data['target'] = $raw_data;
 
       $adjusted_candidate_ids = array('target' => $candidate_data['target']['sl_candidatepk'],
         'origin' => $candidate_data['origin']['sl_candidatepk']);
 
-      if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
+      if (!empty($candidate_data['origin']['link_date']) || !empty($candidate_data['target']['link_date']))
+      {
+        if (strtotime($candidate_data['origin']['link_date']) > strtotime($candidate_data['target']['link_date']))
+          $swap = true;
+      }
+      else if (strtotime($candidate_data['origin']['date_updated']) > strtotime($candidate_data['target']['date_updated']))
+        $swap = true;
+      else if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
+        $swap = true;
+
+      if ($swap)
       {
         $older_entry = 'origin';
         $adjusted_candidate_ids = array('target' => $candidate_data['origin']['sl_candidatepk'],
           'origin' => $candidate_data['target']['sl_candidatepk']);
       }
 
-
       // merge sl_candidate part
-      $skip_columns = array('sl_candidatepk', '_sys_status', '_sys_redirect');
+      $skip_columns = array('sl_candidatepk', '_sys_status', '_sys_redirect', 'link_date', 'date_updated');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
@@ -8595,11 +8621,11 @@ die();*/
       }
 
       $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'uid');
-      $newer_fields = array('date_updated', 'companyfk', 'department', 'title', 'industryfk', 'occupationfk', 'salary');
+      // $newer_fields = array('date_updated', 'companyfk', 'department', 'title', 'industryfk', 'occupationfk', 'salary');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
-        if (in_array($key, $newer_fields))
+        /*if (in_array($key, $newer_fields))
         {
           if (!empty($candidate_data['target']['date_updated']) && !empty($candidate_data['origin']['date_updated']))
           {
@@ -8617,7 +8643,7 @@ die();*/
           }
 
           continue;
-        }
+        }*/
 
         if (in_array($key, $skip_columns))
           unset($candidate_data['target'][$key]);
