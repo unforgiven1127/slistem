@@ -1493,7 +1493,7 @@ $asArray = array();
         'action' => 'ppaa',
         'pk' => 0,
         'ajaxpopup' => 1,
-        'popup__width' => 1080,
+        'popup__width' => 1070,
         'popup__height' => 725,
         'right' => array ('logged')
       ),
@@ -1867,10 +1867,13 @@ $asArray = array();
 );
 
  $sString = base64_encode(serialize($asArray));
- echo 'Serialize menu:<br />'.$sString;
+?>
 
- echo '<br /><hr><br />Detail:<br /><pre>';
- var_dump($asArray);
- echo '</pre>';
+Serialize menu:<br /><br />
+<div style="width: 1800px; word-wrap: break-word;">
+  <?php echo $sString; ?>
+</div>
 
-
+<br /><hr><br />Detail:<br /><pre>
+<?php  var_dump($asArray); ?>
+</pre>
