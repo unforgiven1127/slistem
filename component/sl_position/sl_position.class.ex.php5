@@ -684,6 +684,7 @@ class CSl_positionEx extends CSl_position
       $pbAllPosition = (bool)getValue('all_pos', 0);
       $bActive = (bool)getValue('pos_active', 0);
       $bPlacement = (bool)getValue('placement', 0);
+      $placement_manager = (bool)getValue('placement_manager', 0);
 
       $poQB = $this->_getModel()->getQueryBuilder();
       $poQB->setTable('sl_company', 'scom');
@@ -761,14 +762,15 @@ class CSl_positionEx extends CSl_position
         $asPosition = $oDbResult->getData();
         $asPosition['name'] = preg_replace('/[^a-z0-9 &]/i', '', $asPosition['name']);
 
-        if($bPlacement && isset($asPosition['status']))
+        if($bPlacement && empty($asPosition['status']))
           $sFilled = '[closed]';
         else
           $sFilled = '';
 
         $asEntry = array();
 
-        if($pbAllPosition || $sFilled == '[closed]' || (isset($asPosition['status']) && $asPosition['sl_positionpk'] > 0))
+        if($pbAllPosition || (int)$asPosition['status'] === 1
+          || $sFilled == '[closed]' || $placement_manager)
         {
           $bAvailablePosition = true;
           $asEntry['id'] = $asPosition['sl_companypk'].'_'.$asPosition['sl_positionpk'];
@@ -3225,7 +3227,8 @@ class CSl_positionEx extends CSl_position
       $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_PLACEMENT);
       $sJavascript = 'refreshPlacementForm(oItem, \''.$sURL.'\' ); ';
 
-      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD, 0, array('placement' => 0));
+      $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD, 0,
+        array('placement' => 0, 'placement_manager' => 1));
       $oForm->addField('selector', 'pla_cp_jd_key', array('label' => 'Company or position', 'url' => $sURL, 'onadd' => $sJavascript, 'required' => 1));
       $oForm->setFieldControl('pla_cp_jd_key', array('jsFieldNotEmpty' => 1));
       if(!empty($revenue_id))
