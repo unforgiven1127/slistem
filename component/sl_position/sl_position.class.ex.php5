@@ -761,14 +761,14 @@ class CSl_positionEx extends CSl_position
         $asPosition = $oDbResult->getData();
         $asPosition['name'] = preg_replace('/[^a-z0-9 &]/i', '', $asPosition['name']);
 
-        if($bPlacement && empty($asPosition['status']))
+        if($bPlacement && isset($asPosition['status']))
           $sFilled = '[closed]';
         else
           $sFilled = '';
 
         $asEntry = array();
 
-        if($pbAllPosition || (int)$asPosition['status'] === 1 || $sFilled == '[closed]')
+        if($pbAllPosition || $sFilled == '[closed]' || (isset($asPosition['status']) && $asPosition['sl_positionpk'] > 0))
         {
           $bAvailablePosition = true;
           $asEntry['id'] = $asPosition['sl_companypk'].'_'.$asPosition['sl_positionpk'];
