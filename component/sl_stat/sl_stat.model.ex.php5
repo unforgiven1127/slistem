@@ -38,21 +38,25 @@ class CSl_statModelEx extends CSl_statModel
     return $asData;
   }
 
-  public function getSicChartMet($panUserPk, $psDateStart, $psDateEnd)
+  public function getSicChartMet($panUserPk, $psDateStart, $psDateEnd, $group = 'researcher')
   {
     if(!assert('is_arrayOfInt($panUserPk)'))
       return array();
 
+    $group_switch = 'created_by';
+
+    if ($group == 'consultant')
+      $group_switch = 'attendeefk';
+
     //no weight difference between phone and live meetings
-    $sQuery = 'SELECT count(*) as nCount, attendeefk, DATE_FORMAT(date_meeting, "%Y-%m") as sMonth, meeting_done
+    $sQuery = 'SELECT count(sl_meetingpk) as nCount, attendeefk, DATE_FORMAT(date_met, "%Y-%m") as sMonth, meeting_done
       FROM sl_meeting
-      WHERE attendeefk IN ('.implode(',', $panUserPk).')
-      AND date_meeting >= '.$this->oDB->dbEscapeString($psDateStart).' AND date_meeting < '.$this->oDB->dbEscapeString($psDateEnd).'
+      WHERE '.$group_switch.' IN ('.implode(',', $panUserPk).')
+      AND date_met BETWEEN '.$this->oDB->dbEscapeString($psDateStart).' AND '.$this->oDB->dbEscapeString($psDateEnd).'
 
-      GROUP BY sMonth, attendeefk, meeting_done
-      ORDER BY sMonth ';
+      GROUP BY attendeefk
+      ORDER BY sMonth';
 
-    //echo $sQuery;
     $asData = array();
 
     $oDbResult = $this->oDB->executeQuery($sQuery);
@@ -395,34 +399,61 @@ class CSl_statModelEx extends CSl_statModel
 
 
 
-  public function getKpiSetVsMet($panUserPk, $psDateStart, $psDateEnd)
+  public function getKpiSetVsMet($user_ids, $start_date, $end_date, $group = 'researcher')
   {
-    if(!assert('is_arrayOfInt($panUserPk)'))
+    if(!assert('is_arrayOfInt($user_ids)'))
       return array();
 
-    $sQuery = 'SELECT COUNT(sl_meetingpk) as nSet, smee.created_by, smee.date_created, smee.date_met,
-      SUM( IF(smee.date_met BETWEEN "'.$psDateStart.'" AND "'.$psDateEnd.'", 1, 0)) as nMet
-      FROM sl_meeting as smee
+    $group_switch = 'created_by';
 
-      WHERE smee.created_by IN ('.implode(',', $panUserPk).')
-        AND smee.created_by <> smee.attendeefk
-        AND smee.date_meeting BETWEEN "'.$psDateStart.'" AND "'.$psDateEnd.'"
+    if ($group == 'consultant')
+      $group_switch = 'attendeefk';
 
-      GROUP BY smee.created_by
-      ORDER BY nSet DESC ';
+    $query = 'SELECT COUNT(sl_meetingpk) as meetings_set, created_by, date_meeting, attendeefk';
+    $query .= ' FROM sl_meeting';
+    $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
+    $query .= ' AND date_meeting BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+    $query .= ' GROUP BY attendeefk';
 
+    $data = array();
 
-    $asData = array();
-
-    $oDbResult = $this->oDB->executeQuery($sQuery);
-    $bRead = $oDbResult->readFirst();
-    while($bRead)
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+    while($read)
     {
-      $asData[$oDbResult->getFieldValue('created_by')] = $oDbResult->getData();
-      $bRead = $oDbResult->readNext();
+      if (!isset($data[$db_result->getFieldValue($group_switch)]))
+      {
+        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_meeting' => '',
+          'met' => 0, 'date_met' => '');
+      }
+      $temp = $db_result->getData();
+      $data[$db_result->getFieldValue($group_switch)]['set'] = $temp['meetings_set'];
+      $data[$db_result->getFieldValue($group_switch)]['date_meeting'] = $temp['date_meeting'];
+      $read = $db_result->readNext();
     }
 
-    return $asData;
+    $query = 'SELECT COUNT(sl_meetingpk) as meetings_met, created_by, date_met, attendeefk';
+    $query .= ' FROM sl_meeting';
+    $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
+    $query .= ' AND date_met BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+    $query .= ' GROUP BY attendeefk';
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+    while($read)
+    {
+      if (!isset($data[$db_result->getFieldValue($group_switch)]))
+      {
+        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_meeting' => '',
+          'met' => 0, 'date_met' => '');
+      }
+      $temp = $db_result->getData();
+      $data[$db_result->getFieldValue($group_switch)]['met'] = $temp['meetings_met'];
+      $data[$db_result->getFieldValue($group_switch)]['date_met'] = $temp['date_met'];
+      $read = $db_result->readNext();
+    }
+
+    return $data;
   }
 
   public function getKpiInPlay($panUserPk, $psDateStart, $psDateEnd)

@@ -248,6 +248,7 @@ class CSl_statEx extends CSl_stat
       $this->cbInAjax = $pbInJax;
       $this->cnWindowSize = 1;
       $nGroup = (int)getValue('groupfk', 0);
+      $group_name = getValue('group_name', 'researcher');
       $bChartOnly = (bool)getValue('chart_only', 0);
       $sChartType = getValue('chart_type', 'column');
       $this->cbWatercooler = (bool)getValue('watercooler');
@@ -586,7 +587,10 @@ class CSl_statEx extends CSl_stat
               $(\'#loginfkId\').tokenInput(\'clear\');
 
               var asCons = $(this).val().split(\'||\');
-              //console.log(asCons);
+
+              var group_name = $(this).children(\':selected\').text();
+              $(\'#group_name\').val(group_name);
+
               $(asCons).each(function(nIndex, sValue)
               {
                 var asValue = sValue.split(\'@@\');
@@ -619,6 +623,9 @@ class CSl_statEx extends CSl_stat
         {
           $oForm->addOption('loginfk', array('label' => $asUserData['pseudo'], 'value' => $nUserPk, 'selected' => 'selected'));
         }
+
+        $oForm->addField('input', 'group_name', array('type' => 'hidden', 'value' => $group_name,
+          'id' => 'group_name'));
 
         $sHTML.= $oForm->getDisplay();
 
@@ -894,10 +901,11 @@ class CSl_statEx extends CSl_stat
 
     public function getSicData($panUser, $psDateStart, $psDateEnd)
     {
+      $group_name = strtolower(getValue('group_name', 'researcher'));
       $asStatData = array();
       $asStatData['target'] = $this->_getModel()->getSicChartTarget($panUser);
       $asStatData['new'] = $this->_getModel()->getSicChartNew($panUser, $psDateStart, $psDateEnd);
-      $asStatData['met'] = $this->_getModel()->getSicChartMet($panUser, $psDateStart, $psDateEnd);
+      $asStatData['met'] = $this->_getModel()->getSicChartMet($panUser, $psDateStart, $psDateEnd, $group_name);
       $asStatData['play'] = $this->_getModel()->getSicChartPlay($panUser, $psDateStart, $psDateEnd);
       $asStatData['position'] = $this->_getModel()->getSicChartPosition($panUser, $psDateStart, $psDateEnd);
 
@@ -912,6 +920,7 @@ class CSl_statEx extends CSl_stat
       $oInterval = $oDateEnd->diff($oDateStart);
       $nMonth = ((int)$oInterval->format('%y') * 12) + (int)$oInterval->format('%m') + 1;  //aug to dec ...displays aug and december stats
 
+      $group_name = strtolower(getValue('group_name', 'researcher'));
 
       $oChart = CDependency::getComponentByName('charts');
       $oChart->includeChartsJs(true);
@@ -925,7 +934,7 @@ class CSl_statEx extends CSl_stat
 
       $asStatData['target'] = $this->_getModel()->getSicChartTarget($anUser);
       $asStatData['new'] = $this->_getModel()->getSicChartNew($anUser, $sDateStart, $sDateEnd);
-      $asStatData['met'] = $this->_getModel()->getSicChartMet($anUser, $sDateStart, $sDateEnd);
+      $asStatData['met'] = $this->_getModel()->getSicChartMet($anUser, $sDateStart, $sDateEnd, $group_name);
       $asStatData['play'] = $this->_getModel()->getSicChartPlay($anUser, $sDateStart, $sDateEnd);
       $asStatData['position'] = $this->_getModel()->getSicChartPosition($anUser, $sDateStart, $sDateEnd);
 
@@ -2267,7 +2276,7 @@ class CSl_statEx extends CSl_stat
       $sPeriod = getValue('period', 'month');
       $nYear = getValue('year', 0);
 
-      //dump($sPeriod);
+
         switch($sPeriod)
         {
           case 'q':
@@ -2472,9 +2481,9 @@ class CSl_statEx extends CSl_stat
     {
       // --------------------------------------------------
       //Time to merge all the different stats for each user
-      $asData = $this->_getModel()->getSicChartMet($panUser, $psDateStart, $psDateEnd);
-      //dump($asData);
+      $group_name = strtolower(getValue('group_name', 'researcher'));
 
+      $asData = $this->_getModel()->getSicChartMet($panUser, $psDateStart, $psDateEnd, $group_name);
       $asChartData = array();
       $nUser = count($panUser) - 2;
       $nCount = 0;
@@ -2652,7 +2661,9 @@ class CSl_statEx extends CSl_stat
     {
       // --------------------------------------------------
       //Time to merge all the different stats for each user
-      $asData = $this->_getModel()->getKpiSetVsMet($panUser, $psDateStart, $psDateEnd);
+      $group_name = strtolower(getValue('group_name', 'researcher'));
+
+      $asData = $this->_getModel()->getKpiSetVsMet($panUser, $psDateStart, $psDateEnd, $group_name);
       $asChartData = array();
 
       foreach($panUser as $nLoginPk)
@@ -2660,13 +2671,17 @@ class CSl_statEx extends CSl_stat
         if(isset($asData[$nLoginPk]))
           $asStat = $asData[$nLoginPk];
         else
-          $asStat = array('nSet' => 0, 'nMet' => 0);
+          $asStat = array('set' => 0, 'met' => 0);
 
         $sUserName = $this->casAllUserData[$nLoginPk]['pseudo'];
 
 
-        $asChartData['met'][$sUserName] = $asStat['nMet'];
-        $asChartData['set'][$sUserName] = ($asStat['nSet'] - $asStat['nMet']);
+        $asChartData['met'][$sUserName] = $asStat['met'];
+
+        $asChartData['set'][$sUserName] = $asStat['set'] - $asStat['met'];
+
+        if ($asChartData['set'][$sUserName] < 0)
+          $asChartData['set'][$sUserName] = 0;
 
         $asChartData['total'][$sUserName] = $asChartData['met'][$sUserName] + $asChartData['set'][$sUserName];
       }
