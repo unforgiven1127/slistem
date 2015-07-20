@@ -89,16 +89,7 @@ SetEnvIf REAL_ADDR "^119\.240\.75\.6$" AllowAccess
 SetEnvIf REAL_ADDR "^209\.145\.120\.7$" AllowAccess
 
 ## 2010-09-30 dt#td  Ray and Pam home
-SetEnvIf REAL_ADDR "^222\.229\.22\.94$" AllowAccess
-
-## 2010-09-30 dt#td for Ray and Pam 2
-SetEnvIf REAL_ADDR "^222\.229\.220\.94$" AllowAccess
-
-## 2012-09-02 dt#td From Ray
-SetEnvIf REAL_ADDR "^124\.155\.40\.41$" AllowAccess
-
-## 2013-07-12 dt#td Ray home new
-SetEnvIf REAL_ADDR "^124\.155\.54\.210$" AllowAccess
+SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
 
 #John Canada
 SetEnvIf REAL_ADDR "^69\.176\.163\.134$" AllowAccess
