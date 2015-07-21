@@ -80,9 +80,6 @@ SetEnvIf REAL_ADDR "^153\.205\.217\.229$" AllowAccess
 ## Abegail
 SetEnvIf REAL_ADDR "^112\.198\.132\.193$" AllowAccess
 
-## 2014-09-25 dt#td Larry
-SetEnvIf REAL_ADDR "^119\.240\.75\.6$" AllowAccess
-
 #-> Canada
 
 ## Slate Canada
