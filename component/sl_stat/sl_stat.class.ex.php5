@@ -2341,8 +2341,8 @@ class CSl_statEx extends CSl_stat
             break;
         }
 
-      $oDateStart = new DateTime($sDateStart);
-      $oDateEnd = new DateTime($sDateEnd);
+      $oDateStart = new DateTime($sDateStart.' 00:00:00');
+      $oDateEnd = new DateTime($sDateEnd.' 23:59:59');
       $oInterval = $oDateEnd->diff($oDateStart);
       $nMonth = ((int)$oInterval->format('%y') * 12) + (int)$oInterval->format('%m') + 1;  //aug to dec ...displays aug and december stats
 
