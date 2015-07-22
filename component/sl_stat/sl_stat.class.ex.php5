@@ -602,12 +602,12 @@ class CSl_statEx extends CSl_stat
               });
 
         '));
-        $oForm->addOption('groupfk', array('label' => '-', 'value' => $this->casUserData['loginpk'].'@@'.$this->casUserData['pseudo']));
+        $oForm->addOption('groupfk', array('label' => '-', 'value' => $this->casUserData['loginpk'].'@@'.$this->casUserData['id']));
         foreach($this->casUserByGroup as $asUData)
         {
           $asUserList = array();
           foreach($asUData as $nUserPk => $asUdetail)
-            $asUserList[] = $asUdetail['loginpk'].'@@'.$asUdetail['pseudo'];
+            $asUserList[] = $asUdetail['loginpk'].'@@'.$asUdetail['id'];
 
           if($nGroup == $asUdetail['login_groupfk'])
             $oForm->addOption('groupfk', array('label' => $asUdetail['group_label'], 'value' => implode('||', $asUserList)));
@@ -621,7 +621,7 @@ class CSl_statEx extends CSl_stat
 
         foreach($asUser as $nUserPk => $asUserData)
         {
-          $oForm->addOption('loginfk', array('label' => $asUserData['pseudo'], 'value' => $nUserPk, 'selected' => 'selected'));
+          $oForm->addOption('loginfk', array('label' => $asUserData['id'], 'value' => $nUserPk, 'selected' => 'selected'));
         }
 
         $oForm->addField('input', 'group_name', array('type' => 'hidden', 'value' => $group_name,
