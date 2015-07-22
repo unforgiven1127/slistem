@@ -409,11 +409,11 @@ class CSl_statModelEx extends CSl_statModel
     if ($group == 'consultant')
       $group_switch = 'attendeefk';
 
-    $query = 'SELECT COUNT(sl_meetingpk) as meetings_set, created_by, date_meeting, attendeefk';
+    $query = 'SELECT COUNT(DISTINCT candidatefk) as meetings_set, created_by, date_created, attendeefk';
     $query .= ' FROM sl_meeting';
     $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
-    $query .= ' AND date_meeting BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' GROUP BY attendeefk';
+    $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+    $query .= ' GROUP BY '.$group_switch;
 
     $data = array();
 
@@ -423,20 +423,20 @@ class CSl_statModelEx extends CSl_statModel
     {
       if (!isset($data[$db_result->getFieldValue($group_switch)]))
       {
-        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_meeting' => '',
+        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_created' => '',
           'met' => 0, 'date_met' => '');
       }
       $temp = $db_result->getData();
       $data[$db_result->getFieldValue($group_switch)]['set'] = $temp['meetings_set'];
-      $data[$db_result->getFieldValue($group_switch)]['date_meeting'] = $temp['date_meeting'];
+      $data[$db_result->getFieldValue($group_switch)]['date_created'] = $temp['date_created'];
       $read = $db_result->readNext();
     }
 
-    $query = 'SELECT COUNT(sl_meetingpk) as meetings_met, created_by, date_met, attendeefk';
+    $query = 'SELECT COUNT(DISTINCT candidatefk) as meetings_met, created_by, date_met, attendeefk';
     $query .= ' FROM sl_meeting';
     $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
     $query .= ' AND date_met BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' GROUP BY attendeefk';
+    $query .= ' GROUP BY '.$group_switch;
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
