@@ -261,6 +261,15 @@ class CCandi_row extends CTemplate
 
       $nColNumber = 9;
 
+      if(isset($pasHeader['position_play_company']))
+      {
+        set_array($pasColumnParam[$nColNumber]['tag'], '');
+        $asOption = array('class' => $pasColumnParam[$nColNumber]['tag']);
+        $sHTML.= $oDisplay->getBloc('', $pasData['position_play_company'], $asOption);
+
+        $nColNumber++;
+      }
+
       if(isset($pasData['activity']))
       {
         set_array($pasColumnParam[$nColNumber]['tag'], '');
@@ -329,15 +338,6 @@ class CCandi_row extends CTemplate
         set_array($pasColumnParam[$nColNumber]['tag'], '');
         $asOption = array('class' => $pasColumnParam[$nColNumber]['tag'].' alignCenter');
         $sHTML.= $oDisplay->getBloc('', $pasData['age'], $asOption);
-
-        $nColNumber++;
-      }
-
-      if(isset($pasHeader['position_play_company']))
-      {
-        set_array($pasColumnParam[$nColNumber]['tag'], '');
-        $asOption = array('class' => $pasColumnParam[$nColNumber]['tag']);
-        $sHTML.= $oDisplay->getBloc('', $pasData['position_play_company'], $asOption);
 
         $nColNumber++;
       }

@@ -2783,11 +2783,11 @@ class CSl_candidateEx extends CSl_candidate
           //if we need to display play data, we shrink other columns
           if($bDisplayPositionField)
           {
-            $sFistnameW = '10.5%'; $sLastnameW = '10%'; $sCompanyW = '16%'; $sTitleW = '10%'; $sDeptW = '9%';
+            $sFistnameW = '10%'; $sLastnameW = '10%'; $sCompanyW = '14%'; $sTitleW = '10%'; $sDeptW = '9%';
           }
           else
           {
-            $sFistnameW = '13.5%'; $sLastnameW = '13%'; $sCompanyW = '20%'; $sTitleW = '11.5%'; $sDeptW = '10%';
+            $sFistnameW = '13%'; $sLastnameW = '13%'; $sCompanyW = '18%'; $sTitleW = '11%'; $sDeptW = '10%';
           }
 
           $oConf->addColumn('C', 'cp_client', array('id' => '', 'width' => '16', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
@@ -2801,8 +2801,8 @@ class CSl_candidateEx extends CSl_candidate
 
           if($bDisplayPositionField)
           {
-            $oConf->addColumn('Play for - position', 'activity', array('id' => '', 'width' => '13%'));
-            $oConf->addColumn('Play for - company', 'position_play_company', array('id' => '', 'width' => '13%'));
+            $oConf->addColumn('In play at', 'position_play_company', array('id' => '', 'width' => '10%'));
+            $oConf->addColumn('In play for', 'activity', array('id' => '', 'width' => '15%'));
           }
           else
           {
