@@ -2254,7 +2254,7 @@ class CSl_positionEx extends CSl_position
         else
           $sClass = 'compact';
 
-        $oForm->setFieldDisplayParams('company', array('class' => $sClass, 'onclick' => 'expandField(this);'));
+        $oForm->setFieldDisplayParams('company', array('class' => $sClass, 'onclick' => 'expandField(this);', 'style' => 'z-index: 5;'));
 
 
         $oForm->addField('input', 'pos_date', array('type' => 'date', 'label' => 'Date', 'range' => 1, 'value' => $sPositionDate));
