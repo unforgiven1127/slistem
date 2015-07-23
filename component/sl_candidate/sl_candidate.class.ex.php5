@@ -2670,7 +2670,7 @@ class CSl_candidateEx extends CSl_candidate
         else
           $asCandidate['k'] = $oLogin->getUserLink((int)$asCandidate['created_by'], true);
 
-        $asCandidate['n'] = $asCandidate['position_play_company'];
+        $asCandidate['n'] = $asCandidate['title'];
 
         if($bDisplayPositionField)
         {
