@@ -333,6 +333,15 @@ class CCandi_row extends CTemplate
         $nColNumber++;
       }
 
+      if(isset($pasHeader['position_play_company']))
+      {
+        set_array($pasColumnParam[$nColNumber]['tag'], '');
+        $asOption = array('class' => $pasColumnParam[$nColNumber]['tag']);
+        $sHTML.= $oDisplay->getBloc('', $pasData['position_play_company'], $asOption);
+
+        $nColNumber++;
+      }
+
       //salary
       if(isset($pasHeader['salary']))
       {

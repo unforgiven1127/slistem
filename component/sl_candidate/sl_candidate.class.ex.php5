@@ -2597,7 +2597,7 @@ class CSl_candidateEx extends CSl_candidate
       //dump($poQB);
       $sQuery = $poQB->getCountSql();
 
-      //echo $sQuery;
+
       $oDbResult = $oDb->ExecuteQuery($sQuery);
       $bRead = $oDbResult->readFirst();
       if(!$bRead || (int)$oDbResult->getFieldValue('nCount') == 0)
@@ -2631,7 +2631,7 @@ class CSl_candidateEx extends CSl_candidate
         }
       }
 
-      //echo $sQuery;
+
       $oDbResult = $oDb->ExecuteQuery($sQuery);
       $bRead = $oDbResult->readFirst();
 
@@ -2670,23 +2670,23 @@ class CSl_candidateEx extends CSl_candidate
         else
           $asCandidate['k'] = $oLogin->getUserLink((int)$asCandidate['created_by'], true);
 
-        $asCandidate['n'] = $asCandidate['title'];
+        $asCandidate['n'] = $asCandidate['position_play_company'];
 
         if($bDisplayPositionField)
         {
           if($asCandidate['_in_play'] == 1)
           {
-            $asCandidate['activity'] = $oLogin->getUserName((int)$asCandidate['playing_for'], true).' - #'.$asCandidate['position_play'];
+            $asCandidate['activity'] = '#'.$asCandidate['position_play'].' - '.$asCandidate['position_play_name'];
           }
           elseif($asCandidate['_in_play'] > 1)
           {
-            $asCandidate['activity'] = $asCandidate['_in_play'].' positions: #'.$asCandidate['position_play'].'...';
+            $asCandidate['activity'] = $asCandidate['_in_play'].' positions: #'.$asCandidate['position_play_name'].'...';
           }
           else
           {
             if(!empty($asCandidate['position_play']))
             {
-              $asCandidate['activity'] = '<em> positions: #'.$asCandidate['position_play'].'</em>';
+              $asCandidate['activity'] = '<em> positions: #'.$asCandidate['position_play_name'].'</em>';
             }
             else
               $asCandidate['activity'] = '';
@@ -2802,11 +2802,15 @@ class CSl_candidateEx extends CSl_candidate
           if($bDisplayPositionField)
           {
             $oConf->addColumn('Play for - position', 'activity', array('id' => '', 'width' => '13%'));
+            $oConf->addColumn('Play for - company', 'position_play_company', array('id' => '', 'width' => '13%'));
           }
-
-          //~150px
-          if(in_array('title', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Title', 'title', array('id' => '', 'width' => $sTitleW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+          else
+          {
+            //~150px
+            if(in_array('title', $this->casSettings['candi_list_field']))
+              $oConf->addColumn('Title', 'title', array('id' => '', 'width' => $sTitleW,
+                'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+          }
 
           if(in_array('department', $this->casSettings['candi_list_field']))
             $oConf->addColumn('Department', 'department', array('id' => '', 'width' => $sDeptW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
@@ -3079,7 +3083,14 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       if($pbPosField)
-        $poQB->addSelect('spli.positionfk as position_play, spli.created_by as playing_for ');
+      {
+        $poQB->addSelect('spli.positionfk as position_play, spli.created_by as playing_for,
+          spd.title as position_play_name, scom_2.name as position_play_company ');
+
+        $poQB->addJoin('left', 'sl_position_detail', 'spd', 'spd.positionfk = spli.positionfk');
+        $poQB->addJoin('left', 'sl_position', 'spos', 'spos.sl_positionpk = spli.positionfk');
+        $poQB->addJoin('left', 'sl_company', 'scom_2', 'scom_2.sl_companypk = spos.companyfk');
+      }
 
       return true;
     }
