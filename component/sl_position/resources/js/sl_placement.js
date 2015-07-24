@@ -34,7 +34,6 @@ function refreshPlacementForm(poItem, psUrl)
       $.each(oJson.data, function(nIndex, oValue)
       {
         $('#pla_candidatefkId').append('<option value="'+oValue.candidatepk+'">'+oValue.candidate+'</option>');
-        $('#pla_candidatefkId').append('<option value="retainer">Retainer</option>');
         $('#pla_loginfkId').append('<option value="'+oValue.consultantpk+'">'+oValue.consultant+'</option>');
 
 
@@ -54,6 +53,7 @@ function refreshPlacementForm(poItem, psUrl)
           }
         }
       });
+      $('#pla_candidatefkId').append('<option value="retainer">Retainer</option>');
     }
   });
 
@@ -68,19 +68,14 @@ function mirrorSelection(origin, target)
 
   if (selected_value === 'retainer')
   {
-    retainer_setup();
+    $('.fieldNamepla_loginfk_retainer').show();
   }
   else
   {
-    $('#'+target).prop("selectedIndex", selected_index);
+    $('.fieldNamepla_loginfk_retainer').hide();
   }
 
   return true;
-}
-
-function retainer_setup()
-{
-  $('.fieldNamepla_loginfk_retainer').show();
 }
 
 function updatePaymentAmount(tag)
