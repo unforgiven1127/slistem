@@ -77,6 +77,9 @@ SetEnvIf REAL_ADDR "^126\.9\.185\.98$" AllowAccess
 SetEnvIf REAL_ADDR "^118\.8\.16\.113$" AllowAccess
 SetEnvIf REAL_ADDR "^153\.205\.217\.229$" AllowAccess
 
+## 2015-07-27 dt#td Larry Fry Home
+SetEnvIf REAL_ADDR "^119\.240\.75\.6$" AllowAccess
+
 ## Abegail
 SetEnvIf REAL_ADDR "^112\.198\.132\.193$" AllowAccess
 
