@@ -8508,6 +8508,7 @@ die();*/
       $candidate_data = array();
       $false_name_array = array('mr', 'ms', 'mr.', 'ms.', 'mrs', 'mrs.');
       $older_entry = 'target';
+      $newer_company_info = 'target';
       $swap = false;
 
       // origin cadidate info
@@ -8547,12 +8548,7 @@ die();*/
       $adjusted_candidate_ids = array('target' => $candidate_data['target']['sl_candidatepk'],
         'origin' => $candidate_data['origin']['sl_candidatepk']);
 
-      if (!empty($candidate_data['origin']['link_date']) || !empty($candidate_data['target']['link_date']))
-      {
-        if (strtotime($candidate_data['origin']['link_date']) > strtotime($candidate_data['target']['link_date']))
-          $swap = true;
-      }
-      else if (strtotime($candidate_data['origin']['date_updated']) > strtotime($candidate_data['target']['date_updated']))
+      if (strtotime($candidate_data['origin']['date_updated']) > strtotime($candidate_data['target']['date_updated']))
         $swap = true;
       else if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
         $swap = true;
@@ -8563,6 +8559,14 @@ die();*/
         $adjusted_candidate_ids = array('target' => $candidate_data['origin']['sl_candidatepk'],
           'origin' => $candidate_data['target']['sl_candidatepk']);
       }
+
+      if (!empty($candidate_data['origin']['link_date']) || !empty($candidate_data['target']['link_date']))
+      {
+        if (strtotime($candidate_data['origin']['link_date']) > strtotime($candidate_data['target']['link_date']))
+          $newer_company_info = 'origin';
+      }
+      else
+        $newer_company_info = $older_entry;
 
       // merge sl_candidate part
       $skip_columns = array('sl_candidatepk', '_sys_status', '_sys_redirect', 'link_date', 'date_updated');
@@ -8609,7 +8613,7 @@ die();*/
         }
       }
 
-      $sl_candidate_object = $model_object->update($candidate_data['target'], 'sl_candidate', 'sl_candidatepk = '.$target_id, true);
+     $sl_candidate_object = $model_object->update($candidate_data['target'], 'sl_candidate', 'sl_candidatepk = '.$target_id, true);
 
       // merge sl_candidate_profile part
       $where = "candidatefk IN ($origin_id, $target_id)";
@@ -8632,29 +8636,17 @@ die();*/
       }
 
       $skip_columns = array('sl_candidate_profilepk', 'candidatefk', 'uid');
-      // $newer_fields = array('date_updated', 'companyfk', 'department', 'title', 'industryfk', 'occupationfk', 'salary');
+      $newer_fields = array('companyfk', 'department', 'title', 'industryfk', 'occupationfk',
+        'salary', 'bonus', 'salary_search', 'target_low', 'target_high');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
-        /*if (in_array($key, $newer_fields))
+        if (in_array($key, $newer_fields))
         {
-          if (!empty($candidate_data['target']['date_updated']) && !empty($candidate_data['origin']['date_updated']))
-          {
-            if (strtotime($candidate_data['target']['date_updated']) < strtotime($candidate_data['origin']['date_updated']))
-            {
-              $candidate_data['target'][$key] = $candidate_data['origin'][$key];
-            }
-          }
-          else
-          {
-            if (empty($candidate_data['target']['date_updated']))
-            {
-              $candidate_data['target'][$key] = $candidate_data['origin'][$key];
-            }
-          }
+          $candidate_data['target'][$key] = $candidate_data[$newer_company_info][$key];
 
           continue;
-        }*/
+        }
 
         if (in_array($key, $skip_columns))
           unset($candidate_data['target'][$key]);
@@ -8666,6 +8658,7 @@ die();*/
             $candidate_data['target'][$key] = $candidate_data[$older_entry][$key];
         }
       }
+
 
       $sl_candidate_profile_object = $model_object->update($candidate_data['target'], 'sl_candidate_profile', 'candidatefk = '.$target_id, true);
 
