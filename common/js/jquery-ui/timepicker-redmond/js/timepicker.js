@@ -38,6 +38,9 @@
 	* Settings for (groups of) time pickers are maintained in an instance object,
 	* allowing multiple different settings on the same page.
 	*/
+
+	var date_today = new Date();
+
 	var Timepicker = function() {
 		this.regional = []; // Available regional settings, indexed by language code
 		this.regional[''] = { // Default regional settings
@@ -88,7 +91,7 @@
 			secondMax: 59,
 			millisecMax: 999,
 			microsecMax: 999,
-			minDateTime: null,
+			minDateTime: date_today,
 			maxDateTime: null,
 			onSelect: null,
 			hourGrid: 0,
