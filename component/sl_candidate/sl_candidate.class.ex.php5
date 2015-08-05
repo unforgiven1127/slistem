@@ -8507,8 +8507,8 @@ die();*/
       $model_object = new CModel(true);
       $candidate_data = array();
       $false_name_array = array('mr', 'ms', 'mr.', 'ms.', 'mrs', 'mrs.');
-      $older_entry = 'target';
       $newer_company_info = 'target';
+      $newer_candidate_info = 'target';
       $swap = false;
 
       // origin cadidate info
@@ -8548,17 +8548,28 @@ die();*/
       $adjusted_candidate_ids = array('target' => $candidate_data['target']['sl_candidatepk'],
         'origin' => $candidate_data['origin']['sl_candidatepk']);
 
-      if (strtotime($candidate_data['origin']['date_updated']) > strtotime($candidate_data['target']['date_updated']))
-        $swap = true;
-      else if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
-        $swap = true;
-
-      if ($swap)
+      if (strtotime($candidate_data['target']['date_created']) > strtotime($candidate_data['origin']['date_created']))
       {
-        $older_entry = 'origin';
         $adjusted_candidate_ids = array('target' => $candidate_data['origin']['sl_candidatepk'],
           'origin' => $candidate_data['target']['sl_candidatepk']);
+
+        $temp = array();
+        $temp = $candidate_data['target'];
+
+        $candidate_data['target'] = $candidate_data['origin'];
+        $candidate_data['origin'] = $temp;
+
+        unset($temp);
+
+        $temp = $target_id;
+
+        $target_id = $origin_id;
+        $origin_id = $temp;
       }
+
+      if (strtotime($candidate_data['origin']['date_updated']) > strtotime($candidate_data['target']['date_updated']))
+        $newer_candidate_info = 'origin';
+
 
       if (!empty($candidate_data['origin']['link_date']) || !empty($candidate_data['target']['link_date']))
       {
@@ -8566,10 +8577,11 @@ die();*/
           $newer_company_info = 'origin';
       }
       else
-        $newer_company_info = $older_entry;
+        $newer_company_info = $newer_candidate_info;
 
       // merge sl_candidate part
-      $skip_columns = array('sl_candidatepk', '_sys_status', '_sys_redirect', 'link_date', 'date_updated');
+      $skip_columns = array('sl_candidatepk', '_sys_status', '_sys_redirect', 'link_date',
+        'date_updated', 'date_created', 'created_by');
 
       foreach ($candidate_data['target'] as $key => $value)
       {
@@ -8608,7 +8620,7 @@ die();*/
             if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
               $candidate_data['target'][$key] = $candidate_data['origin'][$key];
             else
-              $candidate_data['target'][$key] = $candidate_data[$older_entry][$key];
+              $candidate_data['target'][$key] = $candidate_data[$newer_candidate_info][$key];
           }
         }
       }
@@ -8643,7 +8655,10 @@ die();*/
       {
         if (in_array($key, $newer_fields))
         {
-          $candidate_data['target'][$key] = $candidate_data[$newer_company_info][$key];
+          if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
+            $candidate_data['target'][$key] = $candidate_data['origin'][$key];
+          else
+            $candidate_data['target'][$key] = $candidate_data[$newer_company_info][$key];
 
           continue;
         }
@@ -8655,7 +8670,7 @@ die();*/
           if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
             $candidate_data['target'][$key] = $candidate_data['origin'][$key];
           else
-            $candidate_data['target'][$key] = $candidate_data[$older_entry][$key];
+            $candidate_data['target'][$key] = $candidate_data[$newer_candidate_info][$key];
         }
       }
 
