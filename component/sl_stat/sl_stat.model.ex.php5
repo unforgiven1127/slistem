@@ -394,11 +394,6 @@ class CSl_statModelEx extends CSl_statModel
   }
 
 
-
-
-
-
-
   public function getKpiSetVsMet($user_ids, $start_date, $end_date, $group = 'researcher')
   {
     if(!assert('is_arrayOfInt($user_ids)'))
@@ -962,19 +957,29 @@ class CSl_statModelEx extends CSl_statModel
     return $group;
   }
 
-  public function get_ccm_data($start_date, $end_date)
+  public function get_ccm_data($user_ids, $start_date, $end_date, $group = 'researcher')
   {
-    $ccm_result_array = array();
-    // Ignore administrators and QA people unless they do normal consulting/researcher jobs
-    $ignore_users = array('nicholas', 'dcepulis', 'dba', 'administrator');
+    $ccm_data = array();
 
-    $query = 'SELECT DISTINCT sl_position_link.positionfk, login.firstname, login.lastname, login.id';
-    $query .= ' FROM sl_position_link';
-    $query .= ' LEFT JOIN login';
-    $query .= ' ON sl_position_link.created_by = login.loginpk';
-    $query .= ' WHERE sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' AND sl_position_link.status = 51';
-    $query .= ' ORDER BY login.lastname';
+    if ($group == 'consultant')
+    {
+      $query = 'SELECT positionfk, candidatefk, created_by, status';
+      $query .= ' FROM sl_position_link';
+      $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND status BETWEEN 51 AND 61';
+    }
+    else
+    {
+      $query = 'SELECT sl_meeting.date_met, sl_position_link.positionfk, sl_position_link.candidatefk, sl_position_link.status,';
+      $query .= ' sl_position_link.date_created as ccm_create_date, sl_meeting.created_by';
+      $query .= ' FROM sl_meeting';
+      $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk';
+      $query .= ' AND sl_position_link.status BETWEEN 51 AND 61';
+      $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' AND sl_meeting.meeting_done = 1';
+    }
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
@@ -983,25 +988,92 @@ class CSl_statModelEx extends CSl_statModel
     {
       $row = $db_result->getData();
 
-      if (in_array($row['id'], $ignore_users))
+      if (($group == 'researcher' && $row['status'] == 51) ||
+        ($group == 'consultant' && $row['status'] > 51))
       {
-        $read = $db_result->readNext();
-        continue;
+        if ($group == 'consultant')
+          $status = $row['status'];
+        else
+          $status = 51;
+
+        if (isset($resume_sent_info[$row['created_by']][$status][$row['candidatefk']]))
+        {
+          $read = $db_result->readNext();
+          continue;
+        }
+        else
+          $resume_sent_info[$row['created_by']][$status][$row['candidatefk']] = '';
       }
 
-      if (empty($ccm_result_array[$row['id']]['ccm_count']))
+      if (!isset($ccm_data[$row['created_by']]['ccm1']))
       {
-        $ccm_result_array[$row['id']]['ccm_count'] = 1;
-        $ccm_result_array[$row['id']]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+        $ccm_data[$row['created_by']]['ccm1'] = 0;
+        $ccm_data[$row['created_by']]['ccm2'] = 0;
+        $ccm_data[$row['created_by']]['mccm'] = 0;
       }
+
+      if ($row['status'] == 51)
+        $ccm_data[$row['created_by']]['ccm1'] += 1;
+      else if ($row['status'] == 52)
+        $ccm_data[$row['created_by']]['ccm2'] += 1;
       else
-        $ccm_result_array[$row['id']]['ccm_count'] += 1;
+        $ccm_data[$row['created_by']]['mccm'] += 1;
 
       $read = $db_result->readNext();
     }
 
-    uasort($ccm_result_array, sort_multi_array_by_value('ccm_count', 'reverse'));
+    return $ccm_data;
+  }
 
-    return $ccm_result_array;
+  public function get_resume_sent($user_ids, $start_date, $end_date, $group = 'researcher')
+  {
+    $resume_sent_info = array();
+
+    if ($group == 'consultant')
+    {
+      $query = 'SELECT positionfk, candidatefk, created_by';
+      $query .= ' FROM sl_position_link';
+      $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND status = 2';
+    }
+    else
+    {
+      $query = 'SELECT sl_meeting.date_met, sl_position_link.positionfk, sl_position_link.candidatefk,';
+      $query .= ' sl_position_link.date_created as resume_sent_date, sl_meeting.created_by';
+      $query .= ' FROM sl_meeting';
+      $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk AND sl_position_link.status = 2';
+      $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' AND sl_meeting.meeting_done = 1';
+    }
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      if (!isset($resume_sent_info[$row['created_by']]['resumes_sent']))
+        $resume_sent_info[$row['created_by']]['resumes_sent'] = 0;
+
+      if ($group == 'researcher')
+      {
+        if (isset($resume_sent_info[$row['created_by']][$row['candidatefk']]))
+        {
+          $read = $db_result->readNext();
+          continue;
+        }
+        else
+          $resume_sent_info[$row['created_by']][$row['candidatefk']] = '';
+      }
+
+      $resume_sent_info[$row['created_by']]['resumes_sent'] += 1;
+
+      $read = $db_result->readNext();
+    }
+
+    return $resume_sent_info;
   }
 }

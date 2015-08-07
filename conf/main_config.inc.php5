@@ -296,6 +296,7 @@ define('CONST_ACTION_RESULTS', 'ppares');
 define('CONST_ACTION_MANAGE', 'ppam');
 define('ACTION_REVENUE_CHART', 'pprev');
 define('ACTION_CCM_CHART', 'ppccm');
+define('ACTION_TOTALS_CHART', 'ppttc');
 define('CONST_ACTION_TRANSFER','ppat');
 define('CONST_ACTION_SAVETRANSFER','ppast');
 define('CONST_ACTION_SAVEMANAGE','ppasm');

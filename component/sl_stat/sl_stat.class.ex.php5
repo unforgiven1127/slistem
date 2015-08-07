@@ -170,6 +170,10 @@ class CSl_statEx extends CSl_stat
       case ACTION_CCM_CHART:
         return $this->get_ccm_chart();
         break;
+
+      case ACTION_TOTALS_CHART:
+        return $this->get_general_total_chart();
+        break;
     }
 
     return '';
@@ -4195,6 +4199,222 @@ class CSl_statEx extends CSl_stat
       // setTimeout(function(){ window.location.replace("'.$url.'"); }, ('.$swap_time.'));
       </script>
       ';
+
+      return $html;
+    }
+
+    private function get_general_total_chart()
+    {
+      $start_date = getValue('start_date', '');
+      $end_date = getValue('end_date', '');
+
+      if (empty($start_date))
+        $start_date = date('Y-m').'-01 00:00:00';
+      else
+        $start_date .= ' 00:00:00';
+
+      if (empty($end_date))
+        $end_date = date('Y-m-d').' 23:59:59';
+      else
+        $end_date .= ' 23:59:59';
+
+      $consultant_names = $consultant_ids = $researcher_names = $researcher_ids = array();
+      $consultant_stats = $researcher_stats = array();
+      $consultant_skip_id = array(389, 315, 354, 186);
+      $researcher_skip_id = array(301, 423, 475, 315);
+
+      // generate consultant data
+      foreach ($this->casUserByGroup[108] as $key => $value)
+      {
+        if ($value['status'])
+        {
+          $consultant_names[$key] = substr($value['firstname'], 0, 1).'. '.$value['lastname'];
+          $consultant_ids[] = $key;
+        }
+      }
+
+      $temp_set_vs_met = $this->_getModel()->getKpiSetVsMet($consultant_ids, $start_date, $end_date, 'consultant');
+      $temp_resume_sent = $this->_getModel()->get_resume_sent($consultant_ids, $start_date, $end_date, 'consultant');
+      $temp_ccm = $this->_getModel()->get_ccm_data($consultant_ids, $start_date, $end_date, 'consultant');
+
+      foreach ($consultant_ids as $id)
+      {
+        if (in_array($id, $consultant_skip_id))
+          continue;
+
+        if (!empty($temp_resume_sent[$id]['resumes_sent']))
+          $consultant_stats[$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+        else
+          $consultant_stats[$id]['resumes_sent'] = 0;
+
+        if (!empty($temp_set_vs_met[$id]['set']))
+          $consultant_stats[$id]['set'] = $temp_set_vs_met[$id]['set'];
+        else
+          $consultant_stats[$id]['set'] = 0;
+
+        if (!empty($temp_set_vs_met[$id]['met']))
+          $consultant_stats[$id]['met'] = $temp_set_vs_met[$id]['met'];
+        else
+          $consultant_stats[$id]['met'] = 0;
+
+        if (!empty($temp_ccm[$id]['ccm1']))
+          $consultant_stats[$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+        else
+          $consultant_stats[$id]['ccm1'] = 0;
+
+        if (!empty($temp_ccm[$id]['ccm2']))
+          $consultant_stats[$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+        else
+          $consultant_stats[$id]['ccm2'] = 0;
+
+        if (!empty($temp_ccm[$id]['mccm']))
+          $consultant_stats[$id]['mccm'] = $temp_ccm[$id]['mccm'];
+        else
+          $consultant_stats[$id]['mccm'] = 0;
+
+        $consultant_stats[$id]['name'] = $consultant_names[$id];
+      }
+
+      $temp_set_vs_met = $temp_resume_sent = $temp_ccm = array();
+
+      // generate researcher data
+      foreach ($this->casUserByGroup[109] as $key => $value)
+      {
+        if ($value['status'])
+        {
+          $researcher_names[$key] = substr($value['firstname'], 0, 1).'. '.$value['lastname'];
+          $researcher_ids[] = $key;
+        }
+      }
+
+      $temp_set_vs_met = $this->_getModel()->getKpiSetVsMet($researcher_ids, $start_date, $end_date);
+      $temp_resume_sent = $this->_getModel()->get_resume_sent($researcher_ids, $start_date, $end_date);
+      $temp_ccm = $this->_getModel()->get_ccm_data($researcher_ids, $start_date, $end_date);
+
+      foreach ($researcher_ids as $id)
+      {
+        if (in_array($id, $researcher_skip_id))
+          continue;
+
+        if (!empty($temp_resume_sent[$id]['resumes_sent']))
+          $researcher_stats[$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+        else
+          $researcher_stats[$id]['resumes_sent'] = 0;
+
+        if (!empty($temp_set_vs_met[$id]['set']))
+          $researcher_stats[$id]['set'] = $temp_set_vs_met[$id]['set'];
+        else
+          $researcher_stats[$id]['set'] = 0;
+
+        if (!empty($temp_set_vs_met[$id]['met']))
+          $researcher_stats[$id]['met'] = $temp_set_vs_met[$id]['met'];
+        else
+          $researcher_stats[$id]['met'] = 0;
+
+        if (!empty($temp_ccm[$id]['ccm1']))
+          $researcher_stats[$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+        else
+          $researcher_stats[$id]['ccm1'] = 0;
+
+        if (!empty($temp_ccm[$id]['ccm2']))
+          $researcher_stats[$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+        else
+          $researcher_stats[$id]['ccm2'] = 0;
+
+        if (!empty($temp_ccm[$id]['mccm']))
+          $researcher_stats[$id]['mccm'] = $temp_ccm[$id]['mccm'];
+        else
+          $researcher_stats[$id]['mccm'] = 0;
+
+        $researcher_stats[$id]['name'] = $researcher_names[$id];
+      }
+
+
+      $this->_oPage->addCssFile($this->getResourcePath().'/css/totals_chart.css');
+
+      $html = '<table class="totals_table consultant_part">';
+
+      $html.= '<tr>';
+      $html.= '<th colspan="7">Consultant totals - '.date('M Y', strtotime($start_date)).'</th>';
+      $html.= '</tr>';
+
+      $html.= '<tr>';
+      $html.= '<th>Name</th>';
+      $html.= '<th>Set</th>';
+      $html.= '<th>Met</th>';
+      $html.= '<th>Resumes sent</th>';
+      $html.= '<th>CCM1</th>';
+      $html.= '<th>CCM2</th>';
+      $html.= '<th>MCCM</th>';
+      $html.= '</tr>';
+
+      $row_number_rank = 1;
+
+      foreach ($consultant_stats as $value)
+      {
+        if ($row_number_rank % 2 === 0)
+          $even = ' even_row';
+        else
+          $even = '';
+
+        $html.= '<tr class="hover_row'.$even.'">';
+        $html.= '<td>'.$value['name'].'</td>';
+        $html.= '<td>'.$value['set'].'</td>';
+        $html.= '<td>'.$value['met'].'</td>';
+        $html.= '<td>'.$value['resumes_sent'].'</td>';
+        $html.= '<td>'.$value['ccm1'].'</td>';
+        $html.= '<td>'.$value['ccm2'].'</td>';
+        $html.= '<td>'.$value['mccm'].'</td>';
+        $html.= '</tr>';
+
+        $row_number_rank += 1;
+      }
+
+      $html.= '<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>';
+      $html.= '</table>';
+
+      $html.= '<div style="height: 30px;"></div>';
+
+      $html.= '<table class="totals_table researcher_part">';
+
+      $html.= '<tr>';
+      $html.= '<th colspan="7">Researcher totals - '.date('M Y', strtotime($start_date)).'</th>';
+      $html.= '</tr>';
+
+      $html.= '<tr>';
+      $html.= '<th>Name</th>';
+      $html.= '<th>Set</th>';
+      $html.= '<th>Met</th>';
+      $html.= '<th>Resumes sent</th>';
+      $html.= '<th>CCM1</th>';
+      $html.= '<th>CCM2</th>';
+      $html.= '<th>MCCM</th>';
+      $html.= '</tr>';
+
+      $row_number_rank = 1;
+
+      foreach ($researcher_stats as $value)
+      {
+        if ($row_number_rank % 2 === 0)
+          $even = ' even_row';
+        else
+          $even = '';
+
+        $html.= '<tr class="hover_row'.$even.'">';
+        $html.= '<td>'.$value['name'].'</td>';
+        $html.= '<td>'.$value['set'].'</td>';
+        $html.= '<td>'.$value['met'].'</td>';
+        $html.= '<td>'.$value['resumes_sent'].'</td>';
+        $html.= '<td>'.$value['ccm1'].'</td>';
+        $html.= '<td>'.$value['ccm2'].'</td>';
+        $html.= '<td>'.$value['mccm'].'</td>';
+        $html.= '</tr>';
+
+        $row_number_rank += 1;
+      }
+
+      $html.= '<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>';
+      $html.= '</table>';
 
       return $html;
     }

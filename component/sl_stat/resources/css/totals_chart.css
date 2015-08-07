@@ -1,0 +1,49 @@
+.totals_table
+{
+	border-collapse: collapse;
+	font-weight: bold;
+}
+.totals_table th
+{
+	background-color: #48768F;
+	text-align: center;
+	border-bottom: 1px solid #D4DADF;
+	overflow: auto;
+	color: white;
+}
+.totals_table td,
+.totals_table th
+{
+	font-size: 18px;
+	border-right: 1px solid #D4DADF;
+	padding: 0 5px;
+	width: 150px;
+}
+.hover_row:hover
+{
+	background-color: #F9E3B3;
+}
+.totals_table_footer
+{
+	background-color: #48768F;
+}
+.totals_table_footer td
+{
+	color: white;
+}
+.border_left
+{
+	border-left: 1px solid #D4DADF;
+}
+.even_row
+{
+	background-color: #E3E9EF;
+}
+.text_right
+{
+	text-align: right;
+}
+.text_center
+{
+	text-align: center;
+}
