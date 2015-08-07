@@ -8395,7 +8395,12 @@ die();*/
       $oDbResult = $model_object->update($asData, 'event_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
       $summary['notes'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //10. add note summary, copy UID
+      //10. user activity
+      $asData = array('cp_pk' => $target_candidate_id);
+      $oDbResult = $model_object->update($asData, 'login_activity', 'cp_uid = "555-001" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
+      $summary['activity'] = $oDbResult->getFieldValue('_affected_rows');
+
+      //11. add note summary, copy UID
       $oEvent = CDependency::getComponentByName('sl_event');
       $note = 'The candidate #'.$candidate_id.' has been merge on this candidate profile.<br />';
       $note.= 'All data have been moved accross, previous UID : '.$asCandidate['uid'].'<br />';
