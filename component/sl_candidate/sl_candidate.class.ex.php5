@@ -8397,7 +8397,7 @@ die();*/
 
       //10. user activity
       $asData = array('cp_pk' => $target_candidate_id);
-      $oDbResult = $model_object->update($asData, 'login_activity', 'cp_uid = "555-001" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
+      $oDbResult = $model_object->update($asData, 'login_system_history', 'cp_uid = "555-001" AND cp_type = "candi" AND action NOT LIKE %upd sl_candidate% AND cp_pk = '.$candidate_id, true);
       $summary['activity'] = $oDbResult->getFieldValue('_affected_rows');
 
       //11. add note summary, copy UID
