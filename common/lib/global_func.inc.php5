@@ -462,7 +462,7 @@ function getAssertSessionDump($psSeparator = '<br />', $pasArray = null, $pnInde
 }
 
 
-function dump($pvVar, $psLabel=null, $psDisplay=true)
+/*function dump($pvVar, $psLabel=null, $psDisplay=true)
 {
   // format the label
   $psLabel = ($psLabel===null) ? '' : rtrim($psLabel) . ' ';
@@ -484,7 +484,7 @@ function dump($pvVar, $psLabel=null, $psDisplay=true)
     echo '<div class="dump" style="padding-left: 100px;">'.$output.'</div>';
 
   return '<div class="dump" style="padding-left: 100px;">'.$output.'</div>';
-}
+}*/
 
 function dev_dump($var, $label=null, $echo=true)
 {
