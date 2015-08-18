@@ -1,7 +1,9 @@
 <?php
+require_once './common/tracy/src/tracy.php';
+use Tracy\Debugger;
 
 //if you want session to be handled in database
-require_once('./common/lib/db_session.inc.php5');
+require_once './common/lib/db_session.inc.php5';
 
 session_start();
 header('Cache-Control: no-cache');
@@ -17,14 +19,17 @@ $GLOBALS['redis']->pconnect('127.0.0.1');
 $_SESSION['assert'] = 0;
 $_SESSION['mail_assert'] = 0;
 
-require_once('./conf/main_config.inc.php5');
-require_once('./common/lib/global_func.inc.php5');
-require_once('./component/dependency.inc.php5');
+require_once './conf/main_config.inc.php5';
+require_once './common/lib/global_func.inc.php5';
+require_once './component/dependency.inc.php5';
 
-require_once('./conf/custom_config/'.CONST_WEBSITE.'/config.inc.php5');
+require_once './conf/custom_config/'.CONST_WEBSITE.'/config.inc.php5';
+
+if (CONST_DEV_SERVER)
+  Debugger::enable(Debugger::DEVELOPMENT);
 
 //include here the list of all the tables/fields/controls/type. Used in model, but if included here it's loaded only once.
-require_once('./common/lib/model.db_map.inc.php5');
+require_once './common/lib/model.db_map.inc.php5';
 
 CDependency::initialize();
 
