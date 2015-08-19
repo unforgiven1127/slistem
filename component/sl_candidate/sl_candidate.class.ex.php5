@@ -8364,43 +8364,52 @@ die();*/
       $oDbResult = $model_object->update($asData, 'sl_meeting', 'candidatefk = '.$candidate_id, true);
       $summary['meetings'] = $oDbResult->getFieldValue('_affected_rows');
 
-
-      //4. move positions_link (for history)
+      //4.1 move positions_link (for history)
       $asData = array('candidatefk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'sl_position_link', 'candidatefk = '.$candidate_id, true);
       $summary['positions'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //5. documents
+      //4.2 move sl_position_credit (for history and placement manager)
+      $asData = array('candidatefk' => $target_candidate_id);
+      $oDbResult = $model_object->update($asData, 'sl_position_credit', 'candidatefk = '.$candidate_id, true);
+      $summary['position_credit'] = $oDbResult->getFieldValue('_affected_rows');
+
+      //5. move revenue (for placement manager)
+      $asData = array('candidate' => $target_candidate_id);
+      $oDbResult = $model_object->update($asData, 'revenue', 'candidate = '.$candidate_id, true);
+      $summary['revenue'] = $oDbResult->getFieldValue('_affected_rows');
+
+      //6. documents
       $asData = array('cp_pk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'document_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
       $summary['documents'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //6. contact
+      //7. contact
       $asData = array('itemfk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'sl_contact', 'item_type = "candi" AND itemfk = '.$candidate_id, true);
       $summary['contacts'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //7. attribute
+      //8. attribute
       $asData = array('itemfk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'sl_attribute', 'type LIKE "candi%" AND itemfk = '.$candidate_id, true);
       $summary['attributes'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //8. RM
+      //9. RM
       $asData = array('candidatefk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'sl_candidate_rm', 'candidatefk = '.$candidate_id, true);
       $summary['rm'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //9. notes
+      //10. notes
       $asData = array('cp_pk' => $target_candidate_id);
       $oDbResult = $model_object->update($asData, 'event_link', 'cp_uid = "555-001" AND cp_action = "ppav" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
       $summary['notes'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //10. user activity
+      //11. user activity
       $asData = array('cp_pk' => $target_candidate_id);
-      $oDbResult = $model_object->update($asData, 'login_system_history', 'cp_uid = "555-001" AND cp_type = "candi" AND action NOT LIKE %upd sl_candidate% AND cp_pk = '.$candidate_id, true);
+      $oDbResult = $model_object->update($asData, 'login_system_history', 'cp_uid = "555-001" AND cp_type = "candi" AND cp_pk = '.$candidate_id, true);
       $summary['activity'] = $oDbResult->getFieldValue('_affected_rows');
 
-      //11. add note summary, copy UID
+      //12. add note summary, copy UID
       $oEvent = CDependency::getComponentByName('sl_event');
       $note = 'The candidate #'.$candidate_id.' has been merge on this candidate profile.<br />';
       $note.= 'All data have been moved accross, previous UID : '.$asCandidate['uid'].'<br />';
