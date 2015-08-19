@@ -444,6 +444,12 @@ class CSl_eventEx extends CSl_event
 
   private function _saveNote($psAction = '')
   {
+    $event_type = getValue('event_type');
+    $content = getValue('content');
+
+    if(empty($event_type) || empty($content))
+      return array('error' => __LINE__.' - Can not create empty notes.');
+
     $oPage = CDependency::getCpPage();
     $sURL = $oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, getValue(CONST_CP_TYPE), (int)getValue(CONST_CP_PK));
 
