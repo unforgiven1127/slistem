@@ -835,6 +835,9 @@ class CEventEx extends CEvent
       $asEvent['reminder_before'] = getvalue('reminder_before');
       $asEvent['reminder_user'] = (int)getvalue('reminder_user', 0);
       $asEvent['reminder_message'] = getvalue('reminder_message');
+
+      if(empty($asEvent['type']) || empty($asEvent['content']))
+        return array('error' => __LINE__.' - Can not create empty events.');
     }
 
 

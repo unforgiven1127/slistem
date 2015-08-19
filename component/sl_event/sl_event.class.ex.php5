@@ -447,7 +447,7 @@ class CSl_eventEx extends CSl_event
     $event_type = getValue('event_type');
     $content = getValue('content');
 
-    if(empty($event_type) || empty($content))
+    if((empty($event_type) && !getValue('delete_note')) || (empty($content) && !getValue('delete_note')))
       return array('error' => __LINE__.' - Can not create empty notes.');
 
     $oPage = CDependency::getCpPage();
