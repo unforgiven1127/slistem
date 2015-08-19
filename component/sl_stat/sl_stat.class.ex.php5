@@ -4205,16 +4205,22 @@ class CSl_statEx extends CSl_stat
 
     private function get_general_total_chart()
     {
-      $start_date = getValue('start_date', '');
-      $end_date = getValue('end_date', '');
+      $start_date = $start_date_original = getValue('start_date', '');
+      $end_date = $end_date_original = getValue('end_date', '');
 
       if (empty($start_date))
+      {
         $start_date = date('Y-m').'-01 00:00:00';
+        $start_date_original = date('Y-m').'-01';
+      }
       else
         $start_date .= ' 00:00:00';
 
       if (empty($end_date))
-        $end_date = date('Y-m-d').' 23:59:59';
+      {
+        $end_date = date('Y-m-t').' 23:59:59';
+        $end_date_original = date('Y-m-t');
+      }
       else
         $end_date .= ' 23:59:59';
 
@@ -4329,10 +4335,27 @@ class CSl_statEx extends CSl_stat
         $researcher_stats[$id]['name'] = $researcher_names[$id];
       }
 
+      $this->_oPage->addJsFile(CONST_PATH_JS_JQUERYUI);
+      $this->_oPage->addCSSFile(CONST_PATH_CSS_JQUERYUI);
 
       $this->_oPage->addCssFile($this->getResourcePath().'/css/totals_chart.css');
 
-      $html = '<table class="totals_table consultant_part">';
+      $html = '<form action="" method="post" >';
+      $html .= '<div style="overflow: auto; margin: 15px 0; font-size: 16px;">';
+      $html .= '<div style="padding: 2px 2px 2px 0; float: left;">Start date: </div>';
+      $html .= '<div style="padding-left: 10px; float: left;">';
+      $html .= '<input id="start_date" style="width: 90px" type="text" name="start_date" value="'.$start_date_original.'" />';
+      $html .= '</div>';
+      $html .= '<div style="padding: 2px 2px 2px 0; float: left; margin-left: 10px;">End date: </div>';
+      $html .= '<div style="padding-left: 10px; float: left;">';
+      $html .= '<input id="end_date" style="width: 90px" type="text" name="end_date" value="'.$end_date_original.'" />';
+      $html .= '</div>';
+      $html .= '<div style="padding-left: 10px; float: left; margin-left: 10px;">';
+      $html .= '<input type="submit" name="submit_totals" value="Get totals" />';
+      $html .= '</div>';
+      $html .= '</div>';
+
+      $html .= '<table class="totals_table consultant_part">';
 
       $html.= '<tr>';
       $html.= '<th colspan="7">Consultant totals - '.date('M Y', strtotime($start_date)).'</th>';
@@ -4415,6 +4438,11 @@ class CSl_statEx extends CSl_stat
 
       $html.= '<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>';
       $html.= '</table>';
+
+      $html.= '<script> ';
+      $html.= '$(function() { $("#start_date, #end_date").datepicker({showButtonPanel: true, changeYear: true, dateFormat: \'yy-mm-dd\' }); });';
+      $html.= '</script>';
+      $html.= '</form>';
 
       return $html;
     }
