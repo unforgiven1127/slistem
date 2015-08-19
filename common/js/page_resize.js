@@ -47,8 +47,8 @@ function sizeManagement(pasPageParam, pbUpdatePhpSize)
     if(oPageSize.width < nMinWidth || oPageSize.height < nMinHeight)
     {
       removeWideCss();
-      //alert("The window size is too small to display the page correctly. (w:"+oPageSize.width+"|h:"+oPageSize.height+" need w:"+nMinWidth+"|h:"+nMinHeight+")");
-      goPopup.setPopupMessage('The window size is too small to display the page correctly.<br/>Currently [width:'+oPageSize.width+' | height:'+oPageSize.height+'] need [width:'+nMinWidth+' | height:'+nMinHeight+']', true, 'Browser/window size problem...', 515, 125);
+
+      // goPopup.setPopupMessage('The window size is too small to display the page correctly.<br/>Currently [width:'+oPageSize.width+' | height:'+oPageSize.height+'] need [width:'+nMinWidth+' | height:'+nMinHeight+']', true, 'Browser/window size problem...', 515, 125);
       return true;
     }
 
