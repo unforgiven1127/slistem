@@ -8460,6 +8460,7 @@ die();*/
         //ignore black listed fields
         if(!in_array($sField, $asBLFields))
         {
+
           if($vValue === 'null' || $vValue == '0000-00-00 00:00:00')
             $vValue = null;
 
@@ -8495,13 +8496,25 @@ die();*/
 
             if(empty($vValue) && !empty($pasNewData[$sField]))
             {
-              //dump('new data added [prev: '.var_export($vValue, true).']--> '.$sField.' = '.var_export($pasNewData[$sField], true));
-              $asLog[$sType][] = '['.$sLabel.'] has been added : '.$pasNewData[$sField];
+              $added_variable = $this->coSlateVars->get_var_info_by_label($sLabel, $pasNewData[$sField]);
+
+              if (empty($added_variable))
+                $added_variable = $pasNewData[$sField];
+
+              $asLog[$sType][] = '['.$sLabel.'] has been added : '.$added_variable;
             }
             else
             {
-              //dump('edit data [prev: '.var_export($vValue, true).']--> '.$sField.' = '.var_export($pasNewData[$sField], true));
-              $asLog[$sType][] = '['.$sLabel.'] changed from '.$vValue.' -> to: '.$pasNewData[$sField];
+              $old_variable = $this->coSlateVars->get_var_info_by_label($sLabel, $vValue);
+              $new_variable = $this->coSlateVars->get_var_info_by_label($sLabel, $pasNewData[$sField]);
+
+              if (empty($old_variable))
+                $old_variable = $vValue;
+
+              if (empty($new_variable))
+                $new_variable = $pasNewData[$sField];
+
+              $asLog[$sType][] = '['.$sLabel.'] changed from '.$old_variable.' -> to: '.$new_variable;
             }
           }
         }

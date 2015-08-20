@@ -398,4 +398,48 @@ class CSlateVars
     return $sOption;
   }
 
+  public function get_var_info_by_label($label, $variable)
+  {
+    $info = '';
+    $temp = array();
+
+    if (!empty($variable))
+    {
+      switch ($label)
+      {
+        case 'nationality':
+          $temp = $this->getNationalityList();
+          $info = $temp[$variable];
+          break;
+
+        case 'gender':
+          $temp = array(1 => 'male', 2 => 'female');
+          $info = $temp[$variable];
+          break;
+
+        case 'grade':
+          $temp = $this->getCandidateGradeList();
+          $info = $temp[$variable];
+          break;
+
+        case 'status':
+          $temp = $this->getCandidateStatusList();
+          $info = $temp[$variable];
+          break;
+
+        case 'language':
+          $temp = $this->getLanguageList();
+          $info = $temp[$variable];
+          break;
+
+        case 'location':
+          $temp = $this->getLocationList();
+          $info = $temp[$variable];
+          break;
+      }
+    }
+
+    return $info;
+  }
+
 }
