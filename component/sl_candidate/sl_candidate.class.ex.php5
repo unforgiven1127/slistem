@@ -1748,6 +1748,11 @@ class CSl_candidateEx extends CSl_candidate
         return array();
 
       $nActivityToDisplay = 25;
+      $skip_activity = array('upd sl_candidate_profile', 'upd sl_candidate', 'upd sl_position_link', 'upd sl_candidate_rm',
+        'upd settings_user', 'upd sl_contact', 'upd notification', 'upd notification_action', 'upd sl_meeting', 'upd notification_link',
+        'upd document_link', 'upd sl_attribute', 'upd event_link', 'upd document', 'upd sl_company', 'upd folder', 'upd folder_link',
+        'upd sl_position', 'upd sl_position_detail', 'upd login', 'upd document_file', 'upd revenue', 'upd login_activity',
+        'upd login_system_history', 'upd sl_position_credit');
 
       //request 1 more activity than what is displayed to know if everything is displayed
       if($pnPage < 2)
@@ -1779,6 +1784,9 @@ class CSl_candidateEx extends CSl_candidate
       {
         foreach($asHistory as $asHistoryData)
         {
+          if (in_array($asHistoryData['action'], $skip_activity))
+            continue;
+
           $sHTML.= '<div class="entry">';
             $sHTML.= '<div class="note_header">';
             $sHTML.= '&rarr;&nbsp;&nbsp;<span class="note_date">'.$asHistoryData['date'].'</span>';
