@@ -8637,12 +8637,14 @@ die();*/
               break;
 
             case 'date_birth':
-              if (strpos($candidate_data['target']['date_birth'], '-02-02'))
+              if (strpos($candidate_data['target']['date_birth'], '-02-02')
+                || $candidate_data['target']['date_birth'] == '0000-00-00')
               {
                 $candidate_data['target']['date_birth'] = $candidate_data['origin']['date_birth'];
                 $skip_general_overwrite = true;
               }
-              else if (strpos($candidate_data['origin']['date_birth'], '-02-02'))
+              else if (strpos($candidate_data['origin']['date_birth'], '-02-02')
+                || $candidate_data['origin']['date_birth'] == '0000-00-00')
               {
                 $skip_general_overwrite = true;
               }
