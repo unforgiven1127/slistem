@@ -8493,6 +8493,8 @@ die();*/
                 $sLabel = ' - ';
             }
 
+            if (empty($this->coSlateVars))
+              $this->getVars();
 
             if(empty($vValue) && !empty($pasNewData[$sField]))
             {
