@@ -1478,13 +1478,9 @@ class CSl_positionEx extends CSl_position
       if(!assert('isset($pasPosition[\'sl_positionpk\']) && !empty($pasPosition[\'sl_positionpk\'])'))
         return false;
 
+      $sNow = date('Y-m-d H:i:s');
       $nPositionPk = (int)$pasPosition['sl_positionpk'];
       $nCandidatePk = (int)$pnCandidatePk;
-
-      //Update position and position links to deactivate all other canidates in play
-      $sQuery = 'UPDATE sl_position SET status = 0 WHERE sl_positionpk = '.$nPositionPk;
-      $this->_getModel()->executeQuery($sQuery);
-
 
       //1. get all pso_link/candidates still active on this position (except currenlty placed one).
       $sQuery = 'SELECT DISTINCT(spli.positionfk || spli.candidatefk) as link_key, spli.*, slog.email,
@@ -1493,7 +1489,7 @@ class CSl_positionEx extends CSl_position
         FROM sl_position_link as spli
         LEFT JOIN shared_login as slog ON (slog.loginpk = spli.created_by)
         LEFT JOIN sl_candidate as scan ON (scan.sl_candidatepk = spli.candidatefk)
-        WHERE spli.active = 1 AND spli.candidatefk <> '.$nCandidatePk.' AND spli.positionfk = '.$nPositionPk;
+        WHERE spli.active = 1 AND spli.candidatefk != '.$nCandidatePk.' AND spli.positionfk = '.$nPositionPk;
 
       $oDbResult =  $this->_getModel()->executeQuery($sQuery);
       $bRead = $oDbResult->readFirst();
@@ -1518,12 +1514,11 @@ class CSl_positionEx extends CSl_position
         return true;
 
       //2. set all those to inactve
-      $sQuery = 'UPDATE sl_position_link SET active = 0 WHERE positionfk = '.$nPositionPk;
+      $sQuery = 'UPDATE sl_position_link SET active = 0 WHERE positionfk = '.$nPositionPk.' AND candidatefk != '.$nCandidatePk;
       $this->_getModel()->executeQuery($sQuery);
 
 
       $oLogin = CDependency::getComponentByName('login');
-      $sNow = date('Y-m-d H:i:s');
 
       //3. add a system fallen off step
       foreach($asCandidate as $nCanduidatefk)
