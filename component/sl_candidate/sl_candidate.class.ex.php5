@@ -8658,7 +8658,7 @@ die();*/
           {
             if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
               $candidate_data['target'][$key] = $candidate_data['origin'][$key];
-            else
+            else if (!empty($candidate_data[$newer_candidate_info][$key]))
               $candidate_data['target'][$key] = $candidate_data[$newer_candidate_info][$key];
           }
         }
@@ -8696,7 +8696,7 @@ die();*/
         {
           if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
             $candidate_data['target'][$key] = $candidate_data['origin'][$key];
-          else
+          else if (!empty($candidate_data[$newer_company_info][$key]))
             $candidate_data['target'][$key] = $candidate_data[$newer_company_info][$key];
 
           continue;
@@ -8708,11 +8708,10 @@ die();*/
         {
           if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
             $candidate_data['target'][$key] = $candidate_data['origin'][$key];
-          else
+          else if (!empty($candidate_data[$newer_candidate_info][$key]))
             $candidate_data['target'][$key] = $candidate_data[$newer_candidate_info][$key];
         }
       }
-
 
       $sl_candidate_profile_object = $model_object->update($candidate_data['target'], 'sl_candidate_profile', 'candidatefk = '.$target_id, true);
 
