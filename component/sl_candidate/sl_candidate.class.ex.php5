@@ -8322,9 +8322,6 @@ die();*/
       if(empty($asCandidate))
         return array('error' => __LINE__.' - Could not find the candidate.');
 
-      if($asCandidate['_in_play'])
-        return array('error' => __LINE__.' - The candidate is in play. Update position(s) status before deleting.');
-
 
       $target_candidate_id = (int)getValue('merge_to');
 
@@ -8660,6 +8657,11 @@ die();*/
               $candidate_data['target'][$key] = $candidate_data['origin'][$key];
             else if (!empty($candidate_data[$newer_candidate_info][$key]))
               $candidate_data['target'][$key] = $candidate_data[$newer_candidate_info][$key];
+
+            if ($key == 'is_birth_estimation'
+              && (!strpos($candidate_data['target']['date_birth'], '-02-02')
+              || $candidate_data['target']['date_birth'] != '0000-00-00'))
+              $candidate_data['target']['is_birth_estimation'] = 0;
           }
         }
       }
