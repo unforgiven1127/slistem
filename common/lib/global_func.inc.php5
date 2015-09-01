@@ -155,6 +155,9 @@ function is_listOfInt($psList, $psDelimiter = ',')
   if(!assert('!empty($psDelimiter)') || empty($psList))
     return false;
 
+  if(is_array($psList))
+    return false;
+
   $asList = explode($psDelimiter, $psList);
   if(empty($asList) || !is_array($asList))
     return false;

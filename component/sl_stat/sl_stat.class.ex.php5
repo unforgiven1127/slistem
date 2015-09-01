@@ -139,7 +139,8 @@ class CSl_statEx extends CSl_stat
           case CONST_ACTION_LIST:
           case CONST_ACTION_VIEW:
 
-              return json_encode($this->_oPage->getAjaxExtraContent(array('data' => $this->_getStatPage(true), 'action' => '$(\'#statPageSectionRight\').scrollTop(0);')));
+              return json_encode($this->_oPage->getAjaxExtraContent(array('data' => convertToUtf8($this->_getStatPage(true)),
+                'action' => '$(\'#statPageSectionRight\').scrollTop(0);')));
             break;
         }
         break;
