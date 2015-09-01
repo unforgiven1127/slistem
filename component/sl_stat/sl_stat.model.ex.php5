@@ -404,11 +404,11 @@ class CSl_statModelEx extends CSl_statModel
     if ($group == 'consultant')
       $group_switch = 'attendeefk';
 
-    $query = 'SELECT COUNT(DISTINCT candidatefk) as meetings_set, created_by, date_created, attendeefk';
+    $query = 'SELECT DISTINCT candidatefk as meetings_set, created_by, date_created, attendeefk';
     $query .= ' FROM sl_meeting';
     $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
     $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' GROUP BY '.$group_switch;
+    $query .= ' ORDER BY '.$group_switch;
 
     $data = array();
 
@@ -422,16 +422,16 @@ class CSl_statModelEx extends CSl_statModel
           'met' => 0, 'date_met' => '');
       }
       $temp = $db_result->getData();
-      $data[$db_result->getFieldValue($group_switch)]['set'] = $temp['meetings_set'];
-      $data[$db_result->getFieldValue($group_switch)]['date_created'] = $temp['date_created'];
+      $data[$db_result->getFieldValue($group_switch)]['set'] += 1;
+      // $data[$db_result->getFieldValue($group_switch)]['date_created'] = $temp['date_created'];
       $read = $db_result->readNext();
     }
 
-    $query = 'SELECT COUNT(DISTINCT candidatefk) as meetings_met, created_by, date_met, attendeefk';
+    $query = 'SELECT DISTINCT candidatefk as meetings_met, created_by, date_met, attendeefk';
     $query .= ' FROM sl_meeting';
     $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
     $query .= ' AND date_met BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' GROUP BY '.$group_switch;
+    $query .= ' ORDER BY '.$group_switch;
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
@@ -443,8 +443,8 @@ class CSl_statModelEx extends CSl_statModel
           'met' => 0, 'date_met' => '');
       }
       $temp = $db_result->getData();
-      $data[$db_result->getFieldValue($group_switch)]['met'] = $temp['meetings_met'];
-      $data[$db_result->getFieldValue($group_switch)]['date_met'] = $temp['date_met'];
+      $data[$db_result->getFieldValue($group_switch)]['met'] += 1;
+      // $data[$db_result->getFieldValue($group_switch)]['date_met'] = $temp['date_met'];
       $read = $db_result->readNext();
     }
 
