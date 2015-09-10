@@ -1631,22 +1631,22 @@ class CDisplayEx extends CDisplay
    * @samples:
    *
    *  $sPic = $oEvent->getResourcePath().'pictures/add_event_16.png';
-      $sActivityBtn = 'New action';
-      //independent buttons
-      $sHTML.= $oHTML->getActionButton($sActivityBtn, $sUrl, $sPic);
-      $sHTML.= $oHTML->getActionButton($sActivityBtn, $sUrl);
-      $sHTML.= $oHTML->getCR();
-
-      //independent buttons displayed base on an array of actions
-      $asButtons[0] = array('url' => '', 'label' => 'Add a new activitYY', 'onclick' => 'alert(\'gaaaa\'); goPopup.setLayer(\'\', \'https://bcmedia.devserv.com/index.php5?uid=555-123&ppa=ppaa&ppt=opp&ppk=0&cp_uid=777-249&cp_action=ppav&cp_type=cp&cp_pk=4866&pg=ajx\', \'body\', false, 20, 860, 1); ');
-      $asButtons[1] = array('url' => $sUrl, 'label' => $sActivityBtn, 'pic' => $sPic);
-      $asButtons[2] = array('url' => '', 'label' => 'Add a new guuuu', 'params' => array('class' => 'notice', 'onclick' => 'alert(\'guuuuuu\');'));
-      $sHTML.= $oHTML->getActionButtons($asButtons);
-
-      //number of actions exceeds $pnWrapAfter, actions displayed in a list
-      $asButtons[3] = array('url' => '', 'label' => 'Add a new teeee', 'pic' => $sPic, 'onclick' => 'alert(\'gaaaa\'); goPopup.setLayer(\'\',  \'https://bcmedia.devserv.com/index.php5?uid=555-123&ppa=ppaa&ppt=opp&ppk=0&cp_uid=777-249&cp_action=ppav&cp_type=cp&cp_pk=4866&pg=ajx\', \'body\', false, 20, 860, 1); ');
-      $asButtons[4] = array('url' => $sUrl, 'label' => $sActivityBtn);
-      $sHTML.= $oHTML->getActionButtons($asButtons);
+   *   $sActivityBtn = 'New action';
+   *   //independent buttons
+   *  $sHTML.= $oHTML->getActionButton($sActivityBtn, $sUrl, $sPic);
+   *   $sHTML.= $oHTML->getActionButton($sActivityBtn, $sUrl);
+   *   $sHTML.= $oHTML->getCR();
+   *
+   *   //independent buttons displayed base on an array of actions
+   *   $asButtons[0] = array('url' => '', 'label' => 'Add a new activitYY', 'onclick' => 'alert(\'gaaaa\'); goPopup.setLayer(\'\', \'https://bcmedia.devserv.com/index.php5?uid=555-123&ppa=ppaa&ppt=opp&ppk=0&cp_uid=777-249&cp_action=ppav&cp_type=cp&cp_pk=4866&pg=ajx\', \'body\', false, 20, 860, 1); ');
+   *   $asButtons[1] = array('url' => $sUrl, 'label' => $sActivityBtn, 'pic' => $sPic);
+   *   $asButtons[2] = array('url' => '', 'label' => 'Add a new guuuu', 'params' => array('class' => 'notice', 'onclick' => 'alert(\'guuuuuu\');'));
+   *   $sHTML.= $oHTML->getActionButtons($asButtons);
+   *
+   *   //number of actions exceeds $pnWrapAfter, actions displayed in a list
+   *   $asButtons[3] = array('url' => '', 'label' => 'Add a new teeee', 'pic' => $sPic, 'onclick' => 'alert(\'gaaaa\'); goPopup.setLayer(\'\',  \'https://bcmedia.devserv.com/index.php5?uid=555-123&ppa=ppaa&ppt=opp&ppk=0&cp_uid=777-249&cp_action=ppav&cp_type=cp&cp_pk=4866&pg=ajx\', \'body\', false, 20, 860, 1); ');
+   *   $asButtons[4] = array('url' => $sUrl, 'label' => $sActivityBtn);
+   *   $sHTML.= $oHTML->getActionButtons($asButtons);
    */
   public function getActionButtons($pasButtonData, $pnWrapAfter = 3, $psDefaultText = '', $pasParam = array())
   {
@@ -1944,6 +1944,30 @@ class CDisplayEx extends CDisplay
 
     assert('false; // could not initialize the template ['.$psTemplate.']');
     return null;
+  }
+
+  public function render($filename, $data = array())
+  {
+    $file = __DIR__.'/resources/html/'.$filename.'.php';
+
+    try
+    {
+      if( !is_readable($file) )
+      {
+          throw new Exception("View $file not found!", 1);
+      }
+
+      ob_start() && extract($data, EXTR_SKIP);
+      include $file;
+      $content = ob_get_clean();
+      ob_flush();
+
+      return $content;
+    }
+    catch (Exception $e)
+    {
+        return $e->getMessage();
+    }
   }
 
 }

@@ -5121,6 +5121,8 @@ class CSl_candidateEx extends CSl_candidate
 
       $bDisplayAllTabs = true;
       $asAttribute = array();
+      $parameters = array();
+
       if(empty($pnCandidatePk))
       {
 
@@ -5176,12 +5178,17 @@ class CSl_candidateEx extends CSl_candidate
         }
       }
 
-
-
       $this->_oPage->addJsFile(self::getResourcePath().'js/candidate_form.js');
-      $this->_oPage->addCssFile(self::getResourcePath().'css/sl_candidate.css');
+      $this->_oPage->addJsFile('/component/form/resources/js/currency.js');
+      $this->_oPage->addJsFile(array('/component/form/resources/js/jquery.bsmselect.js',
+        '/component/form/resources/js/jquery.bsmselect.sortable.js','/component/form/resources/js/jquery.bsmselect.compatibility.js'));
 
-      $sHTML = '';
+      $this->_oPage->addCssFile(self::getResourcePath().'css/sl_candidate.css');
+      $this->_oPage->addCssFile('/component/form/resources/css/jquery.bsmselect.css');
+      $this->_oPage->addCssFile('/component/form/resources/css/form.css');
+      $this->_oPage->addCssFile('/component/form/resources/css/token-input-mac.css');
+
+
       $oForm = $this->_oDisplay->initForm('candidateAddForm');
       $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SAVEADD, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk);
 
@@ -5189,33 +5196,289 @@ class CSl_candidateEx extends CSl_candidate
       $oForm->setFormDisplayParams(array('noCancelButton' => true, /*'noSubmitButton' => 1,*/ 'columns' => 1));
 
 
-      $oForm->addField('input', 'userfk', array('type' => 'hidden', 'value' => $this->casUserData['pk']));
+      /*$oForm->addField('input', 'userfk', array('type' => 'hidden', 'value' => $this->casUserData['pk']));
       $oForm->addField('input', 'check_duplicate', array('id' => 'dup_checked', 'type' => 'hidden', 'value' => 0));
-      $oForm->addField('misc', '', array('type' => 'title', 'title'=> 'Add/edit contact details'));
+      $oForm->addField('misc', '', array('type' => 'title', 'title'=> 'Add/edit contact details'));*/
+
+
 
       if($bDisplayAllTabs)
       {
-        $sTab = '<ul class="candidate_form_tabs"><li onclick="toggleFormTabs(this, \'candi_data\');" class="selected"><div>Candidate data</div></li>';
+        /*$sTab = '<ul class="candidate_form_tabs"><li onclick="toggleFormTabs(this, \'candi_data\');" class="selected"><div>Candidate data</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_contact\');"><div>Contact details</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_note\');"><div>Notes</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_resume\');"><div>Resume</div></li>';
         $sTab.= '<li onclick="toggleFormTabs(this, \'candi_duplicate\');" class="hidden tab_duplicate"><div>Duplicates</div></li>';
         $sTab.= '</ul>';
         $oForm->addField('misc', 'tabs_row', array('type' => 'text', 'text' => $sTab));
-        $oForm->setFieldDisplayparams('tabs_row', array('style' => 'width: 100%;'));
+        $oForm->setFieldDisplayparams('tabs_row', array('style' => 'width: 100%;'));*/
+
+        ini_set('upload_tmp_dir', CONST_PATH_UPLOAD_DIR);
       }
 
+      $contact_details_form = '';
 
+      if(empty($pnCandidatePk) || $this->_oLogin->isAdmin())
+        $readonly_name = '';
+      else
+        $readonly_name = 'readonly';
+
+      $nSex = (int)$oDbResult->getFieldValue('sex');
+
+      $sDate = $oDbResult->getFieldValue('date_birth');
+      $sDefaultDate = date('Y', strtotime('-30 years')).'-02-02';
+      $sYearRange = (date('Y') - 70).':'.(date('Y') - 12);
+
+      $calendar_icon = '//'.CONST_CRM_HOST.'/component/form/resources/pictures/date-icon.png';
+
+      $bEstimated = (bool)$oDbResult->getFieldValue('is_birth_estimation');
+      $nAge = date('Y') - date('Y', strtotime($sDate));
+
+      $asCurrency = $this->getVars()->getCurrencies();
+
+      $add_company_url = $this->_oPage->getAjaxUrl(
+        $this->csUid, CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_COMP, 0, array('update_field' => '#companypk',));
+
+      $company_token_url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_COMP, 0);
+
+      if($oDbResult->getFieldValue('companyfk'))
+      {
+        $company_token = '[{id:"'.$oDbResult->getFieldValue('companyfk').'",
+          name:"#'.$oDbResult->getFieldValue('companyfk').' - '.$oDbResult->getFieldValue('company_name').'"}]';
+      }
+      else
+        $company_token = array();
+
+      $occupation_tree = $oForm->getField('paged_tree', 'occupationpk', array('text' => '-- Occupation --',
+        'label' => '', 'value' => $oDbResult->getFieldValue('occupationfk'), 'style' => 'width: 165px; min-width: 145px;'));
+      $occupation_tree->addOption($this->_getTreeData('occupation'));
+
+      $industry_tree = $oForm->getField('paged_tree', 'industrypk', array('text' => '-- Industry --',
+        'label' => '', 'value' => $oDbResult->getFieldValue('industryfk'), 'style' => 'width: 165px; min-width: 145px;'));
+      $industry_tree->addOption($this->_getTreeData('industry'));
+
+      $candidate_salary = formatNumber(round($oDbResult->getFieldValue('salary')), $this->casSettings['candi_salary_format']);
+      $candidate_salary_bonus = formatNumber(round($oDbResult->getFieldValue('bonus')), $this->casSettings['candi_salary_format']);
+
+      $target_low = formatNumber(round($oDbResult->getFieldValue('target_low')), $this->casSettings['candi_salary_format']);
+      $target_high = formatNumber(round($oDbResult->getFieldValue('target_hig')), $this->casSettings['candi_salary_format']);
+
+      $nStatus = 0;
+      $bInPlay = false;
+      $sDatePlayed = '';
+      $asDateMeeting = array('meeting' => '', 'met' => '');
+
+      if(!empty($pnCandidatePk))
+      {
+        $nStatus = (int)$oDbResult->getFieldValue('statusfk');
+
+        $bInPlay = (bool)$oDbResult->getFieldValue('_in_play');
+
+        if(!$bInPlay)
+        {
+          $sDatePlayed = (bool)$this->_getModel()->getLastPositionPlayed($pnCandidatePk);
+
+          if(empty($sDatePlayed))
+            $asDateMeeting = $this->_getModel()->getLastInterview($pnCandidatePk);
+        }
+      }
+
+      // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+      // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+      // manage status field
+
+      if(CDependency::getCpLogin()->isAdmin())
+      {
+        $asStatus = '<option value="0"> - </option>
+          <option value="1" '.(($nStatus === 1)? ' selected ':'').'> Name Collect </option>
+          <option value="2" '.(($nStatus === 2)? ' selected ':'').'> Contacted </option>
+          <option value="3" '.(($nStatus === 3)? ' selected ':'').' class="unavailable"> Interview set</option>
+          <option value="5" '.(($nStatus === 5)? ' selected ':'').'> Phone assessed </option>
+          <option value="6" '.(($nStatus === 6)? ' selected ':'').'> Assessed in person </option>';
+      }
+      elseif($bInPlay)
+      {
+        $asStatus = '
+          <option value="2"> Contacted </option>
+          <option value="3" class="unavailable"> Interview set</option>
+          <option value="5"> Phone assessed </option>
+          <option value="6" selected="selected"> Assessed - [ in play ] </option>';
+      }
+      elseif(!empty($sDatePlayed) || !empty($asDateMeeting['met']))
+      {
+        if(!empty($sDatePlayed))
+          $sLegend = ' previously in play';
+        else
+          $sLegend = ' candidates met';
+
+        $asStatus = '
+          <option value="2"> Contacted </option>
+          <option value="3" class="unavailable"> Interview set</option>
+          <option value="5"> Phone assessed </option>
+          <option value="6" selected="selected"> Assessed - [ '.$sLegend.' ] </option>';
+      }
+      else
+      {
+        if(!empty($asDateMeeting['meeting']) && $nStatus < 3)
+        {
+          $nStatus = 3;
+          $sLegend = ' [ for '.$asDateMeeting['meeting'].' ]';
+          $sClass = '';
+        }
+        else
+        {
+          $sLegend = '';
+          $sClass = ' class="unavailable" ';
+        }
+
+        $asStatus = '
+          <option value="1" '.(($nStatus === 1)? ' selected ':'').'> Name Collect </option>
+          <option value="2" '.(($nStatus === 2)? ' selected ':'').'> Contacted </option>
+          <option value="3" '.(($nStatus === 3)? ' selected ':'').' '.$sClass.'> Interview set '.$sLegend.'</option>
+          <option value="5" '.(($nStatus === 5)? ' selected ':'').'> Phone assessed </option>
+          <option value="6" '.(($nStatus === 6)? ' selected ':'').'> Assessed in person </option>';
+      }
+
+      $is_client = (int)$oDbResult->getFieldValue('client') + (int)$oDbResult->getFieldValue('is_client');
+
+      if((int)$oDbResult->getFieldValue('skill_ag') == 0)
+      {
+        $oDbResult->setFieldValue('skill_ag', '-');
+        $oDbResult->setFieldValue('skill_ap', '-');
+        $oDbResult->setFieldValue('skill_am', '-');
+        $oDbResult->setFieldValue('skill_mp', '-');
+        $oDbResult->setFieldValue('skill_in', '-');
+        $oDbResult->setFieldValue('skill_ex', '-');
+        $oDbResult->setFieldValue('skill_fx', '-');
+        $oDbResult->setFieldValue('skill_ch', '-');
+        $oDbResult->setFieldValue('skill_ed', '-');
+        $oDbResult->setFieldValue('skill_pl', '-');
+        $oDbResult->setFieldValue('skill_e', '-');
+        $spinner_class = ' empty_spinner';
+      }
+      else
+        $spinner_class = '';
+
+      if ($oDbResult->getFieldValue('cpa') && $oDbResult->getFieldValue('mba'))
+      {
+        $diploma_options = '
+          <option value="cpa">CPA</option>
+          <option value="mba">MBA</option>
+          <option value="both" selected>both</option>
+          ';
+      }
+      else if ($oDbResult->getFieldValue('cpa'))
+      {
+        $diploma_options = '
+          <option value="cpa" selected>CPA</option>
+          <option value="mba">MBA</option>
+          <option value="both">both</option>
+          ';
+      }
+      else if ($oDbResult->getFieldValue('mba'))
+      {
+        $diploma_options = '
+          <option value="cpa">CPA</option>
+          <option value="mba" selected>MBA</option>
+          <option value="both">both</option>
+          ';
+      }
+      else
+      {
+        $diploma_options = '
+          <option value="cpa">CPA</option>
+          <option value="mba">MBA</option>
+          <option value="both">both</option>
+          ';
+      }
+
+      if (isset($asAttribute['candi_lang']))
+        $alt_language = $this->getVars()->getLanguageOption($asAttribute['candi_lang']);
+      else
+        $alt_language = $this->getVars()->getLanguageOption();
+
+      $alt_occupation_token_url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_OCCUPATION);
+      $alt_industry_token_url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_INDUSTRY);
+
+      $alt_occupation_token = $alt_industry_token = '';
+
+      if(isset($asAttribute['candi_occu']))
+      {
+        foreach($asAttribute['candi_occu'] as $sValue => $sLabel)
+        {
+          $alt_temp_array[] = '{id: "'.$sValue.'", name: "'.$sLabel.'"}';
+          $alt_occupation_token = '['.implode(',', $alt_occupation_array).']';
+
+          $alt_temp_array = '';
+        }
+      }
+
+      if(isset($asAttribute['candi_indus']))
+      {
+        foreach($asAttribute['candi_indus'] as $sValue => $sLabel)
+        {
+          $alt_temp_array[] = '{id: "'.$sValue.'", name: "'.$sLabel.'"}';
+          $alt_industry_token = '['.implode(',', $alt_occupation_array).']';
+        }
+      }
+
+      if($bDisplayAllTabs)
+      {
+          $oForm->addSection('', array('class' => 'candidate_inner_section'));
+
+          //reuse what ha sbeen done for the standalone form
+          $asTypes = getContactTypes();
+          for($nCount = 0; $nCount < 4; $nCount++)
+          {
+            $this->_getContactFormRow($oForm, $nCount, $asTypes, array());
+          }
+
+          $oForm->closeSection();
+
+          $contact_details_form = $oForm->getDisplay(true);
+      }
+
+      $data = array('form_url' => $sURL, 'user_id' => $this->casUserData['pk'], 'readonly_name' => $readonly_name,
+        'firstname' => $oDbResult->getFieldValue('firstname'), 'lastname' =>$oDbResult->getFieldValue('lastname'),
+        'display_all_tabs' => $bDisplayAllTabs, 'user_sex' => $nSex, 'age_estimate' => $bEstimated,
+        'birth_date' => $sDate, 'estimated_age' => '', 'default_date' => $sDefaultDate,
+        'language' => $this->getVars()->getLanguageOption($oDbResult->getFieldValue('languagefk')),
+        'nationality' => $this->getVars()->getNationalityOption($oDbResult->getFieldValue('nationalityfk')),
+        'location' => $this->getVars()->getLocationOption($oDbResult->getFieldValue('locationfk')),
+        'add_company_url' => $add_company_url, 'company_token' => $company_token,
+        'calendar_icon' => $calendar_icon, 'title' => $oDbResult->getFieldValue('title'),
+        'department' => $oDbResult->getFieldValue('department'), 'company_token_url' => $company_token_url,
+        'company' => $oDbResult->getFieldValue('companyfk'), 'occupation_tree' => $occupation_tree->getDisplay(),
+        'industry_tree' => $industry_tree->getDisplay(), 'candidate_salary' => $candidate_salary,
+        'currency_list' => $asCurrency, 'candidate_salary_bonus' => $candidate_salary_bonus, 'target_low' => $target_low,
+        'target_high' => $target_high, 'candidate_id' => $pnCandidatePk, 'status_options' => $asStatus,
+        'is_client' => $is_client, 'grade' => $this->getVars()->getCandidateGradeOption($oDbResult->getFieldValue('grade')),
+        'diploma_options' => $diploma_options, 'keyword' => $oDbResult->getFieldValue('keyword'), 'spinner_class' => $spinner_class,
+        'skill_ag' => $oDbResult->getFieldValue('skill_ag'), 'skill_ap' => $oDbResult->getFieldValue('skill_ap'),
+        'skill_am' => $oDbResult->getFieldValue('skill_am'), 'skill_mp' => $oDbResult->getFieldValue('skill_mp'),
+        'skill_in' => $oDbResult->getFieldValue('skill_in'), 'skill_ex' => $oDbResult->getFieldValue('skill_ex'),
+        'skill_fx' => $oDbResult->getFieldValue('skill_fx'), 'skill_ch' => $oDbResult->getFieldValue('skill_ch'),
+        'skill_ed' => $oDbResult->getFieldValue('skill_ed'), 'skill_pl' => $oDbResult->getFieldValue('skill_pl'),
+        'skill_e' => $oDbResult->getFieldValue('skill_e'), 'alt_language' => $alt_language,
+        'alt_occupation_token_url' => $alt_occupation_token_url, 'alt_industry_token_url' => $alt_industry_token_url,
+        'alt_occupation_token' => $alt_occupation_token, 'alt_industry_token' => $alt_industry_token,
+        'is_admin' => CDependency::getCpLogin()->isAdmin(), 'candidate_sys_status' => (int)$oDbResult->getFieldValue('_sys_status'),
+        'candidate_sys_redirect' => (int)$oDbResult->getFieldValue('_sys_redirect'),
+        'contact_details_form' => $contact_details_form
+      );
+
+      $sHTML = $this->_oDisplay->render('candidate_add', $data);
+      $sHTML .= '';
+      // $sHTML = '';
       // =======================================================================
       //candidate data section
-      $oForm->addSection('', array('id' => 'candi_data'));
+      /*$oForm->addSection('', array('id' => 'candi_data'));
 
         $oForm->addField('misc', 'title1', array('type' => 'text', 'text'=> 'Candidate details'));
         $oForm->setFieldDisplayParams('title1', array('class' => 'formSectionTitle'));
 
         $oForm->addSection('', array('class' => 'candidate_inner_section'));
 
-          $nSex = (int)$oDbResult->getFieldValue('sex');
           $oForm->addField('select', 'sex', array('label' => 'gender', 'onchange' => 'toggleGenderPic(this);'));
           $oForm->addOption('sex', array('label' => 'female', 'value' => 2));
           if($nSex === 1)
@@ -5247,14 +5510,9 @@ class CSl_candidateEx extends CSl_candidate
             $oForm->addField('input', 'firstname', array('readonly' => 'readonly', 'class' => 'disabled', 'label' => 'firstname', 'value' => $oDbResult->getFieldValue('firstname')));
           }
 
-          $sDate = $oDbResult->getFieldValue('date_birth');
-          $sDefaultDate = date('Y', strtotime('-30 years')).'-02-02';
-          $sYearRange = (date('Y') - 70).':'.(date('Y') - 12);
 
-          $bEstimated = (bool)$oDbResult->getFieldValue('is_birth_estimation');
           if($bEstimated)
           {
-            $nAge = date('Y') - date('Y', strtotime($sDate));
             $sLabel = ' <a href="javascript:;" onclick="toggleApproxAge(this);">birth</a> / <a href="javascript:;" onclick="toggleApproxAge(this, \'age\');">age</a>';
             $oForm->addField('input', 'birth_date', array('label' => $sLabel, 'type' => 'date', 'value' => $sDate, 'defaultDate' => $sDefaultDate, 'yearRange' => $sYearRange,
                 'class' => 'hidden',
@@ -5279,9 +5537,6 @@ class CSl_candidateEx extends CSl_candidate
           $oForm->addOptionHtml('location', $this->getVars()->getLocationOption($oDbResult->getFieldValue('locationfk')));
 
        $oForm->closeSection();
-
-
-       $asCurrency = $this->getVars()->getCurrencies();
 
        $oForm->addField('misc', 'title2', array('type' => 'text', 'text'=> 'Occupation'));
        $oForm->setFieldDisplayParams('title2', array('class' => 'formSectionTitle'));
@@ -5360,11 +5615,6 @@ class CSl_candidateEx extends CSl_candidate
               if(empty($sDatePlayed))
                 $asDateMeeting = $this->_getModel()->getLastInterview($pnCandidatePk);
             }
-
-            /*dump($nStatus);
-            dump($bInPlay);
-            dump($sDatePlayed);
-            dump($asDateMeeting);*/
           }
 
           // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -5538,10 +5788,6 @@ class CSl_candidateEx extends CSl_candidate
 
         $oForm->closeSection();
 
-
-
-
-
         //section for extra attribute
         $oForm->addField('misc', '', array('type' => 'text', 'text' => '<div style="margin-top: 5px;" class="bold italic">Additional data ?</div>', 'onclick' => '$(\'#candidate_more_section\').fadeToggle(function(){ $(this).closest(\'.ui-dialog-content\').scrollTop(5000); });', 'style' => 'cursor: pointer;'));
         $oForm->addSection('', array('id' => 'candidate_more_section', 'class' => 'candidate_inner_section hidden'));
@@ -5599,12 +5845,12 @@ class CSl_candidateEx extends CSl_candidate
         $oForm->closeSection();
 
 
-      $oForm->closeSection();
+      $oForm->closeSection();*/
 
 
-      if($bDisplayAllTabs)
+      /*if($bDisplayAllTabs)
       {
-        $oForm->addSection('candi_contact', array('class' => 'hidden', 'id' => 'candi_contact'));
+        $oForm->addSection('candi_contact', array('id' => 'candi_contact'));
           $oForm->addSection('', array('class' => 'candidate_inner_section'));
 
           //reuse what ha sbeen done for the standalone form
@@ -5616,13 +5862,13 @@ class CSl_candidateEx extends CSl_candidate
 
           $oForm->closeSection();
         $oForm->closeSection();
-      }
+      }*/
 
 
 
       // =======================================================================
       //note section
-      if($bDisplayAllTabs)
+      /*if($bDisplayAllTabs)
       {
         $oForm->addSection('candi_note', array('class' => 'hidden', 'id' => 'candi_note'));
           $oForm->addSection('', array('class' => 'candidate_inner_section'));
@@ -5652,13 +5898,13 @@ class CSl_candidateEx extends CSl_candidate
             ';
 
         $oForm->closeSection();
-      }
+      }*/
 
 
 
       // =======================================================================
       //resume section
-      if($bDisplayAllTabs)
+      /*if($bDisplayAllTabs)
       {
         $oForm->addSection('candi_resume', array('class' => 'hidden', 'id' => 'candi_resume'));
           $oForm->addSection('', array('class' => 'candidate_inner_section'));
@@ -5681,17 +5927,16 @@ class CSl_candidateEx extends CSl_candidate
 
           $oForm->closeSection();
         $oForm->closeSection();
-      }
+      }*/
 
 
 
       // =======================================================================
       //duplicate section
-      $oForm->addSection('candi_duplicate', array('class' => 'hidden', 'id' => 'candi_duplicate'));
+      /*$oForm->addSection('candi_duplicate', array('class' => 'hidden', 'id' => 'candi_duplicate'));
+      $oForm->closeSection();*/
 
-      $oForm->closeSection();
-
-      return $sHTML. $oForm->getDisplay();
+      return $sHTML;
     }
 
 

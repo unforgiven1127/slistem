@@ -32,7 +32,7 @@ ul.token-input-list-mac
   z-index: 999;
   float: left;
   background: transparent;
-  min-width: 270px;
+  min-width: 183px;
 }
 
 ul.token-input-list-mac.error {

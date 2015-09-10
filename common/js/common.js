@@ -1351,8 +1351,11 @@ if(!jQuery.browser)
 //======================================================================================================
 //======================================================================================================
 
-function initMce(psFieldName, pbAdvanced)
+function initMce(psFieldName, pbAdvanced, editor_width)
 {
+  if (!editor_width)
+    editor_width = 600;
+
   if(!pbAdvanced)
   {
     tinyMCE.init(
@@ -1377,7 +1380,8 @@ function initMce(psFieldName, pbAdvanced)
         /\<xsl\:[^>]+\>/g, // Protect <xsl:...>
         /<\?php.*?\?>/g // Protect php code
       ],
-      cleanup: true
+      cleanup: true,
+      width: editor_width
     });
   }
   else
@@ -1396,7 +1400,8 @@ function initMce(psFieldName, pbAdvanced)
       toolbar1 : "bold,italic,underline,strikethrough,|,forecolor,|,justifyleft,justifycenter,justifyright,justifyfull,|,emoticons,blockquote,|,fullscreen,spellchecker,cut,copy,|,bullist,numlist,|,link,unlink,|,code",
       toolbar2 : "styleselect,formatselect,fontselect,fontsizeselect,|,outdent,indent,|,pastetext",
 
-      cleanup: true
+      cleanup: true,
+      width: editor_width
     });
 
   }

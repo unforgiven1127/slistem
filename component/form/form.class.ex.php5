@@ -475,7 +475,7 @@ class CFormEx extends CForm
   /**
   * @return string : the html code of the form
   */
-  public function getDisplay()
+  public function getDisplay($skip_form_creation = false)
   {
     //-----------------------------------
     // Fetching form parameters
@@ -564,19 +564,23 @@ class CFormEx extends CForm
     if($this->cbFormHidden)
        $sHtml.= $this->coHTML->getBlocStart('', array('style' => 'display:none;'));
 
-    $sHtml.= '<form name="'.$this->csFormName.'" enctype="multipart/form-data" submitAjax="'.(int)$this->cbFormAjax.'" ';
-    foreach ($this->casFormParams as $sKey => $vValue)
+    if (!$skip_form_creation)
     {
-      $sHtml.= ' '.$sKey.'="'.$vValue.'" ';
-    }
+      $sHtml.= '<form name="'.$this->csFormName.'" enctype="multipart/form-data" submitAjax="'.(int)$this->cbFormAjax.'" ';
+      foreach ($this->casFormParams as $sKey => $vValue)
+      {
+        $sHtml.= ' '.$sKey.'="'.$vValue.'" ';
+      }
 
-    $sHtml.= ' onsubmit="'.$sOnSubmit.'">';
+      $sHtml.= ' onsubmit="'.$sOnSubmit.'">';
+    }
     $sHtml.= $this->coHTML->getBlocStart($this->csFormName.'InnerId',array('class'=>'innerForm'));
 
 
     $sHtml.= $this->_getFormFields($this->coHTML);
 
-    if($this->cbFormAddButtons && (!$this->cbSubmitHidden || $this->cbFormCancelButton || $this->cbFormCloseButton || !empty($this->casCustomButton)))
+    if($this->cbFormAddButtons && !$skip_form_creation &&
+      (!$this->cbSubmitHidden || $this->cbFormCancelButton || $this->cbFormCloseButton || !empty($this->casCustomButton)))
     {
       $sHtml.= $this->coHTML->getBloc('','&nbsp;',array('class'=>'formFieldLinebreaker formFieldWidth1'));
       $sHtml.= ' <div class="submitBtnClass formFieldWidth1">';
@@ -608,8 +612,11 @@ class CFormEx extends CForm
     $sHtml.= $this->coHTML->getBlocEnd();
     $sHtml.= $this->coHTML->getFloatHack();
 
-    $sHtml.= '</form>';
-    $sHtml.= '<script>'.$sJavascript.'</script>';
+    if (!$skip_form_creation)
+    {
+      $sHtml.= '</form>';
+      $sHtml.= '<script>'.$sJavascript.'</script>';
+    }
 
     if($this->cbFormHidden)
       $sHtml.= $this->coHTML->getBlocEnd();

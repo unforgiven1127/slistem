@@ -80,21 +80,21 @@ function linkCurrencyFields(psFieldId, psFieldname, psParentName)
   var oForm = $("#"+psFieldId).closest("form");
 
   //bind change event on the parent unit field
-  $(oForm).find("#"+psParentName+"_unitId").change(function()
+  $(oForm).find("#"+psParentName+"_unit").change(function()
   {
     var sValue = $(this).val();
-    $(oForm).find("#"+psFieldname+"_unitId").val(sValue);
+    $(oForm).find("#"+psFieldname+"_unit").val(sValue);
   });
 
   //bind change event on the parent currency field
-  $(oForm).find("#"+psParentName+"_currencyId").change(function()
+  $(oForm).find("#"+psParentName+"_currency").change(function()
   {
     var sValue = $(this).val();
-    $(oForm).find("#"+psFieldname+"_currencyId").val(sValue);
+    $(oForm).find("#"+psFieldname+"_currency").val(sValue);
   });
 
   //init the child fields with the parent values
-  $(oForm).find("#"+psParentName+"_unitId").change();
-  $(oForm).find("#"+psParentName+"_currencyId").change();
+  $(oForm).find("#"+psParentName+"_unit").change();
+  $(oForm).find("#"+psParentName+"_currency").change();
 
 }

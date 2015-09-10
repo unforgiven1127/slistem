@@ -24,18 +24,18 @@ function toggleGenderPic(poTag, pnValue)
   if(pnValue)
   {
     sValue = pnValue;
-    $("#addcandidateId #sexId").val(pnValue);
+    $("#addcandidateId #sex_id").val(pnValue);
   }
 
   if(sValue == 2)
   {
-    $("#addcandidateId .genderPic .man").hide(0);
-    $("#addcandidateId .genderPic .woman").fadeIn();
+    $("#addcandidateId .general_form_column .man").hide(0);
+    $("#addcandidateId .general_form_column .woman").fadeIn();
   }
   else
   {
-    $("#addcandidateId .genderPic .woman").hide(0);
-    $("#addcandidateId .genderPic .man").fadeIn();
+    $("#addcandidateId .general_form_column .woman").hide(0);
+    $("#addcandidateId .general_form_column .man").fadeIn();
   }
 }
 

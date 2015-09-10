@@ -1135,3 +1135,151 @@ div.mce-flow-layout .mce-path div
 {
   display: block;
 }
+
+/* new general style */
+.general_form_row
+{
+  overflow: auto;
+  padding: 5px 0;
+  position: relative;
+}
+
+.general_form_row .formField
+{
+  width: 190px;
+}
+
+.general_form_label
+{
+  width: 90px;
+  min-width: 90px;
+  border: 1px dotted #CFCFCF;
+  border-radius: 3px;
+  /*font-size: 11px;*/
+  padding: 3px 2px 2px 0;
+  text-align: right;
+  background-color: #FFEFD3;
+  float: left;
+  font-size: 11px;
+}
+
+.general_form_column
+{
+  padding-left: 10px;
+  float: left;
+}
+
+.general_form_column input,
+.general_form_column select
+{
+  border: 1px solid #AAA;
+  border-radius: 3px;
+  box-shadow: 0 2px 7px #DFDFDF;
+}
+
+.extended_select select
+{
+  width: 182px;
+}
+
+.extended_input input
+{
+  width: 180px;
+}
+
+.salary_field
+{
+  width: 81px;
+}
+
+.salary_manipulation
+{
+  width: 45px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.salary_manipulation_small
+{
+  width: 43px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.gray_section
+{
+  background-color: #F2F2F2;
+  border: 1px solid #AAA;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.spinner_holder
+{
+  width: 70px;
+  float: left;
+}
+
+.spinner_holder input
+{
+  width: 43px;
+  text-align: center;
+}
+
+.spinner_label
+{
+  width: 70px;
+  background: transparent linear-gradient(to right, #FFF6E5 0%, #FFEFD3 100%) repeat scroll 0% 0%;
+  border: 1px dotted #CFCFCF;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.man,
+.woman
+{
+  cursor: pointer;
+}
+
+.read_only_field
+{
+  background-color: #EDEDED;
+  font-style: italic;
+  color: #666;
+}
+
+.add_margin_left_10
+{
+  margin-left: 10px;
+}
+
+.add_margin_left_20
+{
+  margin-left: 20px;
+}
+
+.add_margin_left_30
+{
+  margin-left: 30px;
+}
+
+.add_margin_top_10
+{
+  margin-top: 10px;
+}
+
+@-moz-document url-prefix()
+{
+  .extended_select select
+  {
+    width: 184px;
+  }
+  .salary_manipulation_small
+  {
+    width: 41px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+}

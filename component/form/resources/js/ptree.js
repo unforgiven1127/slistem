@@ -3,6 +3,10 @@ function init_ptree(psFieldId, psContainerId, psDummyId)
 {
   var oTreeContainer = jQuery("#"+psContainerId);
 
+  if (jQuery('#candi_data'))
+    jQuery('#'+psDummyId).closest('.gray_section').append(oTreeContainer);
+    // jQuery('#candi_data').append(oTreeContainer);
+
   jQuery(".TSelect_lvl_0 li", oTreeContainer).bind("click", function()
   {
     if(jQuery(this).hasClass("final"))
@@ -130,23 +134,24 @@ function saveTreeValue(poElement, psInputId, psFieldId, psContainerId)
 
 
 
-function paneControl(psFieldSelector, psDummySelector)
+function paneControl(field_selector, dummy_selector)
 {
-  var oField = $(psFieldSelector);
+  var field_obj = $(field_selector);
 
-  if( $(oField).is(':visible'))
+  if( $(field_obj).is(':visible'))
   {
-    $(oField).fadeOut('fast', function(){ jQuery(psFieldSelector +' div.TSelectLevel').hide(0); });
-    /*console.log('unbind keydown');
-    $('.TSelect_mainBtn').unbind('keydown');*/
+    field_obj.fadeOut('fast', function(){ jQuery(field_selector +' div.TSelectLevel').hide(0); });
   }
   else
   {
     $('.TSelect_mainContainer').fadeOut('fast');
-    var oPosition = $(psDummySelector).position();
+    var obj_parent_pos = $(dummy_selector).closest('.general_form_row').position();
+    var obj_pos = $(dummy_selector).parent().position();
+    var top_position = obj_pos.top + obj_parent_pos.top + 20;
+    var left_position = obj_pos.left + obj_parent_pos.left;
 
-    $(oField).attr('style',  'display: none; top: '+(oPosition.top+20)+'px; left: '+(oPosition.left)+'px; ');
-    $(oField).fadeIn('fast', function(){ jQuery(psFieldSelector +' div:first').fadeIn('fast'); });
+    field_obj.attr('style',  'display: none; top: '+top_position+'px; left: '+left_position+'px; ');
+    field_obj.fadeIn('fast', function(){ jQuery(field_selector +' div:first').fadeIn('fast'); });
   }
 }
 
