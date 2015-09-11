@@ -4225,8 +4225,10 @@ class CSl_statEx extends CSl_stat
       else
         $end_date .= ' 23:59:59';
 
+      $data = array();
+
       $consultant_names = $consultant_ids = $researcher_names = $researcher_ids = array();
-      $consultant_stats = $researcher_stats = array();
+      $stats_data = array();
       $consultant_skip_id = array(389, 315, 354, 186);
       $researcher_skip_id = array(301, 423, 475, 315);
 
@@ -4250,36 +4252,36 @@ class CSl_statEx extends CSl_stat
           continue;
 
         if (!empty($temp_resume_sent[$id]['resumes_sent']))
-          $consultant_stats[$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+          $stats_data['consultant'][$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
         else
-          $consultant_stats[$id]['resumes_sent'] = 0;
+          $stats_data['consultant'][$id]['resumes_sent'] = 0;
 
         if (!empty($temp_set_vs_met[$id]['set']))
-          $consultant_stats[$id]['set'] = $temp_set_vs_met[$id]['set'];
+          $stats_data['consultant'][$id]['set'] = $temp_set_vs_met[$id]['set'];
         else
-          $consultant_stats[$id]['set'] = 0;
+          $stats_data['consultant'][$id]['set'] = 0;
 
         if (!empty($temp_set_vs_met[$id]['met']))
-          $consultant_stats[$id]['met'] = $temp_set_vs_met[$id]['met'];
+          $stats_data['consultant'][$id]['met'] = $temp_set_vs_met[$id]['met'];
         else
-          $consultant_stats[$id]['met'] = 0;
+          $stats_data['consultant'][$id]['met'] = 0;
 
         if (!empty($temp_ccm[$id]['ccm1']))
-          $consultant_stats[$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['consultant'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
         else
-          $consultant_stats[$id]['ccm1'] = 0;
+          $stats_data['consultant'][$id]['ccm1'] = 0;
 
         if (!empty($temp_ccm[$id]['ccm2']))
-          $consultant_stats[$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['consultant'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
         else
-          $consultant_stats[$id]['ccm2'] = 0;
+          $stats_data['consultant'][$id]['ccm2'] = 0;
 
         if (!empty($temp_ccm[$id]['mccm']))
-          $consultant_stats[$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['consultant'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
         else
-          $consultant_stats[$id]['mccm'] = 0;
+          $stats_data['consultant'][$id]['mccm'] = 0;
 
-        $consultant_stats[$id]['name'] = $consultant_names[$id];
+        $stats_data['consultant'][$id]['name'] = $consultant_names[$id];
       }
 
       $temp_set_vs_met = $temp_resume_sent = $temp_ccm = array();
@@ -4304,36 +4306,36 @@ class CSl_statEx extends CSl_stat
           continue;
 
         if (!empty($temp_resume_sent[$id]['resumes_sent']))
-          $researcher_stats[$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+          $stats_data['researcher'][$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
         else
-          $researcher_stats[$id]['resumes_sent'] = 0;
+          $stats_data['researcher'][$id]['resumes_sent'] = 0;
 
         if (!empty($temp_set_vs_met[$id]['set']))
-          $researcher_stats[$id]['set'] = $temp_set_vs_met[$id]['set'];
+          $stats_data['researcher'][$id]['set'] = $temp_set_vs_met[$id]['set'];
         else
-          $researcher_stats[$id]['set'] = 0;
+          $stats_data['researcher'][$id]['set'] = 0;
 
         if (!empty($temp_set_vs_met[$id]['met']))
-          $researcher_stats[$id]['met'] = $temp_set_vs_met[$id]['met'];
+          $stats_data['researcher'][$id]['met'] = $temp_set_vs_met[$id]['met'];
         else
-          $researcher_stats[$id]['met'] = 0;
+          $stats_data['researcher'][$id]['met'] = 0;
 
         if (!empty($temp_ccm[$id]['ccm1']))
-          $researcher_stats[$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['researcher'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
         else
-          $researcher_stats[$id]['ccm1'] = 0;
+          $stats_data['researcher'][$id]['ccm1'] = 0;
 
         if (!empty($temp_ccm[$id]['ccm2']))
-          $researcher_stats[$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['researcher'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
         else
-          $researcher_stats[$id]['ccm2'] = 0;
+          $stats_data['researcher'][$id]['ccm2'] = 0;
 
         if (!empty($temp_ccm[$id]['mccm']))
-          $researcher_stats[$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['researcher'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
         else
-          $researcher_stats[$id]['mccm'] = 0;
+          $stats_data['researcher'][$id]['mccm'] = 0;
 
-        $researcher_stats[$id]['name'] = $researcher_names[$id];
+        $stats_data['researcher'][$id]['name'] = $researcher_names[$id];
       }
 
       $this->_oPage->addJsFile(CONST_PATH_JS_JQUERYUI);
@@ -4341,109 +4343,11 @@ class CSl_statEx extends CSl_stat
 
       $this->_oPage->addCssFile($this->getResourcePath().'/css/totals_chart.css');
 
-      $html = '<form action="" method="post" >';
-      $html .= '<div style="overflow: auto; margin: 15px 0; font-size: 16px;">';
-      $html .= '<div style="padding: 2px 2px 2px 0; float: left;">Start date: </div>';
-      $html .= '<div style="padding-left: 10px; float: left;">';
-      $html .= '<input id="start_date" style="width: 90px" type="text" name="start_date" value="'.$start_date_original.'" />';
-      $html .= '</div>';
-      $html .= '<div style="padding: 2px 2px 2px 0; float: left; margin-left: 10px;">End date: </div>';
-      $html .= '<div style="padding-left: 10px; float: left;">';
-      $html .= '<input id="end_date" style="width: 90px" type="text" name="end_date" value="'.$end_date_original.'" />';
-      $html .= '</div>';
-      $html .= '<div style="padding-left: 10px; float: left; margin-left: 10px;">';
-      $html .= '<input type="submit" name="submit_totals" value="Get totals" />';
-      $html .= '</div>';
-      $html .= '</div>';
+      $data = array('stats_data' => $stats_data, 'start_date_original' => $start_date_original,
+        'end_date_original' => $end_date_original, 'start_date' => $start_date
+        );
 
-      $html .= '<table class="totals_table consultant_part">';
-
-      $html.= '<tr>';
-      $html.= '<th colspan="7">Consultant totals - '.date('M Y', strtotime($start_date)).'</th>';
-      $html.= '</tr>';
-
-      $html.= '<tr>';
-      $html.= '<th>Name</th>';
-      $html.= '<th>Set</th>';
-      $html.= '<th>Met</th>';
-      $html.= '<th>Resumes sent</th>';
-      $html.= '<th>CCM1</th>';
-      $html.= '<th>CCM2</th>';
-      $html.= '<th>MCCM</th>';
-      $html.= '</tr>';
-
-      $row_number_rank = 1;
-
-      foreach ($consultant_stats as $value)
-      {
-        if ($row_number_rank % 2 === 0)
-          $even = ' even_row';
-        else
-          $even = '';
-
-        $html.= '<tr class="hover_row'.$even.'">';
-        $html.= '<td>'.$value['name'].'</td>';
-        $html.= '<td>'.$value['set'].'</td>';
-        $html.= '<td>'.$value['met'].'</td>';
-        $html.= '<td>'.$value['resumes_sent'].'</td>';
-        $html.= '<td>'.$value['ccm1'].'</td>';
-        $html.= '<td>'.$value['ccm2'].'</td>';
-        $html.= '<td>'.$value['mccm'].'</td>';
-        $html.= '</tr>';
-
-        $row_number_rank += 1;
-      }
-
-      $html.= '<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>';
-      $html.= '</table>';
-
-      $html.= '<div style="height: 30px;"></div>';
-
-      $html.= '<table class="totals_table researcher_part">';
-
-      $html.= '<tr>';
-      $html.= '<th colspan="7">Researcher totals - '.date('M Y', strtotime($start_date)).'</th>';
-      $html.= '</tr>';
-
-      $html.= '<tr>';
-      $html.= '<th>Name</th>';
-      $html.= '<th>Set</th>';
-      $html.= '<th>Met</th>';
-      $html.= '<th>Resumes sent</th>';
-      $html.= '<th>CCM1</th>';
-      $html.= '<th>CCM2</th>';
-      $html.= '<th>MCCM</th>';
-      $html.= '</tr>';
-
-      $row_number_rank = 1;
-
-      foreach ($researcher_stats as $value)
-      {
-        if ($row_number_rank % 2 === 0)
-          $even = ' even_row';
-        else
-          $even = '';
-
-        $html.= '<tr class="hover_row'.$even.'">';
-        $html.= '<td>'.$value['name'].'</td>';
-        $html.= '<td>'.$value['set'].'</td>';
-        $html.= '<td>'.$value['met'].'</td>';
-        $html.= '<td>'.$value['resumes_sent'].'</td>';
-        $html.= '<td>'.$value['ccm1'].'</td>';
-        $html.= '<td>'.$value['ccm2'].'</td>';
-        $html.= '<td>'.$value['mccm'].'</td>';
-        $html.= '</tr>';
-
-        $row_number_rank += 1;
-      }
-
-      $html.= '<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>';
-      $html.= '</table>';
-
-      $html.= '<script> ';
-      $html.= '$(function() { $("#start_date, #end_date").datepicker({showButtonPanel: true, changeYear: true, dateFormat: \'yy-mm-dd\' }); });';
-      $html.= '</script>';
-      $html.= '</form>';
+      $html = $this->_oDisplay->render('totals_chart', $data);
 
       return $html;
     }
