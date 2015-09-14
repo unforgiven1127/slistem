@@ -427,7 +427,7 @@ class CSl_statModelEx extends CSl_statModel
       $read = $db_result->readNext();
     }
 
-    $query = 'SELECT DISTINCT candidatefk as meetings_met, created_by, date_met, attendeefk';
+    $query = 'SELECT DISTINCT candidatefk as meetings_met, created_by, date_met, attendeefk, meeting_done';
     $query .= ' FROM sl_meeting';
     $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
     $query .= ' AND date_met BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
@@ -437,14 +437,17 @@ class CSl_statModelEx extends CSl_statModel
     $read = $db_result->readFirst();
     while($read)
     {
-      if (!isset($data[$db_result->getFieldValue($group_switch)]))
-      {
-        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met_meeting_info' => array(), 'met' => 0);
-      }
       $temp = $db_result->getData();
-      $data[$db_result->getFieldValue($group_switch)]['met'] += 1;
-      $data[$db_result->getFieldValue($group_switch)]['met_meeting_info'][] = array('candidate' => $temp['meetings_met'],
-        'date' => $temp['date_met']);
+      if ((int)$temp['meeting_done'] > 0)
+      {
+        if (!isset($data[$db_result->getFieldValue($group_switch)]))
+        {
+          $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met_meeting_info' => array(), 'met' => 0);
+        }
+        $data[$db_result->getFieldValue($group_switch)]['met'] += 1;
+        $data[$db_result->getFieldValue($group_switch)]['met_meeting_info'][] = array('candidate' => $temp['meetings_met'],
+          'date' => $temp['date_met']);
+      }
       $read = $db_result->readNext();
     }
 
