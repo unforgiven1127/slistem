@@ -43,12 +43,90 @@
 
 	<tr class="hover_row<?php echo $even; ?>">
 		<td><?php echo $value['name']; ?></td>
-		<td><?php echo $value['set']; ?></td>
-		<td><?php echo $value['met']; ?></td>
-		<td><?php echo $value['resumes_sent']; ?></td>
-		<td><?php echo $value['ccm1']; ?></td>
-		<td><?php echo $value['ccm2']; ?></td>
-		<td><?php echo $value['mccm']; ?></td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['set']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['set_meeting_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['met']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['met_meeting_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['resumes_sent']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['resumes_sent_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['ccm1']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['ccm1_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['ccm2']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['ccm2_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['mccm']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['mccm_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
 	</tr>
 
 	<?php $row_number_rank += 1; ?>
@@ -65,6 +143,13 @@
 			showButtonPanel: true,
 			changeYear: true,
 			dateFormat: 'yy-mm-dd'
+		});
+
+		$('.stat_holder').click(function() {
+			var sibling_obj_size = $($(this).siblings().get(0)).children().length;
+
+			if (sibling_obj_size > 0)
+				$(this).siblings().toggle();
 		});
 	});
 </script>

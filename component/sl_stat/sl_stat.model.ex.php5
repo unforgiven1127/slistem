@@ -418,12 +418,12 @@ class CSl_statModelEx extends CSl_statModel
     {
       if (!isset($data[$db_result->getFieldValue($group_switch)]))
       {
-        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_created' => '',
-          'met' => 0, 'date_met' => '');
+        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met' => 0, 'set_meeting_info' => array());
       }
       $temp = $db_result->getData();
       $data[$db_result->getFieldValue($group_switch)]['set'] += 1;
-      // $data[$db_result->getFieldValue($group_switch)]['date_created'] = $temp['date_created'];
+      $data[$db_result->getFieldValue($group_switch)]['set_meeting_info'][] = array('candidate' => $temp['meetings_set'],
+        'date' => $temp['date_created']);
       $read = $db_result->readNext();
     }
 
@@ -439,12 +439,12 @@ class CSl_statModelEx extends CSl_statModel
     {
       if (!isset($data[$db_result->getFieldValue($group_switch)]))
       {
-        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'date_meeting' => '',
-          'met' => 0, 'date_met' => '');
+        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met_meeting_info' => array(), 'met' => 0);
       }
       $temp = $db_result->getData();
       $data[$db_result->getFieldValue($group_switch)]['met'] += 1;
-      // $data[$db_result->getFieldValue($group_switch)]['date_met'] = $temp['date_met'];
+      $data[$db_result->getFieldValue($group_switch)]['met_meeting_info'][] = array('candidate' => $temp['meetings_met'],
+        'date' => $temp['date_met']);
       $read = $db_result->readNext();
     }
 
@@ -963,7 +963,7 @@ class CSl_statModelEx extends CSl_statModel
 
     if ($group == 'consultant')
     {
-      $query = 'SELECT positionfk, candidatefk, created_by, status';
+      $query = 'SELECT positionfk, candidatefk, created_by, status, date_created as ccm_create_date';
       $query .= ' FROM sl_position_link';
       $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
       $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
@@ -1010,14 +1010,29 @@ class CSl_statModelEx extends CSl_statModel
         $ccm_data[$row['created_by']]['ccm1'] = 0;
         $ccm_data[$row['created_by']]['ccm2'] = 0;
         $ccm_data[$row['created_by']]['mccm'] = 0;
+        $ccm_data[$row['created_by']]['ccm_info']['ccm1'] = array();
+        $ccm_data[$row['created_by']]['ccm_info']['ccm2'] = array();
+        $ccm_data[$row['created_by']]['ccm_info']['mccm'] = array();
       }
 
       if ($row['status'] == 51)
+      {
         $ccm_data[$row['created_by']]['ccm1'] += 1;
+        $ccm_data[$row['created_by']]['ccm_info']['ccm1'][] = array('candidate' => $row['candidatefk'],
+          'date' => $row['ccm_create_date']);
+      }
       else if ($row['status'] == 52)
+      {
         $ccm_data[$row['created_by']]['ccm2'] += 1;
+        $ccm_data[$row['created_by']]['ccm_info']['ccm2'][] = array('candidate' => $row['candidatefk'],
+          'date' => $row['ccm_create_date']);
+      }
       else
+      {
         $ccm_data[$row['created_by']]['mccm'] += 1;
+        $ccm_data[$row['created_by']]['ccm_info']['mccm'][] = array('candidate' => $row['candidatefk'],
+          'date' => $row['ccm_create_date']);
+      }
 
       $read = $db_result->readNext();
     }
@@ -1031,7 +1046,7 @@ class CSl_statModelEx extends CSl_statModel
 
     if ($group == 'consultant')
     {
-      $query = 'SELECT positionfk, candidatefk, created_by';
+      $query = 'SELECT positionfk, candidatefk, created_by, date_created as resume_sent_date';
       $query .= ' FROM sl_position_link';
       $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
       $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
@@ -1056,7 +1071,10 @@ class CSl_statModelEx extends CSl_statModel
       $row = $db_result->getData();
 
       if (!isset($resume_sent_info[$row['created_by']]['resumes_sent']))
+      {
         $resume_sent_info[$row['created_by']]['resumes_sent'] = 0;
+        $resume_sent_info[$row['created_by']]['resumes_sent_info'] = array();
+      }
 
       if ($group == 'researcher')
       {
@@ -1070,6 +1088,8 @@ class CSl_statModelEx extends CSl_statModel
       }
 
       $resume_sent_info[$row['created_by']]['resumes_sent'] += 1;
+      $resume_sent_info[$row['created_by']]['resumes_sent_info'][] = array('candidate' => $row['candidatefk'],
+        'date' => $row['resume_sent_date']);
 
       $read = $db_result->readNext();
     }
