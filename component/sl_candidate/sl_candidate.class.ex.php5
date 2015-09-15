@@ -8885,7 +8885,11 @@ die();*/
                 || $candidate_data['target']['date_birth'] == '0000-00-00'
                 || empty($candidate_data['target']['date_birth']))
               {
-                $candidate_data['target']['date_birth'] = $candidate_data['origin']['date_birth'];
+                if (!empty($candidate_data['origin']['date_birth'])
+                  && $candidate_data['origin']['date_birth'] != '0000-00-00')
+                {
+                  $candidate_data['target']['date_birth'] = $candidate_data['origin']['date_birth'];
+                }
                 $skip_general_overwrite = true;
               }
               else if (strpos($candidate_data['origin']['date_birth'], '-02-02')
@@ -8939,6 +8943,8 @@ die();*/
 
       foreach ($candidate_data['target'] as $key => $value)
       {
+        $skip_general_overwrite = false;
+
         if (in_array($key, $newer_fields))
         {
           if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
@@ -8949,9 +8955,18 @@ die();*/
           continue;
         }
 
+        if ($key == 'grade')
+        {
+          if ((int)$candidate_data['origin']['grade'] > (int)$candidate_data['target']['grade'])
+          {
+            $candidate_data['target']['grade'] = $candidate_data['origin']['grade'];
+            $skip_general_overwrite = true;
+          }
+        }
+
         if (in_array($key, $skip_columns))
           unset($candidate_data['target'][$key]);
-        else
+        else if (!$skip_general_overwrite)
         {
           if (empty($candidate_data['target'][$key]) && !empty($candidate_data['origin'][$key]))
             $candidate_data['target'][$key] = $candidate_data['origin'][$key];
