@@ -56,7 +56,7 @@
 				<div class="general_form_row">
 					<div class="general_form_label">lastname</div>
 					<div class="general_form_column">
-						<input <?php echo $readonly_name; ?> type="text" name="lastname" value="<?php echo $firstname; ?>" />
+						<input <?php echo $readonly_name; ?> type="text" name="lastname" value="<?php echo $lastname; ?>" />
 					</div>
 					<div class="general_form_label add_margin_left_30">firstname</div>
 					<div class="general_form_column">
