@@ -4252,34 +4252,70 @@ class CSl_statEx extends CSl_stat
           continue;
 
         if (!empty($temp_resume_sent[$id]['resumes_sent']))
+        {
           $stats_data['consultant'][$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+          $stats_data['consultant'][$id]['resumes_sent_info'] = $temp_resume_sent[$id]['resumes_sent_info'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['resumes_sent'] = 0;
+          $stats_data['consultant'][$id]['resumes_sent_info'] = array();
+        }
 
         if (!empty($temp_set_vs_met[$id]['set']))
+        {
           $stats_data['consultant'][$id]['set'] = $temp_set_vs_met[$id]['set'];
+          $stats_data['consultant'][$id]['set_meeting_info'] = $temp_set_vs_met[$id]['set_meeting_info'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['set'] = 0;
+          $stats_data['consultant'][$id]['set_meeting_info'] = array();
+        }
 
         if (!empty($temp_set_vs_met[$id]['met']))
+        {
           $stats_data['consultant'][$id]['met'] = $temp_set_vs_met[$id]['met'];
+          $stats_data['consultant'][$id]['met_meeting_info'] = $temp_set_vs_met[$id]['met_meeting_info'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['met'] = 0;
+          $stats_data['consultant'][$id]['met_meeting_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['ccm1']))
+        {
           $stats_data['consultant'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['consultant'][$id]['ccm1_info'] = $temp_ccm[$id]['ccm_info']['ccm1'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['ccm1'] = 0;
+          $stats_data['consultant'][$id]['ccm1_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['ccm2']))
+        {
           $stats_data['consultant'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['consultant'][$id]['ccm2_info'] = $temp_ccm[$id]['ccm_info']['ccm2'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['ccm2'] = 0;
+          $stats_data['consultant'][$id]['ccm2_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['mccm']))
+        {
           $stats_data['consultant'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['consultant'][$id]['mccm_info'] = $temp_ccm[$id]['ccm_info']['mccm'];
+        }
         else
+        {
           $stats_data['consultant'][$id]['mccm'] = 0;
+          $stats_data['consultant'][$id]['mccm_info'] = array();
+        }
 
         $stats_data['consultant'][$id]['name'] = $consultant_names[$id];
       }
@@ -4306,34 +4342,70 @@ class CSl_statEx extends CSl_stat
           continue;
 
         if (!empty($temp_resume_sent[$id]['resumes_sent']))
+        {
           $stats_data['researcher'][$id]['resumes_sent'] = $temp_resume_sent[$id]['resumes_sent'];
+          $stats_data['researcher'][$id]['resumes_sent_info'] = $temp_resume_sent[$id]['resumes_sent_info'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['resumes_sent'] = 0;
+          $stats_data['researcher'][$id]['resumes_sent_info'] = array();
+        }
 
         if (!empty($temp_set_vs_met[$id]['set']))
+        {
           $stats_data['researcher'][$id]['set'] = $temp_set_vs_met[$id]['set'];
+          $stats_data['researcher'][$id]['set_meeting_info'] = $temp_set_vs_met[$id]['set_meeting_info'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['set'] = 0;
+          $stats_data['researcher'][$id]['set_meeting_info'] = array();
+        }
 
         if (!empty($temp_set_vs_met[$id]['met']))
+        {
           $stats_data['researcher'][$id]['met'] = $temp_set_vs_met[$id]['met'];
+          $stats_data['researcher'][$id]['met_meeting_info'] = $temp_set_vs_met[$id]['met_meeting_info'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['met'] = 0;
+           $stats_data['researcher'][$id]['met_meeting_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['ccm1']))
+        {
           $stats_data['researcher'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['researcher'][$id]['ccm1_info'] = $temp_ccm[$id]['ccm_info']['ccm1'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['ccm1'] = 0;
+          $stats_data['researcher'][$id]['ccm1_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['ccm2']))
+        {
           $stats_data['researcher'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['researcher'][$id]['ccm2_info'] = $temp_ccm[$id]['ccm_info']['ccm2'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['ccm2'] = 0;
+          $stats_data['researcher'][$id]['ccm2_info'] = array();
+        }
 
         if (!empty($temp_ccm[$id]['mccm']))
+        {
           $stats_data['researcher'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['researcher'][$id]['mccm_info'] = $temp_ccm[$id]['ccm_info']['mccm'];
+        }
         else
+        {
           $stats_data['researcher'][$id]['mccm'] = 0;
+          $stats_data['researcher'][$id]['mccm_info'] = array();
+        }
 
         $stats_data['researcher'][$id]['name'] = $researcher_names[$id];
       }
@@ -4344,7 +4416,8 @@ class CSl_statEx extends CSl_stat
       $this->_oPage->addCssFile($this->getResourcePath().'/css/totals_chart.css');
 
       $data = array('stats_data' => $stats_data, 'start_date_original' => $start_date_original,
-        'end_date_original' => $end_date_original, 'start_date' => $start_date
+        'end_date_original' => $end_date_original, 'start_date' => $start_date,
+        'page_obj' => $this->_oPage
         );
 
       $html = $this->_oDisplay->render('totals_chart', $data);
