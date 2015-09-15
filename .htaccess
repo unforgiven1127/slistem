@@ -95,6 +95,9 @@ SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
 #John Canada
 SetEnvIf REAL_ADDR "^69\.176\.163\.134$" AllowAccess
 
+#Dominykas Canada
+SetEnvIf REAL_ADDR "^209\.145\.120\.145$" AllowAccess
+
 #-> Manila
 
 ## 2010-09-30 dt#td  Slate SRC1
