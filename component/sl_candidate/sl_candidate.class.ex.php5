@@ -5464,7 +5464,7 @@ class CSl_candidateEx extends CSl_candidate
         'alt_occupation_token' => $alt_occupation_token, 'alt_industry_token' => $alt_industry_token,
         'is_admin' => CDependency::getCpLogin()->isAdmin(), 'candidate_sys_status' => (int)$oDbResult->getFieldValue('_sys_status'),
         'candidate_sys_redirect' => (int)$oDbResult->getFieldValue('_sys_redirect'),
-        'contact_details_form' => $contact_details_form
+        'contact_details_form' => $contact_details_form, 'year_range' => $sYearRange
       );
 
       $sHTML = $this->_oDisplay->render('candidate_add', $data);

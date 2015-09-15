@@ -415,6 +415,7 @@
 	{
 		$('#birth_date').datepicker({
 			defaultDate: '<?php echo $default_date; ?>',
+			yearRange: '<?php echo $year_range; ?>',
 			showButtonPanel: true,
 			changeYear: true,
 			numberOfMonths: 2,
