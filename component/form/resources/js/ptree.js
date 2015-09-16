@@ -1,11 +1,16 @@
+var old_tree = true;
 
 function init_ptree(psFieldId, psContainerId, psDummyId)
 {
   var oTreeContainer = jQuery("#"+psContainerId);
 
-  if (jQuery('#candi_data'))
+  if (jQuery('#candi_data').length)
+  {
     jQuery('#'+psDummyId).closest('.gray_section').append(oTreeContainer);
-    // jQuery('#candi_data').append(oTreeContainer);
+    old_tree = false;
+  }
+  else
+    old_tree = true;
 
   jQuery(".TSelect_lvl_0 li", oTreeContainer).bind("click", function()
   {
@@ -134,7 +139,7 @@ function saveTreeValue(poElement, psInputId, psFieldId, psContainerId)
 
 
 
-function paneControl(field_selector, dummy_selector)
+function paneControl(field_selector, dummy_selector, old_code)
 {
   var field_obj = $(field_selector);
 
@@ -145,12 +150,23 @@ function paneControl(field_selector, dummy_selector)
   else
   {
     $('.TSelect_mainContainer').fadeOut('fast');
-    var obj_parent_pos = $(dummy_selector).closest('.general_form_row').position();
-    var obj_pos = $(dummy_selector).parent().position();
-    var top_position = obj_pos.top + obj_parent_pos.top + 20;
-    var left_position = obj_pos.left + obj_parent_pos.left;
 
-    field_obj.attr('style',  'display: none; top: '+top_position+'px; left: '+left_position+'px; ');
+    if (old_tree)
+    {
+      var obj_pos = $(dummy_selector).position();
+
+      field_obj.attr('style',  'display: none; top: '+(obj_pos.top+20)+'px; left: '+(obj_pos.left)+'px; ');
+    }
+    else
+    {
+      var obj_parent_pos = $(dummy_selector).closest('.general_form_row').position();
+      var obj_pos = $(dummy_selector).parent().position();
+      var top_position = obj_pos.top + obj_parent_pos.top + 20;
+      var left_position = obj_pos.left + obj_parent_pos.left;
+
+      field_obj.attr('style',  'display: none; top: '+top_position+'px; left: '+left_position+'px; ');
+    }
+
     field_obj.fadeIn('fast', function(){ jQuery(field_selector +' div:first').fadeIn('fast'); });
   }
 }
