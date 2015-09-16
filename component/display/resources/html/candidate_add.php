@@ -134,7 +134,7 @@
 						<select id="salary_unit" class="salary_manipulation" name="salary_unit">
 							<option value=""></option>
 							<option value="K">K</option>
-							<option value="M">M</option>
+							<option value="M" <?php if (empty($candidate_salary)) echo 'selected'; ?>>M</option>
 						</select>
 						<select id="salary_currency" class="salary_manipulation" name="salary_currency">
 						<?php foreach ($currency_list as $currency => $rate) { ?>

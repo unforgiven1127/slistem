@@ -5468,8 +5468,7 @@ class CSl_candidateEx extends CSl_candidate
       );
 
       $sHTML = $this->_oDisplay->render('candidate_add', $data);
-      $sHTML .= '';
-      // $sHTML = '';
+
       // =======================================================================
       //candidate data section
       /*$oForm->addSection('', array('id' => 'candi_data'));
