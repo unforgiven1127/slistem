@@ -399,56 +399,86 @@ class CSl_statModelEx extends CSl_statModel
     if(!assert('is_arrayOfInt($user_ids)'))
       return array();
 
-    $group_switch = 'created_by';
+    $variable_name = 'set_vs_met_'.$group;
 
-    if ($group == 'consultant')
-      $group_switch = 'attendeefk';
-
-    $query = 'SELECT DISTINCT candidatefk as meetings_set, created_by, date_created, attendeefk';
-    $query .= ' FROM sl_meeting';
-    $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
-    $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' ORDER BY '.$group_switch;
-
-    $data = array();
-
-    $db_result = $this->oDB->executeQuery($query);
-    $read = $db_result->readFirst();
-    while($read)
+    if (!check_redis_key($variable_name))
     {
-      if (!isset($data[$db_result->getFieldValue($group_switch)]))
-      {
-        $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met' => 0, 'set_meeting_info' => array());
-      }
-      $temp = $db_result->getData();
-      $data[$db_result->getFieldValue($group_switch)]['set'] += 1;
-      $data[$db_result->getFieldValue($group_switch)]['set_meeting_info'][] = array('candidate' => $temp['meetings_set'],
-        'date' => $temp['date_created']);
-      $read = $db_result->readNext();
-    }
+      $group_switch = 'created_by';
 
-    $query = 'SELECT DISTINCT candidatefk as meetings_met, created_by, date_met, attendeefk, meeting_done';
-    $query .= ' FROM sl_meeting';
-    $query .= ' WHERE '.$group_switch.' IN ('.implode(',', $user_ids).')';
-    $query .= ' AND date_met BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-    $query .= ' ORDER BY '.$group_switch;
+      if ($group == 'consultant')
+        $group_switch = 'attendeefk';
 
-    $db_result = $this->oDB->executeQuery($query);
-    $read = $db_result->readFirst();
-    while($read)
-    {
-      $temp = $db_result->getData();
-      if ((int)$temp['meeting_done'] > 0)
+      $query = 'SELECT candidatefk, created_by, date_created, date_met, attendeefk, meeting_done';
+      $query .= ' FROM sl_meeting';
+      $query .= ' ORDER BY '.$group_switch;
+
+      $data = array();
+      $flip_user_ids = array_flip($user_ids);
+      $meeting_array = $met_candidates_array = array();
+
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
+      while($read)
       {
-        if (!isset($data[$db_result->getFieldValue($group_switch)]))
+        $temp = $db_result->getData();
+
+        $meeting_array[] = $temp;
+
+        if (!isset($met_candidates_array[$temp['candidatefk']]))
+          $met_candidates_array[$temp['candidatefk']] = 0;
+        else
         {
-          $data[$db_result->getFieldValue($group_switch)] = array('set' => 0, 'met_meeting_info' => array(), 'met' => 0);
+          if ((int)$temp['meeting_done'] > 0)
+            $met_candidates_array[$temp['candidatefk']] += 1;
         }
-        $data[$db_result->getFieldValue($group_switch)]['met'] += 1;
-        $data[$db_result->getFieldValue($group_switch)]['met_meeting_info'][] = array('candidate' => $temp['meetings_met'],
-          'date' => $temp['date_met']);
+
+        $read = $db_result->readNext();
       }
-      $read = $db_result->readNext();
+
+      foreach ($meeting_array as $meeting)
+      {
+        if (strtotime($meeting['date_created']) >= strtotime($start_date)
+          && strtotime($meeting['date_created']) <= strtotime($end_date)
+          && isset($flip_user_ids[$meeting[$group_switch]]))
+        {
+          if (!isset($data[$meeting[$group_switch]]))
+          {
+            $data[$meeting[$group_switch]] = array('set' => 0, 'met' => 0, 'set_meeting_info' => array(),
+              'met_meeting_info' => array());
+          }
+
+          $data[$meeting[$group_switch]]['set'] += 1;
+          $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
+            'date' => $meeting['date_created']);
+        }
+
+        if (strtotime($meeting['date_met']) >= strtotime($start_date)
+          && strtotime($meeting['date_met']) <= strtotime($end_date)
+          && isset($flip_user_ids[$meeting[$group_switch]]))
+        {
+          if (!isset($data[$meeting[$group_switch]]))
+          {
+            $data[$meeting[$group_switch]] = array('set' => 0, 'met' => 0, 'set_meeting_info' => array(),
+              'met_meeting_info' => array());
+          }
+
+          if ((int)$meeting['meeting_done'] > 0
+            && $met_candidates_array[$meeting['candidatefk']] <= 1)
+          {
+            $data[$meeting[$group_switch]]['met'] += 1;
+            $data[$meeting[$group_switch]]['met_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
+              'date' => $meeting['date_met']);
+          }
+        }
+      }
+
+      $expiry_time = 60*60*24;
+
+      save_to_redis($variable_name, json_encode($data), $expiry_time);
+    }
+    else
+    {
+      $data = json_decode(getValue($variable_name, '', 'redis'), true);
     }
 
     return $data;
