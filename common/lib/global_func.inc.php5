@@ -618,9 +618,15 @@ function _live_dump($pvTrace, $psTitle = null)
     return $pvDefaultValue;
   }
 
-  function save_to_redis($key_name, $value)
+  function save_to_redis($key_name, $value, $expiration = 0)
   {
-    return $GLOBALS['redis']->set($key_name, $value);
+    if ($expiration > 0)
+    {
+      $GLOBALS['redis']->set($key_name, $value);
+      $GLOBALS['redis']->setTimeout($key_name, $expiration);
+    }
+    else
+      return $GLOBALS['redis']->set($key_name, $value);
   }
 
   function delete_from_redis($key_name)
