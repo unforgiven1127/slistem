@@ -5450,6 +5450,7 @@ class CSl_candidateEx extends CSl_candidate
         'department' => $oDbResult->getFieldValue('department'), 'company_token_url' => $company_token_url,
         'company' => $oDbResult->getFieldValue('companyfk'), 'occupation_tree' => $occupation_tree->getDisplay(),
         'industry_tree' => $industry_tree->getDisplay(), 'candidate_salary' => $candidate_salary,
+        'money_unit' => $this->casSettings['candi_salary_format'],
         'currency_list' => $asCurrency, 'candidate_salary_bonus' => $candidate_salary_bonus, 'target_low' => $target_low,
         'target_high' => $target_high, 'candidate_id' => $pnCandidatePk, 'status_options' => $asStatus,
         'is_client' => $is_client, 'grade' => $this->getVars()->getCandidateGradeOption($oDbResult->getFieldValue('grade')),

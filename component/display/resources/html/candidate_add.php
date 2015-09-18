@@ -133,8 +133,8 @@
 						<input class="salary_field" type="text" name="salary" value="<?php echo $candidate_salary; ?>" />
 						<select id="salary_unit" class="salary_manipulation" name="salary_unit">
 							<option value=""></option>
-							<option value="K">K</option>
-							<option value="M" <?php if (empty($candidate_salary)) echo 'selected'; ?>>M</option>
+							<option value="K" <?php if ($money_unit == 'K') echo 'selected'; ?>>K</option>
+							<option value="M" <?php if ($money_unit == 'M') echo 'selected'; ?>>M</option>
 						</select>
 						<select id="salary_currency" class="salary_manipulation" name="salary_currency">
 						<?php foreach ($currency_list as $currency => $rate) { ?>
