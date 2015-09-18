@@ -1006,21 +1006,18 @@ class CSl_candidateEx extends CSl_candidate
         $sMeetingDate = $oDbResult->getFieldValue('date_met');
         $nStatus = (int)$oDbResult->getFieldValue('meeting_done');
 
-        if($nStatus >= 0)
+        if($nStatus > 0)
         {
-          if($nStatus > 0)
-          {
-            if(empty($asCandidate['last_meeting']) || $asCandidate['last_meeting'] < $sMeetingDate)
-              $asCandidate['last_meeting'] = $sMeetingDate;
-          }
-          else
-          {
-            if(empty($asCandidate['date_meeting']) || $asCandidate['date_meeting'] > $sMeetingDate)
-              $asCandidate['date_meeting'] = $sMeetingDate;
-          }
-
-          $asCandidate['nb_meeting']++;
+          if(empty($asCandidate['last_meeting']) || $asCandidate['last_meeting'] < $sMeetingDate)
+            $asCandidate['last_meeting'] = $sMeetingDate;
         }
+        else
+        {
+          if(empty($asCandidate['date_meeting']) || $asCandidate['date_meeting'] > $sMeetingDate)
+            $asCandidate['date_meeting'] = $sMeetingDate;
+        }
+
+        $asCandidate['nb_meeting']++;
 
         $bRead = $oDbResult->readNext();
       }
