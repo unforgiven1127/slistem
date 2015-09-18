@@ -8115,6 +8115,13 @@ die();*/
       while($bRead)
       {
         $asCpData = $oDbResult->getData();
+
+        if (empty($asLetter[$asCpData['level']]))
+        {
+          $bRead = $oDbResult->readNext();
+          continue;
+        }
+
         $asCpData['level_letter'] = $asLetter[$asCpData['level']];
         $sFirstLetter = strtoupper(substr($asCpData['name'], 0, 1));
         if(is_numeric($sFirstLetter))
