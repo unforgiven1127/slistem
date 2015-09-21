@@ -5234,7 +5234,7 @@ class CSl_candidateEx extends CSl_candidate
       $asCurrency = $this->getVars()->getCurrencies();
 
       $add_company_url = $this->_oPage->getAjaxUrl(
-        $this->csUid, CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_COMP, 0, array('update_field' => '#companypk',));
+        $this->csUid, CONST_ACTION_ADD, CONST_CANDIDATE_TYPE_COMP, 0, array('update_field' => '#company',));
 
       $company_token_url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_COMP, 0);
 
