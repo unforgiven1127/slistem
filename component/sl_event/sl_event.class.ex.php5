@@ -88,23 +88,27 @@ class CSl_eventEx extends CSl_event
 
     $oPage = CDependency::getCpPage();
     $oHTML = CDependency::getCpHtml();
+    $oLogin = CDependency::getCpLogin();
     $nPriotity = 0;
     $bAddLink = false;
     $sHTML = '';
 
+    if ($psNoteType != 'cp_history' || $oLogin->isAdmin())
+    {
+      $sHTML.= '<div class="tab_bottom_link">';
+      $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW,
+        'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
 
-    $sHTML.= '<div class="tab_bottom_link">';
-    $asItem = array('cp_uid' => '555-001', 'cp_action' => CONST_ACTION_VIEW, 'cp_type' => $psItemType, 'cp_pk' => $pnItemPk, 'default_type' => $psLinkDefaultType);
+      if($psLinkDefaultType == 'character')
+        $sLabel = 'Add a character note';
+      else
+        $sLabel = 'Add a note';
 
-    if($psLinkDefaultType == 'character')
-      $sLabel = 'Add a character note';
-    else
-      $sLabel = 'Add a note';
-
-    $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
-    $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
-    $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">'.$sLabel.'</a>';
-    $sHTML.= '</div>';
+      $sURL = $oPage->getAjaxUrl('sl_event', CONST_ACTION_ADD, CONST_EVENT_TYPE_EVENT, 0, $asItem);
+      $sJavascript = 'var oConf = goPopup.getConfig(); oConf.width = 950; oConf.height = 550;  goPopup.setLayerFromAjax(oConf, \''.$sURL.'\'); ';
+      $sHTML.= '<a href="javascript:;" onclick="'.$sJavascript.'">'.$sLabel.'</a>';
+      $sHTML.= '</div>';
+    }
 
     if(empty($asNotes))
     {
@@ -112,9 +116,8 @@ class CSl_eventEx extends CSl_event
     }
     else
     {
-      $oLogin = CDependency::getCpLogin();
-      $asEventType = getEventTypeList();
       $nCurrentUser = $oLogin->getUserPk();
+      $asEventType = getEventTypeList();
 
       $oPage->addCssFile($this->getResourcePath().'/css/sl_event.css');
       $asUsers = $oLogin->getUserList(0, false, true);
