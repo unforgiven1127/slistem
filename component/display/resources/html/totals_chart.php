@@ -19,7 +19,7 @@
 <?php foreach ($stats_data as $key => $stat): ?>
 <table class="totals_table">
 	<tr>
-		<th colspan="7"><?php echo ucfirst($key); ?> totals - <?php echo date('M Y', strtotime($start_date)); ?></th>
+		<th colspan="9"><?php echo ucfirst($key); ?> totals - <?php echo date('M Y', strtotime($start_date)); ?></th>
 	</tr>
 	<tr>
 		<th>Name</th>
@@ -29,6 +29,8 @@
 		<th>CCM1</th>
 		<th>CCM2</th>
 		<th>MCCM</th>
+		<th>New candidates<br>in play</th>
+		<th>New positions<br>in play</th>
 	</tr>
 
 	<?php $row_number_rank = 1; ?>
@@ -51,7 +53,7 @@
 			<?php foreach ($value['set_meeting_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -65,7 +67,7 @@
 			<?php foreach ($value['met_meeting_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -79,7 +81,7 @@
 			<?php foreach ($value['resumes_sent_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -93,7 +95,7 @@
 			<?php foreach ($value['ccm1_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -107,7 +109,7 @@
 			<?php foreach ($value['ccm2_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -121,7 +123,35 @@
 			<?php foreach ($value['mccm_info'] as $stat_info): ?>
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
-					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a> -
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['new_candidates']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['new_candidate_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
+					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['new_positions']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['new_position_info'] as $stat_info): ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-005', CONST_ACTION_VIEW, CONST_POSITION_TYPE_JD, (int)$stat_info['candidate']); ?>
+					<a href="javascript: view_position('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 					<?php echo date('Y-m-d', strtotime($stat_info['date'])); ?>
 				</div>
 			<?php endforeach ?>
@@ -131,7 +161,7 @@
 
 	<?php $row_number_rank += 1; ?>
 	<?php endforeach ?>
-	<tr class="totals_table_footer"><td colspan="7">&nbsp;</td></tr>
+	<tr class="totals_table_footer"><td colspan="9">&nbsp;</td></tr>
 </table>
 
 <div class="general_form_row" style="height: 20px;"></div>

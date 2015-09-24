@@ -1116,4 +1116,89 @@ class CSl_statModelEx extends CSl_statModel
 
     return $resume_sent_info;
   }
+
+  public function get_new_in_play($user_ids, $start_date, $end_date, $group = 'researcher')
+  {
+    $new_in_play_info = array();
+
+    if ($group == 'consultant')
+    {
+      $query = 'SELECT positionfk, candidatefk, created_by, status, date_created';
+      $query .= ' FROM sl_position_link';
+      $query .= ' WHERE status = 51';
+    }
+    else
+    {
+      $query = 'SELECT sl_meeting.date_met, sl_position_link.positionfk, sl_position_link.candidatefk, sl_position_link.status,';
+      $query .= ' sl_position_link.date_created, sl_meeting.created_by';
+      $query .= ' FROM sl_meeting';
+      $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk';
+      $query .= ' AND sl_position_link.status = 51';
+      // $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      // $query .= ' WHERE sl_meeting.created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' WHERE sl_meeting.meeting_done = 1';
+    }
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    $temp_new_candidate = $temp_new_position = array();
+
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      if (empty($temp_new_candidate[$row['candidatefk']])
+        || strtotime($temp_new_candidate[$row['candidatefk']]['date_created']) > strtotime($row['date_created']) )
+      {
+        $temp_new_candidate[$row['candidatefk']] = array('date_created' => $row['date_created'],
+          'created_by' => $row['created_by']);
+      }
+
+      if (empty($temp_new_position[$row['positionfk']])
+        || strtotime($temp_new_position[$row['positionfk']]['date_created']) > strtotime($row['date_created']) )
+      {
+        $temp_new_position[$row['positionfk']] = array('date_created' => $row['date_created'],
+          'created_by' => $row['created_by']);
+      }
+
+      $read = $db_result->readNext();
+    }
+
+    foreach ($temp_new_candidate as $key => $value)
+    {
+      if (empty($new_in_play_info[$value['created_by']]['new_candidates']))
+      {
+        $new_in_play_info[$value['created_by']]['new_candidates'] = 0;
+        $new_in_play_info[$value['created_by']]['in_play_info']['new_candidates'] = array();
+      }
+
+      if (strtotime($value['date_created']) >= strtotime($start_date)
+        && strtotime($value['date_created']) <= strtotime($end_date))
+      {
+        $new_in_play_info[$value['created_by']]['new_candidates'] += 1;
+        $new_in_play_info[$value['created_by']]['in_play_info']['new_candidates'][] = array('candidate' => $key,
+        'date' => $value['date_created']);
+      }
+    }
+
+    foreach ($temp_new_position as $key => $value)
+    {
+      if (empty($new_in_play_info[$value['created_by']]['new_positions']))
+      {
+        $new_in_play_info[$value['created_by']]['new_positions'] = 0;
+        $new_in_play_info[$value['created_by']]['in_play_info']['new_positions'] = array();
+      }
+
+      if (strtotime($value['date_created']) >= strtotime($start_date)
+        && strtotime($value['date_created']) <= strtotime($end_date))
+      {
+        $new_in_play_info[$value['created_by']]['new_positions'] += 1;
+        $new_in_play_info[$value['created_by']]['in_play_info']['new_positions'][] = array('candidate' => $key,
+        'date' => $value['date_created']);
+      }
+    }
+
+    return $new_in_play_info;
+  }
 }
