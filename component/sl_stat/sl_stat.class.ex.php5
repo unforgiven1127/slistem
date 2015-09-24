@@ -4230,7 +4230,7 @@ class CSl_statEx extends CSl_stat
       $consultant_names = $consultant_ids = $researcher_names = $researcher_ids = array();
       $stats_data = array();
       $consultant_skip_id = array(389, 315, 354, 186);
-      $researcher_skip_id = array(301, 423, 475, 315);
+      $researcher_skip_id = array(301, 423, 475, 315, 474);
 
       // generate consultant data
       foreach ($this->casUserByGroup[108] as $key => $value)
