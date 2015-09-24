@@ -284,6 +284,9 @@ class CSl_eventEx extends CSl_event
 
       foreach($asEvent as $asEvents)
       {
+        if (!CDependency::getCpLogin()->isAdmin() && $asEvents['value'] == 'cp_history')
+          continue;
+
         if($asEvents['value'] == $sEventType)
           $oForm->addOption('event_type', array('value'=>$asEvents['value'], 'label' => $asEvents['label'], 'group' => $asEvents['group'], 'selected'=>'selected'));
         else
