@@ -1899,9 +1899,9 @@ class CLoginEx extends CLogin
         return array('error' => __LINE__.' - '.$this->casText['LOGIN_PASSWORD_REQD']);
 
       $sQuery = 'SELECT * FROM `login`  WHERE (`id` = '.$oDB->dbEscapeString($_POST['login']).' ';
-      $sQuery.= ' AND `password` = '.$oDB->dbEscapeString($_POST['password']).') ';
+      $sQuery.= ' AND BINARY `password` = '.$oDB->dbEscapeString($_POST['password']).') ';
       $sQuery.= ' OR ( `email` = '.$oDB->dbEscapeString($_POST['login']).' ';
-      $sQuery.= ' AND `password` = '.$oDB->dbEscapeString($_POST['password']).') ';
+      $sQuery.= ' AND BINARY `password` = '.$oDB->dbEscapeString($_POST['password']).') ';
     }
 
     $oDbResult = $oDB->ExecuteQuery($sQuery);
