@@ -174,20 +174,23 @@ class CSl_eventEx extends CSl_event
           else
             $sHTML.= $oHTML->getBloc('', $asNote['title'].$asNote['content'], array('class' => 'note_content'));
 
-
-          //Should we Display the link to edit notes
-          //Right to do so or creator and note has been created a bit (allow fix typos)
-          $bEdit = (($asNote['created_by'] == $nCurrentUser) && ($asNote['date_create'] > $s1HourAgo));
-          if($bEdit || CDependency::getComponentByName('right')->canAccess('555-004', CONST_ACTION_MANAGE, CONST_EVENT_TYPE_EVENT, 0))
+          if ($psNoteType != 'cp_history' || $oLogin->isAdmin())
           {
-            $asCpParam = array(CONST_CP_UID => '555-001', CONST_CP_ACTION => CONST_ACTION_VIEW, CONST_CP_TYPE => $psItemType, CONST_CP_PK => $pnItemPk);
-            $sURL = $oPage->getAjaxurl($this->csUid, CONST_ACTION_EDIT, CONST_EVENT_TYPE_EVENT, (int)$asNote['eventpk'], $asCpParam);
+            //Should we Display the link to edit notes
+            //Right to do so or creator and note has been created a bit (allow fix typos)
+            $bEdit = (($asNote['created_by'] == $nCurrentUser) && ($asNote['date_create'] > $s1HourAgo));
+            if($bEdit || CDependency::getComponentByName('right')->canAccess('555-004', CONST_ACTION_MANAGE, CONST_EVENT_TYPE_EVENT, 0))
+            {
+              $asCpParam = array(CONST_CP_UID => '555-001',
+                CONST_CP_ACTION => CONST_ACTION_VIEW, CONST_CP_TYPE => $psItemType, CONST_CP_PK => $pnItemPk);
+              $sURL = $oPage->getAjaxurl($this->csUid, CONST_ACTION_EDIT, CONST_EVENT_TYPE_EVENT, (int)$asNote['eventpk'], $asCpParam);
 
-            $sHTML.= $oHTML->getBloc('', $sPic, array('class' => 'note_edit_link', 'onclick' => '
-              var oConf = goPopup.getConfig();
-              oConf.width = 950;
-              oConf.height = 550;
-              goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');'));
+              $sHTML.= $oHTML->getBloc('', $sPic, array('class' => 'note_edit_link', 'onclick' => '
+                var oConf = goPopup.getConfig();
+                oConf.width = 950;
+                oConf.height = 550;
+                goPopup.setLayerFromAjax(oConf, \''.$sURL.'\');'));
+            }
           }
 
         $sHTML.= $oHTML->getBlocEnd();
@@ -263,7 +266,7 @@ class CSl_eventEx extends CSl_event
     }
 
 
-    $asEvent = getEventTypeList(false, $sCp_Type);
+    $asEvent = getEventTypeList(false, $sCp_Type, CDependency::getCpLogin()->isAdmin());
     $sEventType = $oDbResult->getFieldValue('type');
 
     if(!empty($sEventType) && !isset($asEvent[$sEventType]))
@@ -284,9 +287,6 @@ class CSl_eventEx extends CSl_event
 
       foreach($asEvent as $asEvents)
       {
-        if (!CDependency::getCpLogin()->isAdmin() && $asEvents['value'] == 'cp_history')
-          continue;
-
         if($asEvents['value'] == $sEventType)
           $oForm->addOption('event_type', array('value'=>$asEvents['value'], 'label' => $asEvents['label'], 'group' => $asEvents['group'], 'selected'=>'selected'));
         else

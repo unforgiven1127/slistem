@@ -890,7 +890,7 @@ function _live_dump($pvTrace, $psTitle = null)
   }
 
 
-  function getEventTypeList($pbOnlyValues = false, $psType = '')
+  function getEventTypeList($pbOnlyValues = false, $psType = '', $is_admin = false)
   {
 
     if(CONST_WEBSITE == 'slistem')
@@ -928,7 +928,8 @@ function _live_dump($pvTrace, $psTitle = null)
           $asEvent['meeting'] = array('label' => 'Meeting', 'value' => 'meeting', 'group' => '');
           $asEvent['phone'] = array('label' => 'Phone call', 'value' => 'phone', 'group' => '');
           $asEvent['update'] = array('label' => 'Update', 'value' => 'update', 'group' => '');
-          $asEvent['cp_history'] = array('label' => 'Company history', 'value' => 'cp_history', 'group' => '');
+          if ($is_admin)
+            $asEvent['cp_history'] = array('label' => 'Company history', 'value' => 'cp_history', 'group' => '');
         }
 
         if(empty($psType) || $psType == CONST_CANDIDATE_TYPE_COMP)
