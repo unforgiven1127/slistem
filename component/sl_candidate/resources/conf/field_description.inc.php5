@@ -890,7 +890,7 @@
         'label' => 'Resume',
         'group' => 'personal_data',
         'operator' => $oSearch->getFieldOperators('string'),
-        'default_operator' => 'fts_equal',
+        'default_operator' => 'contain',
         'option' => array(),
         'value' => array(),
         'default_value' => array(),

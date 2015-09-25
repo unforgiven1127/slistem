@@ -884,6 +884,9 @@ class CSearchEx extends CSearch
 
     foreach($pasField['display']['operator'] as $sValue => $vLabel)
     {
+      if ($pasField['display']['label'] == 'Resume' && $sValue == 'equal')
+        continue;
+
       if(is_array($vLabel))
       {
         if($sValue == $psSelectedOp)
