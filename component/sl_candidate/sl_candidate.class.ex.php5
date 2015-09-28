@@ -2572,10 +2572,10 @@ class CSl_candidateEx extends CSl_candidate
             $sSortField = 'full_salary';
           }
 
-          if ($sSortField == 'lastname')
+          if ($sSortField == 'sl_candidatepk')
             $secondary_order = ', firstname DESC';
           else
-            $secondary_order = ', lastname DESC';
+            $secondary_order = ', sl_candidatepk DESC';
 
           $ordering = $sSortField.' '.getValue('sortorder', 'DESC').$secondary_order;
 
