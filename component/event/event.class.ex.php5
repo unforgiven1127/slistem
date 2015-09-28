@@ -840,8 +840,8 @@ class CEventEx extends CEvent
         return array('error' => __LINE__.' - Can not create empty events.');
     }
 
-    if (!$oLogin->isAdmin() && $asEvent['type'] == 'cp_history')
-      return array('error' => __LINE__.' - Sorry you are not allowed to edit company history');
+    /*if (!$oLogin->isAdmin() && $asEvent['type'] == 'cp_history')
+      return array('error' => __LINE__.' - Sorry you are not allowed to edit company history');*/
 
 
     //load related item data to make sure it's available
