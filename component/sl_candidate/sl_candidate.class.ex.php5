@@ -2572,7 +2572,14 @@ class CSl_candidateEx extends CSl_candidate
             $sSortField = 'full_salary';
           }
 
-          $poQB->setOrder($sSortField.' '.getValue('sortorder', 'DESC'));
+          if ($sSortField == 'lastname')
+            $secondary_order = ', firstname DESC';
+          else
+            $secondary_order = ', lastname DESC';
+
+          $ordering = $sSortField.' '.getValue('sortorder', 'DESC').$secondary_order;
+
+          $poQB->setOrder($ordering);
         }
       }
 
