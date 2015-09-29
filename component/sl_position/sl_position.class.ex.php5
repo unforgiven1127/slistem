@@ -3291,14 +3291,21 @@ class CSl_positionEx extends CSl_position
       $oForm->addField('misc', '', array('type' => 'br'));
 
 
-      $oForm->addField('input', 'date_signed', array('type' => 'date', 'label' => 'Date signed', 'value' => $oDdPlacement->getFieldValue('date_signed')));
+      $oForm->addField('input', 'date_signed', array('type' => 'date',
+        'label' => 'Date signed', 'value' => $oDdPlacement->getFieldValue('date_signed')));
       $oForm->setFieldControl('date_signed', array('jsFieldNotEmpty' => 1, 'jsFieldMinSize' => 10));
 
-      $oForm->addField('input', 'date_due', array('type' => 'date', 'label' => 'Payment due date', 'value' => $oDdPlacement->getFieldValue('date_due')));
+      $oForm->addField('input', 'date_start', array('type' => 'date',
+        'label' => 'Start working on', 'value' => $oDdPlacement->getFieldValue('date_start')));
+      $oForm->setFieldControl('date_start', array('jsFieldNotEmpty' => 1, 'jsFieldMinSize' => 10));
+
+      $oForm->addField('input', 'date_due', array('type' => 'date',
+        'label' => 'Payment due date', 'value' => $oDdPlacement->getFieldValue('date_due')));
       $oForm->setFieldControl('date_due', array('jsFieldNotEmpty' => 1, 'jsFieldMinSize' => 10));
 
-      $oForm->addField('input', 'date_start', array('type' => 'date', 'label' => 'Start working on', 'value' => $oDdPlacement->getFieldValue('date_start')));
-      $oForm->setFieldControl('date_start', array('jsFieldNotEmpty' => 1, 'jsFieldMinSize' => 10));
+      $oForm->addField('input', 'date_paid', array('type' => 'date',
+        'label' => 'Date paid', 'value' => $oDdPlacement->getFieldValue('date_paid')));
+      $oForm->setFieldControl('date_paid', array('jsFieldMinSize' => 10));
 
 
       $oForm->addField('misc', '', array('type' => 'br'));
@@ -3414,6 +3421,10 @@ class CSl_positionEx extends CSl_position
       $revenue_array['date_due'] = getValue('date_due');
       if(!is_date($revenue_array['date_due']))
         return array('error' => 'The due date is incorrect ');
+
+      $revenue_array['date_paid'] = getValue('date_paid', '');
+      if(!empty($revenue_array['date_paid']) && !is_date($revenue_array['date_paid']))
+        return array('error' => 'The date paid is incorrect ');
 
       $revenue_array['date_signed'] = getValue('date_signed');
       if(!is_date($revenue_array['date_signed']))
