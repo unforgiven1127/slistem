@@ -530,7 +530,7 @@ function _live_dump($pvTrace, $psTitle = null)
    * get the value of a superglobal field
    * Control if isset, as default value, and manage post, get, session, cookie
    */
-  function getValue($psVarName, $pvDefaultValue = null, $psSpecificVar = '', $pbStoreInSession = false)
+  function getValue($psVarName, $pvDefaultValue = '', $psSpecificVar = '', $pbStoreInSession = false)
   {
 
     $avDataSrc = array();
@@ -590,10 +590,7 @@ function _live_dump($pvTrace, $psTitle = null)
       if($pbStoreInSession)
           $_SESSION[$psVarName] = $_POST[$psVarName];
 
-      if (empty($_POST[$psVarName]))
-        return null;
-      else
-        return $_POST[$psVarName];
+      return $_POST[$psVarName];
     }
 
     if(isset($_GET[$psVarName]))
@@ -601,18 +598,12 @@ function _live_dump($pvTrace, $psTitle = null)
       if($pbStoreInSession)
           $_SESSION[$psVarName] = $_GET[$psVarName];
 
-      if (empty($_GET[$psVarName]))
-        return null;
-      else
-        return $_GET[$psVarName];
+      return $_GET[$psVarName];
     }
 
     if(isset($_SESSION[$psVarName]))
     {
-      if (empty($_SESSION[$psVarName]))
-        return null;
-      else
-        return $_SESSION[$psVarName];
+      return $_SESSION[$psVarName];
     }
 
     if(isset($_COOKIE[$psVarName]))
@@ -620,20 +611,14 @@ function _live_dump($pvTrace, $psTitle = null)
       if($pbStoreInSession)
         $_SESSION[$psVarName] = $_COOKIE[$psVarName];
 
-      if (empty($_COOKIE[$psVarName]))
-        return null;
-      else
-        return $_COOKIE[$psVarName];
+      return $_COOKIE[$psVarName];
     }
 
     if(check_redis_key($psVarName))
     {
       $temp_var = $GLOBALS['redis']->get($psVarName);
 
-      if (empty($temp_var))
-        return null;
-      else
-        return $temp_var;
+      return $temp_var;
     }
 
     return $pvDefaultValue;
