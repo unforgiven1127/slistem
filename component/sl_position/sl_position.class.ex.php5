@@ -3060,8 +3060,8 @@ class CSl_positionEx extends CSl_position
         $prebuilt_string .= $revenue['candidate'].', '.str_replace(',', ' ', $revenue['candidate_name']).', ';
         $prebuilt_string .= '<closed_by>, '.$revenue['date_start'].', '.$revenue['date_signed'].', ';
         $prebuilt_string .= $revenue['date_due'].', '.$revenue['date_paid'].', ';
-        $prebuilt_string .= number_format($revenue['salary'], 0, '.', ' ').', ';
-        $prebuilt_string .= $revenue['salary_rate'].'%, '.number_format($revenue['amount'], 0, '.', ' ').', ';
+        $prebuilt_string .= number_format($revenue['salary'], 0, '.', '').', ';
+        $prebuilt_string .= $revenue['salary_rate'].'%, '.number_format($revenue['amount'], 0, '.', '').', ';
         $prebuilt_string .= '<split>, <split_amount>, '.$revenue['status'].', ';
         $prebuilt_string .= preg_replace('/[^A-Za-z0-9\-\' ]/', '', $revenue['comment']);
 
@@ -3070,7 +3070,7 @@ class CSl_positionEx extends CSl_position
           $temp_string = str_replace('<consultant_name>',
             $login_object->getUserName($value['user']), $prebuilt_string);
 
-          if ($revenue['closed_by'] == $value['user'])
+          if ($revenue['closed_by'] == $value['user'] && $revenue['candidate'] != 'retainer')
             $closed_by = 1;
           else
             $closed_by = 0;
@@ -3079,7 +3079,7 @@ class CSl_positionEx extends CSl_position
           $temp_string = str_replace('<closed_by>', $closed_by, $temp_string);
           $temp_string = str_replace('<split>', $value['percentage'].'%', $temp_string);
 
-          $split_amount = number_format($value['split_amount'], 0, '.', ' ');
+          $split_amount = number_format($value['split_amount'], 0, '.', '');
 
           $temp_string = str_replace('<split_amount>', $split_amount, $temp_string);
 
