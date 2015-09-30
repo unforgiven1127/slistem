@@ -3484,6 +3484,9 @@ class CSl_positionEx extends CSl_position
       if(!empty($revenue_array['date_paid']) && !is_date($revenue_array['date_paid']))
         return array('error' => 'The date paid is incorrect ');
 
+      if (empty($revenue_array['date_paid']))
+        $revenue_array['date_paid'] = null;
+
       $revenue_array['date_signed'] = getValue('date_signed');
       if(!is_date($revenue_array['date_signed']))
         return array('error' => 'The signed date is incorrect ');
