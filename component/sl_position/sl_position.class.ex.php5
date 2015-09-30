@@ -2919,7 +2919,15 @@ class CSl_positionEx extends CSl_position
       $html.= $html_object->getLink('+ add a new placement', 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
       $html.= $html_object->getBlocEnd();
 
-      $url =  $this->_oPage->getUrl($this->csUid, CONST_ACTION_DOWNLOAD, CONST_POSITION_TYPE_PLACEMENT, 0);
+      $consultant_var = (int)getValue('loginpk', 0);
+      $candidate_var = (int)getValue('candidate', 0);
+
+      $position_var = getValue('cp_jd_key', '');
+      $period_var = getValue('date_start', '');
+
+      $url =  $this->_oPage->getUrl($this->csUid, CONST_ACTION_DOWNLOAD, CONST_POSITION_TYPE_PLACEMENT, 0,
+        array('loginpk' => $consultant_var, 'candidate' => $candidate_var, 'cp_jd_key' => $position_var,
+          'date_start' => $period_var));
       $html.= $html_object->getBlocStart('', array('class' => 'placement_export_button'));
       $html.= $html_object->getLink('export placements', $url);
       $html.= $html_object->getBlocEnd();
@@ -3034,12 +3042,13 @@ class CSl_positionEx extends CSl_position
     {
       $login_object = CDependency::getCpLogin();
       $filter = $this->_getPlacementFilter();
-      $revenue_data = $this->_getModel()->getPlacement($filter, true);
+
+      $revenue_data = $this->_getModel()->getPlacement($filter, true, 2000);
 
       $file_name = 'placement_export_'.date('Y_m_d').'.csv';
 
-      $csv_string = 'position id, position name, consultant, company, candidate id, candidate name, placement,';
-      $csv_string .= ' start working on, date signed, payment due date, payment date, billable salary,';
+      $csv_string = 'position id, position name, consultant, consultant position, company, candidate id, candidate name,';
+      $csv_string .= ' placement, start working on, date signed, payment due date, payment date, billable salary,';
       $csv_string .= " invoice rate, invoice amount, split, revenue credit, status, comment \n";
 
       foreach ($revenue_data as $revenue)
@@ -3047,7 +3056,7 @@ class CSl_positionEx extends CSl_position
         $prebuilt_string = '';
 
         $prebuilt_string .= $revenue['position_id'].', '.str_replace(',', ' ', $revenue['position_title'].', ');
-        $prebuilt_string .= ', <consultant_name>, '.str_replace(',', ' ', $revenue['company_name']).', ';
+        $prebuilt_string .= ', <consultant_name>, <user_position>, '.str_replace(',', ' ', $revenue['company_name']).', ';
         $prebuilt_string .= $revenue['candidate'].', '.str_replace(',', ' ', $revenue['candidate_name']).', ';
         $prebuilt_string .= '<closed_by>, '.$revenue['date_start'].', '.$revenue['date_signed'].', ';
         $prebuilt_string .= $revenue['date_due'].', '.$revenue['date_paid'].', ';
@@ -3066,6 +3075,7 @@ class CSl_positionEx extends CSl_position
           else
             $closed_by = 0;
 
+          $temp_string = str_replace('<user_position>', $value['user_position'], $temp_string);
           $temp_string = str_replace('<closed_by>', $closed_by, $temp_string);
           $temp_string = str_replace('<split>', $value['percentage'].'%', $temp_string);
 

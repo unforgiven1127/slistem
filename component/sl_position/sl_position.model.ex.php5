@@ -366,7 +366,8 @@ class CSl_positionModelEx extends CSl_positionModel
         }
 
         $prepared_data[$revenue['id']]['paid_users'][] = array('user' => $raw_data['loginpk'],
-          'percentage' => $raw_data['percentage'], 'split_amount' => $raw_data['split_amount']);
+          'percentage' => $raw_data['percentage'], 'split_amount' => $raw_data['split_amount'],
+          'user_position' => $raw_data['user_position']);
 
         $test_array[$raw_data['loginpk']] = '';
 
