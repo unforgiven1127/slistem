@@ -422,11 +422,9 @@ class CSl_statModelEx extends CSl_statModel
 
       if (!isset($met_candidates_array[$temp['candidatefk']]))
         $met_candidates_array[$temp['candidatefk']] = 0;
-      else
-      {
-        if ((int)$temp['meeting_done'] > 0)
-          $met_candidates_array[$temp['candidatefk']] += 1;
-      }
+
+      if ((int)$temp['meeting_done'] > 0)
+        $met_candidates_array[$temp['candidatefk']] += 1;
 
       $read = $db_result->readNext();
     }
@@ -443,9 +441,13 @@ class CSl_statModelEx extends CSl_statModel
             'met_meeting_info' => array());
         }
 
-        $data[$meeting[$group_switch]]['set'] += 1;
-        $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
-          'date' => $meeting['date_created']);
+        if ((int)$meeting['meeting_done'] > 0
+          && $met_candidates_array[$meeting['candidatefk']] <= 1)
+        {
+          $data[$meeting[$group_switch]]['set'] += 1;
+          $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
+            'date' => $meeting['date_created']);
+        }
       }
 
       if (strtotime($meeting['date_met']) >= strtotime($start_date)
