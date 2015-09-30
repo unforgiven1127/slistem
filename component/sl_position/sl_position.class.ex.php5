@@ -235,7 +235,6 @@ class CSl_positionEx extends CSl_position
           case CONST_ACTION_SEARCH:
             return json_encode($this->_getPlacementOptions());
             break;
-
         }
         break;
 
@@ -251,11 +250,6 @@ class CSl_positionEx extends CSl_position
     {
       case CONST_POSITION_TYPE_PLACEMENT:
 
-        /*if(!in_array($this->casUserData['loginpk'], array(101,199,343,367,278,309,468)))
-        {
-          return $this->_oDisplay->getCR(3).$this->_oDisplay->getBlocMessage('Accounting usage only...<br>Ask Yuko or Rossana for help.');
-        }*/
-
         switch($this->csAction)
         {
           case CONST_ACTION_LIST:
@@ -265,6 +259,10 @@ class CSl_positionEx extends CSl_position
           case CONST_ACTION_ADD:
             $asData = $this->addPlacement($this->cnPk);
             return $asData['data'];
+            break;
+
+          case CONST_ACTION_DOWNLOAD:
+            return $this->export_placements();
             break;
         }
         break;
@@ -2921,6 +2919,10 @@ class CSl_positionEx extends CSl_position
       $html.= $html_object->getLink('+ add a new placement', 'javascript:;', array('onclick' => ' editPop(\''.$url.'\'); '));
       $html.= $html_object->getBlocEnd();
 
+      $url =  $this->_oPage->getUrl($this->csUid, CONST_ACTION_DOWNLOAD, CONST_POSITION_TYPE_PLACEMENT, 0);
+      $html.= $html_object->getBlocStart('', array('class' => 'placement_export_button'));
+      $html.= $html_object->getLink('export placements', $url);
+      $html.= $html_object->getBlocEnd();
 
       $html.= $html_object->getBlocStart('', array('class' => 'placement_list'));
 
@@ -2946,8 +2948,10 @@ class CSl_positionEx extends CSl_position
             else
               $revenue['consultant'] = $login_object->getUserLink((int)$revenue['closed_by']);
 
-            $encoding = mb_detect_encoding($revenue['position']);
-            $revenue['position'] = mb_convert_encoding($revenue['position'], 'UTF-8', $encoding);
+            $position = $revenue['position_id'].' '.$revenue['position_title'];
+
+            $encoding = mb_detect_encoding($position);
+            $revenue['position'] = mb_convert_encoding($position, 'UTF-8', $encoding);
 
 
             $paid = !empty($revenue['date_paid']);
@@ -2978,7 +2982,7 @@ class CSl_positionEx extends CSl_position
 
             $revenue['candidate'] = $html_object->getBloc('', $candidate_info, array('class' => 'placement_candidate'));
 
-            $revenue['position'] = $revenue['position'];
+            // $revenue['position'] = $revenue['position'];
             $revenue['amount_formatted'] = number_format($revenue['amount'], 0, '.', ',');
             $revenue['amount_formatted'] = $html_object->getBloc('', $revenue['amount_formatted'].'&yen;', array('style' => 'width: 100%; text-align: center; '));
             $placement_array[$revenue['id']] = $revenue;
@@ -3024,6 +3028,60 @@ class CSl_positionEx extends CSl_position
 
       $html.= $html_object->getBlocEnd();
       return $html;
+    }
+
+    private function export_placements()
+    {
+      $login_object = CDependency::getCpLogin();
+      $filter = $this->_getPlacementFilter();
+      $revenue_data = $this->_getModel()->getPlacement($filter, true);
+
+      $file_name = 'placement_export_'.date('Y_m_d').'.csv';
+
+      $csv_string = 'position id, position name, consultant, company, candidate id, candidate name, placement,';
+      $csv_string .= ' start working on, date signed, payment due date, payment date, billable salary,';
+      $csv_string .= " invoice rate, invoice amount, split, revenue credit, status, comment \n";
+
+      foreach ($revenue_data as $revenue)
+      {
+        $prebuilt_string = '';
+
+        $prebuilt_string .= $revenue['position_id'].', '.str_replace(',', ' ', $revenue['position_title'].', ');
+        $prebuilt_string .= ', <consultant_name>, '.str_replace(',', ' ', $revenue['company_name']).', ';
+        $prebuilt_string .= $revenue['candidate'].', '.str_replace(',', ' ', $revenue['candidate_name'].', ');
+        $prebuilt_string .= '<closed_by>, '.$revenue['date_start'].', '.$revenue['date_signed'].', ';
+        $prebuilt_string .= $revenue['date_due'].', '.$revenue['date_paid'].', ';
+        $prebuilt_string .= number_format($revenue['salary'], 0, '.', ' ').', ';
+        $prebuilt_string .= $revenue['salary_rate'].'%, '.number_format($revenue['amount'], 0, '.', ' ').', ';
+        $prebuilt_string .= '<split>, <split_amount>, '.$revenue['status'].', ';
+        $prebuilt_string .= preg_replace('/[^A-Za-z0-9\-\' ]/', '', $revenue['comment']);
+
+        foreach ($revenue['paid_users'] as $value)
+        {
+          $temp_string = str_replace('<consultant_name>',
+            $login_object->getUserName($value['user']), $prebuilt_string);
+
+          if ($revenue['closed_by'] == $value['user'])
+            $closed_by = 1;
+          else
+            $closed_by = 0;
+
+          $temp_string = str_replace('<closed_by>', $closed_by, $temp_string);
+          $temp_string = str_replace('<split>', $value['percentage'].'%', $temp_string);
+
+          $split_amount = number_format($value['split_amount'], 0, '.', ' ');
+
+          $temp_string = str_replace('<split_amount>', $split_amount, $temp_string);
+
+          $csv_string .= $temp_string."\n";
+        }
+      }
+
+      header('Content-type: text/csv');
+      header('Content-Disposition: attachment; filename="'.$file_name.'"');
+
+      echo $csv_string;
+      die();
     }
 
     private function _getPlacementFilterForm()

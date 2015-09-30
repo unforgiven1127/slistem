@@ -284,9 +284,12 @@ class CSl_positionModelEx extends CSl_positionModel
     $extra_select = $extra_query = '';
     $raw_revenue_data = $raw_data = $revenue_data = $prepared_data = array();
 
-    $query = 'SELECT revenue.*, CONCAT(spde.positionfk, " ", spde.title) as position';
+    $query = 'SELECT revenue.*, spde.positionfk, spde.title, sl_position.companyfk,';
+    $query .= ' sl_company.name as company_name';
     $query .= ' FROM revenue';
     $query .= ' INNER JOIN sl_position_detail as spde ON (spde.positionfk = revenue.position)';
+    $query .= ' INNER JOIN sl_position ON (sl_position.sl_positionpk = revenue.position)';
+    $query .= ' INNER JOIN sl_company ON (sl_company.sl_companypk = sl_position.companyfk)';
 
     if (!empty($filter['revenue']))
         $query.= ' WHERE '.implode(' AND ', $filter['revenue']);
@@ -316,9 +319,16 @@ class CSl_positionModelEx extends CSl_positionModel
       $prepared_data[$revenue['id']]['status'] = $revenue['status'];
       $prepared_data[$revenue['id']]['date_paid'] = $revenue['date_paid'];
       $prepared_data[$revenue['id']]['date_signed'] = $revenue['date_signed'];
+      $prepared_data[$revenue['id']]['date_start'] = $revenue['date_start'];
+      $prepared_data[$revenue['id']]['date_due'] = $revenue['date_due'];
       $prepared_data[$revenue['id']]['candidate'] = $revenue['candidate'];
+      $prepared_data[$revenue['id']]['salary'] = $revenue['salary'];
+      $prepared_data[$revenue['id']]['salary_rate'] = $revenue['salary_rate'];
       $prepared_data[$revenue['id']]['amount'] = $revenue['amount'];
-      $prepared_data[$revenue['id']]['position'] = $revenue['position'];
+      $prepared_data[$revenue['id']]['position_id'] = $revenue['positionfk'];
+      $prepared_data[$revenue['id']]['position_title'] = $revenue['title'];
+      $prepared_data[$revenue['id']]['company_name'] = $revenue['company_name'];
+      $prepared_data[$revenue['id']]['comment'] = $revenue['comment'];
 
       if ($revenue['candidate'] == 'retainer')
       {
@@ -328,7 +338,7 @@ class CSl_positionModelEx extends CSl_positionModel
       {
         if($with_payment)
         {
-          $extra_select = ', revmem.loginpk, revmem.percentage ';
+          $extra_select = ', revmem.* ';
           $extra_query = ' LEFT JOIN revenue_member as revmem ON (revmem.revenue_id = '.$revenue['id'].') ';
         }
 
@@ -355,7 +365,8 @@ class CSl_positionModelEx extends CSl_positionModel
           $prepared_data[$revenue['id']]['candidate_name'] = $raw_data['candidate_name'];
         }
 
-        $prepared_data[$revenue['id']]['paid_users'][] = array('user' => $raw_data['loginpk'], 'percentage' => $raw_data['percentage']);
+        $prepared_data[$revenue['id']]['paid_users'][] = array('user' => $raw_data['loginpk'],
+          'percentage' => $raw_data['percentage'], 'split_amount' => $raw_data['split_amount']);
 
         $test_array[$raw_data['loginpk']] = '';
 
