@@ -3048,7 +3048,7 @@ class CSl_positionEx extends CSl_position
 
         $prebuilt_string .= $revenue['position_id'].', '.str_replace(',', ' ', $revenue['position_title'].', ');
         $prebuilt_string .= ', <consultant_name>, '.str_replace(',', ' ', $revenue['company_name']).', ';
-        $prebuilt_string .= $revenue['candidate'].', '.str_replace(',', ' ', $revenue['candidate_name'].', ');
+        $prebuilt_string .= $revenue['candidate'].', '.str_replace(',', ' ', $revenue['candidate_name']).', ';
         $prebuilt_string .= '<closed_by>, '.$revenue['date_start'].', '.$revenue['date_signed'].', ';
         $prebuilt_string .= $revenue['date_due'].', '.$revenue['date_paid'].', ';
         $prebuilt_string .= number_format($revenue['salary'], 0, '.', ' ').', ';
