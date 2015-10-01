@@ -2567,9 +2567,17 @@ class CSl_candidateEx extends CSl_candidate
         }
         else
         {
-          if($sSortField == 'salary')
-          {
+          if ($sSortField == 'salary')
             $sSortField = 'full_salary';
+
+          $sort_order = getValue('sortorder', 'DESC');
+
+          if ($sSortField == 'date_birth')
+          {
+            if (strtolower($sort_order) == 'desc')
+              $sort_order = 'ASC';
+            else
+              $sort_order = 'DESC';
           }
 
           if ($sSortField == 'sl_candidatepk')
@@ -2577,7 +2585,7 @@ class CSl_candidateEx extends CSl_candidate
           else
             $secondary_order = ', sl_candidatepk DESC';
 
-          $ordering = $sSortField.' '.getValue('sortorder', 'DESC').$secondary_order;
+          $ordering = $sSortField.' '.$sort_order.$secondary_order;
 
           $poQB->setOrder($ordering);
         }
