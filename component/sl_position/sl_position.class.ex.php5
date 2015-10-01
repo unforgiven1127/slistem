@@ -3071,7 +3071,7 @@ class CSl_positionEx extends CSl_position
             $login_object->getUserName($value['user']), $prebuilt_string);
 
           if ($revenue['closed_by'] == $value['user'] && $revenue['candidate'] != 'retainer'
-            && $revenue['placement_count'] == 'yes')
+            && $revenue['placement_count'] == 'yes' && $value['user_position'] == 'Consultant')
             $closed_by = 1;
           else
             $closed_by = 0;
