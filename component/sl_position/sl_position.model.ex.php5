@@ -329,6 +329,7 @@ class CSl_positionModelEx extends CSl_positionModel
       $prepared_data[$revenue['id']]['position_title'] = $revenue['title'];
       $prepared_data[$revenue['id']]['company_name'] = $revenue['company_name'];
       $prepared_data[$revenue['id']]['comment'] = $revenue['comment'];
+      $prepared_data[$revenue['id']]['placement_count'] = $revenue['placement_count'];
 
       if ($revenue['candidate'] == 'retainer')
       {
