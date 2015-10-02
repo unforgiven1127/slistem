@@ -2567,18 +2567,12 @@ class CSl_candidateEx extends CSl_candidate
         }
         else
         {
-          if ($sSortField == 'salary')
-            $sSortField = 'full_salary';
-
           $sort_order = getValue('sortorder', 'DESC');
 
-          if ($sSortField == 'date_birth')
-          {
-            if (strtolower($sort_order) == 'desc')
-              $sort_order = 'ASC';
-            else
-              $sort_order = 'DESC';
-          }
+          if ($sSortField == 'salary')
+            $sSortField = 'full_salary';
+          else if ($sSortField == 'date_birth')
+            $sSortField = 'age';
 
           if ($sSortField == 'sl_candidatepk')
             $secondary_order = ', firstname DESC';
