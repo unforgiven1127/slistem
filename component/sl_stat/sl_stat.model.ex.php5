@@ -441,8 +441,7 @@ class CSl_statModelEx extends CSl_statModel
             'met_meeting_info' => array());
         }
 
-        if ((int)$meeting['meeting_done'] > 0
-          && $met_candidates_array[$meeting['candidatefk']] <= 1)
+        if ($met_candidates_array[$meeting['candidatefk']] <= 1)
         {
           $data[$meeting[$group_switch]]['set'] += 1;
           $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
@@ -878,7 +877,10 @@ class CSl_statModelEx extends CSl_statModel
               $revenue_data[$user_id]['placed'] = 0;
 
             if (!isset($revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']]))
-              $revenue_data[$user_id]['placed'] += $this->get_placement_number($row['loginpk'], $request_date);
+            {
+              $temp_placed = $this->get_placement_number_revenue(array($row['loginpk']), $date_start, $date_end);
+              $revenue_data[$user_id]['placed'] += $temp_placed[$user_id]['placed'];
+            }
 
             $revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']] = '';
           }
@@ -886,11 +888,17 @@ class CSl_statModelEx extends CSl_statModel
           {
             $user_id = $row['loginpk'];
 
+            if (empty($revenue_data[$user_id]['placed']))
+              $revenue_data[$user_id]['placed'] = 0;
+
             if (empty($revenue_data[$user_id]['nationality']))
               $revenue_data[$user_id]['nationality'] = $row['nationality'];
 
             if (empty($revenue_data[$user_id]['placed']))
-              $revenue_data[$user_id]['placed'] = $this->get_placement_number($user_id, $request_date);
+            {
+              $temp_placed = $this->get_placement_number_revenue(array($user_id), $date_start, $date_end);
+              $revenue_data[$user_id]['placed'] += $temp_placed[$user_id]['placed'];
+            }
 
             if (empty($revenue_data[$user_id]['name']))
                 $revenue_data[$user_id]['name'] = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
@@ -927,23 +935,44 @@ class CSl_statModelEx extends CSl_statModel
     return $revenue_data;
   }
 
-  private function get_placement_number($user_id, $request_date)
+  public function get_placement_number_revenue($user_ids, $date_start = '', $date_end = '')
   {
-    $placements = 0;
+    $placements = array();
 
-    $date_start = $request_date.'-01-01';
-    $date_end = $request_date.'-12-31';
+    if (empty($date_start))
+      $date_start = date('Y').'-01-01';
 
-    $query = 'SELECT COUNT(id) AS placed';
+    if (empty($date_end))
+      $date_end = date('Y').'-12-31';
+
+    $query = 'SELECT position, candidate, closed_by';
     $query .= ' FROM revenue';
-    $query .= ' WHERE closed_by = '.$user_id.' AND placement_count = "yes"';
+    $query .= ' WHERE closed_by IN ('.implode(',', $user_ids).') AND placement_count = "yes"';
     $query .= ' AND date_due BETWEEN "'.$date_start.'" AND "'.$date_end.'"';
+    $query .= ' ORDER BY closed_by';
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
 
-    if ($read)
-      $placements = $db_result->getFieldValue('placed');
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      $placements[$row['closed_by']]['candidates'][$row['candidate']] = $row['candidate'];
+
+      $read = $db_result->readNext();
+    }
+
+    foreach ($user_ids as $value)
+    {
+      if (!empty($placements[$value]))
+        $placements[$value]['placed'] = count($placements[$value]['candidates']);
+      else
+      {
+        $placements[$value]['placed'] = 0;
+        $placements[$value]['candidates'] = array();
+      }
+    }
 
     return $placements;
   }
@@ -987,7 +1016,7 @@ class CSl_statModelEx extends CSl_statModel
     {
       $query = 'SELECT positionfk, candidatefk, created_by, status, date_created as ccm_create_date';
       $query .= ' FROM sl_position_link';
-      $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' WHERE created_by IN ('.implode(',', $user_ids).')';
       $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
       $query .= ' AND status BETWEEN 51 AND 61';
     }
@@ -999,7 +1028,7 @@ class CSl_statModelEx extends CSl_statModel
       $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk';
       $query .= ' AND sl_position_link.status BETWEEN 51 AND 61';
       $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-      $query .= ' WHERE sl_meeting.created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(',', $user_ids).')';
       $query .= ' AND sl_meeting.meeting_done = 1';
     }
 
@@ -1070,7 +1099,7 @@ class CSl_statModelEx extends CSl_statModel
     {
       $query = 'SELECT positionfk, candidatefk, created_by, date_created as resume_sent_date';
       $query .= ' FROM sl_position_link';
-      $query .= ' WHERE created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' WHERE created_by IN ('.implode(',', $user_ids).')';
       $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
       $query .= ' AND status = 2';
     }
@@ -1081,7 +1110,7 @@ class CSl_statModelEx extends CSl_statModel
       $query .= ' FROM sl_meeting';
       $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk AND sl_position_link.status = 2';
       $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
-      $query .= ' WHERE sl_meeting.created_by IN ('.implode(",", $user_ids).')';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(',', $user_ids).')';
       $query .= ' AND sl_meeting.meeting_done = 1';
     }
 
@@ -1202,5 +1231,93 @@ class CSl_statModelEx extends CSl_statModel
     }
 
     return $new_in_play_info;
+  }
+
+  public function get_offer_sent($user_ids, $start_date, $end_date, $group = 'researcher')
+  {
+    $offers_info = array();
+
+    if ($group == 'consultant')
+    {
+      $query = 'SELECT positionfk, candidatefk, created_by';
+      $query .= ' FROM sl_position_link';
+      $query .= ' WHERE created_by IN ('.implode(',', $user_ids).')';
+      $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND status = 100';
+    }
+    else
+    {
+      $query = 'SELECT sl_position_link.positionfk, sl_position_link.candidatefk, sl_meeting.created_by';
+      $query .= ' FROM sl_meeting';
+      $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk AND sl_position_link.status = 100';
+      $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(',', $user_ids).')';
+      $query .= ' AND sl_meeting.meeting_done = 1';
+    }
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      if (!isset($offers_info[$row['created_by']]['offers_sent']))
+      {
+        $offers_info[$row['created_by']]['offers_sent'] = 0;
+        $offers_info[$row['created_by']]['offer_info'] = array();
+      }
+
+      $offers_info[$row['created_by']]['offers_sent'] += 1;
+      $offers_info[$row['created_by']]['offer_info'][] = array('candidate' => $row['candidatefk']);
+
+      $read = $db_result->readNext();
+    }
+
+    return $offers_info;
+  }
+
+  public function get_placement_number($user_ids, $start_date, $end_date, $group = 'researcher')
+  {
+    $placed_info = array();
+
+    if ($group == 'consultant')
+    {
+      $query = 'SELECT positionfk, candidatefk, created_by';
+      $query .= ' FROM sl_position_link';
+      $query .= ' WHERE created_by IN ('.implode(',', $user_ids).')';
+      $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND status = 101';
+    }
+    else
+    {
+      $query = 'SELECT sl_position_link.positionfk, sl_position_link.candidatefk, sl_meeting.created_by';
+      $query .= ' FROM sl_meeting';
+      $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk AND sl_position_link.status = 101';
+      $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' WHERE sl_meeting.created_by IN ('.implode(',', $user_ids).')';
+      $query .= ' AND sl_meeting.meeting_done = 1';
+    }
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    while ($read)
+    {
+      $row = $db_result->getData();
+
+      if (!isset($placed_info[$row['created_by']]['placed']))
+      {
+        $placed_info[$row['created_by']]['placed'] = 0;
+        $placed_info[$row['created_by']]['placed_info'] = array();
+      }
+
+      $placed_info[$row['created_by']]['placed'] += 1;
+      $placed_info[$row['created_by']]['placed_info'][] = array('candidate' => $row['candidatefk']);
+
+      $read = $db_result->readNext();
+    }
+
+    return $placed_info;
   }
 }

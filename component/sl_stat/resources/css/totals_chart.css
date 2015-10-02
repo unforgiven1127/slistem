@@ -17,7 +17,6 @@
 	font-size: 18px;
 	border-right: 1px solid #D4DADF;
 	padding: 0 5px;
-	width: 150px;
 	vertical-align: top;
 }
 .hover_row:hover
@@ -31,6 +30,27 @@
 .totals_table_footer td
 {
 	color: white;
+}
+.stat_holder:hover
+{
+  border-bottom: 1px solid black;
+}
+.stat_candi_info
+{
+  font-weight: normal;
+  font-size: 14px;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  margin-bottom: 5px;
+  display: none;
+}
+.name_column
+{
+	width: 150px;
+}
+.stat_holder
+{
+  cursor: pointer;
 }
 .border_left
 {

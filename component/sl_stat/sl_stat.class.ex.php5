@@ -4246,6 +4246,8 @@ class CSl_statEx extends CSl_stat
       $temp_resume_sent = $this->_getModel()->get_resume_sent($consultant_ids, $start_date, $end_date, 'consultant');
       $temp_ccm = $this->_getModel()->get_ccm_data($consultant_ids, $start_date, $end_date, 'consultant');
       $temp_in_play = $this->_getModel()->get_new_in_play($consultant_ids, $start_date, $end_date, 'consultant');
+      $temp_placement = $this->_getModel()->get_placement_number($consultant_ids, $start_date, $end_date, 'consultant');
+      $temp_offer = $this->_getModel()->get_offer_sent($consultant_ids, $start_date, $end_date, 'consultant');
 
       foreach ($consultant_ids as $id)
       {
@@ -4340,6 +4342,28 @@ class CSl_statEx extends CSl_stat
           $stats_data['consultant'][$id]['new_position_info'] = array();
         }
 
+        if (!empty($temp_placement[$id]['placed']))
+        {
+          $stats_data['consultant'][$id]['placed'] = $temp_placement[$id]['placed'];
+          $stats_data['consultant'][$id]['placed_info'] = $temp_placement[$id]['placed_info'];
+        }
+        else
+        {
+          $stats_data['consultant'][$id]['placed'] = 0;
+          $stats_data['consultant'][$id]['placed_info'] = array();
+        }
+
+        if (!empty($temp_offer[$id]['offers_sent']))
+        {
+          $stats_data['consultant'][$id]['offers_sent'] = $temp_offer[$id]['offers_sent'];
+          $stats_data['consultant'][$id]['offer_info'] = $temp_offer[$id]['offer_info'];
+        }
+        else
+        {
+          $stats_data['consultant'][$id]['offers_sent'] = 0;
+          $stats_data['consultant'][$id]['offer_info'] = array();
+        }
+
         $stats_data['consultant'][$id]['name'] = $consultant_names[$id];
       }
 
@@ -4358,7 +4382,9 @@ class CSl_statEx extends CSl_stat
       $temp_set_vs_met = $this->_getModel()->getKpiSetVsMet($researcher_ids, $start_date, $end_date);
       $temp_resume_sent = $this->_getModel()->get_resume_sent($researcher_ids, $start_date, $end_date);
       $temp_ccm = $this->_getModel()->get_ccm_data($researcher_ids, $start_date, $end_date);
-      $temp_in_play = $this->_getModel()->get_new_in_play($consultant_ids, $start_date, $end_date);
+      $temp_in_play = $this->_getModel()->get_new_in_play($researcher_ids, $start_date, $end_date);
+      $temp_placement = $this->_getModel()->get_placement_number($researcher_ids, $start_date, $end_date);
+      $temp_offer = $this->_getModel()->get_offer_sent($researcher_ids, $start_date, $end_date);
 
       foreach ($researcher_ids as $id)
       {
@@ -4451,6 +4477,28 @@ class CSl_statEx extends CSl_stat
         {
           $stats_data['researcher'][$id]['new_positions'] = 0;
           $stats_data['researcher'][$id]['new_position_info'] = array();
+        }
+
+        if (!empty($temp_placement[$id]['placed']))
+        {
+          $stats_data['researcher'][$id]['placed'] = $temp_placement[$id]['placed'];
+          $stats_data['researcher'][$id]['placed_info'] = $temp_placement[$id]['placed_info'];
+        }
+        else
+        {
+          $stats_data['researcher'][$id]['placed'] = 0;
+          $stats_data['researcher'][$id]['placed_info'] = array();
+        }
+
+        if (!empty($temp_offer[$id]['offers_sent']))
+        {
+          $stats_data['researcher'][$id]['offers_sent'] = $temp_offer[$id]['offers_sent'];
+          $stats_data['researcher'][$id]['offer_info'] = $temp_offer[$id]['offer_info'];
+        }
+        else
+        {
+          $stats_data['researcher'][$id]['offers_sent'] = 0;
+          $stats_data['researcher'][$id]['offer_info'] = array();
         }
 
         $stats_data['researcher'][$id]['name'] = $researcher_names[$id];
