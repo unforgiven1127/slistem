@@ -3099,64 +3099,80 @@ class CSl_positionEx extends CSl_position
     {
       $login = CDependency::getCpLogin();
 
+      $this->_oPage->addJsFile('/common/js/moment.min.js');
+      $this->_oPage->addJsFile('/common/js/jquery.comiseo.daterangepicker.js');
+      $this->_oPage->addCSSFile('/common/style/jquery.comiseo.daterangepicker.css');
+      $this->_oPage->addCssFile('/component/form/resources/css/form.css');
+      $this->_oPage->addCssFile('/component/form/resources/css/token-input-mac.css');
+
       $consultant = (int)getValue('loginpk', 0);
       $candidate = (int)getValue('candidate', 0);
       $position = getValue('cp_jd_key');
+      $date_filter = getValue('date_filter');
 
-      $form_object = $this->_oDisplay->initForm('placementFilterForm');
-      $url = $this->_oPage->getUrl($this->csUid, CONST_ACTION_LIST, CONST_POSITION_TYPE_PLACEMENT, 0);
-      $form_object->setFormParams('placementFilterForm', false, array('action' => $url));
-      $form_object->setFormDisplayParams(array('noCancelButton' => true, 'columns' => 1));
+      $consultant_token = $position_token = $candidate_token = '';
+
+      $date_filter_array = array('date_created' => 'Date created', 'date_signed' => 'Date signed',
+        'date_due' => 'Date due', 'date_paid' => 'Date paid', 'date_start' => 'Date start work');
+
+      $form_url = $this->_oPage->getUrl($this->csUid, CONST_ACTION_LIST, CONST_POSITION_TYPE_PLACEMENT, 0);
+      $user_token_url = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
+      $position_token_url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD);
+      $candidate_token_url = $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_CANDI,
+        0, array('autocomplete' => 1));
 
       $start_date = getValue('date_start');
       $end_date = '';
+
       if(!empty($start_date))
       {
-        $date_array = explode(' to ', $start_date);
-        $start_date = $date_array[0];
-        if(!isset($date_array[1]))
-          $end_date = date('Y-m', strtotime('+1 months')).'-01';
-        else
-          $end_date = $date_array[1];
+        $date_array = json_decode($start_date, true);
+        $start_date = $date_array['start'];
+
+        if(isset($date_array['end']))
+          $end_date =  $date_array['end'];
+
+        if(empty($start_date))
+          $start_date = date('Y-m', strtotime('-2 months')).'-01';
+
+        if(empty($end_date))
+          $end_date = date('Y-m', strtotime('+2 months', strtotime($start_date))).'-01';
+
+        $start_end_date = htmlspecialchars(json_encode(array('start' => $start_date, 'end' => $end_date)));
       }
+      else
+        $start_end_date = '';
 
-
-      $url = $this->_oPage->getAjaxUrl('login', CONST_ACTION_SEARCH, CONST_LOGIN_TYPE_USER);
-      $form_object->addField('selector', 'loginpk', array('label'=>'Consultant', 'url' => $url));
       if($consultant)
       {
         $user = strip_tags($login->getUserLink($consultant));
-        $form_object->addOption( 'loginpk', array('label' => $user, 'value' => $consultant));
+        $consultant_token = '[{id:"'.$consultant.'", name:"'.$user.'"}]';
       }
 
-      $url = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SEARCH, CONST_POSITION_TYPE_JD);
-      $form_object->addField('selector', 'cp_jd_key', array('label' => 'Position', 'url' => $url));
       if($position)
       {
         $key = explode('_', $position);
         $position_data = $this->_getModel()->getPositionByPk((int)$key[1]);
         $position_data->readFirst();
 
-        $form_object->addOption( 'cp_jd_key', array('label' => $position_data->getFieldValue('title'), 'value' => $position));
+        $position_token = '[{id:"'.$position.'", name:"'.$position_data->getFieldValue('title').'"}]';
       }
 
-      if(empty($start_date))
-        $form_object->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From'));
-      else
-        $form_object->addField('input', 'date_start', array('type' => 'date', 'range' => 1, 'label' => 'From', 'value' => $start_date.' to '.$end_date));
-
-      $form_object->setFieldDisplayParams('date_start', array('class' => 'date_selector'));
-
-      $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_CANDI, 0, array('autocomplete' => 1));
-      $form_object->addField('selector', 'candidate', array('label' => 'Candidate', 'url' => $url));
       if($candidate)
       {
         $candidate_object = CDependency::getComponentByName('sl_candidate');
         $candidate_data = $candidate_object->getCandidateData($candidate, false);
-        $form_object->addOption( 'candidate', array('label' => $candidate_data['firstname'].' '.$candidate_data['lastname'], 'value' => $candidate));
+
+        $candidate_token = '[{id:"'.$candidate.'", name:"'.$candidate_data['firstname'].' '.$candidate_data['lastname'].'"}]';
       }
 
-      return $form_object->getDisplay();
+      $data = array('form_url' => $form_url, 'user_token_url' => $user_token_url, 'position_token_url' => $position_token_url,
+        'candidate_token_url' => $candidate_token_url, 'consultant' => $consultant, 'candidate' => $candidate,
+        'position' => $position, 'start_end_date' => $start_end_date, 'consultant_token' => $consultant_token,
+        'position_token' => $position_token, 'candidate_token' => $candidate_token, 'date_filter_array' => $date_filter_array,
+        'date_filter' => $date_filter);
+
+      return $this->_oDisplay->render('placement_filter', $data);
     }
 
     private function _getPlacementFilter()
@@ -3167,6 +3183,8 @@ class CSl_positionEx extends CSl_position
       $position = getValue('cp_jd_key');
       $period = getValue('date_start');
 
+      $date_filter = getValue('date_filter', 'date_signed');
+
       $sql_array = array();
 
       if(!empty($consultant))
@@ -3175,22 +3193,22 @@ class CSl_positionEx extends CSl_position
       }
 
       if(!empty($candidate))
-        $sql_array['revenue'][] = ' candidate = '.$candidate;
+        $sql_array['revenue'][] = ' revenue.candidate = '.$candidate;
 
       if(!empty($position))
       {
         $position_list = explode('_', $position);
         if(count($position_list) == 2)
-          $sql_array['revenue'][] = ' position = '.(int)$position_list[1];
+          $sql_array['revenue'][] = ' revenue.position = '.(int)$position_list[1];
       }
 
       if(!empty($period))
       {
-        $date_array = explode(' to ', $period);
-        $start_date = $date_array[0];
+        $date_array = json_decode($period, true);
+        $start_date = $date_array['start'];
 
-        if(isset($date_array[1]))
-          $end_date =  $date_array[1];
+        if(isset($date_array['end']))
+          $end_date =  $date_array['end'];
 
         if(empty($start_date))
           $start_date = date('Y-m', strtotime('-2 months')).'-01';
@@ -3198,7 +3216,7 @@ class CSl_positionEx extends CSl_position
         if(empty($end_date))
           $end_date = date('Y-m', strtotime('+2 months', strtotime($start_date))).'-01';
 
-        $sql_array['revenue'][] = '(date_signed BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
+        $sql_array['revenue'][] = '(revenue.'.$date_filter.' BETWEEN "'.$start_date.'" AND "'.$end_date.'") ';
       }
 
       return $sql_array;

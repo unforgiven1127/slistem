@@ -1270,6 +1270,11 @@ div.mce-flow-layout .mce-path div
   margin-top: 10px;
 }
 
+.float_right
+{
+  float: right;
+}
+
 @-moz-document url-prefix()
 {
   .extended_select select
