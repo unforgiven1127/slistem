@@ -240,3 +240,108 @@ div.tplListMessage.tplListBigTitle *
 {
   top: 1px;
 }
+
+.column_9
+{
+  width: 9%;
+  min-width: 9%;
+  overflow: hidden;
+}
+
+.column_10
+{
+  width: 10%;
+  min-width: 10%;
+  overflow: hidden;
+}
+
+.column_11
+{
+  width: 11%;
+  min-width: 11%;
+  overflow: hidden;
+}
+
+.column_13
+{
+  width: 13%;
+  min-width: 13%;
+  overflow: hidden;
+}
+
+.column_14
+{
+  width: 14%;
+  min-width: 14%;
+  overflow: hidden;
+}
+
+.column_15
+{
+  width: 15%;
+  min-width: 15%;
+  overflow: hidden;
+}
+
+.column_18
+{
+  width: 18%;
+  min-width: 18%;
+  overflow: hidden;
+}
+
+.column_static_16
+{
+  width: 16px;
+  min-width: 16px;
+  overflow: hidden;
+}
+
+.column_static_20
+{
+  width: 20px;
+  min-width: 20px;
+  overflow: hidden;
+}
+
+.column_static_30
+{
+  width: 30px;
+  min-width: 30px;
+  overflow: hidden;
+}
+
+.column_static_35
+{
+  width: 35px;
+  min-width: 35px;
+  overflow: hidden;
+}
+
+.column_static_40
+{
+  width: 40px;
+  min-width: 40px;
+  overflow: hidden;
+}
+
+.column_static_42
+{
+  width: 42px;
+  min-width: 42px;
+  overflow: hidden;
+}
+
+.column_static_43
+{
+  width: 43px;
+  min-width: 43px;
+  overflow: hidden;
+}
+
+.column_static_105
+{
+  width: 105px;
+  min-width: 105px;
+  overflow: hidden;
+}

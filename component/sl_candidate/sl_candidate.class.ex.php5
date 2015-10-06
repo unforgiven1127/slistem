@@ -2779,8 +2779,10 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       $sActionLink = $this->_oDisplay->getLink($sPic, 'javascript:;', array('onclick' => $sJavascript));
-      $oConf->addColumn($sActionLink, 'a', array('id' => 'aaaaaa', 'width' => '20'));
-      $oConf->addColumn('ID', 'sl_candidatepk', array('id' => 'bbbbbb', 'width' => '43', 'style' => 'margin: 0;', 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+      $oConf->addColumn($sActionLink, 'a', array('id' => 'aaaaaa', 'width' => '20', 'class' => 'column_static_20'));
+      $oConf->addColumn('ID', 'sl_candidatepk', array('id' => 'bbbbbb', 'width' => '43', 'style' => 'margin: 0;',
+        'class' => 'column_static_43',
+        'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
 
       switch($sTemplate)
@@ -2797,49 +2799,76 @@ class CSl_candidateEx extends CSl_candidate
           //if we need to display play data, we shrink other columns
           if($bDisplayPositionField)
           {
-            $sFistnameW = '10%'; $sLastnameW = '10%'; $sCompanyW = '14%'; $sTitleW = '10%'; $sDeptW = '9%';
+            $sFistnameW = '10%'; $sLastnameW = '10%'; $sCompanyW = '14%';
+            $sTitleW = '10%'; $sDeptW = '9%';
+
+            $firstname_class = 'column_10'; $lastname_class = 'column_10'; $company_class = 'column_14';
+            $title_class = 'column_10'; $dept_class = 'column_9';
           }
           else
           {
-            $sFistnameW = '13%'; $sLastnameW = '13%'; $sCompanyW = '18%'; $sTitleW = '11%'; $sDeptW = '10%';
+            $sFistnameW = '13%'; $sLastnameW = '13%'; $sCompanyW = '18%';
+            $sTitleW = '11%'; $sDeptW = '10%';
+
+            $firstname_class = 'column_13'; $lastname_class = 'column_13'; $company_class = 'column_18';
+            $title_class = 'column_11'; $dept_class = 'column_10';
           }
 
-          $oConf->addColumn('C', 'cp_client', array('id' => '', 'width' => '16', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('Status', '_in_play', array('id' => '', 'width' => '40', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('G', 'grade', array('id' => '', 'width' => '16', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('R', '_has_doc', array('id' => '', 'width' => '16', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('Lastname', 'lastname', array('id' => '', 'width' => $sFistnameW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('Firstname', 'firstname', array('id' => '', 'width' => $sLastnameW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
-          $oConf->addColumn('Company', 'company_name', array('id' => '', 'width' => $sCompanyW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+          $oConf->addColumn('C', 'cp_client', array('id' => '', 'width' => '16', 'class' => 'column_static_16',
+            'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('Status', '_in_play', array('id' => '', 'width' => '40', 'class' => 'column_static_40',
+            'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('G', 'grade', array('id' => '', 'width' => '16', 'class' => 'column_static_16',
+            'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('R', '_has_doc', array('id' => '', 'width' => '16', 'class' => 'column_static_16',
+            'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('Lastname', 'lastname', array('id' => '', 'width' => $sFistnameW, 'class' => $firstname_class,
+            'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('Firstname', 'firstname', array('id' => '', 'width' => $sLastnameW, 'class' => $lastname_class,
+            'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+
+          $oConf->addColumn('Company', 'company_name', array('id' => '', 'width' => $sCompanyW, 'class' => $company_class,
+            'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
 
           if($bDisplayPositionField)
           {
-            $oConf->addColumn('In play at', 'position_play_company', array('id' => '', 'width' => '10%'));
-            $oConf->addColumn('In play for', 'activity', array('id' => '', 'width' => '15%'));
+            $oConf->addColumn('In play at', 'position_play_company', array('id' => '', 'width' => '10%',
+              'class' => 'column_10'));
+            $oConf->addColumn('In play for', 'activity', array('id' => '', 'width' => '15%',
+              'class' => 'column_15'));
           }
           else
           {
             //~150px
             if(in_array('title', $this->casSettings['candi_list_field']))
-              $oConf->addColumn('Title', 'title', array('id' => '', 'width' => $sTitleW,
+              $oConf->addColumn('Title', 'title', array('id' => '', 'width' => $sTitleW, 'class' => $title_class,
                 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
           }
 
           if(in_array('department', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Department', 'department', array('id' => '', 'width' => $sDeptW, 'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+            $oConf->addColumn('Department', 'department', array('id' => '', 'width' => $sDeptW, 'class' => $dept_class,
+              'sortable'=> array($sSortJs => 'text', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
           if(in_array('note', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Note', 'lastNote', array('id' => '', 'width' => '35', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+            $oConf->addColumn('Note', 'lastNote', array('id' => '', 'width' => '35', 'class' => 'column_static_35',
+              'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
           if(in_array('date_birth', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Age', 'date_birth', array('id' => '', 'width' => '30', 'sortable' => array($sSortJs => 'integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+            $oConf->addColumn('Age', 'date_birth', array('id' => '', 'width' => '30', 'class' => 'column_static_30',
+              'sortable' => array($sSortJs => 'integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
           if(in_array('salary', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Salary', 'salary', array('id' => '', 'width' => '42', 'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
+            $oConf->addColumn('Salary', 'salary', array('id' => '', 'width' => '42', 'class' => 'column_static_42',
+              'sortable'=> array($sSortJs => 'value_integer', 'ajax' => $nAjax, 'url' => $sURL, 'ajax_target' => $this->csSearchId)));
 
           if(in_array('manager', $this->casSettings['candi_list_field']))
-            $oConf->addColumn('Managed by', 'manager', array('id' => '', 'width' => '105')); //108px
+            $oConf->addColumn('Managed by', 'manager', array('id' => '', 'width' => '105', 'class' => 'column_static_105',)); //108px
 
           break;
       }
