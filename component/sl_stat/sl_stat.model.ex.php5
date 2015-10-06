@@ -421,10 +421,17 @@ class CSl_statModelEx extends CSl_statModel
       $meeting_array[] = $temp;
 
       if (!isset($met_candidates_array[$temp['candidatefk']]))
-        $met_candidates_array[$temp['candidatefk']] = 0;
+      {
+        $met_candidates_array[$temp['candidatefk']]['times_met'] = 0;
+        $met_candidates_array[$temp['candidatefk']]['oldest_meeting'] = date('Y-m-d');
+      }
 
       if ((int)$temp['meeting_done'] > 0)
-        $met_candidates_array[$temp['candidatefk']] += 1;
+      {
+        $met_candidates_array[$temp['candidatefk']]['times_met'] += 1;
+        if (strtotime($met_candidates_array[$temp['candidatefk']]['oldest_meeting']) > strtotime($temp['date_created']))
+          $met_candidates_array[$temp['candidatefk']]['oldest_meeting'] = $temp['date_created'];
+      }
 
       $read = $db_result->readNext();
     }
@@ -441,12 +448,9 @@ class CSl_statModelEx extends CSl_statModel
             'met_meeting_info' => array());
         }
 
-        if ($met_candidates_array[$meeting['candidatefk']] <= 1)
-        {
-          $data[$meeting[$group_switch]]['set'] += 1;
-          $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
-            'date' => $meeting['date_created']);
-        }
+        $data[$meeting[$group_switch]]['set'] += 1;
+        $data[$meeting[$group_switch]]['set_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
+          'date' => $meeting['date_created']);
       }
 
       if (strtotime($meeting['date_met']) >= strtotime($start_date)
@@ -459,8 +463,11 @@ class CSl_statModelEx extends CSl_statModel
             'met_meeting_info' => array());
         }
 
+        $temp_validation_date = date('Y-m', strtotime($met_candidates_array[$meeting['candidatefk']]['oldest_meeting']));
+
         if ((int)$meeting['meeting_done'] > 0
-          && $met_candidates_array[$meeting['candidatefk']] <= 1)
+          && ($met_candidates_array[$meeting['candidatefk']]['times_met'] <= 1) ||
+          $temp_validation_date == date('Y-m'))
         {
           $data[$meeting[$group_switch]]['met'] += 1;
           $data[$meeting[$group_switch]]['met_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
