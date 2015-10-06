@@ -2924,10 +2924,11 @@ class CSl_positionEx extends CSl_position
 
       $position_var = getValue('cp_jd_key', '');
       $period_var = getValue('date_start', '');
+      $date_filter = getValue('date_filter', '');
 
       $url =  $this->_oPage->getUrl($this->csUid, CONST_ACTION_DOWNLOAD, CONST_POSITION_TYPE_PLACEMENT, 0,
         array('loginpk' => $consultant_var, 'candidate' => $candidate_var, 'cp_jd_key' => $position_var,
-          'date_start' => $period_var));
+          'date_start' => $period_var, 'date_filter' => $date_filter));
       $html.= $html_object->getBlocStart('', array('class' => 'placement_export_button'));
       $html.= $html_object->getLink('export placements', $url);
       $html.= $html_object->getBlocEnd();
