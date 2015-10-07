@@ -466,12 +466,15 @@ class CSl_statModelEx extends CSl_statModel
         $temp_validation_date = date('Y-m', strtotime($met_candidates_array[$meeting['candidatefk']]['oldest_meeting']));
 
         if ((int)$meeting['meeting_done'] > 0
-          && ($met_candidates_array[$meeting['candidatefk']]['times_met'] <= 1) ||
-          $temp_validation_date == date('Y-m'))
+          && ($met_candidates_array[$meeting['candidatefk']]['times_met'] <= 1 ||
+          ($temp_validation_date >= date('Y-m', strtotime($start_date)) &&
+            $temp_validation_date <= date('Y-m', strtotime($end_date))) ))
         {
           $data[$meeting[$group_switch]]['met'] += 1;
           $data[$meeting[$group_switch]]['met_meeting_info'][] = array('candidate' => $meeting['candidatefk'],
             'date' => $meeting['date_met']);
+
+          $met_candidates_array[$meeting['candidatefk']]['oldest_meeting'] = '1950-05-05';
         }
       }
     }
