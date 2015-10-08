@@ -2625,7 +2625,17 @@ class CSl_candidateEx extends CSl_candidate
       $sQuery = $poQB->getSql();
       //dump($sQuery);
 
+      if ($nPagerOffset)
+      {
+        $record_start = $nPagerOffset*$nLimit;
 
+        if ($record_start > $nResult)
+        {
+          $poQB->addLimit('0, '.$nLimit);
+          $sQuery = $poQB->getSql();
+          $oPager->setOffset(1);
+        }
+      }
 
       //Some joins are too heavy to make (notes, contacts...)
       //So we put the main query in a subquery, and join with the filtered / size-limited result
