@@ -4708,11 +4708,15 @@ class CSl_candidateEx extends CSl_candidate
 
     private function _getContactFormRow($poForm, $nCount, $asTypes, $pasData)
     {
-      if(!empty($pasData))
-        $asDefaultparam = array('readonly' => 'readonly', 'style' => 'background-color: #eee;border-color: #e6e6e6; font-style: italic; color: #777;');
+      $oLogin = CDependency::getCpLogin();
+
+      if(!empty($pasData) && $pasData['creatorfk'] != $oLogin->getUserPk())
+      {
+        $asDefaultparam = array('readonly' => '',
+          'style' => 'background-color: #eee;border-color: #e6e6e6; font-style: italic; color: #777;');
+      }
       else
         $asDefaultparam = array();
-
 
       set_array($pasData['sl_contactpk'], 0);
       set_array($pasData['type'], '');
@@ -4720,7 +4724,6 @@ class CSl_candidateEx extends CSl_candidate
       set_array($pasData['description'], '');
       set_array($pasData['visibility'], 0);
 
-      $oLogin = CDependency::getCpLogin();
       if($oLogin->isAdmin())
       {
         //admin can always edit
