@@ -205,7 +205,8 @@ class CPortalSlistemEx extends CPortalEx
             $asActivity = $oLogin->getUserActivity($oLogin->getUserPk(), '555-001', CONST_ACTION_VIEW, null, null, 15);
             $sHTML.= $this->_displayActivity($asActivity, 'Candidates');
 
-            $asActivity = $oLogin->getUserActivity($oLogin->getUserPk(), '555-001', array(CONST_ACTION_LIST, CONST_ACTION_SEARCH), null, null, 15);
+            $asActivity = $oLogin->getUserActivity($oLogin->getUserPk(), '555-001',
+              array(CONST_ACTION_LIST, CONST_ACTION_SEARCH), null, null, 15, 'searches');
             $sHTML.= $this->_displayActivity($asActivity, 'Searches');
 
             $asActivity = $oLogin->getUserActivity($oLogin->getUserPk(), '555-002', null, null, null, 15);

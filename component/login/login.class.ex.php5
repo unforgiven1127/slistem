@@ -2809,7 +2809,8 @@ class CLoginEx extends CLogin
    * @param type $pasLogData
    * @return boolean
    */
-  public function getUserActivity($pnLoginPk, $psItemUid, $pvItemAction = null, $psItemType = null, $pnItemPk = null, $pnLimit = 20)
+  public function getUserActivity($pnLoginPk, $psItemUid, $pvItemAction = null, $psItemType = null, $pnItemPk = null, $pnLimit = 20,
+    $search_type = 'normal')
   {
     if(!assert('is_key($pnLoginPk) && !empty($psItemUid) '))
       return array();
@@ -2835,8 +2836,10 @@ class CLoginEx extends CLogin
     if($pnItemPk !== null)
       $sQuery.= ' AND cp_pk = "'.$pnItemPk.'" ';
 
+    if ($search_type == 'searches')
+      $sQuery.= ' AND text LIKE "%search%"';
+
     $sQuery.= ' ORDER BY login_activitypk DESC LIMIT '.$pnLimit;
-    //echo $sQuery;
 
     $oDB = CDependency::getComponentByName('database');
     $asResult = array();
