@@ -98,7 +98,7 @@
 			<div class="gray_section">
 				<div class="general_form_row extended_input">
 					<div class="general_form_label">company</div>
-					<div class="general_form_column">
+					<div class="general_form_column" style="width: 183px;">
 						<input id="company" type="text" name="companypk" value="<?php echo $company; ?>" />
 					</div>
 					<div class="general_form_column add_margin_left_30" style="width: 278px;">
