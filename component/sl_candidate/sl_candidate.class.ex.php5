@@ -2981,6 +2981,14 @@ class CSl_candidateEx extends CSl_candidate
             <span class="hidden query"><br />'.$sQuery.'</span><br /><br /><br />';
         }
 
+        $sHTML .= '<script>
+          $(function(){
+            var list_container = document.getElementById(\''.$this->csSearchId.'\');
+            $(\'.fixedListheader\').remove();
+            list_container.scrollTop = 0;
+          });
+        </script>';
+
         if($gbNewSearch)
           $sHTML.= $this->_oDisplay->getBlocEnd();
 
@@ -6024,6 +6032,14 @@ die();*/
         $sHTML.= '<a href="javascript:;" onclick="$(this).parent().find(\'.query\').toggle(); ">query... </a>
           <span class="hidden query"><br />'.$sQuery.'</span><br /><br /><br />';
       }
+
+      $sHTML .= '<script>
+          $(function(){
+            var list_container = document.getElementById(\''.$this->csSearchId.'\');
+            $(\'.fixedListheader\').remove();
+            list_container.scrollTop = 0;
+          });
+        </script>';
 
       if($gbNewSearch)
         $sHTML.= $this->_oDisplay->getBlocEnd();
