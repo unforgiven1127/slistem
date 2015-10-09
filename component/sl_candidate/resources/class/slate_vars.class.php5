@@ -28,7 +28,7 @@ class CSlateVars
     if(!assert('!empty($gafCurrencyRate)'))
       return false;
 
-    $asAvailable = array('jpy' => 1, 'usd' => 1, 'php' => 1, 'eur' => 1, 'aud' => 1, 'hkd' => 1);
+    $asAvailable = array('jpy' => 1, 'usd' => 1, 'php' => 1, 'eur' => 1, 'aud' => 1, 'hkd' => 1, 'cad' => 1);
     $gafCurrencyRate = array_intersect_key($gafCurrencyRate, $asAvailable);
     $this->casCurrency = $gafCurrencyRate;
 
