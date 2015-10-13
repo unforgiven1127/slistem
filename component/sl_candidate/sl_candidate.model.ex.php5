@@ -532,6 +532,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       WHERE
         scan.sl_candidatepk <> '.$nCandidatePk.'
         AND _sys_status = 0
+        AND scan.sex = '.$asCandidate['sex'].'
         AND
         ( ';
 
@@ -599,7 +600,6 @@ class CSl_candidateModelEx extends CSl_candidateModel
           GROUP BY scan.sl_candidatepk
           ORDER BY scan.sl_candidatepk DESC ';
 
-    //echo $sQuery;
     return $this->oDB->ExecuteQuery($sQuery);
   }
 
