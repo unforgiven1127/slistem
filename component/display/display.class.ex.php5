@@ -883,9 +883,9 @@ class CDisplayEx extends CDisplay
     <link rel="icon" href="'.CONST_HEADER_FAVICON.'" type="image/x-icon" />
 
     <link rel="stylesheet" href="/common/style/template.css'.$sTime.'" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/common/style/style.css'.$sTime.'" type="text/css" media="screen" />
     <link rel="stylesheet" href="'.CONST_PATH_CSS_JQUERYUI.$sTime.'" type="text/css" media="screen" />
-    <link rel="stylesheet" href="/conf/custom_config/'.CONST_WEBSITE.'/'.CONST_WEBSITE.'.css'.$sTime.'" type="text/css" media="screen" />';
+    <link rel="stylesheet" href="/conf/custom_config/'.CONST_WEBSITE.'/'.CONST_WEBSITE.'.css'.$sTime.'" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/common/style/style.css'.$sTime.'" type="text/css" media="screen" />';
 
     //include logged in css
     if($pbIsLogged && CONST_DISPLAY_HAS_LOGGEDIN_CSS && !getValue(CONST_PAGE_NO_LOGGEDIN_CSS))

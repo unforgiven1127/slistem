@@ -138,7 +138,6 @@ input[type=button], input[type=submit], a.button-like
   border-radius: 2px;
   cursor: pointer;
 
-  background-color: #f4f4f4;
   padding:2px 10px;
 }
 input[type=button]:hover, input[type=submit]:hover
@@ -1185,6 +1184,17 @@ div.mce-flow-layout .mce-path div
 .extended_input input
 {
   width: 180px;
+}
+
+.general_form_column a
+{
+  color: #2A6991;
+  text-decoration: none;
+}
+
+.general_form_column a:hover
+{
+  color: orange;
 }
 
 .salary_field
