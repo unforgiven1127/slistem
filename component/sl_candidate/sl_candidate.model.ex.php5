@@ -540,9 +540,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       {
         $sQuery.= '
           (
-            (scan.firstname LIKE '.$this->dbEscapeString($asCandidate['firstname'].'%').'
-              OR LOWER(scan.firstname) IN ("mr", "ms", "mr.", "ms.", "mr", "?", "??", "-", "_")
-            )
+            (scan.firstname LIKE '.$this->dbEscapeString($asCandidate['firstname'].'%').')
             AND
             (
               (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname']).'
@@ -563,9 +561,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       {
         $sQuery.= '
           (
-            (scan.firstname LIKE '.$this->dbEscapeString('%'.$asCandidate['firstname'].'%').'
-              OR LOWER(scan.firstname) IN ("mr", "ms", "mr.", "ms.", "mr", "?", "??", "-", "_")
-            )
+            (scan.firstname LIKE '.$this->dbEscapeString('%'.$asCandidate['firstname'].'%').')
             AND
             (
               (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname']).'
@@ -579,6 +575,9 @@ class CSl_candidateModelEx extends CSl_candidateModel
           )';
       }
 
+      /*(scan.firstname LIKE '.$this->dbEscapeString($asCandidate['firstname'].'%').'
+              OR LOWER(scan.firstname) IN ("mr", "ms", "mr.", "ms.", "mr", "?", "??", "-", "_")
+            )*/
 
     if(!empty($asContactSql))
     {
