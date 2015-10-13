@@ -4718,7 +4718,7 @@ class CSl_candidateEx extends CSl_candidate
     {
       $oLogin = CDependency::getCpLogin();
 
-      if(!empty($pasData) && $pasData['creatorfk'] != $oLogin->getUserPk())
+      if(!empty($pasData))
       {
         $asDefaultparam = array('readonly' => '',
           'style' => 'background-color: #eee;border-color: #e6e6e6; font-style: italic; color: #777;');
