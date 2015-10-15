@@ -25,5 +25,11 @@ class CSettingsModel extends CModel
     $this->_tableMap['settings_user']['loginfk'] = array ('controls' => array('is_key(%)'));
     $this->_tableMap['settings_user']['settingsfk'] = array ('controls' => array('is_key(%)'));
     $this->_tableMap['settings_user']['value'] = array ('controls' => array());
+
+    $this->_tableMap['saved_search']['id'] = array ('controls' => array('is_key(%)'));
+    $this->_tableMap['saved_search']['login_activitypk'] = array ('controls' => array('!empty(%)'));
+    $this->_tableMap['saved_search']['loginpk'] = array ('controls' => array('!empty(%)'));
+    $this->_tableMap['saved_search']['search_label'] = array ('controls' => array('!empty(%)'));
+    $this->_tableMap['saved_search']['date_create'] = array ('controls'=>array(),'type'=>'date');
   }
 }

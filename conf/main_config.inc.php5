@@ -447,6 +447,7 @@ define('CONST_TYPE_SYSTEM_SETTINGS','stgsys');
 define('CONST_TYPE_IP', 'alwip');
 define('CONST_TYPE_MANAGEABLELIST', 'mngl');
 define('CONST_TYPE_USERPREFERENCE', 'usrprf');
+define('CONST_TYPE_SAVED_SEARCHES', 'svsrch');
 define('CONST_ACTION_RELOG', 'relog');
 
 define('CONST_LOGIN_TYPE_USER', 'usr');

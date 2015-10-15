@@ -58,28 +58,34 @@ class CSettingsEx extends CSettings
         }
         break;
 
-        case CONST_TYPE_SETTING_BLACKLIST:
+        case CONST_TYPE_SAVED_SEARCHES:
+          switch($this->csAction)
+          {
+            case CONST_ACTION_VIEW:
+              return $this->display_saved_searches();
+              break;
+          }
+          break;
 
-        switch($this->csAction)
-        {
-           case CONST_ACTION_SAVEADD:
-             return $this->_saveBlackList();
-               break;
-        }
-        break;
+        case CONST_TYPE_SETTING_BLACKLIST:
+          switch($this->csAction)
+          {
+             case CONST_ACTION_SAVEADD:
+               return $this->_saveBlackList();
+                 break;
+          }
+          break;
 
         case CONST_TYPE_SETTING_FOOTER:
-
-        switch($this->csAction)
-        {
-            case CONST_ACTION_SAVEADD:
-              return $this->_saveFooter();
-                break;
-         }
-         break;
+          switch($this->csAction)
+          {
+              case CONST_ACTION_SAVEADD:
+                return $this->_saveFooter();
+                  break;
+          }
+          break;
 
         case CONST_TYPE_SETTING_RIGHTUSR:
-
           switch($this->csAction)
           {
             case CONST_ACTION_SAVEEDIT:
@@ -94,15 +100,13 @@ class CSettingsEx extends CSettings
 
 
         case CONST_TYPE_SETTING_MENU:
-
-        switch($this->csAction)
-        {
-            case CONST_ACTION_SAVEADD:
-              return $this->_saveMenu();
-                break;
-        }
-
-      break;
+          switch($this->csAction)
+          {
+              case CONST_ACTION_SAVEADD:
+                return $this->_saveMenu();
+                  break;
+          }
+          break;
 
       case CONST_TYPE_USERPREFERENCE:
         switch($this->csAction)
@@ -146,7 +150,16 @@ class CSettingsEx extends CSettings
         }
         break;
 
-       case CONST_TYPE_SETTINGS:
+      case CONST_TYPE_SAVED_SEARCHES:
+        switch($this->csAction)
+        {
+          case CONST_ACTION_SAVEEDIT:
+            return json_encode($this->edit_saved_searches());
+            break;
+        }
+        break;
+
+      case CONST_TYPE_SETTINGS:
           switch($this->csAction)
           {
             case CONST_ACTION_ADD:
@@ -155,7 +168,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_USER:
+      case CONST_TYPE_SETTING_USER:
 
           switch($this->csAction)
           {
@@ -165,7 +178,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_USRIGHT:
+      case CONST_TYPE_SETTING_USRIGHT:
 
           switch($this->csAction)
           {
@@ -175,7 +188,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_RIGHTUSR:
+      case CONST_TYPE_SETTING_RIGHTUSR:
 
           switch($this->csAction)
           {
@@ -189,7 +202,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_RIGHTGRP:
+      case CONST_TYPE_SETTING_RIGHTGRP:
 
           switch($this->csAction)
           {
@@ -203,7 +216,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_MENU:
+      case CONST_TYPE_SETTING_MENU:
 
           switch($this->csAction)
           {
@@ -213,7 +226,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_FOOTER:
+      case CONST_TYPE_SETTING_FOOTER:
 
           switch($this->csAction)
           {
@@ -223,7 +236,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_BLACKLIST:
+      case CONST_TYPE_SETTING_BLACKLIST:
 
           switch($this->csAction)
           {
@@ -233,7 +246,7 @@ class CSettingsEx extends CSettings
           }
           break;
 
-        case CONST_TYPE_SETTING_CRON:
+      case CONST_TYPE_SETTING_CRON:
 
           switch($this->csAction)
           {
@@ -243,10 +256,10 @@ class CSettingsEx extends CSettings
           }
           break;
 
-       case CONST_TYPE_SYSTEM_SETTINGS:
+      case CONST_TYPE_SYSTEM_SETTINGS:
          return json_encode($this->_getAjaxUpdateSetting());
          break;
-     }
+    }
   }
 
   /**
@@ -2062,6 +2075,107 @@ class CSettingsEx extends CSettings
     </div>';
 
     return array('data' => $sHTML);
+  }
+
+  private function display_saved_searches()
+  {
+    $login_obj = CDependency::getCpLogin();
+    $display_obj = CDependency::getCpHtml();
+    $page_obj = CDependency::getCpPage();
+
+    $current_user = $login_obj->getUserPk();
+
+    $saved_searches_list = $this->_getModel()->get_saved_searches($current_user);
+
+    $edit_picture = '/common/pictures/edit_16.png';
+    $delete_picture = '/common/pictures/delete_16.png';
+
+    $component_id = $this->csUid;
+
+    $data = array('saved_searches_list' => $saved_searches_list, 'edit_picture' => $edit_picture,
+      'delete_picture' => $delete_picture, 'component_id' => $component_id, 'page_obj' => $page_obj);
+
+    $html = $display_obj->render('saved_searches', $data);
+
+    return $html;
+  }
+
+  private function edit_saved_searches()
+  {
+    $display_obj = CDependency::getCpHtml();
+    $page_obj = CDependency::getCpPage();
+    $login_obj = CDependency::getCpLogin();
+
+    $current_user = $login_obj->getUserPk();
+    $reload = 1;
+    $data = $error = $ajax_action = '';
+
+    $entry_id = getValue('ppk', 0);
+    $action = getValue('action', '');
+    $search_label = getValue('search_label', '');
+    $activity_id = getValue('activity_id', 0);
+
+    switch ($action)
+    {
+      case 'save':
+        if (!empty($search_label))
+        {
+          if (!empty($entry_id))
+          {
+            $where = 'id = '.$entry_id;
+            $values = array('search_label' => $search_label);
+
+            $this->_getModel()->update($values, 'saved_search', $where);
+          }
+          else
+          {
+            $reload = 0;
+            $ajax_action = 'goPopup.removeLastByType(\'layer\');';
+
+            $values = array('search_label' => $search_label, 'loginpk' => $current_user,
+              'login_activitypk' => $activity_id, 'date_create' => date('Y-m-d'));
+
+            $this->_getModel()->add($values, 'saved_search');
+          }
+        }
+        else
+          $error = 'Search label cannot be empty';
+
+        break;
+
+      case 'add':
+      case 'edit':
+        $reload = 0;
+        $form_url = $page_obj->getAjaxUrl($this->csUid, CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES,
+          $entry_id, array('action' => 'save', 'activity_id' => $activity_id));
+
+        if (!empty($entry_id))
+        {
+          $where = 'id = '.$entry_id;
+          $entry = $this->_getModel()->getByWhere('saved_search', $where, 'search_label');
+
+          $search_label = $entry->getFieldValue('search_label');
+        }
+
+        $params = array('form_url' => $form_url, 'search_label' => $search_label);
+
+        $data = $display_obj->render('saved_search_edit', $params);
+
+        break;
+
+      case 'delete':
+        if (!empty($entry_id))
+        {
+          $where = 'id = '.$entry_id;
+          $this->_getModel()->deleteByWhere('saved_search', $where);
+        }
+        else
+          $error = 'Entry does not exist';
+
+        break;
+    }
+
+    return array('data' => $data, 'reload' => $reload, 'error' => $error, 'action' => $ajax_action);
   }
 
 }

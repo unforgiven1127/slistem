@@ -1556,7 +1556,19 @@ $asArray = array();
         'popup__height' => 725,
         'popup__tag' => 'position_window',
         'right' => array ('logged')
-      )
+      ),
+      1 =>
+      array (
+        'name' => 'Saved searches',
+        'link' => '',
+        'icon' => '',
+        'target' => '',
+        'uid' => '665-544',
+        'type' => 'svsrch',
+        'action' => 'ppav',
+        'pk' => 0,
+        'right' => array ('logged')
+      ),
     )
   ),
   31 =>

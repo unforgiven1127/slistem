@@ -2943,6 +2943,14 @@ class CSl_candidateEx extends CSl_candidate
 
         $sHTML.= '</div>';
 
+        if ($nResult > 1)
+        {
+          $sURL = $this->_oPage->getAjaxUrl('settings', CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES, 0,
+            array('action' => 'add', 'activity_id' => $nHistoryPk));
+
+          $sHTML.= '<div><a href="javascript:;" onclick="ajaxLayer(\''.$sURL.'\', 370, 150);">Save this search</a></div>';
+        }
+
         if(!empty($nFolderPk))
         {
           $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM, 0, array('folderpk' => $nFolderPk, 'item_type' => CONST_CANDIDATE_TYPE_CANDI));
@@ -5994,6 +6002,14 @@ die();*/
         $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
 
       $sHTML.= '</div>';
+
+      if ($nResult > 1)
+      {
+        $sURL = $this->_oPage->getAjaxUrl('settings', CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES, 0,
+          array('action' => 'add', 'activity_id' => $nHistoryPk));
+
+        $sHTML.= '<div><a href="javascript:;" onclick="ajaxLayer(\''.$sURL.'\', 370, 150);">Save this search</a></div>';
+      }
 
       if(!empty($nFolderPk))
       {

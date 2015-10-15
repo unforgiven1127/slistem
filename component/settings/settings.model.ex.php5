@@ -138,4 +138,32 @@ class CSettingsModelEx extends CSettingsModel
 
     return $oResult;
   }
+
+  public function get_saved_searches($user)
+  {
+    $saved_searches = array();
+
+    $query = 'SELECT saved_search.id, saved_search.search_label, saved_search.date_create,
+      login_activity.log_link
+      FROM saved_search
+      INNER JOIN login_activity ON login_activity.login_activitypk = saved_search.login_activitypk
+      WHERE saved_search.loginpk = '.$user.'
+      ORDER BY saved_search.date_create
+      ';
+
+      $db_result = $this->oDB->executeQuery($query);
+      $read = $db_result->readFirst();
+
+      while($read)
+      {
+        $temp = $db_result->getData();
+
+        $saved_searches[] = array('id' => $temp['id'], 'label' => $temp['search_label'],
+          'date' => $temp['date_create'], 'link' => $temp['log_link']);
+
+        $read = $db_result->readNext();
+      }
+
+      return $saved_searches;
+  }
 }
