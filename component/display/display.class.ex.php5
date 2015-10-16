@@ -866,6 +866,7 @@ class CDisplayEx extends CDisplay
     //$sTime = '?n='.time();    //after an update, to force refresh css and js files
     $sTime = '';
 
+    $date_obj = new DateTime("+12 hours", new DateTimeZone('Greenwich'));
     // html 5 doctype --> need one for jQuery , so ...
     $sHTML = '<!DOCTYPE html>
     <html>
@@ -876,6 +877,8 @@ class CDisplayEx extends CDisplay
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta content="utf-8" http-equiv="encoding">
     <meta http-equiv="Cache-control" content="private">
+    <meta http-equiv="Cache-control" content="max-age=43200">
+    <meta http-equiv="expires" content="'.$date_obj->format('D, d M Y H:i:s T').'">
 
     <link rel="shortcut icon" href="'.CONST_HEADER_FAVICON.'" type="image/vnd.microsoft.icon" />
     <link rel="shortcut icon" href="'.CONST_HEADER_FAVICON.'" type="image/x-icon" />

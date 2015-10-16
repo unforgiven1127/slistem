@@ -526,3 +526,6 @@ define('CONST_WEBMAIL', 'webmail');
 define('BCMAIL_HOST','mail.bulbouscell.com');
 define('BCMAIL_PORT','143');
 define('DEFAULT_WEBMAIL_ADDRESS','crm@bulbouscell.com');
+
+// variable for cache clearing
+define('FILE_VERSION','1.0001');
