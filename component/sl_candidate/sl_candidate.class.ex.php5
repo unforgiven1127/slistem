@@ -6005,10 +6005,10 @@ die();*/
 
       if ($nResult > 1)
       {
-        $sURL = $this->_oPage->getAjaxUrl('settings', CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES, 0,
+        /*$sURL = $this->_oPage->getAjaxUrl('settings', CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES, 0,
           array('action' => 'add', 'activity_id' => $nHistoryPk));
 
-        $sHTML.= '<div><a href="javascript:;" onclick="ajaxLayer(\''.$sURL.'\', 370, 150);">Save this search</a></div>';
+        $sHTML.= '<div><a href="javascript:;" onclick="ajaxLayer(\''.$sURL.'\', 370, 150);">Save this search</a></div>';*/
       }
 
       if(!empty($nFolderPk))

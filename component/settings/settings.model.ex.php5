@@ -144,7 +144,7 @@ class CSettingsModelEx extends CSettingsModel
     $saved_searches = array();
 
     $query = 'SELECT saved_search.id, saved_search.search_label, saved_search.date_create,
-      login_activity.log_link
+      saved_search.login_activitypk, login_activity.log_link
       FROM saved_search
       INNER JOIN login_activity ON login_activity.login_activitypk = saved_search.login_activitypk
       WHERE saved_search.loginpk = '.$user.'
@@ -159,7 +159,7 @@ class CSettingsModelEx extends CSettingsModel
         $temp = $db_result->getData();
 
         $saved_searches[] = array('id' => $temp['id'], 'label' => $temp['search_label'],
-          'date' => $temp['date_create'], 'link' => $temp['log_link']);
+          'date' => $temp['date_create'], 'link' => $temp['log_link'], 'activity_id' => $temp['login_activitypk']);
 
         $read = $db_result->readNext();
       }

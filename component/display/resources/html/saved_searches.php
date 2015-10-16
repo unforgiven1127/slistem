@@ -24,11 +24,13 @@
 			$even = ' even_gray';
 		else
 			$even = '';
+
+		$log_link = preg_replace('/\&/', '&replay_search='.$value['activity_id'].'&', $value['link'], 1);
 	?>
 
 	<div class="general_form_row_np static_width_485 <?php echo $even; ?>">
 		<div class="saved_searches_column border_right static_width_300">
-			<a href="<?php echo $value['link']; ?>"><?php echo $value['label']; ?></a>
+			<a href="<?php echo $log_link; ?>"><?php echo $value['label']; ?></a>
 		</div>
 		<div class="saved_searches_column border_right static_width_85">
 			<?php echo $value['date']; ?>
@@ -43,7 +45,7 @@
 		$delete_action = 'if(window.confirm(\'Delete this search?\')){ AjaxRequest(\''.$delete_url.'\'); }';
 		?>
 		<div class="saved_searches_column picture_link_hover">
-			<a onclick="<?php echo $edit_action; ?>" onclick="" href="javascript:;">
+			<a onclick="<?php echo $edit_action; ?>" href="javascript:;">
 				<img src="<?php echo $edit_picture; ?>" title="Edit" />
 			</a>
 			&nbsp;
