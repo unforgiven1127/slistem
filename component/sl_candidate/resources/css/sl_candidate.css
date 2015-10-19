@@ -812,8 +812,7 @@ ul li.tplListHeaderContainer
 .list_action_container > div > div
 {
   float: left;
-  width: 30%;
-  margin: 0 10px 0 0;
+  margin: 0 20px 0 0;
   height: 25px;
 }
 div.list_action_container > div > div:first-child

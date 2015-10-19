@@ -2943,7 +2943,7 @@ class CSl_candidateEx extends CSl_candidate
 
         $sHTML.= '</div>';
 
-        if ($nResult > 1)
+        if ($nResult > 1 && empty($nFolderPk))
         {
           $sURL = $this->_oPage->getAjaxUrl('settings', CONST_ACTION_SAVEEDIT, CONST_TYPE_SAVED_SEARCHES, 0,
             array('action' => 'add', 'activity_id' => $nHistoryPk));
