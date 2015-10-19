@@ -26,6 +26,11 @@
 			$even = '';
 
 		$log_link = preg_replace('/\&/', '&replay_search='.$value['activity_id'].'&', $value['link'], 1);
+
+		if (CONST_DEV_SERVER)
+			$log_link = str_replace('slistem.slate.co.jp', CONST_CRM_HOST, $log_link);
+		else
+			$log_link = str_replace('beta1.slate.co.jp', CONST_CRM_HOST, $log_link);
 	?>
 
 	<div class="general_form_row_np static_width_485 <?php echo $even; ?>">
