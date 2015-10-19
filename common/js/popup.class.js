@@ -269,6 +269,7 @@ var CPopup = function()
       var oButton =
       {
         text: psLabel,
+        id: 'close_button',
         click: function()
         {
           eval(psAction);
@@ -317,6 +318,11 @@ var CPopup = function()
     if(psClass)
       oPopup.dialogClass = psClass;
 
+    if (psClass === 'ui-state-error')
+    {
+      oPopup.open = function() { $("#close_button").focus(); };
+    }
+
     if(psTitle === undefined || psTitle === null || psTitle === false)
     {
       oPopup.dialogClass+= ' noTitle';
@@ -340,7 +346,7 @@ var CPopup = function()
   {
     psMessage = psMessage.split("\n").join('<br />');
     return this.setPopupMessage(psMessage, pbModal, psTitle, pnWidth, pnHeight, 'ui-state-error');
-  }
+  };
 
 
 
@@ -466,7 +472,7 @@ var CPopup = function()
         setTimeout("goPopup.remove('"+sId+"'); ", (paAction.delay+500));
     }
 
-    return sId
+    return sId;
   };
 
 
@@ -502,7 +508,7 @@ var CPopup = function()
     oPopup.dialogClass+= ' popup_layer';
 
     return this.setLayerByConfig(psLayerId, oPopup, psContent)
-  }
+  };
 
 
   /**
@@ -571,7 +577,7 @@ var CPopup = function()
       return true;
 
     return this.create(oPopup, $(oTag).html() , true);
-  }
+  };
 
 
   /**
@@ -610,7 +616,7 @@ var CPopup = function()
     AjaxRequest(psUrl, psLoadingScreen, psFormToSerialize, oConf.tag, pbReloadPage,  pbSynch, psCallback, pbWithAnimation);
 
     return oConf.tag;
-  }
+  };
 
   this.restorePersistentLayer = function(poConfig)
   {
@@ -640,5 +646,5 @@ var CPopup = function()
     }
 
     return '';
-  }
-}
+  };
+};
