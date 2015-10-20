@@ -183,6 +183,8 @@ var CPopup = function()
     if((poConf.title === undefined || poConf.title === null || poConf.title === false))
       poConf.title = '';
 
+    poConf.position = 'center';
+
 
     if(!pbTagExist)
       $('<div class="popupMessage hidden" id="'+poConf.tag+'"></div>').html(psContent).appendTo('body');
@@ -505,9 +507,11 @@ var CPopup = function()
     else
       oPopup.height = 600;
 
+    oPopup.position = 'center';
+
     oPopup.dialogClass+= ' popup_layer';
 
-    return this.setLayerByConfig(psLayerId, oPopup, psContent)
+    return this.setLayerByConfig(psLayerId, oPopup, psContent);
   };
 
 
