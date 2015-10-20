@@ -183,7 +183,7 @@ var CPopup = function()
     if((poConf.title === undefined || poConf.title === null || poConf.title === false))
       poConf.title = '';
 
-    poConf.position = 'center';
+
 
 
     if(!pbTagExist)
