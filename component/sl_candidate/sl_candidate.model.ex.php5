@@ -516,7 +516,12 @@ class CSl_candidateModelEx extends CSl_candidateModel
       }
     }
 
-    //dump($asCandidate);
+    if(empty($pnForceTarget))
+      $gender_filter = ' AND scan.sex = '.$asCandidate['sex'];
+    else
+      $gender_filter = '';
+
+
     $sQuery = 'SELECT scan.*, scom.name as company_name,
       sind.label as industry, socc.label as occupation, GROUP_CONCAT(scon.value) as contacts
 
@@ -532,7 +537,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       WHERE
         scan.sl_candidatepk <> '.$nCandidatePk.'
         AND _sys_status = 0
-        AND scan.sex = '.$asCandidate['sex'].'
+        '.$gender_filter.'
         AND
         ( ';
 
