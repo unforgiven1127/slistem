@@ -3668,7 +3668,8 @@ class CSl_candidateEx extends CSl_candidate
       else
         $sJavascript = 'if($(this).val() != \''.$sPickerDate.'\'){ $(this).closest(\'form\').find(\'#confirm_changes\').show(0); } ';
 
-      $oForm->addField('input', 'date_meeting', array('type' => 'datetime', 'label'=> 'Meeting date', 'value' => $sPickerDate, 'onchange' => $sJavascript));
+      $oForm->addField('input', 'date_meeting', array('type' => 'datetime', 'label'=> 'Meeting date',
+        'value' => $sPickerDate, 'onchange' => $sJavascript, 'minDate' => 'now'));
 
       $oForm->addField('input', 'where', array('type' => 'text', 'label'=> 'Location', 'value' => $oDbMeeting->getFieldValue('location')));
 

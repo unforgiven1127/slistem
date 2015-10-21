@@ -507,8 +507,6 @@ var CPopup = function()
     else
       oPopup.height = 600;
 
-    oPopup.position = 'center';
-
     oPopup.dialogClass+= ' popup_layer';
 
     return this.setLayerByConfig(psLayerId, oPopup, psContent);
@@ -540,6 +538,8 @@ var CPopup = function()
     {
       poConfig.title = '';
     }
+
+    poConfig.position = {my: "center", at: "center", of: window};
 
     return this.create(poConfig, psContent);
   };
@@ -574,8 +574,9 @@ var CPopup = function()
 
     oPopup.dialogClass+= ' popup_layer';
 
-    //console.log('open a layer '+ oPopup.tag);
-    //console.log(this.caoPopup);
+    oPopup.position = {my: 'left top', at: 'left top+60', of: window};
+
+    console.log(oPopup);
 
     if(this.restorePersistentLayer(oPopup))
       return true;

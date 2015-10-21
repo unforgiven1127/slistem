@@ -299,7 +299,7 @@ class CInput extends CField
       $sHTML.= '<img src="'.$this->getResourcesPath().'pictures/date-icon.png" onclick="$(\'#'.$this->casFieldParams['id'].'\').focus(); " width="16" height="16" />';
 
       $sHTML.= '<script> '.$sRangeInit;
-      $sHTML.= '$(function() { $("#'.$this->casFieldParams['id'].'").datetimepicker({  numberOfMonths:'.$this->casFieldParams['monthNum'].' , showButtonPanel: true, changeYear: true, dateFormat: \'yy-mm-dd\', hourGrid: 4, minuteGrid: 10, stepMinute: 5, hour: '.$nDefaultHour.',	minute: '.$nDefaultMinute.' '.$sRangeJs.' '.$sDateSetting.'});  });';
+      $sHTML.= '$(function() { $("#'.$this->casFieldParams['id'].'").datetimepicker({numberOfMonths:'.$this->casFieldParams['monthNum'].' , showButtonPanel: true, changeYear: true, dateFormat: \'yy-mm-dd\', hourGrid: 4, minuteGrid: 10, stepMinute: 5, hour: '.$nDefaultHour.',	minute: '.$nDefaultMinute.' '.$sRangeJs.' '.$sDateSetting.'});  });';
       $sHTML.= '</script>';
     }
     elseif($bDatePicker)

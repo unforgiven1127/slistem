@@ -864,7 +864,7 @@ class CDisplayEx extends CDisplay
       $sCustomKeywords = '';
 
     //$sTime = '?n='.time();    //after an update, to force refresh css and js files
-    $sTime = '';
+    $sTime = '?v='.FILE_VERSION;
 
     $date_obj = new DateTime("+12 hours", new DateTimeZone('Greenwich'));
     // html 5 doctype --> need one for jQuery , so ...
@@ -888,6 +888,7 @@ class CDisplayEx extends CDisplay
     <link rel="stylesheet" href="/common/style/template.css'.$sTime.'" type="text/css" media="screen" />
     <link rel="stylesheet" href="'.CONST_PATH_CSS_JQUERYUI.$sTime.'" type="text/css" media="screen" />
     <link rel="stylesheet" href="/conf/custom_config/'.CONST_WEBSITE.'/'.CONST_WEBSITE.'.css'.$sTime.'" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/common/style/jquery-ui-timepicker-addon.css'.$sTime.'" type="text/css" media="screen" />
     <link rel="stylesheet" href="/common/style/style.css'.$sTime.'" type="text/css" media="screen" />';
 
     //include logged in css
@@ -935,7 +936,7 @@ class CDisplayEx extends CDisplay
 
     foreach($pasJsFile as $sFileName)
     {
-      $sHTML.= '<script type="text/javascript" src="'.$sFileName.'"></script>';
+      $sHTML.= '<script type="text/javascript" src="'.$sFileName.$sTime.'"></script>';
       $asFileDate = parse_url($sFileName);
       $asJsFile[] = str_replace('//', '/', $asFileDate['path']);
     }
