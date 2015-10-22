@@ -340,8 +340,10 @@ var CPopup = function()
       oPopup.height = pnHeight;
 
     oPopup.dialogClass+= ' popup_message';
-
-    return this.create(oPopup, psMessage);
+    if ($('.ui-dialog-content').dialog("isOpen") === true)
+      return false;
+    else
+      return this.create(oPopup, psMessage);
   };
 
   this.setErrorMessage = function(psMessage, pbModal, psTitle, pnWidth, pnHeight)
