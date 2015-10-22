@@ -4064,7 +4064,7 @@ class CSl_candidateEx extends CSl_candidate
         return array('error' => 'Attendee is not valid.');
 
       $asTmp['location'] = filter_var(getValue('where'), FILTER_SANITIZE_STRING);
-      $asTmp['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
+      $asTmp['description'] = purify_html(getValue('description'));
       $asTmp['date_created'] = date('Y-m-d H:i:s');
 
 
@@ -4294,7 +4294,7 @@ class CSl_candidateEx extends CSl_candidate
         return array('error' => __LINE__.' - You need to select an attendee.');
 
       $asNewMeeting['type'] = (int)getValue('meeting_type', 1);
-      $asNewMeeting['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
+      $asNewMeeting['description'] = purify_html(getValue('description'));
       $asNewMeeting['location'] = filter_var(getValue('where'), FILTER_SANITIZE_STRING);
 
 
@@ -5055,8 +5055,10 @@ class CSl_candidateEx extends CSl_candidate
 
           $asTmp = array('sl_contactpk' => $_POST['sl_contactpk'][$nRow],
                 'type' => $_POST['contact_type'][$nRow], 'item_type' => 'candi', 'itemfk' => $nCandidatePk,
-                'date_create' => date('Y-m-d H:i:s'), 'loginfk' => $nUserPk, 'value' => $_POST['contact_value'][$nRow],
-                'description' => $_POST['contact_description'][$nRow], 'visibility' => $_POST['contact_visibility'][$nRow],
+                'date_create' => date('Y-m-d H:i:s'), 'loginfk' => $nUserPk,
+                'value' => filter_var($_POST['contact_value'][$nRow], FILTER_SANITIZE_STRING),
+                'description' => filter_var($_POST['contact_description'][$nRow], FILTER_SANITIZE_STRING),
+                'visibility' => $_POST['contact_visibility'][$nRow],
                 'groupfk' => 0, 'userfk' => $_POST['contact_userfk'][$nRow]);
 
           if(!empty($_POST['sl_contactpk'][$nRow]))
