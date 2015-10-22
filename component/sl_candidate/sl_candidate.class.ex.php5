@@ -2953,15 +2953,27 @@ class CSl_candidateEx extends CSl_candidate
 
         if(!empty($nFolderPk))
         {
-          $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM, 0, array('folderpk' => $nFolderPk, 'item_type' => CONST_CANDIDATE_TYPE_CANDI));
-          $sHTML.= '<div>Remove from folder [<a href="javascript:;" onclick="listBoxClicked($(\'#'.$sListId.' ul li:first\'));
-          sIds = $(\'.multi_drag\').attr(\'data-ids\');
-          if(!sIds)
-            return alert(\'Nothing selected\');
+          $folder_obj = CDependency::getComponentByName('sl_folder');
+          $folder_db = $folder_obj->getFolder((int)$nFolderPk);
 
-           AjaxRequest(\''.$sURL.'&ids=\'+sIds);
-          ">selected</a>]
-          [<a href="javascript:;" onclick="AjaxRequest(\''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]</div>';
+          $read = $folder_db->readFirst();
+
+          $folder_owner = $folder_db->getFieldValue('ownerloginfk');
+          $current_user = $this->_oLogin->getUserPk();
+
+          if ($folder_owner == $current_user || $this->_oLogin->isAdmin())
+          {
+            $sURL = $this->_oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM,
+              0, array('folderpk' => $nFolderPk, 'item_type' => CONST_CANDIDATE_TYPE_CANDI));
+            $sHTML.= '<div>Remove from folder [<a href="javascript:;" onclick="listBoxClicked($(\'#'.$sListId.' ul li:first\'));
+            sIds = $(\'.multi_drag\').attr(\'data-ids\');
+            if(!sIds)
+              return alert(\'Nothing selected\');
+
+             AjaxRequest(\''.$sURL.'&ids=\'+sIds);
+            ">selected</a>]
+            [<a href="javascript:;" onclick="AjaxRequest(\''.$sURL.'&searchId='.$this->csSearchId.'\');">'.$nResult.' results</a>]</div>';
+          }
         }
 
         $sHTML.= $this->_oDisplay->getBlocEnd();
