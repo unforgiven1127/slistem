@@ -539,16 +539,16 @@ class CSl_positionEx extends CSl_position
 
 
       //field for sl_position_detail table
-      $asPosition['language'] = getValue('language');
-      $asPosition['title'] = getValue('title');
+      $asPosition['language'] = filter_var(getValue('language'), FILTER_SANITIZE_STRING);
+      $asPosition['title'] = filter_var(getValue('title'), FILTER_SANITIZE_STRING);
       if(empty($asPosition['title']))
         return array('error' => __LINE__.' - You must enter title.');
 
-      $asPosition['career_level'] = getValue('career_level');
-      $asPosition['description'] = getValue('description');
-      $asPosition['requirements'] = getValue('requirements');
-      $asPosition['responsabilities'] = getValue('responsabilities');
-      $asPosition['content_html'] = getValue('content_html');
+      $asPosition['career_level'] = filter_var(getValue('career_level'), FILTER_SANITIZE_STRING);
+      $asPosition['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
+      $asPosition['requirements'] = filter_var(getValue('requirements'), FILTER_SANITIZE_STRING);
+      $asPosition['responsabilities'] = filter_var(getValue('responsabilities'), FILTER_SANITIZE_STRING);
+      $asPosition['content_html'] = filter_var(getValue('content_html'), FILTER_SANITIZE_STRING);
       $asPosition['is_public'] = (int)getValue('is_public');
 
 
