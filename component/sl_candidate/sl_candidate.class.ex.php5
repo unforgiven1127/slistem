@@ -4051,8 +4051,8 @@ class CSl_candidateEx extends CSl_candidate
       if(empty($asTmp['attendeefk']))
         return array('error' => 'Attendee is not valid.');
 
-      $asTmp['location'] = getValue('where');
-      $asTmp['description'] = getValue('description');
+      $asTmp['location'] = filter_var(getValue('where'), FILTER_SANITIZE_STRING);
+      $asTmp['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
       $asTmp['date_created'] = date('Y-m-d H:i:s');
 
 
@@ -4282,8 +4282,8 @@ class CSl_candidateEx extends CSl_candidate
         return array('error' => __LINE__.' - You need to select an attendee.');
 
       $asNewMeeting['type'] = (int)getValue('meeting_type', 1);
-      $asNewMeeting['description'] = getValue('description');
-      $asNewMeeting['location'] = getValue('where');
+      $asNewMeeting['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
+      $asNewMeeting['location'] = filter_var(getValue('where'), FILTER_SANITIZE_STRING);
 
 
       //================================================================================================================
@@ -5651,20 +5651,20 @@ class CSl_candidateEx extends CSl_candidate
         return array('error' => 'bad parameters.');
 
       $asData = array();
-      $asData['name'] = getValue('company_name');
-      $asData['corporate_name'] = getValue('corporate_name');
-      $asData['description'] = getValue('description');
+      $asData['name'] = filter_var(getValue('company_name'), FILTER_SANITIZE_STRING);
+      $asData['corporate_name'] = filter_var(getValue('corporate_name'), FILTER_SANITIZE_STRING);
+      $asData['description'] = filter_var(getValue('description'), FILTER_SANITIZE_STRING);
       $asData['level'] = (int)getValue('level');
       $asData['is_client'] = (int)getValue('is_client');
 
-      $asData['phone'] = getValue('phone', null);
-      $asData['fax'] = getValue('fax', null);
-      $asData['email'] = getValue('email', null);
-      $asData['website'] = getValue('website', null);
+      $asData['phone'] = filter_var(getValue('phone', null), FILTER_SANITIZE_STRING);
+      $asData['fax'] = filter_var(getValue('fax', null), FILTER_SANITIZE_STRING);
+      $asData['email'] = filter_var(getValue('email', null), FILTER_SANITIZE_EMAIL);
+      $asData['website'] = filter_var(getValue('website', null), FILTER_SANITIZE_URL);
 
       $asData['revenue'] = getValue('revenue');
-      $asData['hq'] = getValue('hq', null);
-      $asData['hq_japan'] = getValue('hq_japan', null);
+      $asData['hq'] = filter_var(getValue('hq', null), FILTER_SANITIZE_STRING);
+      $asData['hq_japan'] = filter_var(getValue('hq_japan', null), FILTER_SANITIZE_STRING);
 
       $asData['num_employee_world'] = (int)getValue('num_employee', 0);
       $asData['num_branch_world'] = (int)getValue('num_branch_world', 0);
@@ -6219,8 +6219,8 @@ die();*/
       {
         //First form section
         $asData['sex'] = (int)getValue('sex');
-        $asData['firstname'] = getValue('firstname');
-        $asData['lastname'] = getValue('lastname');
+        $asData['firstname'] = filter_var(getValue('firstname'), FILTER_SANITIZE_STRING);
+        $asData['lastname'] = filter_var(getValue('lastname'), FILTER_SANITIZE_STRING);
 
         $asData['date_birth'] = trim(getValue('birth_date'));
         $nAge = (int)getValue('age', 0);
@@ -6270,10 +6270,10 @@ die();*/
         }
 
         $asData['companyfk'] = $nNewCompanyFk;
-        $asData['title'] = getValue('title');
+        $asData['title'] = filter_var(getValue('title'), FILTER_SANITIZE_STRING);
         $asData['occupationfk'] = (int)getValue('occupationpk');
         $asData['industryfk'] = (int)getValue('industrypk');
-        $asData['department'] = getValue('department');
+        $asData['department'] = filter_var(getValue('department'), FILTER_SANITIZE_STRING);
 
         if(isset($_POST['client']))
           $asData['is_client'] = 1;
@@ -6386,7 +6386,7 @@ die();*/
         if($sDiploma == 'mba' || $sDiploma == 'both')
           $asData['mba'] = 1;
 
-        $asData['keyword'] = getValue('keyword');
+        $asData['keyword'] = filter_var(getValue('keyword'), FILTER_SANITIZE_STRING);
         $asData['play_for'] = (int)getValue('play_for');
         $asData['play_date'] = null;
 

@@ -396,7 +396,7 @@ class CSl_eventEx extends CSl_event
     $asEvent['item_pk'] = (int)$pnItemPk;
 
     $asEvent['date'] = date('Y-m-d H:i:s');
-    $asEvent['type'] = $psType;
+    $asEvent['type'] = filter_var($psType, FILTER_SANITIZE_STRING);
     $asEvent['title'] = '';
     $asEvent['content'] = $psContent;
     $asEvent['coworker'] = array();
