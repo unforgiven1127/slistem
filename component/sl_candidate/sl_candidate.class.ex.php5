@@ -6085,6 +6085,12 @@ die();*/
           return array('popupError' => 'Could not find the candidate you\'re trying to update. It may have been deleted.');
 
 
+        if (!$this->_oLogin->isAdmin() && $asData['firstname'] != getValue('firstname'))
+          return array('popupError' => 'Normal user cannot change candidate name');
+
+        if (!$this->_oLogin->isAdmin() && $asData['lastname'] != getValue('lastname'))
+          return array('popupError' => 'Normal user cannot change candidate name');
+
         //Date created is use and overwritten everywhere... so we're using an alias
         $asData['date_created'] = $asData['date_added'];
         $asData['sl_candidatepk'] = (int)$asData['sl_candidatepk'];
