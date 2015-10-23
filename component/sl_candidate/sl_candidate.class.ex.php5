@@ -3772,6 +3772,11 @@ class CSl_candidateEx extends CSl_candidate
       // A section to quickly create a note !!
       $nType = (int)$oDbMeeting->getFieldValue('type');
       $oForm->addField('select', 'meeting_type', array('label' => 'Meeting type'));
+
+      $default_date = date('Y-m-d H:i');
+      $oForm->addField('input', 'date_met', array('type' => 'datetime', 'label'=> 'Meeting date',
+        'value' => $default_date, 'minDate' => '-4 day'));
+
       $oForm->addOption('meeting_type', array('label' => 'In person', 'value' => 1), ($nType === 1));
       $oForm->addOption('meeting_type', array('label' => 'By phone', 'value' => 2), ($nType === 2));
       $oForm->addOption('meeting_type', array('label' => 'Video Chat', 'value' => 3), ($nType === 3));
@@ -4496,7 +4501,7 @@ class CSl_candidateEx extends CSl_candidate
 
       $asMeetingData = array();
       $asMeetingData['meeting_done']= 1;
-      $asMeetingData['date_met'] = date('Y-m-d H:i:s');
+      $asMeetingData['date_met'] = getValue('date_met', date('Y-m-d H:i:s'));
 
       if(getValue('meeting_type'))
         $asMeetingData['type'] = (int)getValue('meeting_type');
