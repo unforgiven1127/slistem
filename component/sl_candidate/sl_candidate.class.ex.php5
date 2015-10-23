@@ -4365,7 +4365,7 @@ class CSl_candidateEx extends CSl_candidate
 
 
         //Naggy notification once the meeting date is passed
-        $sReminder = getValue('add_reminder2');
+        $sReminder = getValue('add_reminder3');
         if(empty($sReminder))
           $asNewMeeting['reminder_update'] = null;
         else
@@ -4649,7 +4649,7 @@ class CSl_candidateEx extends CSl_candidate
         $sURL = $this->_oPage->getUrl($this->csUid, CONST_ACTION_EDIT, CONST_CANDIDATE_TYPE_MEETING, $pasMeetingData['sl_meetingpk']);
         $sReminderText.= '- <a href="'.$sURL.'&status=0">postpone the meeting</a>.';
 
-        $nReminder = $oNotify->addItemReminder($sId, $pasMeetingData['attendeefk'], $asItem, $sReminderText, 'Update candidate', $pasMeetingData['reminder_update'], 3, '3d');
+        $nReminder = $oNotify->addItemReminder($sId, $pasMeetingData['attendeefk'], $asItem, $sReminderText, 'Update candidate', $pasMeetingData['reminder_update']);
         assert('is_key($nReminder)');
       }
 
