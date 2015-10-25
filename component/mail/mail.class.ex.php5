@@ -42,7 +42,7 @@ class CMailEx extends CMail
 
   public function __construct()
   {
-    $this->coPhpMailer = new PHPMailer(true);
+    $this->coPhpMailer = new PHPMailer();
 
     //true for non required options (can be changed to false if errors)
     $this->casMailStatus = array('hasFrom' => false, 'hasRecipient' => false, 'hasContent' => false, 'hasCC' => true, 'hasBCC' => true);
@@ -453,16 +453,8 @@ class CMailEx extends CMail
     else
     {
       //Default case, use PHPmailer
-      $sError = '';
-      try
-      {
-        $bSent = (bool)$this->coPhpMailer->Send();
-      }
-      catch (phpmailerException $e)
-      {
-        $sError .= $e->errorMessage().' ';
-      }
-      $sError .= 'smtp_error: '.$this->coPhpMailer->ErrorInfo;
+      $bSent = (bool)$this->coPhpMailer->Send();
+      $sError = 'smtp_error: '.$this->coPhpMailer->ErrorInfo;
     }
 
     if(!$bSent)
