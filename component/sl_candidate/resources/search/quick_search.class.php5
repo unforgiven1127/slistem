@@ -458,7 +458,7 @@ class CQuickSearch
   /* ********************************************************************************************* */
   //String processing functions
 
-  public function _fetchRefIdFromString($psString)
+  static function _fetchRefIdFromString($psString)
   {
     //second attempt: looking for # + number)
     $sFirstChar = substr($psString, 0, 1);
