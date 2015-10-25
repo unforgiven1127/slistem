@@ -407,11 +407,14 @@ class CMailEx extends CMail
         $this->coPhpMailer->AddAttachment($sFilePath);
       }
     }
-
-    if(!$this->_send())
+    try
     {
-      $this->casError[] = __LINE__.' - Error sending email [ imap:'.(int)CONST_MAIL_IMAP_SEND.' / log:'.CONST_MAIL_IMAP_LOG_SENT.'] ';
-      return 0;
+      $this->_send();
+    }
+    catch (phpmailerException $e)
+    {
+        $this->casError[] = $e->errorMessage().' - Error sending email [ imap:'.(int)CONST_MAIL_IMAP_SEND.' / log:'.CONST_MAIL_IMAP_LOG_SENT.'] ';
+        return 0;
     }
 
 
