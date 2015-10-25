@@ -42,7 +42,7 @@ class CMailEx extends CMail
 
   public function __construct()
   {
-    $this->coPhpMailer = new PHPMailer();
+    $this->coPhpMailer = new PHPMailer(true);
 
     //true for non required options (can be changed to false if errors)
     $this->casMailStatus = array('hasFrom' => false, 'hasRecipient' => false, 'hasContent' => false, 'hasCC' => true, 'hasBCC' => true);
@@ -50,7 +50,6 @@ class CMailEx extends CMail
 
     $this->coPhpMailer->IsSMTP();
     $this->coPhpMailer->IsHTML(true);
-    $this->coPhpMailer->SMTPDebug = 4;
   }
 
   public function createNewEmail()
@@ -407,14 +406,11 @@ class CMailEx extends CMail
         $this->coPhpMailer->AddAttachment($sFilePath);
       }
     }
-    try
+
+    if(!$this->_send())
     {
-      $this->_send();
-    }
-    catch (phpmailerException $e)
-    {
-        $this->casError[] = $e->errorMessage().' - Error sending email [ imap:'.(int)CONST_MAIL_IMAP_SEND.' / log:'.CONST_MAIL_IMAP_LOG_SENT.'] ';
-        return 0;
+      $this->casError[] = __LINE__.' - Error sending email [ imap:'.(int)CONST_MAIL_IMAP_SEND.' / log:'.CONST_MAIL_IMAP_LOG_SENT.'] ';
+      return 0;
     }
 
 
@@ -457,8 +453,16 @@ class CMailEx extends CMail
     else
     {
       //Default case, use PHPmailer
-      $bSent = (bool)$this->coPhpMailer->Send();
-      $sError = 'smtp_error: '.$this->coPhpMailer->ErrorInfo;
+      $sError = '';
+      try
+      {
+        $bSent = (bool)$this->coPhpMailer->Send();
+      }
+      catch (phpmailerException $e)
+      {
+        $sError .= $e->errorMessage().' ';
+      }
+      $sError .= 'smtp_error: '.$this->coPhpMailer->ErrorInfo;
     }
 
     if(!$bSent)
