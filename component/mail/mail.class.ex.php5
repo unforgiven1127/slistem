@@ -50,6 +50,7 @@ class CMailEx extends CMail
 
     $this->coPhpMailer->IsSMTP();
     $this->coPhpMailer->IsHTML(true);
+    $this->coPhpMailer->SMTPDebug = 4;
   }
 
   public function createNewEmail()
