@@ -33,7 +33,7 @@ class CField
     $this->casFieldParams = $pasFieldParams;
   }
 
- public function getFieldParams($poField)
+ static function getFieldParams($poField)
  {
      if(!empty($poField->casFieldParams))
        return $poField->casFieldParams;
