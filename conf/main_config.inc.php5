@@ -528,4 +528,4 @@ define('BCMAIL_PORT','143');
 define('DEFAULT_WEBMAIL_ADDRESS','crm@bulbouscell.com');
 
 // variable for cache clearing
-define('FILE_VERSION','1.000001');
+define('FILE_VERSION','1.000002');

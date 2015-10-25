@@ -313,6 +313,7 @@ var CPopup = function()
   this.setPopupMessage = function(psMessage, pbModal, psTitle, pnWidth, pnHeight, psClass)
   {
     var oPopup = this.getConfig('', 'msg');
+    var prevent_multi_error = false;
 
     if(pbModal)
       oPopup.modal = true;
@@ -323,6 +324,9 @@ var CPopup = function()
     if (psClass === 'ui-state-error')
     {
       oPopup.open = function() { $("#close_button").focus(); };
+
+      if ($('.ui-state-error').dialog("isOpen") === true)
+        prevent_multi_error =  true;
     }
 
     if(psTitle === undefined || psTitle === null || psTitle === false)
@@ -338,9 +342,9 @@ var CPopup = function()
 
     if(pnHeight)
       oPopup.height = pnHeight;
-
+console.log(prevent_multi_error);
     oPopup.dialogClass+= ' popup_message';
-    if ($('.ui-dialog-content').dialog("isOpen") === true)
+    if (prevent_multi_error)
       return false;
     else
       return this.create(oPopup, psMessage);
