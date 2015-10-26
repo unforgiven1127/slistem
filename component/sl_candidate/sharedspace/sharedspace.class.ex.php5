@@ -2600,7 +2600,7 @@ private function _parseDocument($psFilePath, $pbFTSOptimized = true)
       $sFileContent = str_replace(array('<', '>', '|', '`', '"', '\''), ' ', $sFileContent);
 
 
-      $sCmd = 'echo "'.$sFileContent.'" | /usr/local/bin/mecab --unk-feature "-" '.$sOutput.'; ';
+      $sCmd = 'echo "'.$sFileContent.'" | mecab --unk-feature "-" '.$sOutput.'; ';
       $sLastLine = exec($sCmd, $asCmdResult, $nCmdResult);
       usleep(100000);
 
@@ -2658,7 +2658,7 @@ private function _parseDocument($psFilePath, $pbFTSOptimized = true)
           $sOutput = '-Owakati';
 
         //$sCmd = '/usr/bin/./timeout -s KILL 15s /usr/local/bin/mecab --unk-feature "unknown"  -Owakati -r '.escapeshellarg($sFilepath).' -o '.escapeshellarg($sConvertedFilepath);
-        $sCmd = '/usr/local/bin/mecab --unk-feature "-" '.$sOutput.' -o '.escapeshellarg($sConvertedFilepath).' < '.escapeshellarg($sFilepath).'; chown apache: '.escapeshellarg($sConvertedFilepath).'; ';
+        $sCmd = 'mecab --unk-feature "-" '.$sOutput.' -o '.escapeshellarg($sConvertedFilepath).' < '.escapeshellarg($sFilepath).'; chown apache: '.escapeshellarg($sConvertedFilepath).'; ';
 
         $sLastLine = exec($sCmd, $asCmdResult, $nCmdResult);
         usleep(100000);
