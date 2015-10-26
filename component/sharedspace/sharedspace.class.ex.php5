@@ -2354,7 +2354,7 @@ private function _parseDocument($psFilePath, $pbFTSOptimized = true)
       //http://www.cyberciti.biz/faq/converter-pdf-files-to-text-format-command/
       // -layout to keep format, -f 5 -l 10 => page 5 to 10,
       case 'pdf':
-          $sCommandLine = '/usr/bin/./timeout -s KILL 15s /usr/bin/pdftotext -eol unix "'.$psFilePath.'" "'.$sSaveDir.$sSaveFile.'"  ';
+          $sCommandLine = '/usr/bin/./timeout -s KILL 15s pdftotext -eol unix "'.$psFilePath.'" "'.$sSaveDir.$sSaveFile.'"  ';
        break;
 
       default:
