@@ -23,8 +23,8 @@
  *
  */
 
-require_once('component/mail/mail.class.php5');
-require_once('component/mail/phpmailer/class.phpmailer.php');
+require_once 'component/mail/mail.class.php5';
+require_once 'component/mail/phpmailer/PHPMailerAutoload.php';
 
 class CMailEx extends CMail
 {
@@ -43,6 +43,13 @@ class CMailEx extends CMail
   public function __construct()
   {
     $this->coPhpMailer = new PHPMailer();
+    $this->coPhpMailer->SMTPOptions = array(
+      'ssl' => array(
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+      )
+    );
 
     //true for non required options (can be changed to false if errors)
     $this->casMailStatus = array('hasFrom' => false, 'hasRecipient' => false, 'hasContent' => false, 'hasCC' => true, 'hasBCC' => true);
@@ -57,6 +64,13 @@ class CMailEx extends CMail
     $this->casMailStatus = array('hasFrom' => false, 'hasRecipient' => false, 'hasContent' => false, 'hasCC' => true, 'hasBCC' => true);
     $this->casError = array();
     $this->coPhpMailer = new PHPMailer();
+    $this->coPhpMailer->SMTPOptions = array(
+      'ssl' => array(
+          'verify_peer' => false,
+          'verify_peer_name' => false,
+          'allow_self_signed' => true
+      )
+    );
     $this->coPhpMailer->IsSMTP();
     $this->coPhpMailer->IsHTML(true);
 

@@ -39,13 +39,13 @@ class PHPMailer
      * When null, the header is not set at all.
      * @var integer
      */
-    public $Priority = null;
+    public $Priority = 3;
 
     /**
      * The character set of the message.
      * @var string
      */
-    public $CharSet = 'iso-8859-1';
+    public $CharSet = 'utf-8';
 
     /**
      * The MIME Content-type of the message.
@@ -70,20 +70,20 @@ class PHPMailer
      * The From email address for the message.
      * @var string
      */
-    public $From = 'root@localhost';
+    public $From = CONST_PHPMAILER_EMAIL;
 
     /**
      * The From name of the message.
      * @var string
      */
-    public $FromName = 'Root User';
+    public $FromName = CONST_PHPMAILER_DEFAULT_FROM;
 
     /**
      * The Sender email (Return-Path) of the message.
      * If not empty, will be sent via -f to sendmail or as 'MAIL FROM' in smtp mode.
      * @var string
      */
-    public $Sender = '';
+    public $Sender = CONST_PHPMAILER_EMAIL;
 
     /**
      * The Return-Path of the message.
@@ -223,14 +223,14 @@ class PHPMailer
      * Hosts will be tried in order.
      * @var string
      */
-    public $Host = 'localhost';
+    public $Host = CONST_PHPMAILER_SMTP_HOST;
 
     /**
      * The default SMTP server port.
      * @var integer
      * @TODO Why is this needed when the SMTP class takes care of it?
      */
-    public $Port = 25;
+    public $Port = CONST_PHPMAILER_SMTP_PORT;
 
     /**
      * The SMTP HELO of the message.
@@ -246,7 +246,7 @@ class PHPMailer
      * Options: '', 'ssl' or 'tls'
      * @var string
      */
-    public $SMTPSecure = '';
+    public $SMTPSecure = 'ssl';
 
     /**
      * Whether to enable TLS encryption automatically if a server supports it,
@@ -254,7 +254,7 @@ class PHPMailer
      * Be aware that in PHP >= 5.6 this requires that the server's certificates are valid.
      * @var boolean
      */
-    public $SMTPAutoTLS = true;
+    public $SMTPAutoTLS = false;
 
     /**
      * Whether to use SMTP authentication.
@@ -263,7 +263,7 @@ class PHPMailer
      * @see PHPMailer::$Username
      * @see PHPMailer::$Password
      */
-    public $SMTPAuth = false;
+    public $SMTPAuth = true;
 
     /**
      * Options array passed to stream_context_create when connecting via SMTP.
@@ -275,13 +275,13 @@ class PHPMailer
      * SMTP username.
      * @var string
      */
-    public $Username = '';
+    public $Username = CONST_PHPMAILER_SMTP_LOGIN;
 
     /**
      * SMTP password.
      * @var string
      */
-    public $Password = '';
+    public $Password = CONST_PHPMAILER_SMTP_PASSWORD;
 
     /**
      * SMTP auth type.
@@ -309,7 +309,7 @@ class PHPMailer
      * Default of 5 minutes (300sec) is from RFC2821 section 4.5.3.2
      * @var integer
      */
-    public $Timeout = 300;
+    public $Timeout = 20;
 
     /**
      * SMTP class debug output mode.
@@ -323,7 +323,7 @@ class PHPMailer
      * @var integer
      * @see SMTP::$do_debug
      */
-    public $SMTPDebug = 0;
+    public $SMTPDebug = CONST_PHPMAILER_SMTP_DEBUG;
 
     /**
      * How to handle debug output.
@@ -347,7 +347,7 @@ class PHPMailer
      * requires an explicit call to smtpClose().
      * @var boolean
      */
-    public $SMTPKeepAlive = false;
+    public $SMTPKeepAlive = true;
 
     /**
      * Whether to split multiple to addresses into multiple messages
@@ -458,21 +458,21 @@ class PHPMailer
      * @var array
      * @access protected
      */
-    protected $to = array();
+    public $to = array();
 
     /**
      * The array of 'cc' names and addresses.
      * @var array
      * @access protected
      */
-    protected $cc = array();
+    public $cc = array();
 
     /**
      * The array of 'bcc' names and addresses.
      * @var array
      * @access protected
      */
-    protected $bcc = array();
+    public $bcc = array();
 
     /**
      * The array of reply-to names and addresses.
@@ -488,7 +488,7 @@ class PHPMailer
      * @access protected
      * @see PHPMailer::$to @see PHPMailer::$cc @see PHPMailer::$bcc
      */
-    protected $all_recipients = array();
+    public $all_recipients = array();
 
     /**
      * An array of names and addresses queued for validation.
