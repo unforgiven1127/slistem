@@ -489,7 +489,6 @@ class CNotificationEx extends CNotification
       $nActionPk = (int)$asData['notification_actionpk'];
       $bExec = null;
 
-
       if(empty($asData['loginfk']))
       {
           assert('false; //no recipient for this action. ['.$asData['loginfk'].']');
@@ -498,14 +497,15 @@ class CNotificationEx extends CNotification
       {
         //check naggy actions
         // Naggy in progress: we have to "re-execute" the action, and update the entry (naggy -1 & last_update)
-        if(!empty($asData['naggy']) && !empty($asData['date_last_action']) && $asData['date_last_action'] != '0000-00-00 00:00:00')
+        if(!empty($asData['naggy']) && !empty($asData['date_last_action']) &&
+          $asData['date_last_action'] != '0000-00-00 00:00:00')
         {
           if(!$pbManual)
             echo 'Notification sent, nags in progress => last action: '.$asData['date_last_action'].' <br />';
 
           $sNagDate = $this->_getNextNagDate($asData);
 
-          if($sNagDate < $sNow)
+          if(strtotime($sNagDate) < strtotime($sNow))
           {
             if(!$pbManual)
               echo 'Time for a nag !! Action to be executed on the '.$sNagDate.' <br />';
@@ -537,16 +537,6 @@ class CNotificationEx extends CNotification
 
   private function _executeAction($pasAction, $poMail, $pasUsers)
   {
-    /*if(!isset($pasUsers[$pasAction['loginfk']]))
-    {
-      dump('recipient inactive. ['.$pasAction['loginfk'].']. We need to cancel the reminders.');
-
-      $asUpdate = array('status' => -2, 'date_last_action' => date('Y-m-d H:i:s'));
-      $this->_getModel()->update($asUpdate, 'notification_action', 'notification_actionpk = '.(int)$pasAction['notification_actionpk']);
-
-      return true;
-    }*/
-
     $sNow = date('Y-m-d H:i:s');
 
     $oPage = CDependency::getCpPage();
