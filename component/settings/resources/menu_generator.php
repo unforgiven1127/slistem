@@ -1590,7 +1590,7 @@ $asArray = array();
     'popup__contentTag' => 'stats',
     'right' => array ('logged'),
     'child' =>array(
-        0 => array (
+        /*0 => array (
         'name' => 'Sic charts',
         'link' => '',
         'icon' => '',
@@ -1675,8 +1675,20 @@ $asArray = array();
         'popup__width' => 1150,
         'popup__height' => 750,
         'right' => array ('logged')
+      ),*/
+      0 => array (
+        'name' => 'KPI - totals',
+        'link' => '',
+        'icon' => '',
+        'target' => '',
+        'uid' => '555-006',
+        'type' => 'ttc',
+        'action' => 'ppttc',
+        'pk' => 0,
+        'ajaxpopup' => 0,
+        'right' => array ('logged')
       ),
-      4 => array (
+      1 => array (
         'name' => 'Watercooler',
         'link' => '',
         'icon' => '',
@@ -1687,7 +1699,7 @@ $asArray = array();
         'pk' => 0,
         'ajaxpopup' => 0,
         'right' => array ('logged')
-      )
+      ),
     )
   ),
   4 =>

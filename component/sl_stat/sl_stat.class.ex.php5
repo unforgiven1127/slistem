@@ -3803,9 +3803,13 @@ class CSl_statEx extends CSl_stat
          /index.php5?uid=555-006&ppa=ppal&ppt=stat&ppk=0&pg=0&stat_type=kpi&watercooler=1&chart_only=1<span class="period">&period=custom&date_start=2013-01-01&date_end=2014-10-10</span><span class="loc">&location=all</span>&chart=contrib
         <br /><br />
 
-        <a href="/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1">Revenue chart</a>: <br />
+        <a href="/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1">KPI - Revenue</a>: <br />
          /index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1<span class="loc">&location=all</span>
         <br /><br />
+
+        <!-- <a href="/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1">KPI - totals</a>: <br />
+         /index.php5?uid=555-006&ppa=ppttc&ppt=ttc&ppk=0&watercooler=1
+        <br /><br /> -->
 
         </div>
         ';
