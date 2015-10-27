@@ -1689,13 +1689,13 @@ $asArray = array();
         'right' => array ('logged')
       ),
       1 => array (
-        'name' => 'Watercooler',
+        'name' => 'Revenue chart',
         'link' => '',
         'icon' => '',
         'target' => '',
         'uid' => '555-006',
-        'type' => 'kpi',
-        'action' => 'ppam',
+        'type' => 'revenue&watercooler=1',
+        'action' => 'pprev',
         'pk' => 0,
         'ajaxpopup' => 0,
         'right' => array ('logged')

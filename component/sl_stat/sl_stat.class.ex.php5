@@ -3807,10 +3807,6 @@ class CSl_statEx extends CSl_stat
          /index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1<span class="loc">&location=all</span>
         <br /><br />
 
-        <!-- <a href="/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1">KPI - totals</a>: <br />
-         /index.php5?uid=555-006&ppa=ppttc&ppt=ttc&ppk=0&watercooler=1
-        <br /><br /> -->
-
         </div>
         ';
 
