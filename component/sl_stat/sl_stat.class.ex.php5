@@ -4065,6 +4065,7 @@ class CSl_statEx extends CSl_stat
       $html.= '</table>';
 
       $html.= '<script>';
+      $html.= '$(".scrollingContainer").css("overflow", "auto");';
       $html.= 'setTimeout(function(){';
       $html.= 'window.location.replace("'.$url.'");';
       $html.= '}, ('.$swap_time.'));';
