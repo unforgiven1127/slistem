@@ -2658,7 +2658,7 @@ private function _parseDocument($psFilePath, $pbFTSOptimized = true)
           $sOutput = '-Owakati';
 
         //$sCmd = '/usr/bin/./timeout -s KILL 15s /usr/local/bin/mecab --unk-feature "unknown"  -Owakati -r '.escapeshellarg($sFilepath).' -o '.escapeshellarg($sConvertedFilepath);
-        $sCmd = 'mecab --unk-feature "-" '.$sOutput.' -o '.escapeshellarg($sConvertedFilepath).' < '.escapeshellarg($sFilepath).'; chown apache: '.escapeshellarg($sConvertedFilepath).'; ';
+        $sCmd = 'mecab --unk-feature "-" '.$sOutput.' -o '.escapeshellarg($sConvertedFilepath).' < '.escapeshellarg($sFilepath).'; chown www-data: '.escapeshellarg($sConvertedFilepath).'; ';
 
         $sLastLine = exec($sCmd, $asCmdResult, $nCmdResult);
         usleep(100000);
