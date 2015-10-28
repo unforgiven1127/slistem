@@ -1402,7 +1402,20 @@ class CSearchEx extends CSearch
             if(is_numeric($vFieldValue) || is_string($vFieldValue))
               $asMessage['long'][] = $asFieldData['display']['label'].' '.$sFieldOperator.' '.$vFieldValue;
             else
-              $asMessage['long'][]  = $asFieldData['display']['label'].' '.$sFieldOperator.' ...';
+            {
+              if (is_array($vFieldValue))
+              {
+                $field_value = ' ';
+                foreach ($vFieldValue as $value)
+                {
+                  $field_value .= $value.', ';
+                }
+              }
+              else
+                $field_value = ' ...';
+
+              $asMessage['long'][]  = $asFieldData['display']['label'].' '.$sFieldOperator.$field_value;
+            }
           }
 
 
@@ -1442,11 +1455,11 @@ class CSearchEx extends CSearch
       }
     }
 
-    $nField = count($asMessage['short']);
+    $nField = count($asMessage['long']);
     if($nField > 7)
       $oQB->setTitle('CpxSearch: '.$nField.' criteria ');
     else
-      $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['short']));
+      $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['long']));
 
 
     return $oQB;
