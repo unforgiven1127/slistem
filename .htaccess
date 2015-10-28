@@ -33,8 +33,8 @@ require valid-user
 SetEnvIf REAL_ADDR "^127\.0\.0\.1$" AllowAccess
 
 # aws public ip
-SetEnvIf REAL_ADDR "^54\.191\.43\.140$" AllowAccess
-SetEnvIf REAL_ADDR "^54\.187\.192\.219$" AllowAccess
+SetEnvIf REAL_ADDR "^52\.26\.201\.56$" AllowAccess
+SetEnvIf REAL_ADDR "^54\.69\.68\.210$" AllowAccess
 
 
 # aws private ip
