@@ -7293,9 +7293,22 @@ die();*/
     {
       // check form, create a html file from it
       $sTitle = trim(getValue('title'));
-      $sContent = getValue('content');
+      $sContent = purify_html(getValue('content'));
       if(empty($sTitle) || empty($sContent))
         return array('error' => 'Title and resume content are required.');
+
+      $head = '
+        <html>
+          <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+          </head>
+          <body>';
+
+      $footer = '
+          </body>
+        </html>';
+
+      $sContent = $head.$sContent.$footer;
 
       $asCpLink = array();
       $asCpLink['cp_uid'] = getValue('cp_uid');
