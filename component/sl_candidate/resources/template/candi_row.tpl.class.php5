@@ -381,8 +381,20 @@ class CCandi_row extends CTemplate
 
       if(!empty($pasData['folderfk']))
       {
-        $sURL = $oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM, 0, array('folderpk' => $pasData['folderfk'], 'item_type' => 'candi', 'ids' => $pasData['sl_candidatepk']));
-        $sHTML.= '<a class="candi_row_folder" title="Remove candidate from the folder" onclick="if(window.confirm(\'Remove from the folder ?\')){ AjaxRequest(\''.$sURL.'\'); $(this).closest(\'li.tplListRowContainer\').remove(); }" href="javascript:;">&nbsp;</a>';
+        $folder_obj = CDependency::getComponentByName('sl_folder');
+        $folder_db = $folder_obj->getFolder((int)$pasData['folderfk']);
+
+        $read = $folder_db->readFirst();
+
+        $folder_owner = $folder_db->getFieldValue('ownerloginfk');
+        $current_user = $oLogin->getUserPk();
+
+        if ($folder_owner == $current_user || $oLogin->isAdmin())
+        {
+          $sURL = $oPage->getAjaxUrl('sl_folder', CONST_ACTION_DELETE, CONST_FOLDER_TYPE_ITEM, 0,
+            array('folderpk' => $pasData['folderfk'], 'item_type' => 'candi', 'ids' => $pasData['sl_candidatepk']));
+          $sHTML.= '<a class="candi_row_folder" title="Remove candidate from the folder" onclick="if(window.confirm(\'Remove from the folder ?\')){ AjaxRequest(\''.$sURL.'\'); $(this).closest(\'li.tplListRowContainer\').remove(); }" href="javascript:;">&nbsp;</a>';
+        }
       }
 
       $sHTML.= $oDisplay->getBlocEnd();
