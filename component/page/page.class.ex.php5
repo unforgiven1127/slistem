@@ -264,6 +264,15 @@ class CPageEx extends CPage
     $bIsLogged = $oLogin->isLogged();
     $this->cbIsLogged = $bIsLogged;
 
+    $logout = check_session_expiry();
+
+    if ($logout)
+    {
+      if ($psMode == 'ajx')
+        $oLogin->_getLogout(true, true);
+      else
+        $oLogin->_getLogout(false, true);
+    }
     //*****************************************************************
     //*****************************************************************
 
@@ -275,8 +284,6 @@ class CPageEx extends CPage
       echo 'Being redirected to safer place. Click <a href=""/>here</a> if nothing happens in the next 5 seconds.';
       exit();
     }
-
-
 
     if(CONST_MAINTENANCE && !$oLogin->isAdmin() && !getValue('pass_maintenance'))
     {

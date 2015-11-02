@@ -342,7 +342,7 @@ var CPopup = function()
 
     if(pnHeight)
       oPopup.height = pnHeight;
-console.log(prevent_multi_error);
+
     oPopup.dialogClass+= ' popup_message';
     if (prevent_multi_error)
       return false;

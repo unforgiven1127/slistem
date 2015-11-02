@@ -2120,7 +2120,7 @@ class CLoginEx extends CLogin
    * Disconnect the user and redirect him to the login screen
    * @param boolean $pbIsAjax
    */
-  private function _getLogout($pbIsAjax = false, $pbRedirect = true)
+  public function _getLogout($pbIsAjax = false, $pbRedirect = true)
   {
 
 
@@ -2128,15 +2128,15 @@ class CLoginEx extends CLogin
     $sQuery = 'UPDATE login SET log_hash = \'\' WHERE loginpk = '.$this->casUserData['pk'];
     $oDb->executeQuery($sQuery);
 
-    //unset session
-    session_destroy();
+    session_unset();     // unset $_SESSION variable for the run-time
+    session_destroy();   // destroy session data in storage
 
     //unset cookie
     setcookie('login_userdata', '', time()-360000, '/');
 
     //$oPage = CDependency::getCpPage();
     //$sUrl = $oPage->getUrlHome(true);
-    $sUrl = CONST_CRM_DOMAIN;
+    $sUrl = CONST_CRM_DOMAIN.'/?';
 
     if($pbIsAjax)
       return array('url' => $sUrl); //'message' => 'login ok',

@@ -1769,3 +1769,32 @@ function sort_multi_array_by_value($field, $order = 'natural')
     }
   };
 }
+
+function check_session_expiry()
+{
+  $expiry_time = 60 * 60;
+  $logout = false;
+  if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $expiry_time))
+  {
+    $logout = true;
+  }
+  $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
+
+  regenerate_seesion_id();
+
+  return $logout;
+}
+
+function regenerate_seesion_id()
+{
+  $expiry_time = 60 * 30;
+  if (!isset($_SESSION['CREATED']))
+  {
+    $_SESSION['CREATED'] = time();
+  }
+  else if (time() - $_SESSION['CREATED'] > $expiry_time)
+  {
+    session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+    $_SESSION['CREATED'] = time();  // update creation time
+  }
+}
