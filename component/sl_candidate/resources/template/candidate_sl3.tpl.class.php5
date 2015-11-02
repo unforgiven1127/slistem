@@ -320,9 +320,13 @@ class CCandidate_sl3 extends CTemplate
 
           $sValue = '<span style="font-style:italic; color: #666; font-size: 10px; float: left;">never met</span>';
         }
-        else if(!empty($pasCandidateData['last_meeting']))
+        else if(empty($pasCandidateData['last_meeting']['date']) && $pasCandidateData['last_meeting']['status'] >= 0)
         {
           $sValue = '<span style="font-style:italic; color: #666; font-size: 10px; float: left;">scheduled</span>';
+        }
+        else if (empty($pasCandidateData['last_meeting']['date']) && $pasCandidateData['last_meeting']['status'] < 0)
+        {
+          $sValue = '<span style="font-style:italic; color: #666; font-size: 10px; float: left;">cancelled</span>';
         }
         else
           $sValue = '';
@@ -333,7 +337,9 @@ class CCandidate_sl3 extends CTemplate
 
         $sHTML.= $this->coDisplay->getBlocStart('', array('class' => 'candi_detail_row right'));
           $sHTML.= $this->coDisplay->getBloc('', 'date met', array('class' => 'candi_detail_label'));
-          $sHTML.= $this->coDisplay->getBloc('', '<a href="javascript:;" style="float: left;">'.substr($pasCandidateData['last_meeting'], 0, 10).'</a>'.$sValue, array('class' => 'candi_detail_value clickable', 'onclick' => $sJavascript));
+          $sHTML.= $this->coDisplay->getBloc('',
+            '<a href="javascript:;" style="float: left;">'.substr($pasCandidateData['last_meeting']['date'], 0, 10).'</a>'.$sValue,
+            array('class' => 'candi_detail_value clickable', 'onclick' => $sJavascript));
         $sHTML.= $this->coDisplay->getBlocEnd();
 
         $sHTML.= $this->coDisplay->getBlocStart('', array('class' => 'candi_detail_row'));

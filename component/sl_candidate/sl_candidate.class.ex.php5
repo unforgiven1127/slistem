@@ -996,7 +996,7 @@ class CSl_candidateEx extends CSl_candidate
 
       $asCandidate['nb_meeting'] = 0;
       $asCandidate['date_meeting'] = '';
-      $asCandidate['last_meeting'] = '';
+      $asCandidate['last_meeting'] = array('date' => '', 'status' => '');
 
       $oDbResult = $this->_getModel()->getByFk($pnPk, 'sl_meeting', 'candidate', '*', 'meeting_done, date_meeting');
       $bRead = $oDbResult->readFirst();
@@ -1008,14 +1008,16 @@ class CSl_candidateEx extends CSl_candidate
 
         if($nStatus > 0)
         {
-          if(empty($asCandidate['last_meeting']) || $asCandidate['last_meeting'] < $sMeetingDate)
-            $asCandidate['last_meeting'] = $sMeetingDate;
+          if(empty($asCandidate['last_meeting']['date']) || $asCandidate['last_meeting']['date'] < $sMeetingDate)
+            $asCandidate['last_meeting'] = array('date' => $sMeetingDate);
         }
         else
         {
           if(empty($asCandidate['date_meeting']) || $asCandidate['date_meeting'] > $sMeetingDate)
             $asCandidate['date_meeting'] = $sMeetingDate;
         }
+
+        $asCandidate['last_meeting']['status'] = $nStatus;
 
         $asCandidate['nb_meeting']++;
 
@@ -1485,7 +1487,7 @@ class CSl_candidateEx extends CSl_candidate
             (empty($pasCandidateData['date_added']))? 0: strtotime($pasCandidateData['date_created']),
             (empty($pasCandidateData['date_updated']))? 0: strtotime($pasCandidateData['date_updated']),
             (empty($pasCandidateData['date_met']))? 0: strtotime($pasCandidateData['date_met']),
-            (empty($pasCandidateData['last_meeting']))? 0: strtotime($pasCandidateData['last_meeting'])
+            (empty($pasCandidateData['last_meeting']['date']))? 0: strtotime($pasCandidateData['last_meeting']['date'])
         );
 
         $sLastUpdate = date('Y-m-d', max($asDate));
