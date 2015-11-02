@@ -88,7 +88,7 @@ SetEnvIf REAL_ADDR "^112\.198\.132\.193$" AllowAccess
 
 ## Slate Canada
 SetEnvIf REAL_ADDR "^209\.145\.120\.7$" AllowAccess
-SetEnvIf REAL_ADDR "^69\.176\.182\.160$" AllowAccess
+SetEnvIf REAL_ADDR "^69\.176\.182\.221$" AllowAccess
 
 ## 2010-09-30 dt#td  Ray and Pam home
 SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
