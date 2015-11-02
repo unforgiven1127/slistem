@@ -320,7 +320,7 @@ class CCandidate_sl3 extends CTemplate
 
           $sValue = '<span style="font-style:italic; color: #666; font-size: 10px; float: left;">never met</span>';
         }
-        elseif(empty($pasCandidateData['last_meeting']))
+        else if(!empty($pasCandidateData['last_meeting']))
         {
           $sValue = '<span style="font-style:italic; color: #666; font-size: 10px; float: left;">scheduled</span>';
         }
