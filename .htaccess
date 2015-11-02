@@ -38,8 +38,8 @@ SetEnvIf REAL_ADDR "^54\.69\.68\.210$" AllowAccess
 
 
 # aws private ip
-SetEnvIf REAL_ADDR "^172\.31\.29\.60$" AllowAccess
-SetEnvIf REAL_ADDR "^172\.31\.29\.61$" AllowAccess
+SetEnvIf REAL_ADDR "^172\.31\.6\.173$" AllowAccess
+SetEnvIf REAL_ADDR "^172\.31\.0\.31$" AllowAccess
 
 # KHVH servers
 SetEnvIf REAL_ADDR "^203\.167\.38\.11$" AllowAccess
@@ -88,6 +88,7 @@ SetEnvIf REAL_ADDR "^112\.198\.132\.193$" AllowAccess
 
 ## Slate Canada
 SetEnvIf REAL_ADDR "^209\.145\.120\.7$" AllowAccess
+SetEnvIf REAL_ADDR "^69\.176\.182\.160$" AllowAccess
 
 ## 2010-09-30 dt#td  Ray and Pam home
 SetEnvIf REAL_ADDR "^69\.176\.172\.6$" AllowAccess
