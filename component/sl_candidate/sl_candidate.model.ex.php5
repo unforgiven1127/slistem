@@ -481,7 +481,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
     return $asMeeting;
   }
 
-  public function getDuplicate($candidate_info, $force_target = 0)
+  public function getDuplicate($candidate_info, $force_target = 0, $merge_data = false)
   {
     if(!assert('(is_key($candidate_info) || is_array($candidate_info))'))
       return new CDbResult();
@@ -505,32 +505,44 @@ class CSl_candidateModelEx extends CSl_candidateModel
     $lastname = $candidate_data['lastname'];
     $company_id = $candidate_data['companyfk'];
 
-    $duplicate_array = $duplicate_temp = array();
+    $duplicate_array = array('company' => array(), 'other' => array());
+    $duplicate_temp = array();
 
 
     if (!empty($company_id))
     {
-      $duplicate_array = $this->duplicate_finder($company_id, $lastname, $firstname, false, $force_target);
+      $duplicate_array['company'] = $this->duplicate_finder($company_id, $lastname, $firstname, false, $force_target);
 
       // requested by Pam: check reversed lname/fname in the same company
       $duplicate_temp = $this->duplicate_finder($company_id, $firstname, $lastname, false, $force_target);
 
       foreach ($duplicate_temp as $key => $value)
       {
-        if (!isset($duplicate_array[$key]))
-          $duplicate_array[$key] = $value;
+        if (!isset($duplicate_array['company'][$key]))
+          $duplicate_array['company'][$key] = $value;
+      }
+
+      uasort($duplicate_array['company'], sort_multi_array_by_value('ratio', 'reverse'));
+    }
+
+    $duplicate_array['other'] = $this->duplicate_finder(0, $lastname, $firstname, true, $force_target);
+
+    if ($merge_data)
+    {
+      foreach ($duplicate_array['company'] as $key => $value)
+      {
+        if (!isset($duplicate_array['other'][$key]))
+          $duplicate_array['other'][$key] = $value;
       }
     }
-
-    $duplicate_temp = $this->duplicate_finder(0, $lastname, $firstname, true, $force_target);
-
-    foreach ($duplicate_temp as $key => $value)
+    else
     {
-      if (!isset($duplicate_array[$key]))
-        $duplicate_array[$key] = $value;
+      foreach ($duplicate_array['other'] as $key => $value)
+      {
+        if (isset($duplicate_array['company'][$key]))
+          unset($duplicate_array['other'][$key]);
+      }
     }
-
-    uasort($duplicate_array, sort_multi_array_by_value('ratio', 'reverse'));
 
     return $duplicate_array;
   }

@@ -1211,6 +1211,17 @@ div.mce-flow-layout .mce-path div
   color: orange;
 }
 
+.fake_link
+{
+  color: #2A6991;
+  cursor: pointer;
+}
+
+.fake_link:hover
+{
+  color: orange;
+}
+
 .salary_field
 {
   width: 81px;

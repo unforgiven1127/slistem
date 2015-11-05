@@ -6637,38 +6637,57 @@ die();*/
 
       $duplicate_array = $this->_getModel()->getDuplicate($candidate_info);
 
-      if(empty($duplicate_array))
+      if(empty($duplicate_array['company']) && empty($duplicate_array['other']))
         return '';
 
       $html = $this->_oDisplay->getCR();
 
-      foreach ($duplicate_array as $key => $value)
+      foreach ($duplicate_array['company'] as $key => $value)
       {
-        $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$value['sl_candidatepk']);
-        $duplicate_array[$key]['candidate'] = '<a href="javascript:;" onclick="popup_candi(this, \''.$url.'\');">'.$value['lastname'].' '.$value['firstname'].'</a>';
+        $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI,
+          (int)$value['sl_candidatepk']);
+        $duplicate_array['company'][$key]['candidate'] = '<a href="javascript:;" onclick="popup_candi(this, \''.$url.'\');">';
+        $duplicate_array['company'][$key]['candidate'] .= $value['lastname'].' '.$value['firstname'].'</a>';
 
-        $duplicate_array[$key]['ratio'] = number_format($value['ratio'], 1).'%';
+        $duplicate_array['company'][$key]['ratio'] = number_format($value['ratio'], 1).'%';
       }
 
+      foreach ($duplicate_array['other'] as $key => $value)
+      {
+        $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI,
+          (int)$value['sl_candidatepk']);
+        $duplicate_array['other'][$key]['candidate'] = '<a href="javascript:;" onclick="popup_candi(this, \''.$url.'\');">';
+        $duplicate_array['other'][$key]['candidate'] .= $value['lastname'].' '.$value['firstname'].'</a>';
 
-      $asParam = array('sub_template' => array('CTemplateList' => array(0 => array('row' => 'CTemplateRow'))));
-      $oTemplate = $this->_oDisplay->getTemplate('CTemplateList', $asParam);
+        $duplicate_array['other'][$key]['ratio'] = number_format($value['ratio'], 1).'%';
+      }
+
+      $html .= '<div class="general_form_row">Duplicates in same company</div>';
+
+      $params = array('sub_template' => array('CTemplateList' => array(0 => array('row' => 'CTemplateRow'))));
+      $template_obj = $this->_oDisplay->getTemplate('CTemplateList', $params);
 
       //get the config object for a specific template (contains default value so it works without config)
-      $oConf = $oTemplate->getTemplateConfig('CTemplateList');
-      $oConf->setRenderingOption('full', 'full', 'full');
-      $oConf->setPagerTop(false);
-      $oConf->setPagerBottom(false);
+      $template = $template_obj->getTemplateConfig('CTemplateList');
+      $template->setRenderingOption('full', 'full', 'full');
+      $template->setPagerTop(false);
+      $template->setPagerBottom(false);
 
-      $oConf->addColumn('Matching', 'ratio', array('width' => 65, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('refId', 'sl_candidatepk', array('width' => 50, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Candidate', 'candidate', array('width' => 210, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Company', 'company', array('width' => 250, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Industry', 'industry', array('width' => 150, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Occupation', 'occupation', array('width' => 150, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('Matching', 'ratio', array('width' => 65, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('refId', 'sl_candidatepk', array('width' => 50, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('Candidate', 'candidate', array('width' => 210, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('Company', 'company', array('width' => 250, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('Industry', 'industry', array('width' => 150, 'sortable'=> array('javascript' => 1)));
+      $template->addColumn('Occupation', 'occupation', array('width' => 150, 'sortable'=> array('javascript' => 1)));
 
-      $html.= $oTemplate->getDisplay($duplicate_array);
+      $html .= $template_obj->getDisplay($duplicate_array['company']);
 
+      $html .= '
+        <div id="other_duplicates_button" class="general_form_row add_margin_top_10 fake_link">
+          Duplicates in other companies
+        </div>';
+
+      $html .= '<div id="other_duplicates" style="display: none;">'.$template_obj->getDisplay($duplicate_array['other']).'</div>';
 
       $duplicate_name = $candidate_info['lastname'].'_'.$candidate_info['firstname'];
 
@@ -6677,6 +6696,14 @@ die();*/
 
       $html.= $this->_oDisplay->getLink($link, 'javascript:;', array( 'style' => 'font-weight: bold; color: #CC7161; font-size: 14px; ',
           'onclick' => '$(\'#dup_checked\').val(\''.$duplicate_name.'\'); $(\'.tab_duplicate\').hide(); $(\'.candidate_form_tabs li:first\').click();'));
+
+      $html .= '
+        <script>
+          $("#other_duplicates_button").click(function()
+          {
+            $("#other_duplicates").toggle();
+          });
+        </script>';
 
       return $html;
     }
@@ -8136,15 +8163,15 @@ die();*/
       $sHTML.= $this->_oDisplay->getCR(2);
 
 
-      $duplicate_array = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget);
+      $duplicate_array = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget, true);
 
-      if(empty($duplicate_array))
+      if(empty($duplicate_array['other']))
       {
         $sHTML.= '<span style="font-size: 15px; color: green; ">&rarr; No duplicate found for this candidate.</span><br /><br />';
       }
       else
       {
-        foreach ($duplicate_array as $key => $value)
+        foreach ($duplicate_array['other'] as $key => $value)
         {
           $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk);
           $sHTML.= '#<a href="javascript:;"  onclick="popup_candi(this, \''.$sURL.'\');" >'.$value['sl_candidatepk'].' - '.$value['lastname'].' '.$value['firstname'].'</a><br />';
