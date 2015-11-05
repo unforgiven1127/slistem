@@ -6632,24 +6632,22 @@ die();*/
       return $asError;
     }
 
-    private function _checkDuplicate($pasData)
+    private function _checkDuplicate($candidate_info)
     {
 
-      $oDbResult = $this->_getModel()->getDuplicate($pasData, 0, true);
-      $bRead = $oDbResult->readFirst();
-      if(!$bRead)
+      $duplicate_array = $this->_getModel()->getDuplicate($candidate_info);
+
+      if(empty($duplicate_array))
         return '';
 
-      $sHTML = $this->_oDisplay->getCR();
-      $asDuplicate = array();
-      while($bRead)
-      {
-        $asData = $oDbResult->getData();
-        $sURL = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$oDbResult->getFieldValue('sl_candidatepk'));
-        $asData['candidate'] = '<a href="javascript:;" onclick="popup_candi(this, \''.$sURL.'\');">'.$oDbResult->getFieldValue('lastname').' '.$oDbResult->getFieldValue('firstname').'</a>';
+      $html = $this->_oDisplay->getCR();
 
-        $asDuplicate[] = $asData;
-        $bRead = $oDbResult->readNext();
+      foreach ($duplicate_array as $key => $value)
+      {
+        $url = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$value['sl_candidatepk']);
+        $duplicate_array[$key]['candidate'] = '<a href="javascript:;" onclick="popup_candi(this, \''.$url.'\');">'.$value['lastname'].' '.$value['firstname'].'</a>';
+
+        $duplicate_array[$key]['ratio'] = number_format($value['ratio'], 1).'%';
       }
 
 
@@ -6662,25 +6660,25 @@ die();*/
       $oConf->setPagerTop(false);
       $oConf->setPagerBottom(false);
 
-      $oConf->addColumn('refId', 'sl_candidatepk', array('width' => 45, 'sortable'=> array('javascript' => 1)));
+      $oConf->addColumn('Matching', 'ratio', array('width' => 65, 'sortable'=> array('javascript' => 1)));
+      $oConf->addColumn('refId', 'sl_candidatepk', array('width' => 50, 'sortable'=> array('javascript' => 1)));
       $oConf->addColumn('Candidate', 'candidate', array('width' => 210, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Company', 'company_name', array('width' => 250, 'sortable'=> array('javascript' => 1)));
+      $oConf->addColumn('Company', 'company', array('width' => 250, 'sortable'=> array('javascript' => 1)));
       $oConf->addColumn('Industry', 'industry', array('width' => 150, 'sortable'=> array('javascript' => 1)));
       $oConf->addColumn('Occupation', 'occupation', array('width' => 150, 'sortable'=> array('javascript' => 1)));
-      $oConf->addColumn('Contacts', 'contacts', array('width' => 170, 'sortable'=> array('javascript' => 1)));
 
-      $sHTML.= $oTemplate->getDisplay($asDuplicate);
+      $html.= $oTemplate->getDisplay($duplicate_array);
 
 
-      $sDupString = $pasData['lastname'].'_'.$pasData['firstname'];
+      $duplicate_name = $candidate_info['lastname'].'_'.$candidate_info['firstname'];
 
-      $sHTML.= $this->_oDisplay->getCR(2);
-      $sLink = '>>&nbsp;&nbsp;&nbsp;&nbsp;Click here if none of the above is a duplicate !&nbsp;&nbsp;&nbsp;&nbsp;<< &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Not a duplicate"/>';
+      $html.= $this->_oDisplay->getCR(2);
+      $link = '>>&nbsp;&nbsp;&nbsp;&nbsp;Click here if none of the above is a duplicate !&nbsp;&nbsp;&nbsp;&nbsp;<< &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Not a duplicate"/>';
 
-      $sHTML.= $this->_oDisplay->getLink($sLink, 'javascript:;', array( 'style' => 'font-weight: bold; color: #CC7161; font-size: 14px; ',
-          'onclick' => '$(\'#dup_checked\').val(\''.$sDupString.'\'); $(\'.tab_duplicate\').hide(); $(\'.candidate_form_tabs li:first\').click();'));
+      $html.= $this->_oDisplay->getLink($link, 'javascript:;', array( 'style' => 'font-weight: bold; color: #CC7161; font-size: 14px; ',
+          'onclick' => '$(\'#dup_checked\').val(\''.$duplicate_name.'\'); $(\'.tab_duplicate\').hide(); $(\'.candidate_form_tabs li:first\').click();'));
 
-      return $sHTML;
+      return $html;
     }
 
     /* a pickle ?
@@ -8138,32 +8136,27 @@ die();*/
       $sHTML.= $this->_oDisplay->getCR(2);
 
 
-      $oDbResult = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget);
+      $duplicate_array = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget);
 
-
-      $bRead = $oDbResult->readFirst();
-      if(!$bRead)
+      if(empty($duplicate_array))
       {
         $sHTML.= '<span style="font-size: 15px; color: green; ">&rarr; No duplicate found for this candidate.</span><br /><br />';
       }
       else
       {
-        while($bRead)
+        foreach ($duplicate_array as $key => $value)
         {
-          $asData = $oDbResult->getData();
-
           $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk);
-          $sHTML.= '#<a href="javascript:;"  onclick="popup_candi(this, \''.$sURL.'\');" >'.$asData['sl_candidatepk'].' - '.$asData['lastname'].' '.$asData['firstname'].'</a><br />';
-          $sHTML.= 'Working at '.$asData['company_name'].'';
+          $sHTML.= '#<a href="javascript:;"  onclick="popup_candi(this, \''.$sURL.'\');" >'.$value['sl_candidatepk'].' - '.$value['lastname'].' '.$value['firstname'].'</a><br />';
+          $sHTML.= 'Working at '.$value['company'].'';
 
-          $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_TRANSFER, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk, array('merge_to' => $asData['sl_candidatepk']));
+          $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_TRANSFER, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk, array('merge_to' => $value['sl_candidatepk']));
           $sHTML.= '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="javascript:;" onclick="if(window.confirm(\'Are you sure you want to merge #'.$pnCandidatePk.' data to this profile (#'.$asData['sl_candidatepk'].') ?\'))
+            <a href="javascript:;" onclick="if(window.confirm(\'Are you sure you want to merge #'.$pnCandidatePk.' data to this profile (#'.$value['sl_candidatepk'].') ?\'))
             {
               AjaxRequest(\''.$sURL.'\');
             }
             ">-=[ Merge on this candidate profile ]=-</a><br /><br />';
-          $bRead = $oDbResult->readNext();
         }
       }
 

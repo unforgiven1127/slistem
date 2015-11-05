@@ -481,132 +481,113 @@ class CSl_candidateModelEx extends CSl_candidateModel
     return $asMeeting;
   }
 
-  public function getDuplicate($pvCandidate, $pnForceTarget = 0, $pbPermissive = false)
+  public function getDuplicate($candidate_info, $force_target = 0)
   {
-    if(!assert('(is_key($pvCandidate) || is_array($pvCandidate)) && is_integer($pnForceTarget)'))
+    if(!assert('(is_key($candidate_info) || is_array($candidate_info))'))
       return new CDbResult();
 
-    if(is_array($pvCandidate))
+    if(is_array($candidate_info))
     {
-      $asCandidate = $pvCandidate;
-      $nCandidatePk = 0;
-      set_array($asCandidate['company_name']);
+      $candidate_data = $candidate_info;
+      $candidate_id = 0;
+      set_array($candidate_data['company_name']);
     }
     else
     {
-      $nCandidatePk = $pvCandidate;
+      $candidate_id = $candidate_info;
 
-      $asCandidate = $this->getCandidateData($nCandidatePk, true);
-      if(empty($asCandidate))
+      $candidate_data = $this->getCandidateData($candidate_id, true);
+      if(empty($candidate_data))
         return new CDbResult();
     }
 
+    $firstname = $candidate_data['firstname'];
+    $lastname = $candidate_data['lastname'];
+    $company_id = $candidate_data['companyfk'];
 
-    $asContactSql = array();
-    if(!empty($nCandidatePk))
+    $duplicate_array = $duplicate_temp = array();
+
+
+    if (!empty($company_id))
     {
-      $sQuery = 'SELECT * FROM sl_contact as scon WHERE scon.`item_type` = "candi" AND scon.itemfk = '.$nCandidatePk;
-      $oDbResult = $this->ExecuteQuery($sQuery);
-      $bRead = $oDbResult->readFirst();
+      $duplicate_array = $this->duplicate_finder($company_id, $lastname, $firstname, false, $force_target);
 
-      while($bRead)
+      // requested by Pam: check reversed lname/fname in the same company
+      $duplicate_temp = $this->duplicate_finder($company_id, $firstname, $lastname, false, $force_target);
+
+      foreach ($duplicate_temp as $key => $value)
       {
-        $asContactSql[] = ' ( scon.value LIKE '.$this->dbEscapeString($oDbResult->getFieldValue('value')).' ) ';
-        $bRead = $oDbResult->readNext();
+        if (!isset($duplicate_array[$key]))
+          $duplicate_array[$key] = $value;
       }
     }
 
-    if(empty($pnForceTarget))
-      $gender_filter = ' AND scan.sex = '.$asCandidate['sex'];
-    else
-      $gender_filter = '';
+    $duplicate_temp = $this->duplicate_finder(0, $lastname, $firstname, true, $force_target);
 
-
-    $sQuery = 'SELECT scan.*, scom.name as company_name,
-      sind.label as industry, socc.label as occupation, GROUP_CONCAT(scon.value) as contacts
-
-      FROM sl_candidate as scan
-
-      LEFT JOIN sl_candidate_profile as scpr ON (scpr.candidatefk = scan.sl_candidatepk)
-      LEFT JOIN sl_company as scom ON (scom.sl_companypk = scpr.companyfk)
-      LEFT JOIN sl_contact as scon ON (scon.item_type = "candi" AND scon.itemfk = scan.sl_candidatepk)
-
-      LEFT JOIN sl_industry as sind ON (sind.sl_industrypk = scpr.industryfk)
-      LEFT JOIN sl_occupation as socc ON (socc.sl_occupationpk = scpr.occupationfk)
-
-      WHERE
-        scan.sl_candidatepk <> '.$nCandidatePk.'
-        AND _sys_status = 0
-        '.$gender_filter.'
-        AND
-        ( ';
-
-      if(!$pbPermissive)
-      {
-        $sQuery.= '
-          (
-            (scan.firstname LIKE '.$this->dbEscapeString($asCandidate['firstname'].'%').')
-            AND
-            (
-              (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname']).'
-               AND scom.name LIKE '.$this->dbEscapeString($asCandidate['company_name'].'%').'
-              )
-              OR
-              (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname'].'%').'
-               AND scpr.companyfk = '.$this->dbEscapeString($asCandidate['sl_companypk']).'
-              )
-              OR
-              (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname'].'%').'
-               AND scpr.companyfk = '.$this->dbEscapeString($asCandidate['sl_companypk']).'
-              )
-            )
-          )';
-      }
-      else
-      {
-        $sQuery.= '
-          (
-            (scan.firstname LIKE '.$this->dbEscapeString('%'.$asCandidate['firstname'].'%').')
-            AND
-            (
-              (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname']).'
-               AND scom.name LIKE '.$this->dbEscapeString('%'.$asCandidate['company_name'].'%').'
-              )
-              OR
-              (scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname'].'%').'
-               AND scom.name LIKE '.$this->dbEscapeString($asCandidate['company_name'].'%').'
-              )
-            )
-          )';
-      }
-
-      /*(scan.firstname LIKE '.$this->dbEscapeString($asCandidate['firstname'].'%').'
-              OR LOWER(scan.firstname) IN ("mr", "ms", "mr.", "ms.", "mr", "?", "??", "-", "_")
-            )*/
-
-    if(!empty($asContactSql))
+    foreach ($duplicate_temp as $key => $value)
     {
-      $sQuery.= ' OR
-        (  scan.lastname LIKE '.$this->dbEscapeString($asCandidate['lastname']).'
-           AND
-           ('.implode(' OR ', $asContactSql).')
-        )
-        ';
+      if (!isset($duplicate_array[$key]))
+        $duplicate_array[$key] = $value;
     }
 
-    if(!empty($pnForceTarget))
-    {
-      $sQuery.= ' OR ( scan.sl_candidatepk = '.$pnForceTarget.' ) ';
-    }
+    uasort($duplicate_array, sort_multi_array_by_value('ratio', 'reverse'));
 
-    $sQuery.= '
-          )
-          GROUP BY scan.sl_candidatepk
-          ORDER BY scan.sl_candidatepk DESC ';
-
-    return $this->oDB->ExecuteQuery($sQuery);
+    return $duplicate_array;
   }
 
+
+  private function duplicate_finder($company_id, $lastname, $firstname, $skip_company = false, $force_target = 0)
+  {
+    $minimum_ratio = 40;
+    $duplicate_array = array();
+
+    $clean_lastname = $this->oDB->dbEscapeString(strtolower($lastname));
+    $clean_firstname = $this->oDB->dbEscapeString(strtolower($firstname));
+    $clean_name = $this->oDB->dbEscapeString(strtolower($lastname.$firstname));
+
+    if (empty($company_id))
+      $skip_company = true;
+
+    $query = 'SELECT ca.sl_candidatepk, ca.lastname, ca.firstname, com.name AS company, ocu.label AS occupation,';
+    $query.= ' ind.label AS industry, levenshtein('.$clean_lastname.', LOWER(ca.lastname)) AS lastname_lev,';
+    $query.= ' levenshtein('.$clean_firstname.', LOWER(ca.firstname)) AS firstname_lev ';
+    $query.= ', 100-(levenshtein('.$this->oDB->dbEscapeString(strtolower($lastname.$firstname)).', LOWER(CONCAT(ca.lastname, ca.firstname)))*100/LENGTH(CONCAT(ca.lastname, ca.firstname))) AS ratio ';
+    $query.= ' FROM sl_candidate AS ca ';
+    $query.= ' INNER JOIN sl_candidate_profile AS cap ON (cap.candidatefk = ca.sl_candidatepk)';
+    $query.= ' INNER JOIN sl_occupation AS ocu ON (ocu.sl_occupationpk = cap.occupationfk)';
+    $query.= ' INNER JOIN sl_industry AS ind ON (ind.sl_industrypk = cap.industryfk)';
+    $query.= ' INNER JOIN sl_company AS com ON (com.sl_companypk = cap.companyfk)';
+    $query.= ' WHERE ';
+
+    if (!$skip_company)
+      $query.= ' cap.companyfk = '.$company_id.' AND ';
+
+    if (!empty($force_target))
+      $query.= ' ca.sl_candidatepk = '.$force_target.' AND ';
+
+      $query.= ' ( (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower($lastname.'%')).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) ';
+      $query.= ' OR (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower('%'.$lastname)).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) )';
+
+    $query.= ' ORDER BY ratio DESC, lastname_lev ASC, firstname_lev ASC LIMIT 100 OFFSET 0';
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+
+    if ($read)
+    {
+      while($read)
+      {
+        $temp = $db_result->getData();
+
+        if ($temp['ratio'] > $minimum_ratio)
+          $duplicate_array[$temp['sl_candidatepk']] = $db_result->getData();
+
+        $read = $db_result->readNext();
+      }
+    }
+
+    return $duplicate_array;
+  }
 
   public function getLastPositionPlayed($pnCandidatePk)
   {
