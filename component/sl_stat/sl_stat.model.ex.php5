@@ -889,7 +889,7 @@ class CSl_statModelEx extends CSl_statModel
             if (!isset($revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']]))
             {
               $temp_placed = $this->get_placement_number_revenue(array($row['loginpk']), $date_start, $date_end);
-              $revenue_data[$user_id]['placed'] += $temp_placed[$user_id]['placed'];
+              $revenue_data[$user_id]['placed'] += $temp_placed[$row['loginpk']]['placed'];
             }
 
             $revenue_data[$user_id]['do_not_count_placed'][$row['loginpk']] = '';
