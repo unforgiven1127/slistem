@@ -6662,7 +6662,16 @@ die();*/
         $duplicate_array['other'][$key]['ratio'] = number_format($value['ratio'], 1).'%';
       }
 
-      $html .= '<div class="general_form_row">Duplicates in same company</div>';
+      if (!empty($duplicate_array['company']))
+      {
+        $other_duplicates_visibility = 'style="display: none;"';
+        $company_duplicates_visibility = '';
+      }
+      else
+      {
+        $other_duplicates_visibility = '';
+        $company_duplicates_visibility = 'style="display: none;"';
+      }
 
       $params = array('sub_template' => array('CTemplateList' => array(0 => array('row' => 'CTemplateRow'))));
       $template_obj = $this->_oDisplay->getTemplate('CTemplateList', $params);
@@ -6680,14 +6689,16 @@ die();*/
       $template->addColumn('Industry', 'industry', array('width' => 150, 'sortable'=> array('javascript' => 1)));
       $template->addColumn('Occupation', 'occupation', array('width' => 150, 'sortable'=> array('javascript' => 1)));
 
-      $html .= $template_obj->getDisplay($duplicate_array['company']);
+      $html .= '<div '.$company_duplicates_visibility.'>'.'<div class="general_form_row">Duplicates in same company</div>';
+
+      $html .= $template_obj->getDisplay($duplicate_array['company']).'</div>';
 
       $html .= '
         <div id="other_duplicates_button" class="general_form_row add_margin_top_10 fake_link">
           Duplicates in other companies
         </div>';
 
-      $html .= '<div id="other_duplicates" style="display: none;">'.$template_obj->getDisplay($duplicate_array['other']).'</div>';
+      $html .= '<div id="other_duplicates" '.$other_duplicates_visibility.'>'.$template_obj->getDisplay($duplicate_array['other']).'</div>';
 
       $duplicate_name = $candidate_info['lastname'].'_'.$candidate_info['firstname'];
 
