@@ -3984,11 +3984,15 @@ class CSl_statEx extends CSl_stat
     {
       $this->cbWatercooler = (bool)getValue('watercooler');
       $location = getValue('location', 'All');
-      $year = getValue('year', date('Y'));
+      $year = $next_year = getValue('year', date('Y'));
+
+      if ($year == 2015)
+        $next_year += 1;
+      else if ($year == 2016)
+        $next_year -= 1;
 
       $swap_time = 1000 * 60 * 4; // 4 minutes
-      $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1';
-      // $url = '/index.php5?uid=555-006&ppa=ppccm&ppt=ccm&ppk=0&watercooler=1';
+      $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1&year='.$next_year;
 
       if(!empty($this->cbWatercooler))
       {
