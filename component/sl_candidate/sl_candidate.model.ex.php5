@@ -580,7 +580,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       $query.= ' ( (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower($lastname.'%')).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) ';
       $query.= ' OR (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower('%'.$lastname)).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) )';
 
-    $query.= ' ORDER BY ratio DESC, lastname_lev ASC, firstname_lev ASC LIMIT 100 OFFSET 0';
+    $query.= ' ORDER BY ratio DESC, lastname_lev ASC, ca.firstname ASC LIMIT 100 OFFSET 0';
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
