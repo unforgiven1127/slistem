@@ -2492,8 +2492,9 @@ class CSl_candidateEx extends CSl_candidate
       $sNow = date('Y-m-d H:i:s');
       $poQB->addSelect('scan.*,
           scom.name as company_name, scom.sl_companypk, scom.is_client as cp_client,
-          (scpr.salary + scpr.bonus) as full_salary, scpr.grade, scpr.title, scpr._has_doc, scpr._in_play, scpr._pos_status, scpr.department,
-          sind.label as industry, socc.label as occupation, TIMESTAMPDIFF(YEAR, scan.date_birth, "'.$sNow.'") AS age,
+          (scpr.salary + scpr.bonus) as full_salary, scpr.grade, scpr.title, scpr._has_doc, scpr._in_play,
+          scpr._pos_status, scpr.department, sind.label as industry, socc.label as occupation,
+          TIMESTAMPDIFF(YEAR, scan.date_birth, "'.$sNow.'") AS age,
           scan.sl_candidatepk as PK');
 
       $poQB->addCountSelect('count(DISTINCT scan.sl_candidatepk) as nCount');
@@ -2594,14 +2595,6 @@ class CSl_candidateEx extends CSl_candidate
         $poQB->addGroup('sl_candidatepk', false);
       else
         $poQB->addGroup($sGroupBy, false);
-
-
-      /*if(!$poQB->hasWhere())
-      {
-        $asListMsg[] = 'My most recent candidates';
-        $sLastMonth = date('Y-m-d', strtotime('-6 month'));
-        $poQB->addWhere('scan.date_created >= "'.$sLastMonth.'" AND scan.created_by = '.$this->casUserData['loginpk']);
-      }*/
 
 
       $sMessage = $poQB->getTitle();
@@ -7625,9 +7618,9 @@ die();*/
         if($nWord == 1)
         {
           //must be the lastname
-          $poQB->addSelect('scan.*, IF(scan.lastname LIKE '.$this->_getModel()->dbEscapeString($asWords[0]).', 1, 0) as exact_lastname ');
+          $poQB->addSelect('scan.*, levenshtein("'.$this->_getModel()->dbEscapeString($asWords[0]).'", LOWER(scan.lastname)) AS lastname_lev ');
           $poQB->addWhere('scan.lastname LIKE '.$this->_getModel()->dbEscapeString($asWords[0].'%'));
-          $poQB->addOrder('exact_lastname DESC, scan.lastname ASC, scan.firstname ASC');
+          $poQB->addOrder('lastname_lev ASC, scan.firstname ASC');
         }
         else
         {
