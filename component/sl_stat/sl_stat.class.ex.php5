@@ -4029,6 +4029,9 @@ class CSl_statEx extends CSl_stat
 
       foreach ($revenue_data as $key => $value)
       {
+        if ($key == 'former' && empty($value['signed']))
+          continue;
+
         if ($row_number_rank % 2 === 0)
           $even = ' even_row';
         else
