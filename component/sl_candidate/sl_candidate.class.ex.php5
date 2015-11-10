@@ -8163,7 +8163,7 @@ die();*/
 
       $nManualTarget = (int)getValue('target');
 
-      $sHTML = $this->_oDisplay->getTitle('Duplicates for candidate of #'.$pnCandidatePk, 'h3', true);
+      $sHTML = $this->_oDisplay->getTitle('Duplicates for candidate #'.$pnCandidatePk, 'h3', true);
       $sHTML.= $this->_oDisplay->getCR(2);
 
 
@@ -8177,6 +8177,12 @@ die();*/
       {
         foreach ($duplicate_array['other'] as $key => $value)
         {
+          if ($key == $pnCandidatePk)
+          {
+            unset($duplicate_array['other'][$key]);
+            continue;
+          }
+
           $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, $pnCandidatePk);
           $sHTML.= '#<a href="javascript:;"  onclick="popup_candi(this, \''.$sURL.'\');" >'.$value['sl_candidatepk'].' - '.$value['lastname'].' '.$value['firstname'].'</a><br />';
           $sHTML.= 'Working at '.$value['company'].'';
