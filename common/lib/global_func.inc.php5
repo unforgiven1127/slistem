@@ -1772,7 +1772,7 @@ function sort_multi_array_by_value($field, $order = 'natural')
 
 function check_session_expiry()
 {
-  $expiry_time = 60 * 60;
+  $expiry_time = 60 * 60 * 3; // 3 hour
   $logout = false;
   if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > $expiry_time))
   {
@@ -1787,7 +1787,7 @@ function check_session_expiry()
 
 function regenerate_seesion_id()
 {
-  $expiry_time = 60 * 30;
+  $expiry_time = 60 * 30; // 30 minutes
   if (!isset($_SESSION['CREATED']))
   {
     $_SESSION['CREATED'] = time();
