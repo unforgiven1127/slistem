@@ -122,18 +122,19 @@ class CQuickSearch
         //comma separated
         if($nWord == 2)
         {
-          /*$this->coQb->addSelect(' IF(LOWER(scan.'.$sFirstField.') LIKE "'.$asWords[0].'", 1, 0) as exact_lastname ');
-          $this->coQb->addSelect(' IF(LOWER(scan.'.$sSecondField.') LIKE "'.$asWords[1].'", 1, 0) as exact_firstname ');
-          $this->coQb->addOrder(' exact_lastname DESC, exact_firstname DESC ');*/
-          $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.'.$sFirstField.')) AS lastname_lev ');
-          $this->coQb->addSelect(' levenshtein("'.$asWords[1].'", LOWER(scan.'.$sSecondField.')) AS firstname_lev ');
-          $this->coQb->addOrder(' lastname_lev ASC, firstname_lev ASC ');
+          $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[0].$asWords[1]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio ');
 
           if($bReverse)
+          {
+            $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[1].$asWords[0]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio_rev ');
+
             $this->coQb->addWhere('( (scan.'.$sFirstField.' LIKE "'.$asWords[0].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%")
               OR (scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%" '.$sOperator.' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%") )');
+          }
           else
             $this->coQb->addWhere(' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[0].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%" ');
+
+          $this->coQb->addOrder(' IF(ratio > ratio_rev, ratio, ratio_rev) DESC');
         }
         else
         {
@@ -147,21 +148,24 @@ class CQuickSearch
             $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.lastname)) AS lastname_lev ');
             $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.firstname)) AS firstname_lev ');
             $this->coQb->addWhere('( scan.lastname LIKE "'.$sWildcard.$asWords[0].'%" OR  scan.firstname LIKE "'.$sWildcard.$asWords[0].'%" ) ');
+
             $this->coQb->addOrder(' lastname_lev ASC, firstname_lev ASC ');
           }
           elseif($nWord == 2)
           {
-            /*$this->coQb->addSelect(' IF(LOWER(scan.'.$sFirstField.') LIKE "'.$asWords[0].'", 1, 0) as exact_lastname ');
-            $this->coQb->addSelect(' IF(LOWER(scan.'.$sSecondField.') LIKE "'.$asWords[1].'", 1, 0) as exact_firstname ');*/
-            $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.'.$sFirstField.')) AS lastname_lev ');
-            $this->coQb->addSelect(' levenshtein("'.$asWords[1].'", LOWER(scan.'.$sSecondField.')) AS firstname_lev ');
-            $this->coQb->addOrder(' lastname_lev ASC, firstname_lev ASC ');
+            $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[0].$asWords[1]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio ');
 
             if($bReverse)
+            {
+              $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[1].$asWords[0]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio_rev ');
+
               $this->coQb->addWhere('( (scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%")
               OR (scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[0].'%") )');
+            }
             else
               $this->coQb->addWhere(' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%" ');
+
+            $this->coQb->addOrder(' IF(ratio > ratio_rev, ratio, ratio_rev) DESC');
           }
           else
           {
