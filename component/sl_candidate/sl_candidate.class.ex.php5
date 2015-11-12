@@ -8167,7 +8167,7 @@ die();*/
       $sHTML.= $this->_oDisplay->getCR(2);
 
 
-      $duplicate_array = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget, true);
+      $duplicate_array = $this->_getModel()->getDuplicate($pnCandidatePk, $nManualTarget, true, true);
 
       if(empty($duplicate_array['other']))
       {

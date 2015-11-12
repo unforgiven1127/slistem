@@ -481,7 +481,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
     return $asMeeting;
   }
 
-  public function getDuplicate($candidate_info, $force_target = 0, $merge_data = false)
+  public function getDuplicate($candidate_info, $force_target = 0, $merge_data = false, $skip_company = false)
   {
     if(!assert('(is_key($candidate_info) || is_array($candidate_info))'))
       return new CDbResult();
@@ -509,7 +509,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
     $duplicate_temp = array();
 
 
-    if (!empty($company_id))
+    if (!empty($company_id) && !$skip_company)
     {
       $duplicate_array['company'] = $this->duplicate_finder($company_id, $lastname, $firstname, false, $force_target);
 
@@ -565,22 +565,26 @@ class CSl_candidateModelEx extends CSl_candidateModel
     $query.= ' levenshtein('.$clean_firstname.', LOWER(ca.firstname)) AS firstname_lev ';
     $query.= ', 100-(levenshtein('.$this->oDB->dbEscapeString(strtolower($lastname.$firstname)).', LOWER(CONCAT(ca.lastname, ca.firstname)))*100/LENGTH(CONCAT(ca.lastname, ca.firstname))) AS ratio ';
     $query.= ' FROM sl_candidate AS ca ';
-    $query.= ' INNER JOIN sl_candidate_profile AS cap ON (cap.candidatefk = ca.sl_candidatepk)';
-    $query.= ' INNER JOIN sl_occupation AS ocu ON (ocu.sl_occupationpk = cap.occupationfk)';
-    $query.= ' INNER JOIN sl_industry AS ind ON (ind.sl_industrypk = cap.industryfk)';
-    $query.= ' INNER JOIN sl_company AS com ON (com.sl_companypk = cap.companyfk)';
+    $query.= ' LEFT JOIN sl_candidate_profile AS cap ON (cap.candidatefk = ca.sl_candidatepk)';
+    $query.= ' LEFT JOIN sl_occupation AS ocu ON (ocu.sl_occupationpk = cap.occupationfk)';
+    $query.= ' LEFT JOIN sl_industry AS ind ON (ind.sl_industrypk = cap.industryfk)';
+    $query.= ' LEFT JOIN sl_company AS com ON (com.sl_companypk = cap.companyfk)';
     $query.= ' WHERE ';
 
     if (!$skip_company)
       $query.= ' cap.companyfk = '.$company_id.' AND ';
 
     if (!empty($force_target))
-      $query.= ' ca.sl_candidatepk = '.$force_target.' AND ';
-
+    {
+      $query.= ' ca.sl_candidatepk = '.$force_target.' ';
+    }
+    else
+    {
       $query.= ' ( (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower($lastname.'%')).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) ';
       $query.= ' OR (ca.lastname LIKE '.$this->oDB->dbEscapeString(strtolower('%'.$lastname)).' AND levenshtein('.$clean_firstname.', LOWER(ca.firstname)) < 3) )';
 
-    $query.= ' ORDER BY ratio DESC, lastname_lev ASC, ca.firstname ASC LIMIT 100 OFFSET 0';
+      $query.= ' ORDER BY ratio DESC, lastname_lev ASC, ca.firstname ASC LIMIT 100 OFFSET 0';
+    }
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
@@ -591,7 +595,7 @@ class CSl_candidateModelEx extends CSl_candidateModel
       {
         $temp = $db_result->getData();
 
-        if ($temp['ratio'] > $minimum_ratio)
+        if ($temp['ratio'] > $minimum_ratio || !empty($force_target))
           $duplicate_array[$temp['sl_candidatepk']] = $db_result->getData();
 
         $read = $db_result->readNext();
