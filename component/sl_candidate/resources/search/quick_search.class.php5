@@ -130,11 +130,15 @@ class CQuickSearch
 
             $this->coQb->addWhere('( (scan.'.$sFirstField.' LIKE "'.$asWords[0].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%")
               OR (scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%" '.$sOperator.' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%") )');
+
+            $this->coQb->addOrder(' IF(MAX(ratio) >= MAX(ratio_rev), ratio, ratio_rev) DESC');
           }
           else
+          {
             $this->coQb->addWhere(' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[0].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%" ');
 
-          $this->coQb->addOrder(' IF(ratio > ratio_rev, ratio, ratio_rev) DESC');
+            $this->coQb->addOrder(' ratio DESC ');
+          }
         }
         else
         {
@@ -161,11 +165,15 @@ class CQuickSearch
 
               $this->coQb->addWhere('( (scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%")
               OR (scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[0].'%") )');
+
+              $this->coQb->addOrder(' IF(MAX(ratio) >= MAX(ratio_rev), ratio, ratio_rev) DESC');
             }
             else
+            {
               $this->coQb->addWhere(' scan.'.$sFirstField.' LIKE "'.$sWildcard.$asWords[1].'%" '.$sOperator.' scan.'.$sSecondField.' LIKE "'.$sWildcard.$asWords[0].'%" ');
 
-            $this->coQb->addOrder(' IF(ratio > ratio_rev, ratio, ratio_rev) DESC');
+              $this->coQb->addOrder(' ratio DESC ');
+            }
           }
           else
           {
