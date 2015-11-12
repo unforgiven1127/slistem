@@ -58,6 +58,7 @@
 			{
 				changeYear: true,
 				numberOfMonths: 2,
+				maxDate: null,
 			},
 			dateFormat: 'yy-mm-dd'
 		});
