@@ -364,7 +364,7 @@ class CQuickSearch
     $asTitle = array();
 
     //if there's a ref id, no need for any other search parameter
-    $sCompany = trim(getValue('company'));
+    $sCompany = strtolower(trim(getValue('company')));
     $sIndustry = trim(getValue('industry'));
     $sContact = trim(getValue('contact'));
 
@@ -385,7 +385,11 @@ class CQuickSearch
       }
       else
       {
+        $this->coQb->addSelect('*, 100-(levenshtein("'.$sCompany.'", LOWER(scom.name))*100/LENGTH(scom.name)) AS ratio');
+
         $this->coQb->addWhere('scom.name LIKE "'.$sCompany.'%" OR scom.corporate_name LIKE "'.$sCompany.'%" ');
+        $this->coQb->addOrder(' ratio DESC ');
+
         $asTitle[] = ' company name = '.$sCompany;
       }
     }
