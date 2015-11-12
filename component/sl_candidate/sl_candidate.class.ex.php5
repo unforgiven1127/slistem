@@ -2878,7 +2878,7 @@ class CSl_candidateEx extends CSl_candidate
           break;
       }
 
-      $oConf->addBlocMessage('<span class="search_result_title_nb">'.$nResult.' result(s)</span> '.implode(', ', $asListMsg), array('style' => 'cursor: crossair'), 'title');
+      $oConf->addBlocMessage('<span class="search_result_title_nb">'.$nResult.' result(s)</span> '.implode(', ', $asListMsg), array(), 'title');
 
 
       //$sURL = $this->_oPage->getAjaxUrl('sl_candidate', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_CANDI, 0, array('searchId' => $this->csSearchId, '__filtered' => 1));
@@ -5959,7 +5959,7 @@ class CSl_candidateEx extends CSl_candidate
       if(!empty($sTitle))
         $asListMsg[] = $sTitle;
 
-      $oConf->addBlocMessage('<span class="search_result_title_nb">'.$nResult.' result(s)</span> '.implode(', ', $asListMsg), array('style' => 'cursor: crossair'), 'title');
+      $oConf->addBlocMessage('<span class="search_result_title_nb">'.$nResult.' result(s)</span> '.implode(', ', $asListMsg), array(), 'title');
 
       $oConf->setPagerTop(true, 'right', $nResult, $sURL.'&list=1', array('ajaxTarget' => '#'.$this->csSearchId));
       $oConf->setPagerBottom(true, 'right', $nResult, $sURL.'&list=1', array('ajaxTarget' => '#'.$this->csSearchId));

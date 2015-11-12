@@ -1,6 +1,7 @@
 <?php
 
-require_once('component/search/search.class.php5');
+require_once 'component/search/search.class.php5';
+require_once 'component/sl_candidate/resources/class/slate_vars.class.php5';
 define('CONST_SEARCH_TYPE_ROW', 'searow');
 define('CONST_ACTION_RELOAD', 'relo');
 
@@ -20,6 +21,7 @@ class CSearchEx extends CSearch
 
   public function __construct()
   {
+    $this->slate_vars = new CSlateVars();
     $this->casSearchableComponent = CDependency::getComponentUidByInterface('searchable');
     $this->cnSearchableComponent = count($this->casSearchableComponent);
 
@@ -1398,9 +1400,12 @@ class CSearchEx extends CSearch
           {
             $asCondition[] = $sCondition;
 
-            $asMessage['short'][] = $asFieldData['display']['label'];
+            $explained_operator = $this->explain_field_operator($sFieldOperator);
             if(is_numeric($vFieldValue) || is_string($vFieldValue))
-              $asMessage['long'][] = $asFieldData['display']['label'].' '.$sFieldOperator.' '.$vFieldValue;
+            {
+              $explained_value = $this->explain_field_value($asFieldData['display']['label'], $vFieldValue);
+              $asMessage['long'][] = $asFieldData['display']['label'].' '.$explained_operator.' '.$explained_value;
+            }
             else
             {
               if (is_array($vFieldValue))
@@ -1408,21 +1413,16 @@ class CSearchEx extends CSearch
                 $field_value = ' ';
                 foreach ($vFieldValue as $value)
                 {
-                  $field_value .= $value.', ';
+                  $explained_value = $this->explain_field_value($asFieldData['display']['label'], $value);
+                  $field_value .= $explained_value.', ';
                 }
               }
               else
                 $field_value = ' ...';
 
-              $asMessage['long'][]  = $asFieldData['display']['label'].' '.$sFieldOperator.$field_value;
+              $asMessage['long'][]  = $asFieldData['display']['label'].' '.$explained_operator.$field_value;
             }
           }
-
-
-          /*dump($sRowOperator);
-          dump($sFieldOperator);
-          //dump($asFieldData);
-          dump($sCondition);*/
         }
       }
 
@@ -1455,16 +1455,63 @@ class CSearchEx extends CSearch
       }
     }
 
-    $nField = count($asMessage['long']);
-    if($nField > 7)
-      $oQB->setTitle('CpxSearch: '.$nField.' criteria ');
-    else
-      $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['long']));
+    $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['long']));
 
 
     return $oQB;
   }
 
+  private function explain_field_operator($operator)
+  {
+    $explanation = '';
+
+    switch ($operator)
+    {
+      case 'superior':
+        $explanation = 'higher or equal to';
+        break;
+
+      case 'inferior':
+        $explanation = 'lesser or equal to';
+        break;
+
+      case 'different':
+        $explanation = 'does not equal';
+        break;
+
+      case 'notin':
+        $explanation = 'not in/such as';
+        break;
+
+      case 'in':
+        $explanation = 'in/such as';
+        break;
+
+      case 'start':
+        $explanation = 'start with';
+        break;
+
+      case 'end':
+        $explanation = 'end with';
+        break;
+
+      default:
+        $explanation = $operator;
+        break;
+    }
+
+    return $explanation;
+  }
+
+  private function explain_field_value($label, $value)
+  {
+    $explanation = $this->slate_vars->get_var_info_by_label(strtolower(trim($label)), $value);
+
+    if (empty($explanation))
+      $explanation = $value;
+
+    return $explanation;
+  }
 
   private function _getSqlFromOperator($pasFieldType, $psOperator, $pvValue)
   {

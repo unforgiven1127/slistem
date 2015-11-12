@@ -403,7 +403,7 @@ class CSlateVars
     $info = '';
     $temp = array();
 
-    if (!empty($variable))
+    if (isset($variable))
     {
       switch ($label)
       {
@@ -412,8 +412,34 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
+        case 'industry (list)':
+        case 'industry [secondary only]':
+        case 'industry [main & secondary]':
+          $temp = $this->getIndustryList(true);
+          $info = $temp[$variable];
+          break;
+
+        case 'occupation':
+        case 'occupation [main & secondary]':
+          $temp = $this->getOccupationList(true);
+          $info = $temp[$variable]['label'];
+          break;
+
+        case 'sex':
         case 'gender':
           $temp = array(1 => 'male', 2 => 'female');
+          $info = $temp[$variable];
+          break;
+
+        case 'is client':
+        case 'is collaborator':
+        case 'in play':
+        case 'has a resume':
+        case 'met candidates':
+        case 'mba':
+        case 'cpa':
+        case 'dba :: deleted candidates':
+          $temp = array(0 => 'No', 1 => 'Yes');
           $info = $temp[$variable];
           break;
 
@@ -422,12 +448,15 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
+        case 'status - candidate':
         case 'status':
           $temp = $this->getCandidateStatusList();
           $info = $temp[$variable];
           break;
 
         case 'language':
+        case 'language [main & secondary]':
+        case 'language (multilingual only)':
           $temp = $this->getLanguageList();
           $info = $temp[$variable];
           break;
@@ -435,6 +464,24 @@ class CSlateVars
         case 'location':
           $temp = $this->getLocationList();
           $info = $temp[$variable];
+          break;
+
+        case 'status - activity':
+        case 'current pipeline - status':
+          $activity[1] = 'Pitched';
+          $activity[2] = 'Resume sent';
+
+          for($count = 51; $count < 61; $count++)
+            $activity[$count] = 'CCM'.($count-50);
+
+          $activity[100] = 'Offer';
+          $activity[101] = 'Placed';
+          $activity[150] = 'Stalled';
+          $activity[200] = 'Fallen off';
+          $activity[201] = 'Not interested';
+          $activity[251] = 'Position filled';
+
+          $info = $activity[$variable];
           break;
       }
     }
