@@ -2577,22 +2577,17 @@ class CSl_candidateEx extends CSl_candidate
           else if ($sSortField == 'date_birth')
             $sSortField = 'age';
 
-          if ($sSortField == 'sl_candidatepk')
-            $secondary_order = ', firstname DESC';
-          else
-            $secondary_order = ', sl_candidatepk DESC';
-
           $ordering = $sSortField.' '.$sort_order.$secondary_order;
 
           $poQB->setOrder($ordering);
         }
       }
+      else
+        $poQB->addOrder('scan.firstname DESC');
 
-      if(!$poQB->hasOrder())
-        $poQB->addOrder('sl_candidatepk DESC');
 
       if(empty($sGroupBy))
-        $poQB->addGroup('sl_candidatepk', false);
+        $poQB->addGroup('scan.sl_candidatepk', false);
       else
         $poQB->addGroup($sGroupBy, false);
 
