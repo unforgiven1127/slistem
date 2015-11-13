@@ -387,7 +387,7 @@ class CQuickSearch
       {
         $this->coQb->addSelect('*, 100-(levenshtein("'.$sCompany.'", LOWER(scom.name))*100/LENGTH(scom.name)) AS ratio');
 
-        $this->coQb->addWhere('scom.name LIKE "'.$sCompany.'%" OR scom.corporate_name LIKE "'.$sCompany.'%" ');
+        $this->coQb->addWhere('scom.name LIKE "%'.$sCompany.'%" OR scom.corporate_name LIKE "'.$sCompany.'%" ');
         $this->coQb->addOrder(' ratio DESC ');
 
         $asTitle[] = ' company name = '.$sCompany;
