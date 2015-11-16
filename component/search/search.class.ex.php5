@@ -1227,7 +1227,7 @@ class CSearchEx extends CSearch
       $asCondition = array();
       foreach($_POST['field_selector'][$nGroup] as $nRowNumber => $sFieldName)
       {
-        $vFieldValue = @$_POST[$sFieldName][$nGroup][$nRowNumber];
+        $vFieldValue = trim(@$_POST[$sFieldName][$nGroup][$nRowNumber]);
 
 
         //if(empty($vFieldValue)) // ===>>>   0 is a valid value

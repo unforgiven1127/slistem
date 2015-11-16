@@ -88,8 +88,6 @@ class CQuickSearch
 
     //if there's a ref id, no need for any other search parameter
     $sCandidate = strtolower(trim(getValue('candidate')));
-    if($sCandidate == 'ID  or  lastname / firstname' || $sCandidate == 'ID  or  lastname, firstname')
-      $sCandidate = '';
 
     $sRefId = preg_replace('/[^0-9]/', '', $sCandidate);
 

@@ -24,8 +24,9 @@ class CSlateVars
       $this->reloadVars();
 
     $gafCurrencyRate = array();
-    require_once($_SERVER['DOCUMENT_ROOT'].'/component/sl_candidate/resources/currency/currency_list.inc.php5');
-    if(!assert('!empty($gafCurrencyRate)'))
+    require_once $_SERVER['DOCUMENT_ROOT'].'/component/sl_candidate/resources/currency/currency_list.inc.php5';
+
+    if(empty($gafCurrencyRate))
       return false;
 
     $asAvailable = array('jpy' => 1, 'usd' => 1, 'php' => 1, 'eur' => 1, 'aud' => 1, 'hkd' => 1, 'cad' => 1);

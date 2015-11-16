@@ -290,10 +290,9 @@ class CSl_menuEx extends CSl_menu
 
     //$sHTML.= '<div><div class="label">ref ID</div><div class="field"><input type="text" name="ref_id"/></div></div>';
     $sHTML.= '<div><div class="label '.$sLabelClass.'">candidate</div><div class="field">
-      <input type="text" name="candidate" class="defaultText" data-default="ID  or  lastname, firstname" value="ID  or  lastname, firstname"
-      onfocus="if($(this).val() == $(this).attr(\'data-default\')){ $(this).val(\'\'); $(this).removeClass(\'defaultText\'); }"
+      <input type="text" name="candidate" class="defaultText" placeholder="ID  or  lastname, firstname" value=""
       onblur="if($(this).val().trim().length == 0)
-      { $(this).val($(this).attr(\'data-default\')); $(this).addClass(\'defaultText\');}
+      { $(this).val($(this).attr(\'data-default\'));}
       else
       {
         asValue = $(this).val().trim().split(\',\');
