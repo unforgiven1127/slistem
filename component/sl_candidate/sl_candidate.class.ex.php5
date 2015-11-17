@@ -2912,7 +2912,7 @@ class CSl_candidateEx extends CSl_candidate
 
           goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-        if($nResult <= 50000)
+        if($nResult <= 80000)
           $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
           $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
@@ -2926,7 +2926,7 @@ class CSl_candidateEx extends CSl_candidate
 
           goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-        if($nResult <= 50000)
+        if($nResult <= 80000)
           $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
         else
           $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
@@ -5992,7 +5992,7 @@ die();*/
 
         goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected items</a>] OR';
 
-      if($nResult <= 50000)
+      if($nResult <= 80000)
         $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
         $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
@@ -6006,7 +6006,7 @@ die();*/
 
         goPopup.setLayerFromAjax(\'\', \''.$sURL.'&ids=\'+sIds);">selected ones</a>] OR';
 
-      if($nResult <= 50000)
+      if($nResult <= 80000)
         $sHTML.= ' [<a href="javascript:;" onclick="goPopup.setLayerFromAjax(\'\', \''.$sURL.'&searchId='.$this->csSearchId.'\');">All '.$nResult.' results</a>]';
       else
         $sHTML.= ' [<span title="Too many results. Can\'t save more than 50000 results." style="font-style: italic">all</span> ]';
