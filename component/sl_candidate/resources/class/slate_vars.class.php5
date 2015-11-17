@@ -3,6 +3,7 @@
 class CSlateVars
 {
   private $coModel = null;
+  private $login_obj = null;
 
   private $casCurrency = array();
 
@@ -32,6 +33,8 @@ class CSlateVars
     $asAvailable = array('jpy' => 1, 'usd' => 1, 'php' => 1, 'eur' => 1, 'aud' => 1, 'hkd' => 1, 'cad' => 1);
     $gafCurrencyRate = array_intersect_key($gafCurrencyRate, $asAvailable);
     $this->casCurrency = $gafCurrencyRate;
+
+    $this->login_obj = CDependency::getCpLogin();
 
     return true;
   }
@@ -413,15 +416,15 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
-        case 'industry (list)':
-        case 'industry [secondary only]':
-        case 'industry [main & secondary]':
+        case 'industry':
+        case 'sec_industry':
+        case 'all_industry':
           $temp = $this->getIndustryList(true);
           $info = $temp[$variable];
           break;
 
         case 'occupation':
-        case 'occupation [main & secondary]':
+        case 'all_occupation':
           $temp = $this->getOccupationList(true);
           $info = $temp[$variable]['label'];
           break;
@@ -432,14 +435,14 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
-        case 'is client':
-        case 'is collaborator':
-        case 'in play':
-        case 'has a resume':
-        case 'met candidates':
+        case 'is_client':
+        case 'is_collaborator':
+        case 'in_play':
+        case 'has_doc':
+        case 'candidate_met':
         case 'mba':
         case 'cpa':
-        case 'dba :: deleted candidates':
+        case 'dba_delete':
           $temp = array(0 => 'No', 1 => 'Yes');
           $info = $temp[$variable];
           break;
@@ -449,15 +452,14 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
-        case 'status - candidate':
         case 'status':
           $temp = $this->getCandidateStatusList();
           $info = $temp[$variable];
           break;
 
         case 'language':
-        case 'language [main & secondary]':
-        case 'language (multilingual only)':
+        case 'all_language':
+        case 'sum_language':
           $temp = $this->getLanguageList();
           $info = $temp[$variable];
           break;
@@ -467,8 +469,16 @@ class CSlateVars
           $info = $temp[$variable];
           break;
 
-        case 'status - activity':
-        case 'current pipeline - status':
+        case 'meeting_set_by':
+        case 'meeting_set_for':
+        case 'creator':
+        case 'contact_creator':
+        case 'note_creator':
+          $info = $this->login_obj->getUserName((int)$variable);
+          break;
+
+        case 'play_status':
+        case 'play_status_active':
           $activity[1] = 'Pitched';
           $activity[2] = 'Resume sent';
 

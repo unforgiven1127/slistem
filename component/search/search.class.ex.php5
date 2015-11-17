@@ -1219,6 +1219,9 @@ class CSearchEx extends CSearch
       $nGroup = 1;
 
     $nParanthese = 0;
+    $ignore_explode = array('lastname', 'firstname', 'resume', 'company_name', 'company_prev', 'department', 'title', 'char_note',
+      'note', 'all_note', 'resume_all');
+
     foreach($_POST['group_operator'] as $nGroup => $sGroupOperator)
     {
 
@@ -1227,8 +1230,15 @@ class CSearchEx extends CSearch
       $asCondition = array();
       foreach($_POST['field_selector'][$nGroup] as $nRowNumber => $sFieldName)
       {
-        $vFieldValue = trim(@$_POST[$sFieldName][$nGroup][$nRowNumber]);
+        $vFieldValue = @$_POST[$sFieldName][$nGroup][$nRowNumber];
 
+        if (!is_array($vFieldValue) && !in_array($sFieldName, $ignore_explode))
+        {
+          $temp = explode(',', $vFieldValue);
+
+          if (count($temp) > 1)
+            $vFieldValue = $temp;
+        }
 
         //if(empty($vFieldValue)) // ===>>>   0 is a valid value
         if($vFieldValue == null || $vFieldValue == '' || (is_array($vFieldValue) && empty($vFieldValue)))
@@ -1403,7 +1413,11 @@ class CSearchEx extends CSearch
             $explained_operator = $this->explain_field_operator($sFieldOperator);
             if(is_numeric($vFieldValue) || is_string($vFieldValue))
             {
-              $explained_value = $this->explain_field_value($asFieldData['display']['label'], $vFieldValue);
+              $explained_value = $this->explain_field_value($sFieldName, $vFieldValue);
+
+              if (is_array($explained_value))
+                $explained_value = $explained_value['label'];
+
               $asMessage['long'][] = $asFieldData['display']['label'].' '.$explained_operator.' '.$explained_value;
             }
             else
@@ -1413,7 +1427,11 @@ class CSearchEx extends CSearch
                 $field_value = ' ';
                 foreach ($vFieldValue as $value)
                 {
-                  $explained_value = $this->explain_field_value($asFieldData['display']['label'], $value);
+                  $explained_value = $this->explain_field_value($sFieldName, $value);
+
+                  if (is_array($explained_value))
+                    $explained_value = $explained_value['label'];
+
                   $field_value .= $explained_value.', ';
                 }
               }
