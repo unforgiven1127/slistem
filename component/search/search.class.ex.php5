@@ -1473,8 +1473,10 @@ class CSearchEx extends CSearch
       }
     }
 
-    $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['long']));
-
+    if (!empty($asMessage['long']))
+      $oQB->setTitle('CpxSearch: '.implode(' , ', $asMessage['long']));
+    else
+      $oQB->setTitle('CpxSearch: Some data is missing');
 
     return $oQB;
   }

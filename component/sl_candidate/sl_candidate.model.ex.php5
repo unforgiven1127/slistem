@@ -350,11 +350,12 @@ class CSl_candidateModelEx extends CSl_candidateModel
 
     if($pbIgnoreRights)
     {
-      $sQuery = 'SELECT * FROM sl_industry as sind
-        LEFT JOIN  sl_industry as parent ON (parent.sl_industrypk = sind.parentfk) ';
+      $sQuery = 'SELECT sind.*, parent.sl_industrypk AS parent_industry_id, parent.label AS parent_label
+        FROM sl_industry AS sind
+        LEFT JOIN  sl_industry AS parent ON (parent.sl_industrypk = sind.parentfk) ';
 
       if(!$pbIncludeCategory)
-        $sQuery.= ' WHERE parentfk <> 0 ';
+        $sQuery.= ' WHERE sind.parentfk <> 0 ';
 
       $sQuery.= ' ORDER BY parent.label, sind.label ';
     }

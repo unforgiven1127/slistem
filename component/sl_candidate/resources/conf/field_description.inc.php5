@@ -2704,7 +2704,7 @@
             array('type' => 'left', 'table' => 'sl_attribute', 'alias' => 'satt', 'clause' => 'satt.`type` = "candi_indus" AND satt.itemfk = scan.sl_candidatepk ', 'select' => '', 'where' => '')
             ),
         'fts' => false,
-        'unmanageable' => ' (sind.sl_industrypk <YYY> (XXX) <logic> sind.parentfk IN<YYY> (XXX) <logic> satt.attributefk <YYY> (XXX) ) '
+        'unmanageable' => ' (sind.sl_industrypk <YYY> (XXX) <logic> sind.parentfk <YYY> (XXX) <logic> satt.attributefk <YYY> (XXX) ) '
       )
     );
 

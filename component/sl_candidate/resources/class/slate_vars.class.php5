@@ -71,7 +71,7 @@ class CSlateVars
       $this->casAllUsers = $oLogin->getUserList(0, false, true);
     }
 
-    if($bAllCommon || isset($pasListName['occupation']))
+    if($bAllCommon || isset($pasListName['industry']))
       $this->getIndustryList(true);
 
     if($bAllCommon || isset($pasListName['occupation']))
@@ -104,14 +104,14 @@ class CSlateVars
 
 
 
-  public function getIndustryList($pbIncludeCategory = true, $pbIgnoreRights = true)
+  public function getIndustryList($pbIncludeCategory = true, $pbIgnoreRights = true, $ignore_session = false)
   {
     if(!assert('is_bool($pbIncludeCategory)'))
       return array();
 
     $nIndex = (int)$pbIncludeCategory;
 
-    if(isset($_SESSION['sl_industry_list'.$nIndex]) && !getValue('refresh_industry', false))
+    if(isset($_SESSION['sl_industry_list'.$nIndex]) && !getValue('refresh_industry', false) && !$ignore_session)
       return $_SESSION['sl_industry_list'.$nIndex];
 
     $oDbResult = $this->_getModel()->getIndustry($pbIncludeCategory, $pbIgnoreRights);
@@ -411,6 +411,10 @@ class CSlateVars
     {
       switch ($label)
       {
+        case 'salary':
+          $info = $variable.'M';
+          break;
+
         case 'nationality':
           $temp = $this->getNationalityList();
           $info = $temp[$variable];
@@ -419,13 +423,13 @@ class CSlateVars
         case 'industry':
         case 'sec_industry':
         case 'all_industry':
-          $temp = $this->getIndustryList(true);
+          $temp = $this->getIndustryList(true, false, true);
           $info = $temp[$variable];
           break;
 
         case 'occupation':
         case 'all_occupation':
-          $temp = $this->getOccupationList(true);
+          $temp = $this->getOccupationList(true, true);
           $info = $temp[$variable]['label'];
           break;
 
