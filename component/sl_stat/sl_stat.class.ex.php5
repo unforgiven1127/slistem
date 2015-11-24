@@ -919,14 +919,15 @@ class CSl_statEx extends CSl_stat
     }
 
 
-    private function _getSicStat($sDateStart, $sDateEnd, $asUser, $nGroup, $psChartType = 'line', $pbReturnHtml = true)
+    private function _getSicStat($sDateStart, $sDateEnd, $asUser, $nGroup, $psChartType = 'line',
+      $pbReturnHtml = true, $group_name = 'researcher')
     {
       $oDateStart = new DateTime($sDateStart);
       $oDateEnd = new DateTime($sDateEnd);
       $oInterval = $oDateEnd->diff($oDateStart);
       $nMonth = ((int)$oInterval->format('%y') * 12) + (int)$oInterval->format('%m') + 1;  //aug to dec ...displays aug and december stats
 
-      $group_name = strtolower(getValue('group_name', 'researcher'));
+      $temp = array();
 
       $oChart = CDependency::getComponentByName('charts');
       $oChart->includeChartsJs(true);
@@ -934,20 +935,95 @@ class CSl_statEx extends CSl_stat
       $oHTML = CDependency::getCpHtml();
       $sCategories = $this->_getCategories($sDateStart, $sDateEnd);
 
-      $anUser = array_keys($asUser);
+      $anUser = array_keys($asUser['user_data']);
+      $user_id = $asUser['user_id'];
+      $user_ids = $asUser['user_ids'];
       $asStatData = array();
 
-
       $asStatData['target'] = $this->_getModel()->getSicChartTarget($anUser);
+
+
+      if (empty($GLOBALS['redis']->get('play_'.$group_name)))
+      {
+        $temp = $this->_getModel()->get_new_in_play(0, $sDateStart, $sDateEnd, $group_name);
+        $GLOBALS['redis']->set('play_'.$group_name, json_encode($temp));
+      }
+      else
+        $temp = json_decode($GLOBALS['redis']->get('play_'.$group_name), true);
+
+      if (!empty($temp[$user_id]['in_play_info']['new_candidates']))
+      {
+        foreach ($temp[$user_id]['in_play_info']['new_candidates'] as $value)
+        {
+          $value_month = date('Y-m', strtotime($value['date']));
+
+          if (!isset($asStatData['play'][$user_id][$value_month]))
+            $asStatData['play'][$user_id][$value_month] = 0;
+
+          $asStatData['play'][$user_id][$value_month] += 1;
+        }
+      }
+      else
+        $asStatData['play'][$user_id] = array();
+
+      if (!empty($temp[$user_id]['in_play_info']['new_positions']))
+      {
+        foreach ($temp[$user_id]['in_play_info']['new_positions'] as $value)
+        {
+          $value_month = date('Y-m', strtotime($value['date']));
+
+          if (!isset($asStatData['position'][$user_id][$value_month]))
+            $asStatData['position'][$user_id][$value_month] = 0;
+
+          $asStatData['position'][$user_id][$value_month] += 1;
+        }
+      }
+      else
+        $asStatData['position'][$user_id] = array();
+
+
+      if (empty($GLOBALS['redis']->get('met_'.$group_name)))
+      {
+        $temp = $this->_getModel()->getKpiSetVsMet($user_ids, $sDateStart, $sDateEnd, $group_name);
+
+        if (!empty($temp))
+          $GLOBALS['redis']->set('met_'.$group_name, json_encode($temp));
+      }
+      else
+        $temp = json_decode($GLOBALS['redis']->get('met_'.$group_name), true);
+
+
+      if (!empty($temp[$user_id]['met_meeting_info']))
+      {
+        foreach ($temp[$user_id]['met_meeting_info'] as $value)
+        {
+          $value_month = date('Y-m', strtotime($value['date']));
+
+          if (!isset($asStatData['met'][$user_id][$value_month]))
+            $asStatData['met'][$user_id][$value_month] = 0;
+
+          $asStatData['met'][$user_id][$value_month] += 1;
+        }
+      }
+      else
+        $asStatData['met'][$user_id] = array();
+
+      if (!empty($temp[$user_id]['set_meeting_info']))
+      {
+        foreach ($temp[$user_id]['set_meeting_info'] as $value)
+        {
+          $value_month = date('Y-m', strtotime($value['date']));
+
+          if (!isset($asStatData['set'][$user_id][$value_month]))
+            $asStatData['set'][$user_id][$value_month] = 0;
+
+          $asStatData['set'][$user_id][$value_month] += 1;
+        }
+      }
+      else
+        $asStatData['set'][$user_id] = array();
+
       $asStatData['new'] = $this->_getModel()->getSicChartNew($anUser, $sDateStart, $sDateEnd);
-      $asStatData['met'] = $this->_getModel()->getSicChartMet($anUser, $sDateStart, $sDateEnd, $group_name);
-      $asStatData['play'] = $this->_getModel()->getSicChartPlay($anUser, $sDateStart, $sDateEnd);
-      $asStatData['position'] = $this->_getModel()->getSicChartPosition($anUser, $sDateStart, $sDateEnd);
-
-      /*dump($asStatData);
-      exit('-- -- -- ');*/
-
-      //dump($asStatData['met'] );
 
 
       $asUserData = array();
@@ -955,37 +1031,42 @@ class CSl_statEx extends CSl_stat
       //Time to merge all the different stats for each user
       $nStartTime = strtotime($sDateStart);
 
-      foreach($asUser as $nUserPk => $asUData)
+
+      foreach($asUser['user_data'] as $user_id => $user_data)
       {
-        (isset($asStatData['target'][$nUserPk]))? '': $asStatData['target'][$nUserPk] = $this->casDefaultTarget;
+        (isset($asStatData['target'][$user_id]))? '': $asStatData['target'][$user_id] = $this->casDefaultTarget;
         $asData = array();
 
         for($nCount = 0; $nCount < $nMonth; $nCount++)
         {
           $sMonth = date('Y-m', strtotime('+'.$nCount.' month',$nStartTime));
 
-          (isset($asStatData['new'][$nUserPk][$sMonth]))? '': $asStatData['new'][$nUserPk][$sMonth] = 0;
+          (isset($asStatData['new'][$user_id][$sMonth]))? '': $asStatData['new'][$user_id][$sMonth] = 0;
 
-          (isset($asStatData['met'][$nUserPk][$sMonth][0]))? '': $asStatData['met'][$nUserPk][$sMonth][0] = 0;
-          (isset($asStatData['met'][$nUserPk][$sMonth][1]))? '': $asStatData['met'][$nUserPk][$sMonth][1] = 0;
+          (isset($asStatData['met'][$user_id][$sMonth]))? '': $asStatData['met'][$user_id][$sMonth] = 0;
+          (isset($asStatData['set'][$user_id][$sMonth]))? '': $asStatData['set'][$user_id][$sMonth] = 0;
 
-          (isset($asStatData['play'][$nUserPk][$sMonth]))? '': $asStatData['play'][$nUserPk][$sMonth] = 0;
-          (isset($asStatData['position'][$nUserPk][$sMonth]))? '': $asStatData['position'][$nUserPk][$sMonth] = 0;
+          (isset($asStatData['play'][$user_id][$sMonth]))? '': $asStatData['play'][$user_id][$sMonth] = 0;
+          (isset($asStatData['position'][$user_id][$sMonth]))? '': $asStatData['position'][$user_id][$sMonth] = 0;
 
-          $asData['new'][$sMonth] = $asStatData['new'][$nUserPk][$sMonth];
-          $asData['met'][$sMonth] = $asStatData['met'][$nUserPk][$sMonth][1];
-          $asData['not_met'][$sMonth] = $asStatData['met'][$nUserPk][$sMonth][0];
-          $asData['play'][$sMonth] = $asStatData['play'][$nUserPk][$sMonth];
-          $asData['position'][$sMonth] = $asStatData['position'][$nUserPk][$sMonth];
+          $asData['new'][$sMonth] = $asStatData['new'][$user_id][$sMonth];
+          $asData['met'][$sMonth] = $asStatData['met'][$user_id][$sMonth];
+          $asData['not_met'][$sMonth] = $asStatData['set'][$user_id][$sMonth] - $asStatData['met'][$user_id][$sMonth];
+
+          if ($asData['not_met'][$sMonth] < 0)
+            $asData['not_met'][$sMonth] = 0;
+
+          $asData['play'][$sMonth] = $asStatData['play'][$user_id][$sMonth];
+          $asData['position'][$sMonth] = $asStatData['position'][$user_id][$sMonth];
 
           //target
-          $asData['target_new'][$sMonth] = $asStatData['target'][$nUserPk]['target_new'];
-          $asData['target_met'][$sMonth] = $asStatData['target'][$nUserPk]['target_met'];
-          $asData['target_play'][$sMonth] = $asStatData['target'][$nUserPk]['target_play'];
-          $asData['target_position'][$sMonth] = $asStatData['target'][$nUserPk]['target_position'];
+          $asData['target_new'][$sMonth] = $asStatData['target'][$user_id]['target_new'];
+          $asData['target_met'][$sMonth] = $asStatData['target'][$user_id]['target_met'];
+          $asData['target_play'][$sMonth] = $asStatData['target'][$user_id]['target_play'];
+          $asData['target_position'][$sMonth] = $asStatData['target'][$user_id]['target_position'];
         }
 
-        $asUserData[$asUData['pseudo']] = $asData;
+        $asUserData[$user_data['pseudo']] = $asData;
       }
 
       $nUser = count($asUserData);
@@ -1113,10 +1194,9 @@ class CSl_statEx extends CSl_stat
           {
             type: "'.$psChartType.'",
             name: "Not met",
-            showInLegend: false,
             stack: "'.$sUser.'",
             data: ['.implode(',', $asData['not_met']).'],
-            color: "#89D117" ';
+            color: "#FF2224" ';
 
           $sChart.= '}, ';
        }
@@ -3094,50 +3174,56 @@ class CSl_statEx extends CSl_stat
 
     private function _getUserHomeChart()
     {
-      $oLogin = CDependency::getCpLogin();
-      $asUser = $oLogin->getUserList(0, true, true);
+      $login_obj = CDependency::getCpLogin();
+      $users = $login_obj->getUserList(0, true, true);
+      $user_ids = array_keys($users);
 
-      $asCharts = array();
-      $sStart = date('Y-m-d', mktime(0, 0, 0, date('m')-2, 1, date('Y')));
-      $sFarStart = date('Y-m-d', mktime(0, 0, 0, date('m')-6, 1, date('Y')));
-      $sEnd = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
-
-      //$sCategories = $this->_getCategories($sStart, $sEnd);
+      $chart_array = array();
+      $start_date = date('Y-m-d', mktime(0, 0, 0, date('m')-2, 1, date('Y')));
+      $far_start_date = date('Y-m-d', mktime(0, 0, 0, date('m')-6, 1, date('Y')));
+      $end_date = date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')+1, date('Y')));
 
       $this->_setCustomSize(240, 450);
 
-      foreach($asUser as $nUser => $asUserData)
+      $GLOBALS['redis']->set('play_researcher', '');
+      $GLOBALS['redis']->set('play_consultant', '');
+      $GLOBALS['redis']->set('met_researcher', '');
+      $GLOBALS['redis']->set('met_consultant', '');
+
+      foreach($users as $user => $user_data)
       {
-        $asChart = $this->_getSicStat($sStart, $sEnd, array($nUser => $asUserData), 0, 'column', false);
-        //$asCharts[$nUser]['kpi'] = $this->_getKpiInPlay(array($nUser), $sStart, $sEnd, 1, $sCategories, false);
+        $user_groups = $login_obj->getUserGroup($user);
 
-        $asCharts['pipeline'] = $this->_getPipeline($sFarStart, $sEnd, array($nUser => $asUserData), 0, 'pie', true);
-        //dump($asCharts['pipeline']);
+        $group_name = 'researcher';
 
-        if(!empty($asChart))
+        if (isset($user_groups[108]))
+          $group_name = 'consultant';
+
+        $chart_array = $this->_getSicStat($start_date, $end_date, array('user_data' => array($user => $user_data),
+          'user_id' => $user, 'user_ids' => $user_ids), 0, 'column', false, $group_name);
+
+        // $chart_array['pipeline'] = $this->_getPipeline($sFarStart, $sEnd, array($nUser => $asUserData), 0, 'pie', true);
+
+        if(!empty($chart_array))
         {
           //all charts are generated... save it
-          echo 'saving charts for '.$nUser.'<br />';
-          foreach($asChart as $sType => $sHtml)
+          echo 'saving charts for '.$user.'<br />';
+          foreach($chart_array as $chart_type => $html)
           {
-            $oFs = fopen(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$nUser.'_'.$sType.'.html', 'w+');
-            if($oFs)
+            $file_obj = fopen(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$user.'_'.$chart_type.'.html', 'w+');
+            if($file_obj)
             {
-              fputs($oFs, $sHtml);
-              fclose($oFs);
+              fputs($file_obj, $html);
+              fclose($file_obj);
             }
           }
         }
 
       }
 
+      $GLOBALS['redis']->delete('play_researcher', 'play_consultant', 'met_researcher', 'met_consultant');
+
     }
-
-
-
-
-
-
 
 
     private function _getPositionPipeline($psDateStart, $psDateEnd, $asUser, $pnGroup)
