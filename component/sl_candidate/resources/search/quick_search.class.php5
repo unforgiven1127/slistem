@@ -120,6 +120,9 @@ class CQuickSearch
         //comma separated
         if($nWord == 2)
         {
+          $asWords[0] = trim($asWords[0]);
+          $asWords[1] = trim($asWords[1]);
+
           $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[0].$asWords[1]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio ');
 
           if($bReverse)
@@ -147,6 +150,8 @@ class CQuickSearch
 
           if($nWord == 1)
           {
+            $asWords[0] = trim($asWords[0]);
+
             $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.lastname)) AS lastname_lev ');
             $this->coQb->addSelect(' levenshtein("'.$asWords[0].'", LOWER(scan.firstname)) AS firstname_lev ');
             $this->coQb->addWhere('( scan.lastname LIKE "'.$sWildcard.$asWords[0].'%" OR  scan.firstname LIKE "'.$sWildcard.$asWords[0].'%" ) ');
@@ -155,6 +160,9 @@ class CQuickSearch
           }
           elseif($nWord == 2)
           {
+            $asWords[0] = trim($asWords[0]);
+            $asWords[1] = trim($asWords[1]);
+
             $this->coQb->addSelect(' 100-(levenshtein("'.($asWords[0].$asWords[1]).'", LOWER(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.')))*100/LENGTH(CONCAT(scan.'.$sFirstField.', scan.'.$sSecondField.'))) AS ratio ');
 
             if($bReverse)
@@ -177,7 +185,7 @@ class CQuickSearch
           {
             foreach($asWords as $sWord)
             {
-              $this->coQb->addWhere(' scan.firstname LIKE "'.$sWildcard.$sWord.'%" '.$sOperator.' scan.lastname LIKE "'.$sWildcard.$sWord.'%" ');
+              $this->coQb->addWhere(' scan.firstname LIKE "'.$sWildcard.trim($sWord).'%" '.$sOperator.' scan.lastname LIKE "'.$sWildcard.trim($sWord).'%" ');
             }
           }
         }
