@@ -391,9 +391,11 @@ class CQuickSearch
       }
       else
       {
+        $no_spaces_company = str_replace(' ', '', $sCompany);
+
         $this->coQb->addSelect('*, 100-(levenshtein("'.$sCompany.'", LOWER(scom.name))*100/LENGTH(scom.name)) AS ratio');
 
-        $this->coQb->addWhere('scom.name LIKE "%'.$sCompany.'%" OR scom.corporate_name LIKE "'.$sCompany.'%" ');
+        $this->coQb->addWhere('scom.name LIKE "%'.$sCompany.'%" OR scom.corporate_name LIKE "'.$sCompany.'%" OR scom.name LIKE "%'.$no_spaces_company.'%"');
         $this->coQb->addOrder(' ratio DESC ');
 
         $asTitle[] = ' company name = '.$sCompany;
