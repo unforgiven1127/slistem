@@ -4093,76 +4093,12 @@ class CSl_statEx extends CSl_stat
 
       $this->_oPage->addCssFile($this->getResourcePath().'/css/revenue.css');
 
-      $html = '<table class="revenue_table">';
+      $data = array('revenue_data' => $revenue_data, 'location' => $location, 'year' => $year, 'row_number_rank' => 1, 'total_paid' => 0,
+        'total_signed' => 0, 'total_placed' => 0, 'decimals' => 0, 'display_object' => $this->_oDisplay, 'url' => $url,
+        'swap_time' => $swap_time
+        );
 
-      $html.= '<tr>';
-      $html.= '<th colspan="7">'.ucfirst($location).' - Individual Revenue Leaders '.$year.'</th>';
-      $html.= '</tr>';
-
-      $html.= '<tr>';
-      $html.= '<th>Rank</th>';
-      $html.= '<th>Name</th>';
-      $html.= '<th></th>';
-      $html.= '<th>Signed</th>';
-      $html.= '<th>Paid</th>';
-      $html.= '<th>Team</th>';
-      $html.= '<th>Placed</th>';
-      $html.= '</tr>';
-
-      $row_number_rank = 1;
-      $total_paid = $total_signed = $total_placed = 0;
-      $decimals = 0;
-
-      foreach ($revenue_data as $key => $value)
-      {
-        if ($key == 'former' && empty($value['signed']))
-          continue;
-
-        if ($row_number_rank % 2 === 0)
-          $even = ' even_row';
-        else
-          $even = '';
-
-        if (empty($value['nationality']))
-          $flag_pic = 'world_32.png';
-        else
-          $flag_pic = $value['nationality'].'_32.png';
-
-        $html.= '<tr class="hover_row'.$even.'">';
-        $html.= '<td class="text_right">'.$row_number_rank.'</td>';
-        $html.= '<td class="text_center">'.$value['name'].'</td>';
-        $html.= '<td class="text_center">'.$this->_oDisplay->getPicture('/common/pictures/flags/'.$flag_pic).'</td>';
-        $html.= '<td class="text_right">&yen;'.number_format($value['signed'], $decimals, '.', ',').'</td>';
-        $html.= '<td class="text_right">&yen;'.number_format($value['paid'], $decimals, '.', ',').'</td>';
-        $html.= '<td class="text_center">'.$value['team'].'</td>';
-        $html.= '<td class="text_right">'.$value['placed'].'</td>';
-        $html.= '</tr>';
-
-
-
-        $row_number_rank += 1;
-
-        $total_paid += $value['paid'];
-        $total_signed += $value['signed'];
-        $total_placed += $value['placed'];
-      }
-
-      $html.= '<tr class="revenue_table_footer">';
-      $html.= '<td class="text_center" colspan="3">Total</td>';
-      $html.= '<td class="text_right">&yen;'.number_format($total_signed, $decimals, '.', ',').'</td>';
-      $html.= '<td class="text_right">&yen;'.number_format($total_paid, $decimals, '.', ',').'</td>';
-      $html.= '<td></td>';
-      $html.= '<td class="text_right">'.$total_placed.'</td>';
-      $html.= '</tr>';
-
-      $html.= '</table>';
-
-      $html.= '<script>';
-      $html.= '$(".scrollingContainer").css("overflow", "auto");';
-      $html.= 'setTimeout(function(){';
-      $html.= 'window.location.replace("'.$url.'");';
-      $html.= '}, ('.$swap_time.'));';
-      $html.= '</script>';
+      $html = $this->_oDisplay->render('revenue_chart', $data);
 
       return $html;
     }
