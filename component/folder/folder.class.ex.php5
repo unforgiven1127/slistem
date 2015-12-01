@@ -1034,7 +1034,7 @@ class CFolderEx extends CFolder
 
     // Saving folder main table
     $aData['parentfolderfk'] = (int)$_POST['parentfolderfk'];
-    $aData['label'] = $_POST['label'];
+    $aData['label'] = addslashes($_POST['label']);
     $aData['private'] = $_POST['private'];
 
     if($pnPk == 0)
