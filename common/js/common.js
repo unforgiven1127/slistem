@@ -24,7 +24,7 @@ function in_array(pasArray, p_val, pbContain)
 	}
   //console.log(' ==> not in array ');
 	return false;
-}
+};
 
 function parseUri (str)
 {
