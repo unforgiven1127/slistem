@@ -7,7 +7,6 @@
 .revenue_table th
 {
 	background-color: #48768F;
-	text-align: center;
 	border-bottom: 1px solid #D4DADF;
 	overflow: auto;
 	color: white;
@@ -38,6 +37,10 @@
 .even_row
 {
 	background-color: #E3E9EF;
+}
+.text_left
+{
+	text-align: left;
 }
 .text_right
 {

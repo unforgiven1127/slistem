@@ -57,7 +57,7 @@ class CDatabaseEx extends CDatabase
   {
     if(!empty($this->coConnection))
     {
-      mysqli_close($this->coConnection);
+      @mysqli_close($this->coConnection);
       unset($this->coConnection);
       $this->_logProfilingData('close db connection', '', 0, false);
     }

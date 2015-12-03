@@ -175,6 +175,10 @@ class CSl_statEx extends CSl_stat
       case ACTION_TOTALS_CHART:
         return $this->get_general_total_chart();
         break;
+
+      case ACTION_CALL_LOG_CHART:
+        return $this->get_call_log_chart();
+        break;
     }
 
     return '';
@@ -4545,6 +4549,63 @@ class CSl_statEx extends CSl_stat
         );
 
       $html = $this->_oDisplay->render('totals_chart', $data);
+
+      return $html;
+    }
+
+    private function get_call_log_chart()
+    {
+      $this->cbWatercooler = (bool)getValue('watercooler');
+      $period = getValue('period', 'last_week');
+
+      $ignore_users = array(389, 315, 354, 186, 301, 423, 475, 315, 474, 487, 486, 259, 300, 309, 343);
+
+      $previous_week = strtotime('-1 week +1 day');
+
+      switch ($period) {
+        case 'last_week':
+          $start_week = strtotime('last monday', $previous_week);
+          $end_week = strtotime("next saturday", $start_week);
+
+          $start_date = date('Y-m-d', $start_week);
+          $end_date = date('Y-m-d', $end_week);
+
+          $title = date('F jS', $start_week).' - '.date('F jS', $end_week).' - All Calls';
+          break;
+
+        case 'this_month':
+          $start_date = date('Y-m', $previous_week).'-01';
+          $end_date = date('Y-m-t', $previous_week);
+
+          $title = date('F Y', $previous_week).' - All Calls this month';
+          break;
+
+        default:
+          $start_date = $end_date = '';
+
+          $title = 'All calls to date';
+          break;
+      }
+
+      /*$swap_time = 1000 * 60; // 1 minute
+      $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1&year='.$next_year;*/
+
+      if(!empty($this->cbWatercooler))
+      {
+        //add class to hide everything except charts
+        $this->_oPage->addCssFile($this->getResourcePath().'/css/watercooler.css');
+      }
+
+      $call_log_data = $this->_getModel()->get_call_log_data($ignore_users, $start_date, $end_date);
+
+      $this->_oPage->addCssFile($this->getResourcePath().'/css/revenue.css');
+
+      $data = array('call_log_data' => $call_log_data, 'row_number_rank' => 1, 'total_paid' => 0,
+        'total_signed' => 0, 'total_placed' => 0, 'decimals' => 0, 'display_object' => $this->_oDisplay,
+        'ignore_users' => $ignore_users, 'title' => $title
+        );
+
+      $html = $this->_oDisplay->render('call_log_chart', $data);
 
       return $html;
     }

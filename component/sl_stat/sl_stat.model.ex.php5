@@ -1330,4 +1330,53 @@ class CSl_statModelEx extends CSl_statModel
 
     return $placed_info;
   }
+
+  public function get_call_log_data($ignore_users, $start_date = '', $end_date = '')
+  {
+    $call_log_data = array();
+
+    $ignore_users = implode(',', $ignore_users);
+
+    $query = 'SELECT call_log.duration, call_log.calling_party, call_log.dialed_on_trunk, login.firstname, ';
+    $query .= 'login.lastname, login.phone_ext, login.nationalityfk, sl_nationality.shortname AS nationality ';
+    $query .= 'FROM call_log ';
+    $query .= 'LEFT JOIN login ON login.phone_ext = call_log.calling_party ';
+    $query .= 'LEFT JOIN sl_nationality ON login.nationalityfk = sl_nationality.sl_nationalitypk ';
+    $query .= 'WHERE LENGTH(call_log.dialed_on_trunk) > 5 AND login.status = 1 AND login.loginpk NOT IN ('.$ignore_users.') ';
+
+    if (!empty($start_date))
+      $query .= 'AND call_log.date BETWEEN "'.$start_date.'" AND "'.$end_date.'" ';
+
+    $query .= 'ORDER BY call_log.calling_party';
+
+    $db_result = $this->oDB->executeQuery($query);
+    $read = $db_result->readFirst();
+    if ($read)
+    {
+      while($read)
+      {
+        $row = $db_result->getData();
+
+        if (empty($call_log_data[$row['calling_party']]))
+        {
+          $name = substr($row['firstname'], 0, 1).'. '.$row['lastname'];
+          $call_log_data[$row['calling_party']] = array('name' => $name, 'nationality' => $row['nationality'],
+            'calling_party' => $row['calling_party'], 'calls' => 0, 'attempts' => 0);
+        }
+
+        if ($row['duration'] > 31)
+        {
+          $call_log_data[$row['calling_party']]['calls'] += 1;
+        }
+
+        $call_log_data[$row['calling_party']]['attempts'] += 1;
+
+        $read = $db_result->readNext();
+      }
+    }
+
+    uasort($call_log_data, sort_multi_array_by_value('calls', 'reverse') );
+
+    return $call_log_data;
+  }
 }
