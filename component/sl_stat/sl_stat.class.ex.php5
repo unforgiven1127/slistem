@@ -4558,7 +4558,7 @@ class CSl_statEx extends CSl_stat
       $this->cbWatercooler = (bool)getValue('watercooler');
       $period = getValue('period', 'last_week');
 
-      $ignore_users = array(389, 315, 354, 186, 301, 423, 475, 315, 474, 487, 486, 259, 300, 309, 343);
+      $ignore_users = array(389, 315, 354, 186, 301, 423, 475, 315, 474, 487, 486, 259, 300, 309, 343, 199, 468);
 
       $previous_week = strtotime('-1 week +1 day');
 
