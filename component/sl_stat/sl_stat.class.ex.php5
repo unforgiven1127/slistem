@@ -914,7 +914,7 @@ class CSl_statEx extends CSl_stat
       $group_name = strtolower(getValue('group_name', 'researcher'));
       $asStatData = array();
       $asStatData['target'] = $this->_getModel()->getSicChartTarget($panUser);
-      $asStatData['new'] = $this->_getModel()->getSicChartNew($panUser, $psDateStart, $psDateEnd);
+      // $asStatData['new'] = $this->_getModel()->getSicChartNew($panUser, $psDateStart, $psDateEnd);
       $asStatData['met'] = $this->_getModel()->getSicChartMet($panUser, $psDateStart, $psDateEnd, $group_name);
       $asStatData['play'] = $this->_getModel()->getSicChartPlay($panUser, $psDateStart, $psDateEnd);
       $asStatData['position'] = $this->_getModel()->getSicChartPosition($panUser, $psDateStart, $psDateEnd);
@@ -1027,8 +1027,6 @@ class CSl_statEx extends CSl_stat
       else
         $asStatData['set'][$user_id] = array();
 
-      $asStatData['new'] = $this->_getModel()->getSicChartNew($anUser, $sDateStart, $sDateEnd);
-
 
       $asUserData = array();
       // --------------------------------------------------
@@ -1045,15 +1043,12 @@ class CSl_statEx extends CSl_stat
         {
           $sMonth = date('Y-m', strtotime('+'.$nCount.' month',$nStartTime));
 
-          (isset($asStatData['new'][$user_id][$sMonth]))? '': $asStatData['new'][$user_id][$sMonth] = 0;
-
           (isset($asStatData['met'][$user_id][$sMonth]))? '': $asStatData['met'][$user_id][$sMonth] = 0;
           (isset($asStatData['set'][$user_id][$sMonth]))? '': $asStatData['set'][$user_id][$sMonth] = 0;
 
           (isset($asStatData['play'][$user_id][$sMonth]))? '': $asStatData['play'][$user_id][$sMonth] = 0;
           (isset($asStatData['position'][$user_id][$sMonth]))? '': $asStatData['position'][$user_id][$sMonth] = 0;
 
-          $asData['new'][$sMonth] = $asStatData['new'][$user_id][$sMonth];
           $asData['met'][$sMonth] = $asStatData['met'][$user_id][$sMonth];
           $asData['not_met'][$sMonth] = $asStatData['set'][$user_id][$sMonth] - $asStatData['met'][$user_id][$sMonth];
 
@@ -1064,7 +1059,6 @@ class CSl_statEx extends CSl_stat
           $asData['position'][$sMonth] = $asStatData['position'][$user_id][$sMonth];
 
           //target
-          $asData['target_new'][$sMonth] = $asStatData['target'][$user_id]['target_new'];
           $asData['target_met'][$sMonth] = $asStatData['target'][$user_id]['target_met'];
           $asData['target_play'][$sMonth] = $asStatData['target'][$user_id]['target_play'];
           $asData['target_position'][$sMonth] = $asStatData['target'][$user_id]['target_position'];
@@ -1247,7 +1241,7 @@ class CSl_statEx extends CSl_stat
 
 
       $sHTML.= $oHTML->getCR();
-      $sHTML.= $oHTML->getTitle('Candidates in play', 'h3', true);
+      $sHTML.= $oHTML->getTitle('New candidates in play', 'h3', true);
       $sHTML.= $oHTML->getCR();
 
       if($this->cnHeight)
@@ -1385,7 +1379,7 @@ class CSl_statEx extends CSl_stat
 
 
       $sHTML.= $oHTML->getCR();
-      $sHTML.= $oHTML->getTitle('New positions', 'h3', true);
+      $sHTML.= $oHTML->getTitle('New positions in play', 'h3', true);
       $sHTML.= $oHTML->getCR();
 
       if($this->cnHeight)
@@ -1522,149 +1516,6 @@ class CSl_statEx extends CSl_stat
 
 
      $asHTML['position'] = $sChart;
-     $sHTML.= $sChart;
-
-      $sHTML.= $oHTML->getCR();
-      $sHTML.= $oHTML->getTitle('New Candidates', 'h3', true);
-      $sHTML.= $oHTML->getCR();
-
-      if($this->cnHeight)
-        $sChart = '<div id="sicChart4_'.$sId.'" style="height: '.$this->cnHeight.'px; width:'.$this->cnWidth.'px;  margin: 0 auto;"></div>';
-      else
-        $sChart = '<div id="sicChart4_'.$sId.'" style="height: 250px; width: 780px;  margin: 0 auto;"></div>';
-
-       $sChart.= '
-        <script>
-        $(function () {
-        $("#sicChart4_'.$sId.'").highcharts(
-          {
-            chart:
-            {
-              events :
-              {
-                load : edgeExtend,
-                redraw : edgeExtend
-              }
-            },
-            title: {
-                text: ""
-            },
-            legend:
-            {
-              layout: "vertical",
-              align: "right",
-              verticalAlign: "middle",
-              borderWidth: 0
-            },
-            plotOptions:
-            {
-              area:
-              {
-                marker:
-                {
-                  enabled: false,
-                  symbol: "circle",
-                  radius: 2,
-                  states: {
-                      hover: {
-                          enabled: true
-                      }
-                  }
-                },
-                fillColor:
-                {
-                  linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
-                  stops:
-                  [
-                    [0, "#FFF6E5"],
-                    [1, "#FFEECE"]
-                  ]
-                  /*pattern: "/component/sl_stat/resources/pictures/chart_bg.jpg",
-                  width: 12,
-                  height: 12*/
-                },
-                fillOpacity: 0.4,
-                lineWidth: 0,
-                shadow: false,
-                threshold: null
-              }
-            },
-            xAxis: {
-                '.$sCategories.'
-            },
-            yAxis: ';
-
-            if($psChartType == 'line')
-            {
-              $sChart.= '
-                {
-                  title:
-                  {
-                    text: "New candidates"
-                  },
-                  plotLines: [{
-                     value: 0,
-                     width: 1,
-                     color: "#808080"
-                 }]
-               },';
-            }
-            else
-            {
-             $sChart.= '
-             {
-                title:
-                {
-                  text: "New candidates"
-                },
-             },';
-            }
-
-            $sChart.= '
-            tooltip: {
-              shared: true,
-              valueSuffix: " candidates(s)"
-            },
-            series: [/*{
-                type: "area",
-                color: "#FFCC6D",
-                name: "Target",
-                data: ['.implode(',', $asData['target_new']).']
-            },*/';
-
-      $nCount = 0;
-      foreach($asUserData as $sUser => $asData)
-      {
-        $sChart.= '
-             {
-                 type: "'.$psChartType.'",
-                 name: "'.$sUser.'",
-                 data: ['.implode(',', $asData['new']).'],
-                 color: "'.$this->casSerieColor[$nCount].'" ';
-
-        if($nUser == 1)
-        {
-          $sChart.= ',
-                 dataLabels:
-                 {
-                   enabled: true,
-                   rotation: 0,
-                   color: "#FFFFFF",
-                   align: "center",
-                   verticalAlign: "top"
-                 }';
-        }
-        $sChart.= '},';
-        $nCount++;
-      }
-
-      $sChart.= ']
-
-        });
-      });
-      </script>';
-
-     $asHTML['candidate'] = $sChart;
      $sHTML.= $sChart;
 
       if($pbReturnHtml)

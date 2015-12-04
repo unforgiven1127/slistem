@@ -560,7 +560,7 @@ Reminder linked to item', '2013-10-05 08:00:00');
 
     $sMet = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_met.html');
     $sPlay = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_play.html');
-    $sCandidate = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_candidate.html');
+    $sCandidate = '';
     $sPosition = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_position.html');
     $sPipeline = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_pipeline.html');
 
@@ -584,21 +584,14 @@ Reminder linked to item', '2013-10-05 08:00:00');
     if(!empty($sPlay))
       $sHTML.= '
       <div class="graph_bloc">
-        <div class="home_item_title">Candidates in play</div>
+        <div class="home_item_title">New candidates in play</div>
         '.$sPlay.'
-      </div>';
-
-    if(!empty($sCandidate))
-      $sHTML.= '
-      <div class="graph_bloc">
-        <div class="home_item_title">New candidates</div>
-        '.$sCandidate.'
       </div>';
 
     if(!empty($sPosition))
       $sHTML.= '
       <div class="graph_bloc">
-        <div class="home_item_title">Positions</div>
+        <div class="home_item_title">New positions in play</div>
         '.$sPosition.'
       </div>
       ';
