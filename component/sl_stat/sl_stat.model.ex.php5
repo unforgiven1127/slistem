@@ -1364,7 +1364,7 @@ class CSl_statModelEx extends CSl_statModel
             'calling_party' => $row['calling_party'], 'calls' => 0, 'attempts' => 0);
         }
 
-        if ($row['duration'] > 31)
+        if ($row['duration'] > 30)
         {
           $call_log_data[$row['calling_party']]['calls'] += 1;
         }

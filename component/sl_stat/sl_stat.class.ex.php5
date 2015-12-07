@@ -4493,7 +4493,7 @@ class CSl_statEx extends CSl_stat
       switch ($period) {
         case 'last_week':
           $start_week = strtotime('last monday', $previous_week);
-          $end_week = strtotime("next saturday", $start_week);
+          $end_week = strtotime("next sunday", $start_week);
 
           $start_date = date('Y-m-d', $start_week);
           $end_date = date('Y-m-d', $end_week);
