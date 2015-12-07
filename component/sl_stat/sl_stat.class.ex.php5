@@ -1072,7 +1072,84 @@ class CSl_statEx extends CSl_stat
       exit('-- -- -- ');*/
 
       $sId = uniqid();
-      $sHTML = $oHTML->getTitle('Candidates met', 'h3', true);
+
+      $sHTML = $oHTML->getTitle('Objectives', 'h3', true);
+      $sHTML.= $oHTML->getCR();
+
+      if($this->cnHeight)
+        $sChart = '<div style="height: '.$this->cnHeight.'px; width: '.$this->cnWidth.'px;  margin: 0 auto;">';
+      else
+        $sChart = '<div style="height: 250px; width: 780px;  margin: 0 auto;">';
+
+      $nDay = (int)date('d');
+
+      $nMet = $asStatData['met'][$user_id][$sMonth];
+      $nPlay = $asStatData['play'][$user_id][$sMonth];
+      $nPos = $asStatData['position'][$user_id][$sMonth];
+
+      $nMetToDate = ceil((27/30) * $nDay);
+      $nPlayToDate = ceil((7/30) * $nDay);
+      $nPosToDate = ceil((5/30) * $nDay);
+
+      $nMetRatio = round(($nMetToDate/27)*100);
+      $nPlayRatio = round(($nPlayToDate/7)*100);
+      $nPosRatio = round(($nPosToDate/5)*100);
+
+      $sMetClass = $this->_getClassFromValue($nMet, $nMetToDate);
+      $sPlayClass = $this->_getClassFromValue($nPlay, $nPlayToDate);
+      $sPosClass = $this->_getClassFromValue($nPos, $nPosToDate);
+
+      $sChart .= '
+        <div class="obj-container">
+          <div class="obj-row obj-header">
+            <div class="obj-desc"></div>
+            <div class="obj-value">Met *</div>
+            <div class="obj-value">In play **</div>
+            <div class="obj-value">Positions ***</div>
+          </div>
+
+          <div class="obj-row">
+            <div class="obj-desc">Month target</div>
+            <div class="obj-value">27</div>
+            <div class="obj-value">7</div>
+            <div class="obj-value">5</div>
+          </div>
+
+          <div class="obj-row">
+            <div class="obj-desc">Target to date</div>
+            <div class="obj-value">'.$nMetToDate.'</div>
+            <div class="obj-value">'.$nPlayToDate.'</div>
+            <div class="obj-value">'.$nPosToDate.'</div>
+          </div>
+
+          <div class="obj-row">
+            <div class="obj-desc">Current</div>
+            <div class="obj-value '.$sMetClass.'">'.$nMet.'</div>
+            <div class="obj-value '.$sPlayClass.'">'.$nPlay.'</div>
+            <div class="obj-value '.$sPosClass.'">'.$nPos.'</div>
+          </div>
+
+          <div class="obj-row">
+            <div class="obj-desc">%</div>
+            <div class="obj-value '.$sMetClass.'">'.$nMetRatio.'%</div>
+            <div class="obj-value '.$sPlayClass.'">'.$nPlayRatio.'%</div>
+            <div class="obj-value '.$sPosClass.'">'.$nPosRatio.'%</div>
+          </div>
+        </div>
+
+        <div class="portal-legend">
+          <span style="color: #888; font-style: italic; font-size: 11px;">* Meeting created with the new meeting feature. </span><br />
+          <span style="color: #888; font-style: italic; font-size: 11px;">** Phone assessed are counted up to the 5 first calls only. </span><br />
+          <span style="color: #888; font-style: italic; font-size: 11px;">*** Newly active positions, having their first CCM this month. </span>
+        </div>
+        </div>
+      ';
+
+      $asHTML['objectives'] = $sChart;
+      $sHTML.= $sChart;
+
+      $sHTML.= $oHTML->getCR();
+      $sHTML.= $oHTML->getTitle('Candidates met', 'h3', true);
       $sHTML.= $oHTML->getCR();
 
       if($this->cnHeight)
@@ -4459,5 +4536,16 @@ class CSl_statEx extends CSl_stat
       $html = $this->_oDisplay->render('call_log_chart', $data);
 
       return $html;
+    }
+
+    private function _getClassFromValue($pnValue, $pnTarget)
+    {
+      if($pnValue >= (0.85 * $pnTarget))
+        return 'obj-good';
+
+      if($pnValue < (0.70 * $pnTarget))
+        return 'obj-bad';
+
+      return 'obj-average';
     }
 }

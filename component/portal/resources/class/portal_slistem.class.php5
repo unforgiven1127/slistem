@@ -462,109 +462,19 @@ Reminder linked to item', '2013-10-05 08:00:00');
     $asSettings['home_taregt_tbl'] = (int)$asSettings['home_taregt_tbl'];
     $sHTML = $sTable = '';
 
-    if($asSettings['home_taregt_tbl'] > 0)
-    {
-      $oStat = CDependency::getComponentByName('sl_stat');
-
-      $sMonth = date('Y-m');
-      $nDay = (int)date('d');
-      $sStart = $sMonth.'-01';
-      $sEnd = date('Y-m', strtotime('+1month')).'-01';
-
-      $sStart = '2014-09-01';
-      $sEnd = '2014-10-01';
-      $asStatData = $oStat->getSicData(array($pnUserPk), $sStart, $sEnd);
-      //dump($asStatData);
-
-      if(!isset($asStatData['met'][$pnUserPk][$sMonth]))
-        $asStatData['met'][$pnUserPk][$sMonth] = array(0, 0);
-
-      if(!isset($asStatData['position'][$pnUserPk][$sMonth]))
-        $asStatData['position'][$pnUserPk][$sMonth] = 0;
-
-      if(!isset($asStatData['play'][$pnUserPk][$sMonth]))
-        $asStatData['play'][$pnUserPk][$sMonth] = 0;
-
-
-      $nMet = $asStatData['met'][$pnUserPk][$sMonth][1];
-      $nPlay = $asStatData['play'][$pnUserPk][$sMonth];
-      $nPos = $asStatData['position'][$pnUserPk][$sMonth];
-
-      $nMetToDate = ceil((27/30) * $nDay);
-      $nPlayToDate = ceil((7/30) * $nDay);
-      $nPosToDate = ceil((5/30) * $nDay);
-
-
-      $nMetRatio = round(($nMetToDate/27)*100);
-      $nPlayRatio = round(($nPlayToDate/7)*100);
-      $nPosRatio = round(($nPosToDate/5)*100);
-
-      $sMetClass = $this->_getClassFromValue($nMet, $nMetToDate);
-      $sPlayClass = $this->_getClassFromValue($nPlay, $nPlayToDate);
-      $sPosClass = $this->_getClassFromValue($nPos, $nPosToDate);
-
-      $sTable = '
-        <div class="graph_bloc">
-
-          <div class="home_item_title">Objectives</div>
-
-          <div class="obj-container">
-
-            <div class="obj-row obj-header">
-              <div class="obj-desc"></div>
-              <div class="obj-value">Met *</div>
-              <div class="obj-value">In play **</div>
-              <div class="obj-value">Positions ***</div>
-            </div>
-
-            <div class="obj-row">
-              <div class="obj-desc">Month target</div>
-              <div class="obj-value">27</div>
-              <div class="obj-value">7</div>
-              <div class="obj-value">5</div>
-            </div>
-
-            <div class="obj-row">
-              <div class="obj-desc">Target to date</div>
-              <div class="obj-value">'.$nMetToDate.'</div>
-              <div class="obj-value">'.$nPlayToDate.'</div>
-              <div class="obj-value">'.$nPosToDate.'</div>
-            </div>
-
-            <div class="obj-row">
-              <div class="obj-desc">Current</div>
-              <div class="obj-value '.$sMetClass.'">'.$nMet.'</div>
-              <div class="obj-value '.$sPlayClass.'">'.$nPlay.'</div>
-              <div class="obj-value '.$sPosClass.'">'.$nPos.'</div>
-            </div>
-
-            <div class="obj-row">
-              <div class="obj-desc">%</div>
-              <div class="obj-value '.$sMetClass.'">'.$nMetRatio.'%</div>
-              <div class="obj-value '.$sPlayClass.'">'.$nPlayRatio.'%</div>
-              <div class="obj-value '.$sPosClass.'">'.$nPosRatio.'%</div>
-            </div>
-
-
-
-          </div>
-
-          <div class="portal-legend">
-            <span style="color: #888; font-style: italic; font-size: 11px;">* Meeting created with the new meeting feature. </span><br />
-            <span style="color: #888; font-style: italic; font-size: 11px;">** Phone assessed are counted up to the 5 first calls only. </span><br />
-            <span style="color: #888; font-style: italic; font-size: 11px;">*** Newly active positions, having their first CCM this month. </span>
-          </div>
-          </div>';
-    }
-
-
+    $objectives = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_objectives.html');
     $sMet = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_met.html');
     $sPlay = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_play.html');
     $sCandidate = '';
     $sPosition = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_position.html');
     $sPipeline = @file_get_contents(CONST_PATH_ROOT.CONST_PATH_UPLOAD_DIR.'/sl_stat/charts/'.$pnUserPk.'_pipeline.html');
 
-
+    if(!empty($objectives) && $asSettings['home_taregt_tbl'] > 0)
+      $sTable.= '
+      <div class="graph_bloc">
+        <div class="home_item_title">Objectives</div>
+        '.$objectives.'
+      </div>';
 
     if(!empty($sPipeline))
       $sHTML.= '
