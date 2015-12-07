@@ -4489,16 +4489,32 @@ class CSl_statEx extends CSl_stat
       $ignore_users = array(389, 315, 354, 186, 301, 423, 475, 315, 474, 487, 486, 259, 300, 309, 343, 199, 468);
 
       $previous_week = strtotime('-1 week +1 day');
+      $start_week = strtotime('last monday', $previous_week);
+      $end_week = strtotime("next sunday", $start_week);
 
       switch ($period) {
-        case 'last_week':
-          $start_week = strtotime('last monday', $previous_week);
-          $end_week = strtotime("next sunday", $start_week);
+        case 'custom':
+          $start_date = getValue('start', '');
+          $end_date = getValue('end', '');
 
-          $start_date = date('Y-m-d', $start_week);
-          $end_date = date('Y-m-d', $end_week);
+          if (!empty($start_date))
+            $start_date = date('Y-m-d', strtotime($start_date));
+          else
+            $start_date = date('Y-m-d', $start_week);
 
-          $title = date('F jS', $start_week).' - '.date('F jS', $end_week).' - All Calls';
+          if (!empty($end_date))
+            $end_date = date('Y-m-d', strtotime($end_date));
+          else
+            $end_date = date('Y-m-d', $end_week);
+
+          $title = $start_date.' - '.$end_date.' - All Calls custom date';
+          break;
+
+        case 'previous_month':
+          $start_date = date('Y-m', strtotime('previous month')).'-01';
+          $end_date = date('Y-m-t', strtotime('previous month'));
+
+          $title = date('F Y', strtotime('previous month')).' - All Calls previous month';
           break;
 
         case 'this_month':
@@ -4508,10 +4524,12 @@ class CSl_statEx extends CSl_stat
           $title = date('F Y', $previous_week).' - All Calls this month';
           break;
 
+        case 'last_week':
         default:
-          $start_date = $end_date = '';
+          $start_date = date('Y-m-d', $start_week);
+          $end_date = date('Y-m-d', $end_week);
 
-          $title = 'All calls to date';
+          $title = date('F jS', $start_week).' - '.date('F jS', $end_week).' - All Calls';
           break;
       }
 
