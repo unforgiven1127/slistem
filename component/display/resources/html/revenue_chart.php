@@ -1,15 +1,15 @@
 <table class="revenue_table">
 	<tr>
-		<th colspan="7"><?php echo ucfirst($location); ?> - Individual Revenue Leaders <?php echo $year; ?></th>
+		<th class="text_center" colspan="7"><?php echo ucfirst($location); ?> - Individual Revenue Leaders <?php echo $year; ?></th>
 	</tr>
 	<tr>
-		<th>Rank</th>
-		<th>Name</th>
-		<th></th>
-		<th>Signed</th>
-		<th>Paid</th>
-		<th>Team</th>
-		<th>Placed</th>
+		<th class="text_center">Rank</th>
+		<th class="text_center">Name</th>
+		<th class="text_center"></th>
+		<th class="text_center">Signed</th>
+		<th class="text_center">Paid</th>
+		<th class="text_center">Team</th>
+		<th class="text_center">Placed</th>
 	</tr>
 
 	<?php
