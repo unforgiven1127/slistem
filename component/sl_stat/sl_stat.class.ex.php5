@@ -1081,19 +1081,27 @@ class CSl_statEx extends CSl_stat
       else
         $sChart = '<div style="height: 250px; width: 780px;  margin: 0 auto;">';
 
-      $nDay = (int)date('d');
+      $nDay = date('j');
+      $month_total_days = date('t');
 
       $nMet = $asStatData['met'][$user_id][$sMonth];
       $nPlay = $asStatData['play'][$user_id][$sMonth];
       $nPos = $asStatData['position'][$user_id][$sMonth];
 
-      $nMetToDate = ceil((27/30) * $nDay);
-      $nPlayToDate = ceil((7/30) * $nDay);
-      $nPosToDate = ceil((5/30) * $nDay);
+      $nMetToDate = ceil((27/$month_total_days) * $nDay);
+      $nPlayToDate = ceil((7/$month_total_days) * $nDay);
+      $nPosToDate = ceil((5/$month_total_days) * $nDay);
 
-      $nMetRatio = round(($nMetToDate/27)*100);
-      $nPlayRatio = round(($nPlayToDate/7)*100);
-      $nPosRatio = round(($nPosToDate/5)*100);
+      $nMetRatio = $nPlayRatio = $nPosRatio = 0;
+
+      if (!empty($nMet))
+        $nMetRatio = round(($nMet/27)*100);
+
+      if (!empty($nPlay))
+        $nPlayRatio = round(($nPlay/7)*100);
+
+      if (!empty($nPos))
+        $nPosRatio = round(($nPos/5)*100);
 
       $sMetClass = $this->_getClassFromValue($nMet, $nMetToDate);
       $sPlayClass = $this->_getClassFromValue($nPlay, $nPlayToDate);
