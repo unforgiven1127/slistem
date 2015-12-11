@@ -4260,33 +4260,39 @@ class CSl_statEx extends CSl_stat
         if (!empty($temp_ccm[$id]['ccm1']))
         {
           $stats_data['consultant'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['consultant'][$id]['ccm1_done'] = $temp_ccm[$id]['ccm1_done'];
           $stats_data['consultant'][$id]['ccm1_info'] = $temp_ccm[$id]['ccm_info']['ccm1'];
         }
         else
         {
           $stats_data['consultant'][$id]['ccm1'] = 0;
+          $stats_data['consultant'][$id]['ccm1_done'] = 0;
           $stats_data['consultant'][$id]['ccm1_info'] = array();
         }
 
         if (!empty($temp_ccm[$id]['ccm2']))
         {
           $stats_data['consultant'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['consultant'][$id]['ccm2_done'] = $temp_ccm[$id]['ccm2_done'];
           $stats_data['consultant'][$id]['ccm2_info'] = $temp_ccm[$id]['ccm_info']['ccm2'];
         }
         else
         {
           $stats_data['consultant'][$id]['ccm2'] = 0;
+          $stats_data['consultant'][$id]['ccm2_done'] = 0;
           $stats_data['consultant'][$id]['ccm2_info'] = array();
         }
 
         if (!empty($temp_ccm[$id]['mccm']))
         {
           $stats_data['consultant'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['consultant'][$id]['mccm_done'] = $temp_ccm[$id]['mccm_done'];
           $stats_data['consultant'][$id]['mccm_info'] = $temp_ccm[$id]['ccm_info']['mccm'];
         }
         else
         {
           $stats_data['consultant'][$id]['mccm'] = 0;
+          $stats_data['consultant'][$id]['mccm_done'] = 0;
           $stats_data['consultant'][$id]['mccm_info'] = array();
         }
 
@@ -4397,33 +4403,39 @@ class CSl_statEx extends CSl_stat
         if (!empty($temp_ccm[$id]['ccm1']))
         {
           $stats_data['researcher'][$id]['ccm1'] = $temp_ccm[$id]['ccm1'];
+          $stats_data['researcher'][$id]['ccm1_done'] = $temp_ccm[$id]['ccm1_done'];
           $stats_data['researcher'][$id]['ccm1_info'] = $temp_ccm[$id]['ccm_info']['ccm1'];
         }
         else
         {
           $stats_data['researcher'][$id]['ccm1'] = 0;
+          $stats_data['researcher'][$id]['ccm1_done'] = 0;
           $stats_data['researcher'][$id]['ccm1_info'] = array();
         }
 
         if (!empty($temp_ccm[$id]['ccm2']))
         {
           $stats_data['researcher'][$id]['ccm2'] = $temp_ccm[$id]['ccm2'];
+          $stats_data['researcher'][$id]['ccm2_done'] = $temp_ccm[$id]['ccm2_done'];
           $stats_data['researcher'][$id]['ccm2_info'] = $temp_ccm[$id]['ccm_info']['ccm2'];
         }
         else
         {
           $stats_data['researcher'][$id]['ccm2'] = 0;
+          $stats_data['researcher'][$id]['ccm2_done'] = 0;
           $stats_data['researcher'][$id]['ccm2_info'] = array();
         }
 
         if (!empty($temp_ccm[$id]['mccm']))
         {
           $stats_data['researcher'][$id]['mccm'] = $temp_ccm[$id]['mccm'];
+          $stats_data['researcher'][$id]['mccm_done'] = $temp_ccm[$id]['mccm_done'];
           $stats_data['researcher'][$id]['mccm_info'] = $temp_ccm[$id]['ccm_info']['mccm'];
         }
         else
         {
           $stats_data['researcher'][$id]['mccm'] = 0;
+          $stats_data['researcher'][$id]['mccm_done'] = 0;
           $stats_data['researcher'][$id]['mccm_info'] = array();
         }
 

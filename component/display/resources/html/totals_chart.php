@@ -19,16 +19,19 @@
 <?php foreach ($stats_data as $key => $stat): ?>
 <table class="totals_table">
 	<tr>
-		<th colspan="11"><?php echo ucfirst($key); ?> totals - <?php echo date('M Y', strtotime($start_date)); ?></th>
+		<th colspan="14"><?php echo ucfirst($key); ?> totals - <?php echo date('M Y', strtotime($start_date)); ?></th>
 	</tr>
 	<tr>
 		<th class="name_column">Name</th>
 		<th>Set</th>
 		<th>Met</th>
 		<th>Resumes sent</th>
-		<th>CCM1</th>
-		<th>CCM2</th>
-		<th>MCCM</th>
+		<th>CCM1 set</th>
+		<th>CCM1 done</th>
+		<th>CCM2 set</th>
+		<th>CCM2 done</th>
+		<th>MCCM set</th>
+		<th>MCCM done</th>
 		<th>New candidates<br>in play</th>
 		<th>New positions<br>in play</th>
 		<th>Offer</th>
@@ -101,6 +104,19 @@
 		</td>
 		<td>
 			<div class="stat_holder">
+			<?php echo $value['ccm1_done']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['ccm1_info'] as $stat_info): if (empty($stat_info['ccm_done_candidate'])) continue; ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['ccm_done_candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['ccm_done_candidate']; ?></a>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
 			<?php echo $value['ccm2']; ?>
 			</div>
 			<div class="stat_candi_info">
@@ -108,6 +124,19 @@
 				<div>
 				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['candidate']); ?>
 					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
+				</div>
+			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['ccm2_done']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php foreach ($value['ccm2_info'] as $stat_info): if (empty($stat_info['ccm_done_candidate'])) continue; ?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$stat_info['ccm_done_candidate']); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['ccm_done_candidate']; ?></a>
 				</div>
 			<?php endforeach ?>
 			</div>
@@ -123,6 +152,26 @@
 					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $stat_info['candidate']; ?></a>
 				</div>
 			<?php endforeach ?>
+			</div>
+		</td>
+		<td>
+			<div class="stat_holder">
+			<?php echo $value['mccm_done']; ?>
+			</div>
+			<div class="stat_candi_info">
+			<?php
+				foreach ($value['mccm_info'] as $stat_info) {
+					if (empty($stat_info['ccm_done_candidate'])) continue;
+					foreach ($stat_info['ccm_done_candidate'] as $candidate) {
+			?>
+				<div>
+				<?php $url = $page_obj->getAjaxUrl('555-001', CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_CANDI, (int)$candidate); ?>
+					<a href="javascript: view_candi('<?php echo $url; ?>')"><?php echo $candidate; ?></a>
+				</div>
+			<?php
+					}
+				}
+			?>
 			</div>
 		</td>
 		<td>
@@ -181,7 +230,7 @@
 
 	<?php $row_number_rank += 1; ?>
 	<?php endforeach ?>
-	<tr class="totals_table_footer"><td colspan="11">&nbsp;</td></tr>
+	<tr class="totals_table_footer"><td colspan="14">&nbsp;</td></tr>
 </table>
 
 <div class="general_form_row" style="height: 20px;"></div>
