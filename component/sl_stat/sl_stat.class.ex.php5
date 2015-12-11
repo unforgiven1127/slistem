@@ -1260,7 +1260,7 @@ class CSl_statEx extends CSl_stat
                 valueSuffix: " meeting(s)"
             },
             series: [{
-                type: "area",
+                type: "line",
                 color: "#FFCC6D",
                 name: "Met target",
                 data: ['.implode(',', $asData['target_met']).']
@@ -1423,7 +1423,7 @@ class CSl_statEx extends CSl_stat
               valueSuffix: " candidate(s)"
             },
             series: [{
-                type: "area",
+                type: "line",
                 color: "#FFCC6D",
                 name: "Target",
                 data: ['.implode(',', $asData['target_play']).']
@@ -1562,7 +1562,7 @@ class CSl_statEx extends CSl_stat
               valueSuffix: " position(s)"
             },
             series: [{
-                type: "area",
+                type: "line",
                 color: "#FFCC6D",
                 name: "Target",
                 data: ['.implode(',', $asData['target_position']).']
