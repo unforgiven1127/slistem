@@ -1263,7 +1263,13 @@ class CSl_statEx extends CSl_stat
                 type: "line",
                 color: "#FFCC6D",
                 name: "Met target",
-                data: ['.implode(',', $asData['target_met']).']
+                data: ['.implode(',', $asData['target_met']).'],
+                dataLabels: {
+                    align: "left",
+                    enabled: true,
+                    color: "#FFCC6D",
+                    zIndex: 1
+                }
             },';
 
 
@@ -1426,7 +1432,13 @@ class CSl_statEx extends CSl_stat
                 type: "line",
                 color: "#FFCC6D",
                 name: "Target",
-                data: ['.implode(',', $asData['target_play']).']
+                data: ['.implode(',', $asData['target_play']).'],
+                dataLabels: {
+                    align: "left",
+                    enabled: true,
+                    color: "#FFCC6D",
+                    zIndex: 1
+                }
             },';
 
      $nCount = 0;
@@ -1565,7 +1577,13 @@ class CSl_statEx extends CSl_stat
                 type: "line",
                 color: "#FFCC6D",
                 name: "Target",
-                data: ['.implode(',', $asData['target_position']).']
+                data: ['.implode(',', $asData['target_position']).'],
+                dataLabels: {
+                    align: "left",
+                    enabled: true,
+                    color: "#FFCC6D",
+                    zIndex: 1
+                }
             },';
 
       $nCount = 0;
