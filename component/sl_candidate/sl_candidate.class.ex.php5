@@ -5497,6 +5497,11 @@ class CSl_candidateEx extends CSl_candidate
           $contact_details_form = $oForm->getDisplay(true);
       }
 
+      $currency_code = 'jpy';
+
+      if (!empty($oDbResult->getFieldValue('currency')))
+        $currency_code = $oDbResult->getFieldValue('currency');
+
       $data = array('form_url' => $sURL, 'user_id' => $this->casUserData['pk'], 'readonly_name' => $readonly_name,
         'firstname' => $oDbResult->getFieldValue('firstname'), 'lastname' =>$oDbResult->getFieldValue('lastname'),
         'display_all_tabs' => $bDisplayAllTabs, 'user_sex' => $nSex, 'age_estimate' => $bEstimated,
@@ -5509,7 +5514,7 @@ class CSl_candidateEx extends CSl_candidate
         'department' => $oDbResult->getFieldValue('department'), 'company_token_url' => $company_token_url,
         'company' => $oDbResult->getFieldValue('companyfk'), 'occupation_tree' => $occupation_tree->getDisplay(),
         'industry_tree' => $industry_tree->getDisplay(), 'candidate_salary' => $candidate_salary,
-        'money_unit' => $this->casSettings['candi_salary_format'],
+        'money_unit' => $this->casSettings['candi_salary_format'], 'currency_code' => $currency_code,
         'currency_list' => $asCurrency, 'candidate_salary_bonus' => $candidate_salary_bonus, 'target_low' => $target_low,
         'target_high' => $target_high, 'candidate_id' => $pnCandidatePk, 'status_options' => $asStatus,
         'is_client' => $is_client, 'grade' => $this->getVars()->getCandidateGradeOption($oDbResult->getFieldValue('grade')),
@@ -6343,7 +6348,7 @@ die();*/
         if(!empty($asBonus['value']) && ($asBonus['yen'] > 100000000 || $asBonus['yen'] < 10000))
          $asError[] = 'Bonus value is not a valid number. ['.$asBonus['yen'].' '.$asBonus['currency'].']';
 
-        $asData['salary'] = $asSalary['yen'];
+        $asData['salary'] = $asSalary['value'];
         $asData['currency'] = $asSalary['currency'];
         $asData['currency_rate'] = $asSalary['rate'];
         $asData['bonus'] = $asBonus['value'];
@@ -6356,10 +6361,10 @@ die();*/
         $this->_getSalaryInYen($asTargetHigh);
 
         if(!empty($asTargetLow['value']) && ($asTargetLow['yen'] > 100000000 || $asTargetLow['yen'] < 10000))
-          $asError[] = 'Salary value is not a valid number. ['.$asTargetLow['yen'].' '.$asTargetLow['currency'].']';
+          $asError[] = 'Target salary low value is not a valid number. ['.$asTargetLow['yen'].' '.$asTargetLow['currency'].']';
 
         if(!empty($asTargetHigh['value']) && ($asTargetHigh['yen'] > 100000000 || $asTargetHigh['yen'] < 10000))
-          $asError[] = 'Bonus value is not a valid number. ['.$asTargetHigh['yen'].' '.$asTargetHigh['currency'].']';
+          $asError[] = 'Target salary high value is not a valid number. ['.$asTargetHigh['yen'].' '.$asTargetHigh['currency'].']';
 
         $asData['target_low'] = $asTargetLow['value'];
         $asData['target_high'] = $asTargetHigh['value'];

@@ -1798,3 +1798,39 @@ function regenerate_seesion_id()
     $_SESSION['CREATED'] = time();  // update creation time
   }
 }
+
+function currency_html_code($currency)
+{
+  $currency_code = '';
+  switch ($currency)
+  {
+    case 'cad':
+      $currency_code = 'C&#36;';
+      break;
+
+    case 'usd':
+      $currency_code = '&#36;';
+      break;
+
+    case 'aud':
+      $currency_code = 'A&#36;';
+      break;
+
+    case 'eur':
+      $currency_code = '&#128;';
+      break;
+
+    case 'hkd':
+      $currency_code = 'HK&#36;';
+      break;
+
+    case 'php':
+      $currency_code = '&#8369;';
+      break;
+
+    default:
+      $currency_code = '&#165;';
+      break;
+  }
+  return $currency_code;
+}

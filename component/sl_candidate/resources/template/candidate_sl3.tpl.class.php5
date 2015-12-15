@@ -237,19 +237,37 @@ class CCandidate_sl3 extends CTemplate
           $sHTML.= $this->coDisplay->getBloc('', $sValue, array('class' => 'candi_detail_value'));
         $sHTML.= $this->coDisplay->getBlocEnd();
 
+        $currency_code = currency_html_code($pasCandidateData['currency']);
 
-        $nSalary = round($pasCandidateData['salary'] /1000000, 2);
-        $nBonus = round($pasCandidateData['bonus'] /1000000, 2);
-        $sSalary = (round($nSalary+$nBonus, 1)).'M&yen;';
-        $sSalary.= '&nbsp;&nbsp;('.$nSalary.'M¥ + '.$nBonus.'M¥)';
+        $nSalary = round($pasCandidateData['salary'] / 1000000, 2);
+        $nBonus = round($pasCandidateData['bonus'] / 1000000, 2);
+
+        $salary_unit = 'M ';
+
+        if ($nSalary < 1)
+        {
+          $nSalary = round($pasCandidateData['salary'] / 1000, 2);
+          $nBonus = round($pasCandidateData['bonus'] / 1000, 2);
+          $salary_unit = 'K ';
+        }
+
+        $sSalary = (round($nSalary+$nBonus, 1)).$salary_unit.$currency_code;
+        $sSalary.= '&nbsp;&nbsp;('.$nSalary.$salary_unit.$currency_code.' + '.$nBonus.$salary_unit.$currency_code.')';
 
         $asOption = array('class' => 'candi_detail_value');
         if(!empty($pasCandidateData['target_low']))
         {
           $nLow = round($pasCandidateData['target_low'] /1000000, 2);
           $nHigh = round($pasCandidateData['target_high'] /1000000, 2);
-          $asOption['title'] = 'Targeted salary '.round($nLow, 1).'M&yen;';
-          $asOption['title'].= ' - '.round($nHigh, 1).'M&yen;';
+
+          if ($nSalary < 1)
+          {
+            $nLow = round($pasCandidateData['target_low'] /1000, 2);
+            $nHigh = round($pasCandidateData['target_high'] /1000, 2);
+          }
+
+          $asOption['title'] = 'Targeted salary '.round($nLow, 1).$salary_unit.$currency_code;
+          $asOption['title'].= ' - '.round($nHigh, 1).$salary_unit.$currency_code;
 
           $asOption['onmouseover'] = 'tp(this);';
         }

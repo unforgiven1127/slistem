@@ -137,13 +137,18 @@
 							<option value="M" <?php if ($money_unit == 'M') echo 'selected'; ?>>M</option>
 						</select>
 						<select id="salary_currency" class="salary_manipulation" name="salary_currency">
-						<?php foreach ($currency_list as $currency => $rate) { ?>
-							<?php if ($currency == 'jpy') { ?>
-							<option value="<?php echo $currency; ?>" selected
+						<?php
+						foreach ($currency_list as $currency => $rate) {
+							if ($currency == $currency_code) {
+								$selected = 'selected';
+							}
+							else {
+								$selected = '';
+							}
+						?>
+							<option value="<?php echo $currency; ?>"
+								<?php echo $selected; ?>
 								title="<?php echo 'Rate: 1'.$currency.' = '.(1/$rate).'&yen'; ?>">
-							<?php } else { ?>
-							<option value="<?php echo $currency; ?>" title="<?php echo 'Rate: 1'.$currency.' = '.(1/$rate).'&yen'; ?>">
-							<?php } ?>
 								<?php echo $currency; ?>
 							</option>
 						<?php } ?>
