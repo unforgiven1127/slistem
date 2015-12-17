@@ -1027,7 +1027,7 @@ class CSl_statModelEx extends CSl_statModel
       $query = 'SELECT positionfk, candidatefk, created_by, status, date_created as ccm_create_date';
       $query .= ' FROM sl_position_link';
       $query .= ' WHERE created_by IN ('.implode(',', $user_ids).')';
-      $query .= ' AND date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND date_created >= "'.$start_date.'"';
       $query .= ' AND status >= 51';
     }
     else
@@ -1037,10 +1037,12 @@ class CSl_statModelEx extends CSl_statModel
       $query .= ' FROM sl_meeting';
       $query .= ' INNER JOIN sl_position_link ON sl_meeting.candidatefk = sl_position_link.candidatefk';
       $query .= ' AND sl_position_link.status >= 51';
-      $query .= ' AND sl_position_link.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'"';
+      $query .= ' AND sl_position_link.date_created >= "'.$start_date.'"';
       $query .= ' WHERE sl_meeting.created_by IN ('.implode(',', $user_ids).')';
       $query .= ' AND sl_meeting.meeting_done = 1';
     }
+
+    $query .= ' ORDER BY ccm_create_date ASC';
 
     $db_result = $this->oDB->executeQuery($query);
     $read = $db_result->readFirst();
@@ -1082,9 +1084,12 @@ class CSl_statModelEx extends CSl_statModel
       if ($row['status'] == 51)
       {
         $array_key = $row['positionfk'].$row['candidatefk'].'_51';
-        $ccm_data[$row['created_by']]['ccm1'] += 1;
-        $ccm_data[$row['created_by']]['ccm_info']['ccm1'][$array_key] = array('candidate' => $row['candidatefk'],
-          'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        if (strtotime($row['ccm_create_date']) <= strtotime($end_date))
+        {
+          $ccm_data[$row['created_by']]['ccm1'] += 1;
+          $ccm_data[$row['created_by']]['ccm_info']['ccm1'][$array_key] = array('candidate' => $row['candidatefk'],
+            'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        }
       }
       else if ($row['status'] == 52)
       {
@@ -1098,9 +1103,12 @@ class CSl_statModelEx extends CSl_statModel
           $ccm_data[$row['created_by']]['ccm_info']['ccm1'][$previous_ccm_key]['ccm_done_candidate'] = $row['candidatefk'];
         }
 
-        $ccm_data[$row['created_by']]['ccm2'] += 1;
-        $ccm_data[$row['created_by']]['ccm_info']['ccm2'][$array_key] = array('candidate' => $row['candidatefk'],
-          'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        if (strtotime($row['ccm_create_date']) <= strtotime($end_date))
+        {
+          $ccm_data[$row['created_by']]['ccm2'] += 1;
+          $ccm_data[$row['created_by']]['ccm_info']['ccm2'][$array_key] = array('candidate' => $row['candidatefk'],
+            'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        }
       }
       else if ($row['status'] > 52 && $row['status'] <= 61)
       {
@@ -1127,9 +1135,12 @@ class CSl_statModelEx extends CSl_statModel
         $array_key = $row['positionfk'].$row['candidatefk'].'_mccm';
         $previous_ccm_key = $row['positionfk'].$row['candidatefk'].'_mccm';
 
-        $ccm_data[$row['created_by']]['mccm'] += 1;
-        $ccm_data[$row['created_by']]['ccm_info']['mccm'][$array_key] = array('candidate' => $row['candidatefk'],
-          'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        if (strtotime($row['ccm_create_date']) <= strtotime($end_date))
+        {
+          $ccm_data[$row['created_by']]['mccm'] += 1;
+          $ccm_data[$row['created_by']]['ccm_info']['mccm'][$array_key] = array('candidate' => $row['candidatefk'],
+            'date' => $row['ccm_create_date'], 'ccm_position' => $row['positionfk']);
+        }
 
         if (!empty($ccm_data[$row['created_by']]['ccm_info']['mccm'][$previous_ccm_key]) &&
           empty($ccm_data[$row['created_by']]['ccm_info']['mccm'][$previous_ccm_key]['ccm_done_candidate'][$row['status']]) &&

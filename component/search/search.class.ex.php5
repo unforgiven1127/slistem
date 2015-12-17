@@ -1351,7 +1351,7 @@ class CSearchEx extends CSearch
             else
             {
               // Case #2 ==>   we've got a template to play with
-              $sCondition =  $sRowOperator.' ( '.$sCondition.' ) ';
+              $sCondition =  $sRowOperator.' '.$sCondition.' ';
 
               foreach($asMatch[1] as $sMatch)
               {
@@ -1360,7 +1360,7 @@ class CSearchEx extends CSearch
                 $sCondition =  str_replace('<<'.$sMatch.'>>', $sSql, $sCondition);
               }
 
-              $sCondition =  $sRowOperator.' ( '. $sCondition .' ) ';
+              $sCondition =  $sRowOperator.' '. $sCondition .' ';
               //dump($sCondition);
             }
           }
@@ -1384,7 +1384,7 @@ class CSearchEx extends CSearch
               }
 
               if(!empty($asArrayCondition))
-                $sCondition = $sRowOperator.' ( '.implode(' OR ', $asArrayCondition).')';
+                $sCondition = $sRowOperator.' '.implode(' OR ', $asArrayCondition).' ';
             }
             else
             {
@@ -1393,13 +1393,13 @@ class CSearchEx extends CSearch
               if(isset($asFieldData['sql']['field']) && !empty($asFieldData['sql']['field']))
               {
                 $asFieldData['data']['field'] = $asFieldData['sql']['field'];
-                $sCondition = $sRowOperator.' ( '.$asFieldData['sql']['field'].' '.$this->_getSqlFromOperator($asFieldData['data'], $sFieldOperator, $vFieldValue).') ';
+                $sCondition = $sRowOperator.' '.$asFieldData['sql']['field'].' '.$this->_getSqlFromOperator($asFieldData['data'], $sFieldOperator, $vFieldValue).' ';
 
                 //dump(' field => '.$sCondition);
               }
               elseif(isset($asFieldData['sql']['where']) && !empty($asFieldData['sql']['where']))
               {
-                $sCondition = $sRowOperator.' ( '.$asFieldData['sql']['where'].' '.$this->_getSqlFromOperator($asFieldData['data'], $sFieldOperator, $vFieldValue).') ';
+                $sCondition = $sRowOperator.' '.$asFieldData['sql']['where'].' '.$this->_getSqlFromOperator($asFieldData['data'], $sFieldOperator, $vFieldValue).' ';
 
                 //dump(' where => '.$sCondition);
               }
