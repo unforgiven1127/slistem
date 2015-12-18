@@ -1697,6 +1697,7 @@ class CEventEx extends CEvent
     $asEmail['ksimon@bcmj.biz'] = 1;
     $asEmail['jcartwright@bcmj.biz'] = 1;
     $asEmail['jbrown@bcmj.biz'] = 1;
+    $asEmail['janderson@bcmj.biz'] = 1;
 
     $asAliases = explode(',', CONST_EVENT_SYNC_ALIASES);
     foreach($asAliases as $nKey => $sPatern)
@@ -1858,15 +1859,16 @@ class CEventEx extends CEvent
             else
             {
               $asNote['body'] = $this->_decodeMailContent($asBody[0]->text, $asBody[0]->charset);
+              $asNote['body'] = $this->decode_7bit($asNote['body']);
               $asNote['body'] = str_replace("\n", '<br />', $asNote['body']);
             }
 
 
-
             $asNote['content'] = strip_tags($asNote['body'], '<br><br/><p><span>');
-            //dump('ready to create a note ... ');
-            //dump($asNote);
-
+            var_export(
+              $this->decode7_bit($asNote['body'])
+              );
+              die();
             $asResult = $this->_getEventSave(0, $asNote);
             if(isset($asResult['error']))
               assert('false; /* could not create the note '.$asResult['error'].' */');
@@ -1913,7 +1915,7 @@ class CEventEx extends CEvent
           $psText = imap_binary($psText);
           break;
         case 3:
-          $psText = imap_base64($psText);
+          $psText = base64_decode($psText);
           break;
         case 4:
           $psText = imap_qprint($psText);
@@ -1925,4 +1927,29 @@ class CEventEx extends CEvent
       return $psText;
     }
 
+    public function decode_7bit($text)
+    {
+      // Manually convert common encoded characters into their UTF-8 equivalents.
+      $characters = array(
+        '=20' => ' ', // space.
+        '=2C' => ',', // comma.
+        '=E2=80=99' => "'", // single quote.
+        '=0A' => "\r\n", // line break.
+        '=0D' => "\r\n", // carriage return.
+        '=A0' => ' ', // non-breaking space.
+        '=B9' => '$sup1', // 1 superscript.
+        '=C2=A0' => ' ', // non-breaking space.
+        "=\r\n" => '', // joined line.
+        '=E2=80=A6' => '&hellip;', // ellipsis.
+        '=E2=80=A2' => '&bull;', // bullet.
+        '=E2=80=93' => '&ndash;', // en dash.
+        '=E2=80=94' => '&mdash;', // em dash.
+      );
+      // Loop through the encoded characters and replace any that are found.
+      foreach ($characters as $key => $value)
+      {
+        $text = str_replace($key, $value, $text);
+      }
+      return $text;
+    }
 }
