@@ -351,7 +351,17 @@ class CCandi_row extends CTemplate
         if(empty($pasData['full_salary']))
           $sHTML.= $oDisplay->getBloc('', '', $asOption);
         else
-          $sHTML.= $oDisplay->getBloc('', round((int)$pasData['full_salary']/1000000, 1).'M', $asOption);
+        {
+          $full_salary = (int)$pasData['full_salary']/1000000;
+          $salary_unit = 'M';
+          if ($full_salary < 1)
+          {
+            $full_salary = (int)$pasData['full_salary']/1000;
+            $salary_unit = 'K';
+          }
+
+          $sHTML.= $oDisplay->getBloc('', round($full_salary, 1).$salary_unit, $asOption);
+        }
 
         $nColNumber++;
       }
