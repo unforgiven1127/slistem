@@ -1262,7 +1262,7 @@ class CSl_statEx extends CSl_stat
             series: [{
                 type: "line",
                 color: "#000",
-                name: "Met target",
+                name: "Target",
                 data: ['.implode(',', $asData['target_met']).'],
                 dashStyle: "ShortDash"
             },';
