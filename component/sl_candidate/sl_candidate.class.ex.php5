@@ -8435,6 +8435,12 @@ die();*/
               if (empty($new_variable))
                 $new_variable = $pasNewData[$sField];
 
+              if (is_array($old_variable))
+                $old_variable = $old_variable['label'];
+
+              if (is_array($new_variable))
+                $new_variable = $new_variable['label'];
+
               $asLog[$sType][] = '['.$sLabel.'] changed from '.$old_variable.' -> to: '.$new_variable;
             }
           }
