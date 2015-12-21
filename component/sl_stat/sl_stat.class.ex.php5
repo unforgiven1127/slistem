@@ -1261,15 +1261,10 @@ class CSl_statEx extends CSl_stat
             },
             series: [{
                 type: "line",
-                color: "#FFCC6D",
+                color: "#000",
                 name: "Met target",
                 data: ['.implode(',', $asData['target_met']).'],
-                dataLabels: {
-                    align: "left",
-                    enabled: true,
-                    color: "#FFCC6D",
-                    zIndex: 1
-                }
+                dashStyle: "ShortDash"
             },';
 
 
@@ -1430,15 +1425,10 @@ class CSl_statEx extends CSl_stat
             },
             series: [{
                 type: "line",
-                color: "#FFCC6D",
+                color: "#000",
                 name: "Target",
                 data: ['.implode(',', $asData['target_play']).'],
-                dataLabels: {
-                    align: "left",
-                    enabled: true,
-                    color: "#FFCC6D",
-                    zIndex: 1
-                }
+                dashStyle: "ShortDash"
             },';
 
      $nCount = 0;
@@ -1575,15 +1565,10 @@ class CSl_statEx extends CSl_stat
             },
             series: [{
                 type: "line",
-                color: "#FFCC6D",
+                color: "#000",
                 name: "Target",
                 data: ['.implode(',', $asData['target_position']).'],
-                dataLabels: {
-                    align: "left",
-                    enabled: true,
-                    color: "#FFCC6D",
-                    zIndex: 1
-                }
+                dashStyle: "ShortDash"
             },';
 
       $nCount = 0;
