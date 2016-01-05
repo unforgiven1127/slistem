@@ -5829,7 +5829,12 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       $oQb->setTable('sl_company', 'scom');
-      $oQb->addSelect('*, GROUP_CONCAT(sind.label) as industry_list');
+
+      if ($poQB->hasSelect())
+        $oQb->addSelect('GROUP_CONCAT(sind.label) as industry_list');
+      else
+        $oQb->addSelect('*, GROUP_CONCAT(sind.label) as industry_list');
+
       $oQb->addJoin('left', 'sl_attribute', 'satt', 'satt.type = \'cp_indus\' AND satt.itemfk = scom.sl_companypk');
       $oQb->addJoin('left', 'sl_industry', 'sind', 'sind.sl_industrypk = satt.attributefk');
       $oQb->addGroup('scom.sl_companypk');
