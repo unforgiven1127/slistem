@@ -63,7 +63,7 @@
 	var swap_time = <?php echo $swap_time; ?>;
 
 	$('.scrollingContainer').css('overflow', 'auto');
-	setTimeout(function() {
+	/*setTimeout(function() {
 		window.location.replace(url);
-	}, (swap_time));
+	}, (swap_time));*/
 </script>

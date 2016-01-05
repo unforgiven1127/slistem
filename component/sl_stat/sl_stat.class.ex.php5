@@ -4015,11 +4015,6 @@ class CSl_statEx extends CSl_stat
       $location = getValue('location', 'All');
       $year = $next_year = getValue('year', date('Y'));
 
-      if ($year == 2015)
-        $next_year += 1;
-      else if ($year == 2016)
-        $next_year -= 1;
-
       $swap_time = 1000 * 60; // 1 minute
       $url = '/index.php5?uid=555-006&ppa=pprev&ppt=revenue&ppk=0&watercooler=1&year='.$next_year;
 
