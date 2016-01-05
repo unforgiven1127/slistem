@@ -5825,14 +5825,14 @@ class CSl_candidateEx extends CSl_candidate
       }
 
       $oQb->setTable('sl_company', 'scom');
-      $oQb->addSelect('GROUP_CONCAT(sind.label) as industry_list');
-      $oQb->addJoin('left', 'sl_attribute', 'satt', 'satt.`type` = \'cp_indus\' AND satt.itemfk = scom.sl_companypk');
+      $oQb->addSelect('*, GROUP_CONCAT(sind.label) as industry_list');
+      $oQb->addJoin('left', 'sl_attribute', 'satt', 'satt.type = \'cp_indus\' AND satt.itemfk = scom.sl_companypk');
       $oQb->addJoin('left', 'sl_industry', 'sind', 'sind.sl_industrypk = satt.attributefk');
       $oQb->addGroup('scom.sl_companypk');
 
 
       $sQuery = "SELECT *, GROUP_CONCAT(sind.label) as industry_list
-          FROM (sl_company) as scom
+          FROM sl_company as scom
           LEFT JOIN sl_attribute as satt ON (satt.type = 'cp_indus' AND satt.itemfk = scom.sl_companypk)
           LEFT JOIN sl_industry as sind ON (sind.sl_industrypk = satt.attributefk)
           GROUP BY scom.sl_companypk
