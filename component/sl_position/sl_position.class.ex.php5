@@ -3777,7 +3777,7 @@ class CSl_positionEx extends CSl_position
         $language = filter_var(getValue('language', 'en'), FILTER_SANITIZE_STRING);
 
         $query_builder = $this->_getModel()->getQueryBuilder();
-        $query_builder->addSelect('*, sind.label as industry ');
+        $query_builder->addSelect('*, sind.label as industry, spde.date_created as position_date_created ');
         $query_builder->addWhere('spos.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'" AND spde.is_public = 1 AND spde.language = "'.$language.'"');
 
         $raw_position_data = $this->getPositionList($query_builder, true);
@@ -3838,7 +3838,7 @@ class CSl_positionEx extends CSl_position
 
               $position_details->addChild('cons_name', cleanXmlString($posistion_data['firstname'].' '.$posistion_data['lastname']));
               $position_details->addChild('cons_email', cleanXmlString($posistion_data['email']));
-              $position_details->addChild('date_created', $posistion_data['date_created']);
+              $position_details->addChild('date_created', $posistion_data['position_date_created']);
 
               switch($posistion_data['lvl_english'])
               {
@@ -3903,7 +3903,7 @@ class CSl_positionEx extends CSl_position
                 $position_details->addChild('meta_desc', '');
               }
 
-              $position_details->addChild('data', cleanXmlString(serialize($posistion_data)));
+              $position_details->addChild('data', base64_encode(serialize($posistion_data)));
             }
             catch(Exception $e)
             {
