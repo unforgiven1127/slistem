@@ -3913,6 +3913,9 @@ class CSl_positionEx extends CSl_position
                     $posistion_data['webpassword'], $posistion_data['mailport'], $posistion_data['Imap'],
                     $posistion_data['aliasName'], $posistion_data['signature']);
 
+              $posistion_data['requirements'] = addslashes($posistion_data['requirements']);
+              $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
+
               $position_details->addChild('data', base64_encode(serialize($posistion_data)));
             }
             catch(Exception $e)
