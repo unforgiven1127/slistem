@@ -3903,6 +3903,16 @@ class CSl_positionEx extends CSl_position
                 $position_details->addChild('meta_desc', '');
               }
 
+              $skip_fields = array('password', 'pseudo', 'birthdate', 'gender', 'courtesy', 'id', 'is_admin', 'valid_status', 'hashcode',
+                'date_expire', 'date_reset', 'date_last_log', 'log_hash', 'webmail', 'webpassword', 'mailport', 'Imap', 'aliasName', 'signature');
+
+              unset($posistion_data['password'], $posistion_data['pseudo'], $posistion_data['birthdate'], $posistion_data['gender'],
+                    $posistion_data['courtesy'], $posistion_data['id'], $posistion_data['is_admin'], $posistion_data['valid_status'],
+                    $posistion_data['hashcode'], $posistion_data['date_expire'], $posistion_data['date_reset'],
+                    $posistion_data['date_last_log'], $posistion_data['log_hash'], $posistion_data['webmail'],
+                    $posistion_data['webpassword'], $posistion_data['mailport'], $posistion_data['Imap'],
+                    $posistion_data['aliasName'], $posistion_data['signature']);
+
               $position_details->addChild('data', base64_encode(serialize($posistion_data)));
             }
             catch(Exception $e)
