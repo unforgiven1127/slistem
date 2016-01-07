@@ -3850,7 +3850,7 @@ class CSl_positionEx extends CSl_position
               }
               $position_details->addChild('english', cleanXmlString($english_level_word));
               $position_details->addChild('english_nb', $english_level_number);
-              $position_details->addChild('lvl_english', $english_level_number);
+              $position_details->addChild('lvl_english', $posistion_data['lvl_english']);
 
               switch($posistion_data['lvl_japanese'])
               {
@@ -3862,7 +3862,7 @@ class CSl_positionEx extends CSl_position
               }
               $position_details->addChild('japanese', cleanXmlString($japanese_level_word));
               $position_details->addChild('japanese_nb', $japanese_level_number);
-              $position_details->addChild('lvl_japanese', $japanese_level_number);
+              $position_details->addChild('lvl_japanese', $posistion_data['lvl_japanese']);
 
 
               $requirements = array();
