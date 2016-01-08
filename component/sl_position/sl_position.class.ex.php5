@@ -3778,7 +3778,7 @@ class CSl_positionEx extends CSl_position
 
         $query_builder = $this->_getModel()->getQueryBuilder();
         $query_builder->addSelect('*, sind.label as industry, spde.date_created as position_date_created, spde.description as position_description ');
-        $query_builder->addWhere('spos.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'" AND spde.is_public = 1 AND spde.language = "'.$language.'"');
+        $query_builder->addWhere('spde.is_public = 1 AND spde.language = "'.$language.'"');
 
         $raw_position_data = $this->getPositionList($query_builder, true);
         if(!empty($raw_position_data))
