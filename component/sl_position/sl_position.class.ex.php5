@@ -393,7 +393,7 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('companyfk', array('label' => $asCompany[$nCompanyFk]['label'], 'value' => $nCompanyFk));
       }
 
-      $oForm->addField('paged_tree', 'industryfk', array('text' => ' -- Industry --', 'label' => 'industry', 'value' => (int)$oDbResult->getFieldValue('industryfk')));
+      $oForm->addField('paged_tree', 'industryfk', array('text' => ' -- Industry --', 'label' => 'Industry', 'value' => (int)$oDbResult->getFieldValue('industryfk')));
       $oForm->addoption('industryfk', $oCandidate->_getTreeData('industry'));
       $oForm->setFieldControl('industryfk', array('jsFieldNotEmpty'));
 
@@ -427,20 +427,20 @@ class CSl_positionEx extends CSl_position
         if(empty($sCompanyName))
           $sCompanyName = 'company name not publicy visible';
 
-        $oForm->addField('input', 'display_company', array('label' => 'company label', 'value' => $sCompanyName));
+        $oForm->addField('input', 'display_company', array('label' => 'Company label', 'value' => $sCompanyName));
         $oForm->setFieldDisplayParams('display_company', array('class' => 'public_field'));
 
-        $oForm->addField('select', 'display_age', array('label' => 'show age', 'value' => $oDbResult->getFieldValue('company_text')));
+        $oForm->addField('select', 'display_age', array('label' => 'Show age', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_age', array('label' => 'No', 'value' => '0'));
         $oForm->addOption('display_age', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_age', array('class' => 'public_field'));
 
-        $oForm->addField('select', 'display_salary', array('label' => 'show salary', 'value' => $oDbResult->getFieldValue('company_text')));
+        $oForm->addField('select', 'display_salary', array('label' => 'Show salary', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_salary', array('label' => 'No', 'value' => '0'));
         $oForm->addOption('display_salary', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_salary', array('class' => 'public_field'));
 
-        $oForm->addField('select', 'display_date', array('label' => 'show posting date', 'value' => $oDbResult->getFieldValue('company_text')));
+        $oForm->addField('select', 'display_date', array('label' => 'Show posting date', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_date', array('label' => 'No', 'value' => '0'));
         $oForm->addOption('display_date', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_date', array('class' => 'public_field'));
@@ -460,7 +460,7 @@ class CSl_positionEx extends CSl_position
        $oForm->closeSection('pubField');
 
 
-      $oForm->addField('select', 'language', array('label' => 'language',
+      $oForm->addField('select', 'language', array('label' => 'Language',
         'onchange' => 'alert(\'Please fill all the fields below in \'+ $(\'option:selected\', this).text()); '));
       $oForm->addOption('language', array('label' => 'English', 'value' => 'en'));
 
@@ -470,17 +470,17 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('language', array('label' => 'Japanese', 'value' => 'jp'));
 
       //specific for each language
-      $oForm->addField('input', 'title', array('label' => 'title', 'value' => $oDbResult->getFieldValue('title'),
+      $oForm->addField('input', 'title', array('label' => 'Title', 'value' => $oDbResult->getFieldValue('title'),
         'class' => 'public_important_field'));
       $oForm->addField('input', 'career_level', array('label' => 'career level',
         'value' => $oDbResult->getFieldValue('career_level'), 'class' => 'public_important_field'));
 
-      $oForm->addField('textarea', 'description', array('label' => 'description',
+      $oForm->addField('textarea', 'description', array('label' => 'Description',
         'value' => $oDbResult->getFieldValue('description'), 'class' => 'public_important_field', 'allowTinymce' => 1));
-      $oForm->addField('textarea', 'requirements', array('label' => 'requirements',
-        'value' => $oDbResult->getFieldValue('requirements'), 'class' => 'public_important_field', 'allowTinymce' => 1));
       $oForm->addField('textarea', 'responsabilities', array('label' => 'Responsibilities',
         'value' => $oDbResult->getFieldValue('responsabilities'), 'class' => 'public_important_field', 'allowTinymce' => 1));
+      $oForm->addField('textarea', 'requirements', array('label' => 'Requirements',
+        'value' => $oDbResult->getFieldValue('requirements'), 'class' => 'public_important_field', 'allowTinymce' => 1));
 
 
       return $oForm->getDisplay();
