@@ -3777,7 +3777,7 @@ class CSl_positionEx extends CSl_position
         $language = filter_var(getValue('language', 'en'), FILTER_SANITIZE_STRING);
 
         $query_builder = $this->_getModel()->getQueryBuilder();
-        $query_builder->addSelect('*, sind.label as industry, spde.date_created as position_date_created ');
+        $query_builder->addSelect('*, sind.label as industry, spde.date_created as position_date_created, spde.description as position_description ');
         $query_builder->addWhere('spos.date_created BETWEEN "'.$start_date.'" AND "'.$end_date.'" AND spde.is_public = 1 AND spde.language = "'.$language.'"');
 
         $raw_position_data = $this->getPositionList($query_builder, true);
@@ -3864,6 +3864,9 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('japanese_nb', $japanese_level_number);
               $position_details->addChild('lvl_japanese', $posistion_data['lvl_japanese']);
 
+              $posistion_data['position_description'] = addslashes($posistion_data['position_description']);
+              $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
+              $posistion_data['requirements'] = addslashes($posistion_data['requirements']);
 
               $requirements = array();
               if(!empty($posistion_data['age_from']))
@@ -3874,39 +3877,15 @@ class CSl_positionEx extends CSl_position
 
               if(!empty($requirements))
                 $position_details->addChild('requirements', cleanXmlString(implode("\n", $requirements)));
-                //$position_details->addChild('requirements', implode("\n", $requirements));
 
-              $description =  array();
-              if(!empty($posistion_data['description']))
-                $description[] = $posistion_data['description'];
-
-              if(!empty($posistion_data['responsibilities']))
-                $description[] = $posistion_data['responsibilities'];
-
-              /*if(!empty($posistion_data['jd_type']))
-                $description[] = ' - '.$posistion_data['jd_type'].' - ';*/
-
-              if(!empty($posistion_data['industry']))
-                $description[] = $posistion_data['industry'];
-
-              /*if(!empty($posistion_data['dept']))
-                $description[] = $posistion_data['jd_dept'];*/
-
-              $merged_description = implode("\n", $description);
-
-              if(!empty($merged_description))
+              if(!empty($posistion_data['position_description']))
               {
-                $position_details->addChild('position_desc', cleanXmlString($merged_description));
-                $position_details->addChild('meta_desc', cleanXmlString(substr($merged_description, 0, 200).'...'));
-              }
-              else
-              {
-                $position_details->addChild('position_desc', '');
-                $position_details->addChild('meta_desc', '');
+                $position_details->addChild('position_desc', cleanXmlString($posistion_data['position_description']));
+                $position_details->addChild('meta_desc', cleanXmlString(substr($posistion_data['position_description'], 0, 200).'...'));
               }
 
-              $skip_fields = array('password', 'pseudo', 'birthdate', 'gender', 'courtesy', 'id', 'is_admin', 'valid_status', 'hashcode',
-                'date_expire', 'date_reset', 'date_last_log', 'log_hash', 'webmail', 'webpassword', 'mailport', 'Imap', 'aliasName', 'signature');
+              if(!empty($posistion_data['responsabilities']))
+                $position_details->addChild('responsibilities', cleanXmlString($posistion_data['responsabilities']));
 
               unset($posistion_data['password'], $posistion_data['pseudo'], $posistion_data['birthdate'], $posistion_data['gender'],
                     $posistion_data['courtesy'], $posistion_data['id'], $posistion_data['is_admin'], $posistion_data['valid_status'],
@@ -3914,9 +3893,6 @@ class CSl_positionEx extends CSl_position
                     $posistion_data['date_last_log'], $posistion_data['log_hash'], $posistion_data['webmail'],
                     $posistion_data['webpassword'], $posistion_data['mailport'], $posistion_data['Imap'],
                     $posistion_data['aliasName'], $posistion_data['signature']);
-
-              $posistion_data['requirements'] = addslashes($posistion_data['requirements']);
-              $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
 
               $position_details->addChild('data', base64_encode(serialize($posistion_data)));
             }
