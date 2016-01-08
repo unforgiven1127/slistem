@@ -1958,13 +1958,13 @@ class CSl_positionEx extends CSl_position
           $sDetail.= $this->_oDisplay->getBlocEnd();
 
           $sDetail.= $this->_oDisplay->getBlocStart('pos_detail_'.$asPosition['language'], array('class' => 'position_detail_row'));
-          $sDetail.= $this->_oDisplay->getBloc('', 'Requiremensts', array('class' => 'label'));
-          $sDetail.= $this->_oDisplay->getBloc('', $asPosition['requirements'], array('class' => 'value'));
+          $sDetail.= $this->_oDisplay->getBloc('', 'Responsibilities', array('class' => 'label'));
+          $sDetail.= $this->_oDisplay->getBloc('', $asPosition['responsabilities'], array('class' => 'value'));
           $sDetail.= $this->_oDisplay->getBlocEnd();
 
           $sDetail.= $this->_oDisplay->getBlocStart('pos_detail_'.$asPosition['language'], array('class' => 'position_detail_row'));
-          $sDetail.= $this->_oDisplay->getBloc('', 'Responsibilities', array('class' => 'label'));
-          $sDetail.= $this->_oDisplay->getBloc('', $asPosition['responsabilities'], array('class' => 'value'));
+          $sDetail.= $this->_oDisplay->getBloc('', 'Requiremensts', array('class' => 'label'));
+          $sDetail.= $this->_oDisplay->getBloc('', $asPosition['requirements'], array('class' => 'value'));
           $sDetail.= $this->_oDisplay->getBlocEnd();
 
         $sDetail.= $this->_oDisplay->getBlocEnd();
