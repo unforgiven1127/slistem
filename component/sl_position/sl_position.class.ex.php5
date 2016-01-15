@@ -3804,7 +3804,9 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('page_title', cleanXmlString($posistion_data['title']));
               $position_details->addChild('position_title', cleanXmlString($posistion_data['title']));
 
-              $position_details->addChild('salary', cleanXmlString($posistion_data['salary_from'].' - '.$posistion_data['salary_to']));
+              $position_details->addChild('salary',
+                cleanXmlString(number_format($posistion_data['salary_from'], 0, '.', ',').' - '.
+                  number_format($posistion_data['salary_to'], 0, '.', ',')).'&yen;');
               $position_details->addChild('salary_low', cleanXmlString($posistion_data['salary_from']));
               $position_details->addChild('salary_high', cleanXmlString($posistion_data['salary_to']));
 
@@ -3865,12 +3867,12 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('lvl_japanese', $posistion_data['lvl_japanese']);
 
               $posistion_data['position_description'] = addslashes($posistion_data['position_description']);
-              $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
+              // $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
               $posistion_data['requirements'] = addslashes($posistion_data['requirements']);
 
               $requirements = array();
               if(!empty($posistion_data['age_from']))
-                $requirements[] = 'Age: '.$posistion_data['age_from'].' - '.$posistion_data['age_to'];
+                $position_details->addChild('age', $posistion_data['age_from'].' - '.$posistion_data['age_to']);
 
               if(!empty($posistion_data['requirements']))
                 $requirements[] = $posistion_data['requirements'];
@@ -3886,6 +3888,10 @@ class CSl_positionEx extends CSl_position
 
               if(!empty($posistion_data['responsabilities']))
                 $position_details->addChild('responsibilities', cleanXmlString($posistion_data['responsabilities']));
+
+              $position_details->addChild('display_age', $posistion_data['display_age']);
+              $position_details->addChild('display_salary', $posistion_data['display_salary']);
+              $position_details->addChild('display_date', $posistion_data['display_date']);
 
               unset($posistion_data['password'], $posistion_data['pseudo'], $posistion_data['birthdate'], $posistion_data['gender'],
                     $posistion_data['courtesy'], $posistion_data['id'], $posistion_data['is_admin'], $posistion_data['valid_status'],
