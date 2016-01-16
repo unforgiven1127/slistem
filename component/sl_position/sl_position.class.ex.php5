@@ -3805,7 +3805,7 @@ class CSl_positionEx extends CSl_position
 
               $position_details->addChild('salary',
                 cleanXmlString(number_format($posistion_data['salary_from'], 0, '.', ',').' - '.
-                  number_format($posistion_data['salary_to'], 0, '.', ',')).'&yen;');
+                  number_format($posistion_data['salary_to'], 0, '.', ',')));
               $position_details->addChild('salary_low', cleanXmlString($posistion_data['salary_from']));
               $position_details->addChild('salary_high', cleanXmlString($posistion_data['salary_to']));
 
