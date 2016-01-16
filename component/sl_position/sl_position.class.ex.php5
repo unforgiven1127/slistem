@@ -331,7 +331,6 @@ class CSl_positionEx extends CSl_position
         if(!$bread)
           return array('error' => 'Could not find the position.');
 
-        $oCandidate = CDependency::getComponentByUid('555-001');
         $sURL = $this->_oPage->getAjaxUrl($this->csUid, CONST_ACTION_SAVEEDIT, CONST_POSITION_TYPE_JD, $pnPositionPk);
       }
       else
@@ -372,15 +371,9 @@ class CSl_positionEx extends CSl_position
         $oForm->addOption('is_public', array('label' => 'Yes', 'value' => '1'));
 
 
-
       //common fields to every languages
-      $oForm->addField('select', 'job_type', array('label' => 'Type'));
-      $oForm->addOption('job_type', array('label' => 'Full time', 'value' => 'full'));
-
-      if($oDbResult->getFieldValue('is_fulltime'))
-        $oForm->addOption('job_type', array('label' => 'part time', 'value' => 'part', 'selected' => 'selected'));
-      else
-        $oForm->addOption('job_type', array('label' => 'part time', 'value' => 'part'));
+      $oForm->addField('select', 'location', array('class' => 'public_important_field', 'label' => 'Location'));
+      $oForm->addOptionHtml('location', $oCandidate->getVars()->getLocationOption($oDbResult->getFieldValue('location')));
 
 
       $sURL = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_COMP);
@@ -478,7 +471,7 @@ class CSl_positionEx extends CSl_position
       $oForm->addField('textarea', 'description', array('label' => 'Company/Job description',
         'value' => $oDbResult->getFieldValue('description'), 'class' => 'public_important_field', 'allowTinymce' => 1));
       $oForm->addField('textarea', 'responsabilities', array('label' => 'Responsibilities',
-        'value' => $oDbResult->getFieldValue('responsabilities'), 'class' => 'public_important_field', 'allowTinymce' => 1));
+        'value' => $oDbResult->getFieldValue('responsabilities'), 'allowTinymce' => 1));
       $oForm->addField('textarea', 'requirements', array('label' => 'Requirements',
         'value' => $oDbResult->getFieldValue('requirements'), 'class' => 'public_important_field', 'allowTinymce' => 1));
 
@@ -520,6 +513,10 @@ class CSl_positionEx extends CSl_position
       $asPosition['industryfk'] = (int)getValue('industryfk');
       if(empty($asPosition['industryfk']))
         return array('error' => __LINE__.' - You must select an industry.');
+
+      $asPosition['location'] = (int)getValue('location');
+      if(empty($asPosition['location']))
+        return array('error' => __LINE__.' - You must select a location.');
 
       $asPosition['age_from'] = (int)getValue('age_from');
       $asPosition['age_to'] = (int)getValue('age_to');
@@ -3762,8 +3759,10 @@ class CSl_positionEx extends CSl_position
 
     private function _exportPositionXml()
     {
-      $xml =	simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
+      $oCandidate = CDependency::getComponentByName('sl_candidate');
+      $location_list = $oCandidate->getVars()->getLocationList();
 
+      $xml =	simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
 
       //https://slistem.devserv.com/index.php5?pg=cron&cronSilent=1&hashCron=1&custom_uid=555-005&export_position=1&seekPositionFrom=1363593824
       $start_time = (int)getValue('start_time', 0);
@@ -3870,10 +3869,10 @@ class CSl_positionEx extends CSl_position
               // $posistion_data['responsabilities'] = addslashes($posistion_data['responsabilities']);
               $posistion_data['requirements'] = addslashes($posistion_data['requirements']);
 
-              $requirements = array();
               if(!empty($posistion_data['age_from']))
                 $position_details->addChild('age', $posistion_data['age_from'].' - '.$posistion_data['age_to']);
 
+              $requirements = array();
               if(!empty($posistion_data['requirements']))
                 $requirements[] = $posistion_data['requirements'];
 
@@ -3892,6 +3891,12 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('display_age', $posistion_data['display_age']);
               $position_details->addChild('display_salary', $posistion_data['display_salary']);
               $position_details->addChild('display_date', $posistion_data['display_date']);
+
+
+              if (!empty($posistion_data['location']))
+              {
+                $position_details->addChild('location', $location_list[$posistion_data['location']]);
+              }
 
               unset($posistion_data['password'], $posistion_data['pseudo'], $posistion_data['birthdate'], $posistion_data['gender'],
                     $posistion_data['courtesy'], $posistion_data['id'], $posistion_data['is_admin'], $posistion_data['valid_status'],

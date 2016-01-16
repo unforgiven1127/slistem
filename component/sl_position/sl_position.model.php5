@@ -33,6 +33,7 @@ class CSl_positionModel extends CModel
     $this->_tableMap['sl_position_detail']['date_created'] = array('controls'=>array('is_datetime(%)'),'type'=>'datetime');
     $this->_tableMap['sl_position_detail']['created_by'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
     $this->_tableMap['sl_position_detail']['language'] = array();
+    $this->_tableMap['sl_position_detail']['location'] = array('controls'=>array('is_integer(%)'),'type'=>'int');
     $this->_tableMap['sl_position_detail']['title'] = array();
     $this->_tableMap['sl_position_detail']['career_level'] = array();
     $this->_tableMap['sl_position_detail']['description'] = array();
