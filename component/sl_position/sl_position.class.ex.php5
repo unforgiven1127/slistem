@@ -3804,9 +3804,6 @@ class CSl_positionEx extends CSl_position
               $position_details->addChild('salary_low', cleanXmlString($posistion_data['salary_from']));
               $position_details->addChild('salary_high', cleanXmlString($posistion_data['salary_to']));
 
-              // $position_details->addChild('location', cleanXmlString($posistion_data['location_name']));
-              $position_details->addChild('location', '');
-
               $position_details->addChild('station', '');
               $position_details->addChild('work_hours', '');
               $position_details->addChild('holidays', '');
@@ -3888,7 +3885,7 @@ class CSl_positionEx extends CSl_position
 
               if (!empty($posistion_data['location']))
               {
-                $position_details->addChild('location', $location_list[$posistion_data['location']]);
+                $position_details->addChild('location', cleanXmlString($location_list[$posistion_data['location']]));
               }
 
               unset($posistion_data['password'], $posistion_data['pseudo'], $posistion_data['birthdate'], $posistion_data['gender'],
