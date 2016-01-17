@@ -5,6 +5,7 @@ class CSl_positionEx extends CSl_position
 {
   private $_oPage;
   private $_oDisplay;
+  private $oCandidate;
   private $casUserData;
   private $casStatus = array();
   private $csSearchId = '';
@@ -14,6 +15,7 @@ class CSl_positionEx extends CSl_position
   {
     $this->_oPage = CDependency::getCpPage();
     $this->_oDisplay = CDependency::getCpHtml();
+    $this->oCandidate = CDependency::getComponentByName('sl_candidate');
 
     $oLogin = CDependency::getCpLogin();
     $this->casUserData = $oLogin->getUserData();
@@ -300,7 +302,11 @@ class CSl_positionEx extends CSl_position
       $this->_updateExpiring();
 
     if(getValue('export_position'))
-     $this->_exportPositionXml();
+    {
+      $location_list = $this->oCandidate->getVars()->getLocationList();
+
+      $this->_exportPositionXml($location_list);
+    }
 
     return '';
   }
@@ -320,9 +326,6 @@ class CSl_positionEx extends CSl_position
     {
       if(!assert('is_integer($pnPositionPk)'))
         return array('error' => 'Bad parameteres.');
-
-
-      $oCandidate = CDependency::getComponentByName('sl_candidate');
 
       if(!empty($pnPositionPk))
       {
@@ -373,7 +376,7 @@ class CSl_positionEx extends CSl_position
 
       //common fields to every languages
       $oForm->addField('select', 'location', array('class' => 'public_important_field', 'label' => 'Location'));
-      $oForm->addOptionHtml('location', $oCandidate->getVars()->getLocationOption($oDbResult->getFieldValue('location')));
+      $oForm->addOptionHtml('location', $this->oCandidate->getVars()->getLocationOption($oDbResult->getFieldValue('location')));
 
 
       $sURL = $this->_oPage->getAjaxUrl('555-001', CONST_ACTION_SEARCH, CONST_CANDIDATE_TYPE_COMP);
@@ -382,12 +385,12 @@ class CSl_positionEx extends CSl_position
       $nCompanyFk = (int)$oDbResult->getFieldValue('companyfk');
       if($nCompanyFk)
       {
-        $asCompany = $oCandidate->getItemDescription($nCompanyFk, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_COMP);
+        $asCompany = $this->oCandidate->getItemDescription($nCompanyFk, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_COMP);
         $oForm->addOption('companyfk', array('label' => $asCompany[$nCompanyFk]['label'], 'value' => $nCompanyFk));
       }
 
       $oForm->addField('paged_tree', 'industryfk', array('text' => ' -- Industry --', 'label' => 'Industry', 'value' => (int)$oDbResult->getFieldValue('industryfk')));
-      $oForm->addoption('industryfk', $oCandidate->_getTreeData('industry'));
+      $oForm->addoption('industryfk', $this->oCandidate->_getTreeData('industry'));
       $oForm->setFieldControl('industryfk', array('jsFieldNotEmpty'));
 
       $oForm->addField('input', 'age_from', array('label' => 'Age from', 'value' => $oDbResult->getFieldValue('age_from')));
@@ -896,8 +899,7 @@ class CSl_positionEx extends CSl_position
       $nCandidateStatus = 0;
       if(!empty($nCandidatePk))
       {
-        $oCandidate = CDependency::getComponentByName('sl_candidate');
-        $asCandidate = $oCandidate->getItemDescription($nCandidatePk, '');
+        $asCandidate = $this->oCandidate->getItemDescription($nCandidatePk, '');
 
         if(empty($asCandidate))
         {
@@ -1191,13 +1193,11 @@ class CSl_positionEx extends CSl_position
 
       //----------------------
       //check if candidate and company are ok
-      $oCandidate = CDependency::getComponentByName('sl_candidate');
-
-      $asCompany = $oCandidate->getItemDescription($nCompanyPk, '', 'comp');
+      $asCompany = $this->oCandidate->getItemDescription($nCompanyPk, '', 'comp');
       if(empty($asCompany))
         return array('error' => __LINE__.' - Could not find the company.');
 
-      $asCandidate = $oCandidate->getCandidateData($asData['candidatefk'], true);
+      $asCandidate = $this->oCandidate->getCandidateData($asData['candidatefk'], true);
       if(empty($asCandidate))
         return array('error' => __LINE__.' - Could not find the candidate.');
       //----------------------
@@ -1397,7 +1397,7 @@ class CSl_positionEx extends CSl_position
         //Update candidate company... least we can do to make sure data is correct, we'll open the form after
         //update industry with position industry too ?
         $asUpdate = array('companyfk' => $nCompanyPk);
-        $bUpdate = $oCandidate->quickUpdateProfile($asUpdate, $asData['candidatefk'], true);
+        $bUpdate = $this->oCandidate->quickUpdateProfile($asUpdate, $asData['candidatefk'], true);
         if(!$bUpdate)
           return array('error' => __LINE__.' - Could update candidate company.');
 
@@ -1415,7 +1415,7 @@ class CSl_positionEx extends CSl_position
 
       //Finally: notify people the candidate status has changed (remove the current user obviosuly)
       $asCandidate['sl_candidatepk'] = (int)$asCandidate['sl_candidatepk'];
-      $asFollower = $oCandidate->getCandidateRm($asCandidate['sl_candidatepk'], true, false);
+      $asFollower = $this->oCandidate->getCandidateRm($asCandidate['sl_candidatepk'], true, false);
       if(isset($asFollower[$nUser]))
         unset($asFollower[$nUser]);
 
@@ -2167,7 +2167,6 @@ class CSl_positionEx extends CSl_position
       $oPage = CDependency::getCpPage();
       $oLogin = CDependency::getCpLogin();
       $oHTML = CDependency::getCpHtml();
-      $oCandidate = CDependency::getComponentByUid('555-001');
 
       $oPage->addCssFile($this->getResourcePath().'css/sl_position.css');
       $oPage->addJsFile($this->getResourcePath().'js/sl_position.js');
@@ -2234,7 +2233,7 @@ class CSl_positionEx extends CSl_position
         $oForm->addField('selector', 'company', array('label' => 'Company', 'url' => $sURL));
         if(!empty($nCompanyfk))
         {
-          $asCompany = $oCandidate->getItemDescription($nCompanyfk, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_COMP);
+          $asCompany = $this->oCandidate->getItemDescription($nCompanyfk, CONST_ACTION_VIEW, CONST_CANDIDATE_TYPE_COMP);
           if(!empty($asCompany))
           {
             $oForm->addOption('company', array('label' => $asCompany[$nCompanyfk]['label'], 'value' => $nCompanyfk));
@@ -2270,7 +2269,7 @@ class CSl_positionEx extends CSl_position
         $oForm->addField('selector', 'industryfk', array('label' => 'Industry', 'url' => $sURL));
         if(!empty($sIndustryfk))
         {
-          $asIndustry = $oCandidate->getVars()->getIndustryList();
+          $asIndustry = $this->oCandidate->getVars()->getIndustryList();
           $oForm->addOption('industryfk', array('label' => $asIndustry[$sIndustryfk]['label'], 'value' => $sIndustryfk));
           $sClass = '';
         }
@@ -2626,7 +2625,6 @@ class CSl_positionEx extends CSl_position
       $asEmail = array();
       $sNow = date('Y-m-d H:i:s');
       $sThreeMonth = date('Y-m-d', strtotime('+3 months')).' 00:00:00';
-      $oCandidate = CDependency::getComponentByUid('555-001');
 
       while($bRead)
       {
@@ -2656,7 +2654,7 @@ class CSl_positionEx extends CSl_position
 
         //--------------------------------------------------
         //update candidate status based on all his positions
-        $asUpdate = $oCandidate->updateCandidateProfile((int)$asPosition['candidatefk']);
+        $asUpdate = $this->oCandidate->updateCandidateProfile((int)$asPosition['candidatefk']);
         //dump($asUpdate);
 
         //prepare content for email
@@ -3260,14 +3258,14 @@ class CSl_positionEx extends CSl_position
 
         //fetch candidate data
         $nCandidatefk = (int)$oDdPlacement->getFieldValue('candidate');
-        $oCandidate = CDependency::getComponentByUid('555-001');
+
         if ($oDdPlacement->getFieldValue('candidate') == 'retainer')
         {
           $sCandidate = 'Retainer';
         }
         else
         {
-          $asCandidate = $oCandidate->getCandidateData($nCandidatefk , false);
+          $asCandidate = $this->oCandidate->getCandidateData($nCandidatefk , false);
           $sCandidate = '#'.$nCandidatefk. ' - '.$asCandidate['firstname'].' '.$asCandidate['lastname'];
         }
 
@@ -3757,12 +3755,9 @@ class CSl_positionEx extends CSl_position
     }
 
 
-    private function _exportPositionXml()
+    private function _exportPositionXml($location_list)
     {
-      $oCandidate = CDependency::getComponentByName('sl_candidate');
-      $location_list = $oCandidate->getVars()->getLocationList();
-
-      $xml =	simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
+      $xml = simplexml_load_string('<?xml version="1.0" encoding="UTF-8"?><root></root>');
 
       //https://slistem.devserv.com/index.php5?pg=cron&cronSilent=1&hashCron=1&custom_uid=555-005&export_position=1&seekPositionFrom=1363593824
       $start_time = (int)getValue('start_time', 0);
@@ -3872,21 +3867,19 @@ class CSl_positionEx extends CSl_position
               if(!empty($posistion_data['age_from']))
                 $position_details->addChild('age', $posistion_data['age_from'].' - '.$posistion_data['age_to']);
 
-              $requirements = array();
               if(!empty($posistion_data['requirements']))
-                $requirements[] = $posistion_data['requirements'];
-
-              if(!empty($requirements))
-                $position_details->addChild('requirements', cleanXmlString(implode("\n", $requirements)));
+                $position_details->addChild('requirements', cleanXmlString($posistion_data['requirements']));
 
               if(!empty($posistion_data['position_description']))
               {
-                $position_details->addChild('position_desc', cleanXmlString($posistion_data['position_description']));
+                $position_description = $posistion_data['position_description'];
+
+                if(!empty($posistion_data['responsabilities']))
+                  $position_description .= " \n".$posistion_data['responsabilities'];
+
+                $position_details->addChild('position_desc', cleanXmlString($position_description));
                 $position_details->addChild('meta_desc', cleanXmlString(substr($posistion_data['position_description'], 0, 200).'...'));
               }
-
-              if(!empty($posistion_data['responsabilities']))
-                $position_details->addChild('responsibilities', cleanXmlString($posistion_data['responsabilities']));
 
               $position_details->addChild('display_age', $posistion_data['display_age']);
               $position_details->addChild('display_salary', $posistion_data['display_salary']);

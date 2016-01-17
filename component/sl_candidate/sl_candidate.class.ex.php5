@@ -1,4 +1,3 @@
-
 <?php
 
 require_once('component/sl_candidate/sl_candidate.class.php5');
