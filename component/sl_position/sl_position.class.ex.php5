@@ -426,24 +426,40 @@ class CSl_positionEx extends CSl_position
         $oForm->addField('input', 'display_company', array('label' => 'Company label', 'value' => $sCompanyName));
         $oForm->setFieldDisplayParams('display_company', array('class' => 'public_field'));
 
+        $display_age = (int)$oDbResult->getFieldValue('display_age');
         $oForm->addField('select', 'display_age', array('label' => 'Show age', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_age', array('label' => 'No', 'value' => '0'));
-        $oForm->addOption('display_age', array('label' => 'Yes', 'value' => '1'));
+        if (!empty($display_age))
+          $oForm->addOption('display_age', array('label' => 'Yes', 'value' => '1', 'selected' => ''));
+        else
+          $oForm->addOption('display_age', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_age', array('class' => 'public_field'));
 
+        $display_salary = (int)$oDbResult->getFieldValue('display_salary');
         $oForm->addField('select', 'display_salary', array('label' => 'Show salary', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_salary', array('label' => 'No', 'value' => '0'));
-        $oForm->addOption('display_salary', array('label' => 'Yes', 'value' => '1'));
+        if (!empty($display_salary))
+          $oForm->addOption('display_salary', array('label' => 'Yes', 'value' => '1', 'selected' => ''));
+        else
+          $oForm->addOption('display_salary', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_salary', array('class' => 'public_field'));
 
+        $display_date = (int)$oDbResult->getFieldValue('display_date');
         $oForm->addField('select', 'display_date', array('label' => 'Show posting date', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('display_date', array('label' => 'No', 'value' => '0'));
-        $oForm->addOption('display_date', array('label' => 'Yes', 'value' => '1'));
+        if (!empty($display_date))
+          $oForm->addOption('display_date', array('label' => 'Yes', 'value' => '1', 'selected' => ''));
+        else
+          $oForm->addOption('display_date', array('label' => 'Yes', 'value' => '1'));
         $oForm->setFieldDisplayParams('display_date', array('class' => 'public_field'));
 
+        $requires_moderation = (int)$oDbResult->getFieldValue('moderation');
         $oForm->addField('select', 'moderation', array('label' => 'Moderation', 'value' => $oDbResult->getFieldValue('company_text')));
         $oForm->addOption('moderation', array('label' => 'Yes', 'value' => '1'));
-        $oForm->addOption('moderation', array('label' => 'No', 'value' => '0'));
+        if (empty($requires_moderation))
+          $oForm->addOption('moderation', array('label' => 'No', 'value' => '0', 'selected' => ''));
+        else
+          $oForm->addOption('moderation', array('label' => 'No', 'value' => '0'));
         $oForm->setFieldDisplayParams('moderation', array('class' => 'public_field'));
 
 
@@ -550,6 +566,10 @@ class CSl_positionEx extends CSl_position
       $asPosition['responsabilities'] = filter_var(getValue('responsabilities'), FILTER_SANITIZE_STRING);
       $asPosition['content_html'] = filter_var(getValue('content_html'), FILTER_SANITIZE_STRING);
       $asPosition['is_public'] = (int)getValue('is_public');
+      $asPosition['display_age'] = (int)getValue('display_age');
+      $asPosition['display_salary'] = (int)getValue('display_salary');
+      $asPosition['display_date'] = (int)getValue('display_date');
+      $asPosition['moderation'] = (int)getValue('moderation');
 
 
       if(empty($pnPositionPk))
