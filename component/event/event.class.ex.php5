@@ -1865,10 +1865,7 @@ class CEventEx extends CEvent
 
 
             $asNote['content'] = strip_tags($asNote['body'], '<br><br/><p><span>');
-            var_export(
-              $this->decode7_bit($asNote['body'])
-              );
-              die();
+
             $asResult = $this->_getEventSave(0, $asNote);
             if(isset($asResult['error']))
               assert('false; /* could not create the note '.$asResult['error'].' */');
