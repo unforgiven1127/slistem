@@ -181,7 +181,6 @@ switch(trim($_SERVER['SERVER_NAME']))
     case 'beta1.slate.co.jp':
     case 'beta2.slate.co.jp':
 
-
     define('DB_NAME', 'slistem');
     define('DB_SERVER', '127.0.0.1');
     define('DB_USER', 'slistem');
@@ -246,6 +245,71 @@ switch(trim($_SERVER['SERVER_NAME']))
     define('CONST_LOGIN_DISPLAYED_GRP', '2,3,4,6,7,103,106,107,108,109,110,111,112,113,114,116');
     break;
 
+    case 'slistemlocal.com':
+
+    define('DB_NAME', 'slistem');
+    define('DB_SERVER', 'localhost');
+    define('DB_USER', 'slistem');
+    define('DB_PASSWORD', '7088762');
+
+    define('CONST_WEBSITE', 'slistem');
+    define('CONST_APP_NAME', 'Sl[i]stem');
+    define('CONST_MAINTENANCE', 0);
+
+    define('CONST_CRM_HOST', $_SERVER['SERVER_NAME'].'');
+    define('CONST_CRM_DOMAIN', 'https://'.$_SERVER['SERVER_NAME']);
+    define('CONST_CRM_MAIL_SENDER', 'slistem@slate.co.jp');
+    define('CONST_DEV_SERVER', 1);  //debug bar, mail to developer, and other developer features
+    define('CONST_SQL_PROFILING', 0);
+    define('CONST_DEV_EMAIL', 'dcepulis@slate-ghc.com');
+    define('CONST_DEV_EMAIL_2', 'dcepulis@slate-ghc.com');
+    define('CONST_SHOW_MENU_BAR', 1);
+    define('CONST_VERSION', '-1.0');
+    define('CONST_DISPLAY_VERSION', 0);
+
+    //---------------------------------------
+    //Specific environment variables
+
+    define('CONST_PHPMAILER_SMTP_DEBUG', false);
+    define('CONST_PHPMAILER_DOMAIN', 'slate.co.jp');
+    define('CONST_PHPMAILER_EMAIL', 'slistem@slate.co.jp');
+    define('CONST_PHPMAILER_DEFAULT_FROM', 'Slistem');
+    define('CONST_PHPMAILER_ATTACHMENT_SIZE', 10485760);
+
+    define('CONST_PHPMAILER_SMTP_PORT', 465); //smtp
+    define('CONST_PHPMAILER_SMTP_HOST', 'imap.slate.co.jp');
+    define('CONST_PHPMAILER_SMTP_LOGIN', 'slistem@slate.co.jp');
+
+    define('CONST_PHPMAILER_SMTP_PASSWORD', 'Slate!7000ics');
+
+    //to send emails using IMAP instead of smtp
+    define('CONST_MAIL_IMAP_SEND', true);
+    //Log a copy of all emails sent by the platform a in the sent folder
+    define('CONST_MAIL_IMAP_LOG_SENT', true);
+
+    //--------------------------------------
+    //required parameters if one of the above are true
+    define('CONST_MAIL_IMAP_PORT', 993);  //imap
+    define('CONST_MAIL_IMAP_LOG_PARAM_INBOX', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/debug/readonly/imap/ssl/novalidate-cert}inbox');
+    define('CONST_MAIL_IMAP_LOG_PARAM_SENT', '{'.CONST_PHPMAILER_SMTP_HOST.':'.CONST_MAIL_IMAP_PORT.'/imap/ssl/novalidate-cert}sent');
+    define('CONST_MAIL_IMAP_CATCHALL_ADDRESS', 'slistem@aoy3f.slate.local'); //use the domain to look into mail header
+    define('CONST_MAIL_IMAP_ACCEPTED_DOMAIN', 'slate.co.jp,bulbouscell.com,bcmj.biz,slate-ghc.com');
+
+
+    define('CONST_AVAILABLE_LANGUAGE', 'en,jp');
+    define('CONST_DEFAULT_LANGUAGE', 'en');
+    define('CONST_PAGE_USE_WINDOW_SIZE', true);
+    define('CONST_SS_MAX_DOCUMENT_SIZE', 5242880); //5MB
+    define('CONST_SS_MAX_PROCESSABLE_SIZE', 2097152); //2MB
+
+    define('CONST_FOLDER_LOADING_MODE', 1);
+    define('CONST_SAVE_BANDWIDTH', 0);
+
+    assert_options(ASSERT_CALLBACK, 'displayAssert');
+    define('CONST_NOTIFY_DEFAULT_RECIPIENTPK', 260);  //Mitchmallo dba
+    define('CONST_LOGIN_DEFAULT_LIST_GRP', 116);
+    define('CONST_LOGIN_DISPLAYED_GRP', '2,3,4,6,7,103,106,107,108,109,110,111,112,113,114,116');
+    break;
   default:
     exit($_SERVER['SERVER_NAME'].' -> error in website parameters');
 }

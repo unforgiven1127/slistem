@@ -50,7 +50,6 @@ echo $oPage->getPage($sUid, $sAction, $sType, $nPk, $sPg);
 //uncommnet to use
 //include($_SERVER['DOCUMENT_ROOT'].'/common/maintenance/check_ab_doc.php5');
 
-
 if(CONST_SQL_PROFILING)
 {
   $oDb = CDependency::getComponentByName('database');

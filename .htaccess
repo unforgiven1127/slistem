@@ -8,7 +8,7 @@ RewriteEngine on
 
 
 RewriteCond %{SERVER_PORT} !=443
-RewriteRule (.*) https://%{SERVER_NAME}%{REQUEST_URI}%{REMOTE_ADDR} [R,L]
+RewriteRule (.*) http://%{SERVER_NAME}%{REQUEST_URI}%{REMOTE_ADDR} [R,L]
 
 AuthName "Access restricted. --"
 AuthType Basic
@@ -16,8 +16,8 @@ AuthUserFile /hdd/www/slistem/.htpasswd
 Satisfy Any
 order deny,allow
 deny from all
-require valid-user
-
+#require valid-user
+#allow from all
 
 
 # -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=- -=-

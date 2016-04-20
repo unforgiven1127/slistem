@@ -1281,7 +1281,7 @@ class CLoginEx extends CLogin
     {
       $sTemplate = 'RewriteEngine on
                     RewriteCond %{SERVER_PORT} !=443
-                    RewriteRule (.*) https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+                    RewriteRule (.*) http://%{SERVER_NAME}%{REQUEST_URI} [R,L]
 
                     AuthName "Restricted Area"
                     AuthType Basic
